@@ -3,7 +3,8 @@ import {
     Layout,
     Typography,
     Row,
-    Col
+    Col,
+    Button
 } from 'antd';
 import styles from './layout.module.less'
 
@@ -21,17 +22,27 @@ function Index(props) {
                 <Layout.Header
                     theme="light"
                 >
-                    <Row
+                    <Col
                         className={styles.header}
                     >
-                        <Col>
+                        <Col
+                            span={18}
+                        >
                             <Typography.Title
-                                className='text-white'
+                                level={3}
+
                             >
                                 Dr. M.A Ansari Hospital
                             </Typography.Title>
                         </Col>
-                    </Row>
+                        <Col
+                            span={6}
+                        >
+                            <Button>
+                                Login
+                            </Button>
+                        </Col>
+                    </Col>
                 </Layout.Header>
                 <Layout>
                     <Layout.Sider>
