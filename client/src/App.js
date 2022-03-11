@@ -1,8 +1,20 @@
+import { Button } from "antd";
+import AppLayout from './components/Layout/AppLayout';
+
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">Hello</header>
-    </div>
+    <AppLayout>
+      <div className="App">
+        <div
+          style={{
+            height: "100vh",
+          }}
+        >
+          <Button type="primary">Hello World</Button>
+          <header className="App-header">Hello</header>
+        </div>
+      </div>
+    </AppLayout>
   );
 }
 
