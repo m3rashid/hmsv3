@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import AppLayout from './components/Layout/AppLayout';
+import AppLayout from "./components/Layout/AppLayout";
 
 function App() {
   return (
