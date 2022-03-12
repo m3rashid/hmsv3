@@ -22,7 +22,7 @@
     "check:format": "prettier --check .",
     "check:lint": "eslint . --ext .ts --ext .js",
     "format": "prettier --write .",
-    "check:all": "yarn check:format && yarn check:lint"
+    "check:all": "yarn check:format && yarn check:lint && cd client && yarn build"
   },
   "devDependencies": {
     "eslint": "^8.11.0",
