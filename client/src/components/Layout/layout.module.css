@@ -13,3 +13,9 @@
   color: white;
   height: 100%;
 }
+.theme {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
