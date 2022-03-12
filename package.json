@@ -1,0 +1,35 @@
+{
+  "name": "hmsv2",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m3rashid/hmsv2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/m3rashid/hmsv2/issues"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --cache --fix"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "check:format": "prettier --check .",
+    "check:lint": "eslint . --ext .ts --ext .js",
+    "format": "prettier --write .",
+    "check:all": "yarn check:format && yarn check:lint"
+  },
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^8.5.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.3.5",
+    "prettier": "^2.5.1"
+  }
+}
