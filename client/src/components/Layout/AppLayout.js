@@ -1,14 +1,7 @@
 import React, { useState } from "react";
-import {
-  Layout,
-  Typography,
-  Col,
-  Button,
-  Menu
-} from "antd";
+import { Layout, Typography, Col, Button, Menu } from "antd";
 import AuthModal from "../Modal/AuthModal";
 import styles from "./layout.module.less";
-
 
 /**
  *
@@ -21,19 +14,19 @@ function Index(props) {
   const MenuRoutes = [
     {
       text: "Receptionists",
-      path: "/receptionists"
+      path: "/receptionists",
     },
     {
       text: "Doctors",
-      path: "/doctors"
+      path: "/doctors",
     },
     {
       text: "Patients",
-      path: "/patients"
+      path: "/patients",
     },
     {
       text: "Appointments",
-      path: "/appointments"
+      path: "/appointments",
     },
     {
       isGroup: true,
@@ -42,19 +35,19 @@ function Index(props) {
       children: [
         {
           text: "Receptionists",
-          path: "/receptionists"
+          path: "/receptionists",
         },
         {
           text: "Doctors",
-          path: "/doctors"
+          path: "/doctors",
         },
         {
           text: "Patients",
-          path: "/patients"
-        }
-      ]
-    }
-  ]
+          path: "/patients",
+        },
+      ],
+    },
+  ];
 
   return (
     <React.Fragment>
@@ -66,16 +59,13 @@ function Index(props) {
                 Dr. M.A Ansari Hospital
               </Typography.Title>
             </Col>
-            <Col span={3}
-              className={styles.theme}
-            >
-              <Button onClick={() => setIsModalVisible(true)} >Login</Button>
+            <Col span={3} className={styles.theme}>
+              <Button onClick={() => setIsModalVisible(true)}>Login</Button>
               <AuthModal
                 isModalVisible={isModalVisible}
                 handleOk={() => {
                   setIsModalVisible(true);
                 }}
-
                 handleCancel={() => {
                   setIsModalVisible(false);
                 }}
@@ -85,12 +75,8 @@ function Index(props) {
         </Layout.Header>
         <Layout>
           <Layout.Sider>
-            <Menu
-              theme="dark"
-              mode="inline"
-            >
+            <Menu theme="dark" mode="inline">
               {MenuRoutes.map((route, index) => {
-
                 if (route.isGroup) {
                   return (
                     <Menu.SubMenu key={index} title={route.text}>
@@ -99,17 +85,13 @@ function Index(props) {
                           <Menu.Item key={`${index}_${i}`}>
                             {child.text}
                           </Menu.Item>
-                        )
+                        );
                       })}
                     </Menu.SubMenu>
-                  )
+                  );
                 }
 
-                return (
-                  <Menu.Item key={`${index}`}>
-                    {route.text}
-                  </Menu.Item>
-                )
+                return <Menu.Item key={`${index}`}>{route.text}</Menu.Item>;
               })}
             </Menu>
           </Layout.Sider>
@@ -118,7 +100,6 @@ function Index(props) {
           </Layout.Content>
         </Layout>
       </Layout>
-
     </React.Fragment>
   );
 }
