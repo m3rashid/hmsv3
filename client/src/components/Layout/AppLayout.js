@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { Layout, Typography, Col, Button, Menu } from "antd";
+
 import AuthModal from "../Modal/AuthModal";
 import styles from "./layout.module.less";
 
@@ -9,20 +11,22 @@ import styles from "./layout.module.less";
  * @returns {JSX.Element}
  */
 function Index(props) {
+  const navigate = useNavigate();
+
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const MenuRoutes = [
     {
       text: "Receptionists",
-      path: "/receptionists",
+      path: "/reception",
     },
     {
       text: "Doctors",
-      path: "/doctors",
+      path: "/doctor",
     },
     {
       text: "Patients",
-      path: "/patients",
+      path: "/patient",
     },
     {
       text: "Appointments",
@@ -31,8 +35,12 @@ function Index(props) {
     {
       isGroup: true,
       text: "Admin",
-      path: "/admin/",
+      path: "/admin",
       children: [
+        {
+          text: "Home",
+          path: "/home",
+        },
         {
           text: "Receptionists",
           path: "/receptionists",
@@ -50,7 +58,7 @@ function Index(props) {
   ];
 
   const handleClick = () => {
-    window.location.href = "/";
+    navigate("/");
   };
 
   return (
@@ -95,7 +103,9 @@ function Index(props) {
                       {route.children.map((child, i) => {
                         return (
                           <Menu.Item key={`${index}_${i}`}>
-                            {child.text}
+                            <Link to={`${route.path}${child.path}`}>
+                              {child.text}
+                            </Link>
                           </Menu.Item>
                         );
                       })}
@@ -103,7 +113,11 @@ function Index(props) {
                   );
                 }
 
-                return <Menu.Item key={`${index}`}>{route.text}</Menu.Item>;
+                return (
+                  <Menu.Item key={`${index}`}>
+                    <Link to={route.path}>{route.text}</Link>
+                  </Menu.Item>
+                );
               })}
             </Menu>
           </Layout.Sider>

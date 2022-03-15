@@ -9,3 +9,6 @@ LISCENCE
 build
 .husky/
 .vscode/
+
+.idea
+.templates
