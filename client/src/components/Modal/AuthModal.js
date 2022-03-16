@@ -10,6 +10,7 @@ function AuthModal(props) {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
   return (
     <React.Fragment>
       <Modal

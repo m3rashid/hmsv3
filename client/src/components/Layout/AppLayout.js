@@ -5,17 +5,16 @@ import { Layout, Typography, Col, Button, Menu } from "antd";
 import AuthModal from "../Modal/AuthModal";
 import styles from "./layout.module.less";
 
-/**
- *
- * @param {*} props
- * @returns {JSX.Element}
- */
 function Index(props) {
   const navigate = useNavigate();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const MenuRoutes = [
+    {
+      text: "Home",
+      path: "/",
+    },
     {
       text: "Receptionists",
       path: "/reception",
