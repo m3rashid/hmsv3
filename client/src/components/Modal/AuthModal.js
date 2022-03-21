@@ -26,7 +26,7 @@ function AuthModal(props) {
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
-            rules={[{ required: true, message: "Please input your username!" }]}
+            rules={[{ required: true, message: "Please enter your username!" }]}
             name="username"
             label="Username"
           >
@@ -35,7 +35,7 @@ function AuthModal(props) {
           <Form.Item
             name="password"
             label="Password"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            rules={[{ required: true, message: "Please enter your password!" }]}
           >
             <Input placeholder="Password" />
           </Form.Item>
