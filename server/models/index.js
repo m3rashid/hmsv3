@@ -2,19 +2,57 @@ import Sequelize from "sequelize";
 import fs from "fs";
 import path from "path";
 
+// const sequelize = new Sequelize({
+//   dialect: "sqlite",
+//   storage: "./db.sqlite",
+// });
+
 const sequelize = new Sequelize({
-  dialect: "sqlite",
-  storage: "./db.sqlite",
+  host: "localhost",
+  dialect: "mysql",
+  username: "root",
+  password: "2june2002",
+  database: "hms",
 });
 
-fs.readdir(`${path.resolve()}/models/`, (err, files) => {
-  console.log(files);
+const db = {};
 
-  files.forEach((file) => {
-    if (file !== "index.js") {
-      import(`./${file}`).then((model) => {
-        model.default(sequelize);
-      });
+const fileSystem = async (files) => {
+  // console.log(files);
+
+  for (let i = 0; i < files.length; i++) {
+    if (files[i] !== "index.js") {
+      const file = files[i];
+      console.log(file);
+      const { default: m } = await import(`./${file}`);
+      // console.log(m.default(sequelize));
+      const model = m(sequelize);
+      console.log("assosicate", model.associate);
+      db[model.name] = model;
+    }
+  }
+  // await files.forEach(async (file) => {
+  //   if (file !== "index.js") {
+  //     // console.log(file);
+  //     console.log(file);
+  //     const model = await import(`./${file}`);
+
+  //     const m = await model.default(sequelize);
+  //     console.log("import : ", m.name);
+  //     db[m.name] = m;
+  //   }
+  // });
+};
+
+// s
+
+const files = fs.readdirSync(`${path.resolve()}/models/`);
+// console.log(files);
+fileSystem(files).then(() => {
+  // console.log(Object.keys(db));
+  Object.keys(db).forEach(function (modelName) {
+    if (db[modelName].associate) {
+      db[modelName].associate(db);
     }
   });
 });
@@ -22,5 +60,7 @@ fs.readdir(`${path.resolve()}/models/`, (err, files) => {
 // for (let model in models) {
 //   console.log(model);
 // }
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-export default sequelize;
+export default db;

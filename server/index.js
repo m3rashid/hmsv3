@@ -1,7 +1,7 @@
 import express from "express";
 const app = express();
 import "dotenv/config";
-import sequelize from "./models/index.js";
+import models from "./models/index.js";
 
 const PORT = process.env.PORT || 5000;
 
@@ -10,11 +10,15 @@ app.use(express.urlencoded({ extended: true }));
 
 (async () => {
   try {
-    await sequelize.authenticate();
-    await sequelize.sync({
-      // force: true
+    await models.sequelize.authenticate({
+      logging: false,
     });
-    console.log(sequelize.models);
+
+    await models.sequelize.sync({
+      force: true,
+    });
+
+    // console.log(models.sequelize.models);
 
     console.log("Connection has been established successfully.");
     app.listen(process.env.PORT, () => {

@@ -6,24 +6,23 @@ import { DataTypes, Sequelize } from "sequelize";
  * @return {Sequelize.Model}
  */
 export default function (sequelize) {
-  const Auth = sequelize.define("Auth", {
+  const Appointment = sequelize.define("Appointment", {
     id: {
       type: DataTypes.UUID,
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
-      allowNull: false,
     },
-    email: {
-      type: DataTypes.STRING,
+    date: {
+      type: DataTypes.DATE,
+      defaultValue: Sequelize.NOW,
       allowNull: false,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
     },
   });
 
-  return Auth;
+  Appointment.associate = function (models) {
+    Appointment.belongsTo(models.Doctor);
+    Appointment.belongsTo(models.Patient);
+  };
+
+  return Appointment;
 }
