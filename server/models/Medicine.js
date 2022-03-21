@@ -6,24 +6,21 @@ import { DataTypes, Sequelize } from "sequelize";
  * @return {Sequelize.Model}
  */
 export default function (sequelize) {
-  const Auth = sequelize.define("Auth", {
+  const Medicine = sequelize.define("Medicine", {
     id: {
       type: DataTypes.UUID,
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
-      allowNull: false,
     },
-    email: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
-    password: {
-      type: DataTypes.STRING,
+    price: {
+      type: DataTypes.DECIMAL,
       allowNull: false,
-      unique: true,
     },
   });
 
-  return Auth;
+  return Medicine;
 }

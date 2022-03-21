@@ -1,12 +1,11 @@
 import { DataTypes, Sequelize } from "sequelize";
-
 /**
  *
  * @param {*} sequelize
  * @return {Sequelize.Model}
  */
 export default function (sequelize) {
-  const Auth = sequelize.define("Auth", {
+  const Receptionist = sequelize.define("Receptionist", {
     id: {
       type: DataTypes.UUID,
       defaultValue: Sequelize.UUIDV4,
@@ -18,12 +17,24 @@ export default function (sequelize) {
       allowNull: false,
       unique: true,
     },
-    password: {
+    contact: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    address: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   });
+  Receptionist.associate = function (models) {
+    Receptionist.belongsTo(models.Auth);
+  };
 
-  return Auth;
+  return Receptionist;
 }
