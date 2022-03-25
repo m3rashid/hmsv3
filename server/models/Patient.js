@@ -41,8 +41,6 @@ export default function (sequelize) {
       allowNull: false,
     },
   });
-    
-    
 
   return Patient;
 }

@@ -1,7 +1,8 @@
 import React from "react";
 import { PageHeader, Badge, Card, Row, Col } from "antd";
 
-const Header = ({ title, user, subTitle }) => {
+const Header = ({ title, user, subTitle, avatar }) => {
+  const Avatar = `/images/${avatar}.jpg`;
   return (
     <div className="site-page-header-ghost-wrapper">
       <PageHeader
@@ -9,6 +10,11 @@ const Header = ({ title, user, subTitle }) => {
         onBack={() => window.history.back()}
         title={title}
         subTitle={subTitle}
+        avatar={{ src: `${Avatar}` }}
+        style={{
+          borderRadius: "5px",
+          background: "#536b8b",
+        }}
         // extra={[
         //   <Button key="3">Operation</Button>,
         //   <Button key="2">Operation</Button>,
