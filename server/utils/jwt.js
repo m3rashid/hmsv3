@@ -1,6 +1,10 @@
 import JWT from "jsonwebtoken";
 import path from "path";
 import fs from "fs";
+import url from "url";
+
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const privateKey = fs.readFileSync(
   path.join(__dirname, "./keys/private.pem"),

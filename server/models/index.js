@@ -10,16 +10,15 @@ import path from "path";
 const sequelize = new Sequelize({
   host: "localhost",
   dialect: "mysql",
-  username: "root",
-  password: "2june2002",
-  database: "hms",
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
 });
 
 const db = {};
 
 const fileSystem = async (files) => {
   // console.log(files);
-
   for (let i = 0; i < files.length; i++) {
     if (files[i] !== "index.js") {
       const file = files[i];
@@ -43,8 +42,6 @@ const fileSystem = async (files) => {
   //   }
   // });
 };
-
-// s
 
 const files = fs.readdirSync(`${path.resolve()}/models/`);
 // console.log(files);
