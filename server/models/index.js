@@ -6,13 +6,13 @@ import path from "path";
 //   dialect: "sqlite",
 //   storage: "./db.sqlite",
 // });
-
+console.log("sequelize", process.env.MYSQL_PASSWORD);
 const sequelize = new Sequelize({
   host: "localhost",
   dialect: "mysql",
-  username: "root",
-  password: "2june2002",
-  database: "hms",
+  username: process.env.MYSQL_USERNAME,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
 });
 
 const db = {};
