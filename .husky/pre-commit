@@ -1,23 +1,11 @@
 . "$(dirname "$0")/_/husky.sh"
 
 echo '🏗️👷 Styling, testing and building your project before committing'
+npm run format
 
- npm run format
-
-# Check ESLint Standards
 npm run check:lint || (
   echo '😤🏀👋😤 ESLint Check Failed ! 😤🏀👋😤 \nMake the required changes listed above, add changes and try to commit again.'
   false; 
 )
-
-# If everything passes... Now we can commit
-echo '🤔🤔🤔🤔... Alright.... 🤔🤔🤔🤔
-Code looks good to me... Trying to build now'
-
-cd client && npm run build || (
-  echo '❌👷🔨❌ Build failed ❌👷🔨❌ \nView the errors above to see why.'
-  false;
-)
-
-# If everything passes... Now we can commit
-echo '✅✅✅✅ Good to commit now. ✅✅✅✅\n'
+echo 'Code looks good to me... Trying to build now'
+echo 'Good to commit now\n'

@@ -6,20 +6,18 @@ import path from "path";
 //   dialect: "sqlite",
 //   storage: "./db.sqlite",
 // });
-console.log("sequelize", process.env.MYSQL_PASSWORD);
 const sequelize = new Sequelize({
   host: "localhost",
   dialect: "mysql",
-  username: process.env.MYSQL_USERNAME,
-  password: process.env.MYSQL_PASSWORD,
-  database: process.env.MYSQL_DATABASE,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
 });
 
 const db = {};
 
 const fileSystem = async (files) => {
   // console.log(files);
-
   for (let i = 0; i < files.length; i++) {
     if (files[i] !== "index.js") {
       const file = files[i];
@@ -43,8 +41,6 @@ const fileSystem = async (files) => {
   //   }
   // });
 };
-
-// s
 
 const files = fs.readdirSync(`${path.resolve()}/models/`);
 // console.log(files);

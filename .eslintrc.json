@@ -9,5 +9,8 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "rules": {}
+  "rules": {
+    "new-cap": 0,
+    "require-jsdoc": 0
+  }
 }

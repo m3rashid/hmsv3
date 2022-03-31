@@ -18,6 +18,11 @@ export default function (sequelize) {
       allowNull: false,
       unique: true,
     },
+    role: {
+      type: DataTypes.ENUM,
+      values: ["DOCTOR", "ADMIN", "RECEPTIONIST", "OTHER"],
+      allowNull: false,
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
