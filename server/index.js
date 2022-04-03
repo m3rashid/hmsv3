@@ -16,10 +16,11 @@ app.get("/", (req, res) => {
 
 (async () => {
   try {
-    await models.sequelize.authenticate({ logging: false });
     await models.sequelize.sync({
       alter: true,
     });
+    await models.sequelize.authenticate({ logging: false });
+
     // console.log(models.sequelize.models);
 
     console.log("Connection has been established successfully");
