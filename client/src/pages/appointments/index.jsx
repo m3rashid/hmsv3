@@ -1,5 +1,9 @@
+import { Divider, Tabs } from "antd";
 import React from "react";
 import Header from "../../components/Header";
+
+import Active from "./modules/active";
+import Completed from "./modules/completed";
 
 const Appointments = () => {
   const [online, setOnline] = React.useState(true);
@@ -10,7 +14,16 @@ const Appointments = () => {
   };
   return (
     <>
-      <Header title="Home" subTitle="" user={user} />;
+      <Header title="Home" subTitle="" user={user} />
+      <Divider />
+      <Tabs defaultActiveKey="1">
+        <Tabs.TabPane tab="Active" key="1">
+          <Active />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Completed" key="2">
+          <Completed />
+        </Tabs.TabPane>
+      </Tabs>
     </>
   );
 };
