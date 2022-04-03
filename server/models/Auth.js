@@ -5,6 +5,7 @@ import { DataTypes, Sequelize } from "sequelize";
  * @param {*} sequelize
  * @return {Sequelize.Model}
  */
+
 export default function (sequelize) {
   const Auth = sequelize.define("Auth", {
     id: {
@@ -19,8 +20,8 @@ export default function (sequelize) {
       unique: true,
     },
     role: {
-      type: DataTypes.ENUM,
-      values: ["DOCTOR", "ADMIN", "RECEPTIONIST", "OTHER"],
+      type: DataTypes.ENUM("DOCTOR", "ADMIN", "RECEPTIONIST", "OTHER"),
+      defaultValue: "OTHER",
       allowNull: false,
     },
     password: {

@@ -10,11 +10,16 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", AuthRoutes);
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
 
 (async () => {
   try {
     await models.sequelize.authenticate({ logging: false });
-    await models.sequelize.sync();
+    await models.sequelize.sync({
+      alter: true,
+    });
     // console.log(models.sequelize.models);
 
     console.log("Connection has been established successfully");

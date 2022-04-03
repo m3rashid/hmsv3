@@ -1,17 +1,14 @@
 import bcrypt from "bcrypt";
 
 import db from "../models/index.js";
-import AuthModel from "../models/Auth.js";
 import { issueJWT } from "../utils/jwt.js";
-
-const Auth = AuthModel(db.sequelize, db.Sequelize).Auth;
 
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) throw new Error("No credentials");
 
-    const user = await Auth.findOne({ email });
+    const user = await db.Auth.findOne({ email });
     if (!user) throw new Error("User not found");
 
     const matched = await bcrypt.compare(password, user.password);
@@ -40,11 +37,14 @@ export const signup = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log("creating user");
-    const user = Auth.create({
+    const user = await db.Auth.create({
       email,
       password: hashedPassword,
-      role,
+      role: role,
     });
+
+    console.log("user created");
+    console.log(user);
 
     console.log(JSON.stringify(user));
     return res.status(200).json({
