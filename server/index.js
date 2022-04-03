@@ -16,10 +16,12 @@ app.get("/", (req, res) => {
 
 (async () => {
   try {
-    await models.sequelize.sync({
-      alter: true,
-    });
     await models.sequelize.authenticate({ logging: false });
+    await models.sequelize.query("SET FOREIGN_KEY_CHECKS = 0");
+    await models.sequelize.sync({
+      force: true,
+    });
+    await models.sequelize.query("SET FOREIGN_KEY_CHECKS = 1");
 
     // console.log(models.sequelize.models);
 

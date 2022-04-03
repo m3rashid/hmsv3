@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize";
+import Sequelize from "sequelize";
 import fs from "fs";
 import path from "path";
 
@@ -23,6 +23,7 @@ const fileSystem = async (files) => {
       const file = files[i];
       console.log(file);
       const { default: m } = await import(`./${file}`);
+      // console.log(m.default(sequelize));
       const model = m(sequelize);
       console.log("assosicate", model.associate);
       db[model.name] = model;
@@ -31,15 +32,19 @@ const fileSystem = async (files) => {
 };
 
 const files = fs.readdirSync(`${path.resolve()}/models/`);
-
-fileSystem(files).then(() => {
+// console.log(files);
+(async () => {
+  await fileSystem(files);
   Object.keys(db).forEach(function (modelName) {
     if (db[modelName].associate) {
       db[modelName].associate(db);
     }
   });
-});
+})();
 
+// for (let model in models) {
+//   console.log(model);
+// }
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
