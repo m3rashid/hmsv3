@@ -18,7 +18,7 @@ const CreateAppointmentForm = () => {
   ];
 
   return (
-    <Form labelAlign="left" labelCol={{ span: 2 }} wrapperCol={{ span: 8 }}>
+    <Form labelAlign="left" labelCol={{ span: 3 }} wrapperCol={{ span: 8 }}>
       <Form.Item
         label="Patient (ID or email)"
         name="patient"
