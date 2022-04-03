@@ -16,7 +16,11 @@ const Admin = () => {
   };
 
   return (
-    <>
+    <div
+      style={{
+        padding: "20px",
+      }}
+    >
       <Header title="Home" subTitle="" user={user} />
       <Divider />
       <Tabs defaultActiveKey="1">
@@ -33,7 +37,7 @@ const Admin = () => {
           <Patients />
         </Tabs.TabPane>
       </Tabs>
-    </>
+    </div>
   );
 };
 

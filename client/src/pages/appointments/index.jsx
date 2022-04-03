@@ -13,7 +13,11 @@ const Appointments = () => {
     online: online,
   };
   return (
-    <>
+    <div
+      style={{
+        padding: "20px",
+      }}
+    >
       <Header title="Home" subTitle="" user={user} />
       <Divider />
       <Tabs defaultActiveKey="1">
@@ -24,7 +28,7 @@ const Appointments = () => {
           <Completed />
         </Tabs.TabPane>
       </Tabs>
-    </>
+    </div>
   );
 };
 

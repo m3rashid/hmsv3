@@ -9,9 +9,13 @@ const Patient = () => {
     online: !online,
   };
   return (
-    <>
+    <div
+      style={{
+        padding: "20px",
+      }}
+    >
       <Header title="Home" subTitle="" user={user} />
-    </>
+    </div>
   );
 };
 

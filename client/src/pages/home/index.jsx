@@ -11,7 +11,11 @@ const data = [
 
 const Home = () => {
   return (
-    <>
+    <div
+      style={{
+        padding: "20px",
+      }}
+    >
       <img
         src="/images/center.jpg"
         alt="hospital"
@@ -44,7 +48,7 @@ const Home = () => {
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 
