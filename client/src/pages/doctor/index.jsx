@@ -1,7 +1,10 @@
 import React from "react";
+import { Tabs, Divider } from "antd";
+
 import Header from "../../components/Header";
-import { Tabs, Divider, Table } from "antd";
 import Appointments from "./modules/Appointments";
+import Patients from "./modules/patients";
+import Notifications from "./modules/notifications";
 
 const Doctor = () => {
   const [online, setOnline] = React.useState(true);
@@ -25,14 +28,11 @@ const Doctor = () => {
           <Tabs.TabPane tab="Appointments" key="1">
             <Appointments />
           </Tabs.TabPane>
-          <Tabs.TabPane tab="Prescriptions" key="2">
-            Prescriptions Module
-          </Tabs.TabPane>
           <Tabs.TabPane tab="Patients" key="3">
-            Patients Module
+            <Patients />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Notifications" key="4">
-            Notifications Module
+            <Notifications />
           </Tabs.TabPane>
         </Tabs>
       </div>

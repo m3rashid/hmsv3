@@ -1,5 +1,5 @@
 import faker from "@faker-js/faker";
-import { Table } from "antd";
+import { Button, Space, Table } from "antd";
 import React from "react";
 
 const GenerateData = (count) => {
@@ -32,6 +32,16 @@ const Doctors = () => {
       dataIndex: "joined",
       key: "joined",
       sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      render: (text, record) => (
+        <Space>
+          <Button> Details </Button>
+        </Space>
+      ),
     },
   ];
 
