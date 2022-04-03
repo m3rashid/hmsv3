@@ -17,7 +17,11 @@ const Reception = () => {
   };
 
   return (
-    <>
+    <div
+      style={{
+        padding: "20px",
+      }}
+    >
       <PageHeader title="Home" subTitle="" user={user} />
       <Divider />
       <Typography.Title level={4}>Receptionist</Typography.Title>
@@ -36,7 +40,7 @@ const Reception = () => {
         {selectedMenu === "createPatient" && <CreatePatientForm />}
         {selectedMenu === "createAppointment" && <CreateAppointmentForm />}
       </Layout.Content>
-    </>
+    </div>
   );
 };
 
