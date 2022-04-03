@@ -10,7 +10,7 @@ const Patient = () => {
   };
   return (
     <>
-      <Header title="Home" subTitle="" user={user} />;
+      <Header title="Home" subTitle="" user={user} />
     </>
   );
 };

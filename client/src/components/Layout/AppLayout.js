@@ -32,27 +32,8 @@ function Index(props) {
       path: "/appointments",
     },
     {
-      isGroup: true,
       text: "Admin",
       path: "/admin",
-      children: [
-        {
-          text: "Home",
-          path: "/home",
-        },
-        {
-          text: "Receptionists",
-          path: "/receptionists",
-        },
-        {
-          text: "Doctors",
-          path: "/doctors",
-        },
-        {
-          text: "Patients",
-          path: "/patients",
-        },
-      ],
     },
   ];
 
@@ -95,29 +76,11 @@ function Index(props) {
         <Layout>
           <Layout.Sider>
             <Menu theme="dark" mode="inline">
-              {MenuRoutes.map((route, index) => {
-                if (route.isGroup) {
-                  return (
-                    <Menu.SubMenu key={index} title={route.text}>
-                      {route.children.map((child, i) => {
-                        return (
-                          <Menu.Item key={`${index}_${i}`}>
-                            <Link to={`${route.path}${child.path}`}>
-                              {child.text}
-                            </Link>
-                          </Menu.Item>
-                        );
-                      })}
-                    </Menu.SubMenu>
-                  );
-                }
-
-                return (
-                  <Menu.Item key={`${index}`}>
-                    <Link to={route.path}>{route.text}</Link>
-                  </Menu.Item>
-                );
-              })}
+              {MenuRoutes.map((route, index) => (
+                <Menu.Item key={`${index}`}>
+                  <Link to={route.path}>{route.text}</Link>
+                </Menu.Item>
+              ))}
             </Menu>
           </Layout.Sider>
           <Layout.Content className={styles.content}>
