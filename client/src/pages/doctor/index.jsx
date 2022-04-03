@@ -20,7 +20,7 @@ const Doctor = () => {
         padding: "20px",
       }}
     >
-      <Header title="Home" subTitle="" user={user} />
+      <Header title="Doctor" subTitle="" user={user} />
       <Divider />
 
       <Tabs defaultActiveKey="1">

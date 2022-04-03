@@ -21,7 +21,7 @@ const Admin = () => {
         padding: "20px",
       }}
     >
-      <Header title="Home" subTitle="" user={user} />
+      <Header title="Admin" subTitle="" user={user} />
       <Divider />
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="Home" key="1">

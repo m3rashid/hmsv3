@@ -22,7 +22,7 @@ const Reception = () => {
         padding: "20px",
       }}
     >
-      <PageHeader title="Home" subTitle="" user={user} />
+      <PageHeader title="Receptionist" subTitle="" user={user} />
       <Divider />
       <Typography.Title level={4}>Receptionist</Typography.Title>
       <Divider />

@@ -14,7 +14,7 @@ const Patient = () => {
         padding: "20px",
       }}
     >
-      <Header title="Home" subTitle="" user={user} />
+      <Header title="Patient" subTitle="" user={user} />
     </div>
   );
 };
