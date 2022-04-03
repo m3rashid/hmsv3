@@ -13,7 +13,7 @@ const Header = ({ title, user, subTitle, avatar }) => {
         avatar={{ src: `${Avatar}` }}
         style={{
           borderRadius: "5px",
-          background: "#536b8b",
+          background: "#077842",
         }}
         // extra={[
         //   <Button key="3">Operation</Button>,

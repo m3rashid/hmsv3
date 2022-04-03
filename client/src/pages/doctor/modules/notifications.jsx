@@ -29,7 +29,7 @@ const Notifications = () => {
           <div
             key={index}
             style={{
-              backgroundColor: "#536b8b",
+              backgroundColor: "#077842",
               borderRadius: "5px",
               padding: "20px",
               color: "white",

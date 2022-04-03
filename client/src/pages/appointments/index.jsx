@@ -18,7 +18,7 @@ const Appointments = () => {
         padding: "20px",
       }}
     >
-      <Header title="Home" subTitle="" user={user} />
+      <Header title="Appointments" subTitle="" user={user} />
       <Divider />
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="Active" key="1">
