@@ -1,14 +1,43 @@
 import React from "react";
 
-import { Modal, Button, Input, Form } from "antd";
+import { Modal, Button, Input, Form, message } from "antd";
+import { useRecoilState } from "recoil";
+import { authState } from "../../atoms/auth";
+import { instance } from "../../api/instance";
 
 function AuthModal(props) {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const [, setAuth] = useRecoilState(authState);
+  const onFinish = async (values) => {
+    try {
+      message.loading({
+        content: "Loading...",
+        key: "auth/login",
+      });
+      const { data } = await instance.post("/auth/login", values);
+
+      setAuth({
+        isLoggedIn: true,
+        user: data.user,
+        token: data.token,
+      });
+      message.success({
+        content: "Login Successful",
+        key: "auth/login",
+      });
+    } catch (error) {
+      message.error({
+        content: "Login Failed",
+        key: "auth/login",
+      });
+    }
   };
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
+    message.error({
+      content: "Login Failed",
+      key: "auth/login",
+    });
   };
 
   return (
