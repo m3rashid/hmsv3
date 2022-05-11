@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-import db from "../models/index.js";
+import db from "../models2/index.js";
 import { issueJWT } from "../utils/jwt.js";
 
 export const login = async (req, res) => {

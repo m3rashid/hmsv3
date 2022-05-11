@@ -3,7 +3,7 @@ import "dotenv/config";
 import cors from "cors";
 import http from "http";
 
-import models from "./models/index.js";
+import models from "./models2/index.js";
 import AuthRoutes from "./routes/auth.js";
 import socketHandler from "./routes/index.js";
 
