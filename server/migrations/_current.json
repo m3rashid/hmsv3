@@ -18,11 +18,6 @@
                     "field": "name",
                     "seqType": "Sequelize.STRING"
                 },
-                "dob": {
-                    "allowNull": false,
-                    "field": "dob",
-                    "seqType": "Sequelize.DATE"
-                },
                 "email": {
                     "allowNull": false,
                     "unique": true,
@@ -360,5 +355,5 @@
     "path": "/home/sarfraz/hmsv2/server/migrations/_current.json",
     "backupPath": "/home/sarfraz/hmsv2/server/migrations/_current_bak.json",
     "exists": true,
-    "revision": 4
+    "revision": 5
 }

@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 
 import db from "../models/index.js";
-import { issueJWT } from "../utils/jwt.js";
+import { issueJWT, revalidateJWT } from "../utils/jwt.js";
 
 export const login = async (req, res) => {
   try {
@@ -14,16 +14,19 @@ export const login = async (req, res) => {
     const matched = await bcrypt.compare(password, user.password);
     if (!matched) throw new Error("Wrong Credentials");
 
-    const { token, expires } = issueJWT(user);
+    const { token, refreshToken, expires } = issueJWT(user);
     res.status(200).json({
       message: "Login Successful",
       token,
+      refreshToken,
       expires,
+      user,
     });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
       message: "Internal Server Error",
+      error: err,
     });
   }
 };
@@ -56,8 +59,57 @@ export const signup = async (req, res) => {
     console.log(err);
     return res.status(500).json({
       message: "Internal Server Error",
+      error: err,
     });
   }
 };
 
 export const logout = (req, res) => {};
+
+export const revalidate = async (req, res) => {
+  try {
+    const refreshToken = req.headers["authorization"];
+    if (!refreshToken) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const { valid, expired, payload } = revalidateJWT(refreshToken);
+
+    if (!valid || expired) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const id = payload.sub.id;
+
+    const user = await db.Auth.findOne({
+      where: {
+        id,
+      },
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Unauthorized",
+      });
+    }
+
+    const { token, expires } = issueJWT(user);
+
+    res.status(200).json({
+      message: "Token revalidated",
+      token,
+      expires,
+      user,
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err,
+    });
+  }
+};
