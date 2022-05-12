@@ -1,10 +1,11 @@
-import { DataTypes, Sequelize } from "sequelize";
+import { Sequelize } from "sequelize";
 /**
  *
  * @param {*} sequelize
+ * @param {*} DataTypes
  * @return {Sequelize.Model}
  */
-export default function (sequelize) {
+export default function (sequelize, DataTypes) {
   const Receptionist = sequelize.define("Receptionist", {
     id: {
       type: DataTypes.UUID,
