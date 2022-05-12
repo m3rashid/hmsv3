@@ -4,20 +4,35 @@
     "password": "2june2002",
     "database": "hms",
     "host": "127.0.0.1",
+<<<<<<< HEAD
+=======
+    "port": "3306",
+>>>>>>> 4897f09cde2919a63164130a884f9647f0d99f21
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
     "password": "2june2002",
     "database": "hms",
+<<<<<<< HEAD
     "host": "127.0.0.1",
+=======
+    "host": "localhost:3306",
+>>>>>>> 4897f09cde2919a63164130a884f9647f0d99f21
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
     "password": "2june2002",
     "database": "hms",
+<<<<<<< HEAD
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
 }
+=======
+    "host": "localhost:3306",
+    "dialect": "mysql"
+  }
+}
+>>>>>>> 4897f09cde2919a63164130a884f9647f0d99f21
