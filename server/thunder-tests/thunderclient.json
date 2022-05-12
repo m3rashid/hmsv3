@@ -27,13 +27,31 @@
     "method": "POST",
     "sortNum": 20000,
     "created": "2022-05-12T06:02:47.117Z",
-    "modified": "2022-05-12T06:03:30.150Z",
+    "modified": "2022-05-12T15:14:47.986Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n    \"name\" : \"receptionist\",\n    \"email\" : \"receptionist@jmi.ac.in\",\n    \"password\" : \"receptionist\",\n    \"role\" : \"RECEPTIONIST\"\n}",
+      "raw": "{\n    \"name\" : \"doctor\",\n    \"email\" : \"doctor@jmi.ac.in\",\n    \"password\" : \"doctor\",\n    \"role\" : \"DOCTOR\"\n}",
       "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "38cd5a49-b1ff-4865-b04e-9866cf02b3b6",
+    "colId": "883715a5-f4ab-480f-80d8-e5100fb7c6b1",
+    "containerId": "",
+    "name": "revalidateJWT",
+    "url": "http://localhost:5000/api/auth/revalidate",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2022-05-12T17:19:44.409Z",
+    "modified": "2022-05-12T17:21:21.988Z",
+    "headers": [],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOiIxZTQ5ZGE3Yi1lZjYwLTRlOGEtYWEzYS01ZmQwZDM2OTNmYTQiLCJyb2xlIjoiRE9DVE9SIn0sImlhdCI6MTY1MjM3NTk4OTcyN30.IS8nSfkHp3LL9Y7EsX8fFrRqbhidl_p-IjgTrOhlmKY"
     },
     "tests": []
   }
