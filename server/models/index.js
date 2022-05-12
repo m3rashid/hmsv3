@@ -1,11 +1,13 @@
 import Sequelize from "sequelize";
-import fs from "fs";
-import path from "path";
+import Appointment from "./Appointment.js";
 
-// const sequelize = new Sequelize({
-//   dialect: "sqlite",
-//   storage: "./db.sqlite",
-// });
+import Auth from "./Auth.js";
+import Doctor from "./Doctor.js";
+import Medicine from "./Medicine.js";
+import Patient from "./Patient.js";
+import Prescription from "./Prescription.js";
+import Receptionist from "./Receptionist.js";
+
 const sequelize = new Sequelize({
   host: "localhost",
   dialect: "mysql",
@@ -14,38 +16,22 @@ const sequelize = new Sequelize({
   database: process.env.DB_NAME,
 });
 
-const db = {};
-
-const fileSystem = async (files) => {
-  // console.log(files);
-  for (let i = 0; i < files.length; i++) {
-    if (files[i] !== "index.js") {
-      const file = files[i];
-      console.log(file);
-      const { default: m } = await import(`./${file}`);
-      // console.log(m.default(sequelize));
-      const model = m(sequelize);
-      console.log("assosicate", model.associate);
-      db[model.name] = model;
-    }
-  }
+const db = {
+  Auth: Auth(sequelize, Sequelize.DataTypes, Sequelize.Model),
+  Medicine: Medicine(sequelize, Sequelize.DataTypes, Sequelize.Model),
+  Appointment: Appointment(sequelize, Sequelize.DataTypes, Sequelize.Model),
+  Doctor: Doctor(sequelize, Sequelize.DataTypes, Sequelize.Model),
+  Patient: Patient(sequelize, Sequelize.DataTypes, Sequelize.Model),
+  Prescription: Prescription(sequelize, Sequelize.DataTypes, Sequelize.Model),
+  Receptionist: Receptionist(sequelize, Sequelize.DataTypes, Sequelize.Model),
 };
 
-const files = fs.readdirSync(`${path.resolve()}/models/`);
-// console.log(files);
-(async () => {
-  await fileSystem(files);
-  Object.keys(db).forEach(function (modelName) {
-    if (db[modelName].associate) {
-      db[modelName].associate(db);
-    }
-  });
-})();
+Object.keys(db).forEach((modelName) => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
+  }
+});
 
-// for (let model in models) {
-//   console.log(model);
-// }
 db.sequelize = sequelize;
-db.Sequelize = Sequelize;
 
 export default db;

@@ -4,38 +4,12 @@ import { Layout, Typography, Col, Button, Menu } from "antd";
 
 import AuthModal from "../Modal/AuthModal";
 import styles from "./layout.module.less";
+import routes from "../../routes";
 
 function Index(props) {
   const navigate = useNavigate();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-
-  const MenuRoutes = [
-    {
-      text: "Home",
-      path: "/",
-    },
-    {
-      text: "Receptionists",
-      path: "/reception",
-    },
-    {
-      text: "Doctors",
-      path: "/doctor",
-    },
-    {
-      text: "Patients",
-      path: "/patient",
-    },
-    {
-      text: "Appointments",
-      path: "/appointments",
-    },
-    {
-      text: "Admin",
-      path: "/admin",
-    },
-  ];
 
   const handleClick = () => {
     navigate("/");
@@ -76,7 +50,7 @@ function Index(props) {
         <Layout>
           <Layout.Sider>
             <Menu theme="dark" mode="inline">
-              {MenuRoutes.map((route, index) => (
+              {routes.map((route, index) => (
                 <Menu.Item key={`${index}`}>
                   <Link to={route.path}>{route.text}</Link>
                 </Menu.Item>

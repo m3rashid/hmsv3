@@ -30,14 +30,15 @@ export const login = async (req, res) => {
 
 export const signup = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
-    if (!email || !password || !role) {
+    const { email, password, role, name } = req.body;
+    if (!email || !password || !role || !name) {
       throw new Error("No credentials");
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
     console.log("creating user");
     const user = await db.Auth.create({
+      name,
       email,
       password: hashedPassword,
       role: role,
