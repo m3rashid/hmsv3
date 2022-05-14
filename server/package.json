@@ -8,7 +8,7 @@
     "dev": "NODE_ENV='DEV' nodemon index.js",
     "start": "NODE_ENV='DEV' node index.js",
     "prod": "NODE_ENV='PROD' node index.js",
-    "migrate" : "npx sequelize-mig migration:make && sequelize db:migrate"
+    "migrate": "npx sequelize-mig migration:make && sequelize db:migrate"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -22,6 +22,7 @@
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.17.0",
     "socket.io": "^4.4.1",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "uuid": "^8.3.2"
   }
 }
