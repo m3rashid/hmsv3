@@ -5,7 +5,8 @@ import db from "./models/index.js";
 // import http from "http";
 
 // import socketHandler from "./routes/index.js";
-import AuthRoutes from "./routes/auth.js";
+import AuthRoutes from "./routes/auth.routes.js";
+import PatientRoutes from "./routes/patient.routes.js";
 // TODO add a production client here after deployment
 const corsOrigin =
   process.env.NODE_ENV === "PROD"
@@ -29,6 +30,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => res.send("Hello World"));
 app.use("/api/auth", AuthRoutes);
+app.use("/api/patient", PatientRoutes);
 
 (async () => {
   try {

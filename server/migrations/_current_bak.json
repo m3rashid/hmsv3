@@ -18,11 +18,6 @@
                     "field": "name",
                     "seqType": "Sequelize.STRING"
                 },
-                "dob": {
-                    "allowNull": false,
-                    "field": "dob",
-                    "seqType": "Sequelize.DATE"
-                },
                 "email": {
                     "allowNull": false,
                     "unique": true,
@@ -222,7 +217,7 @@
                     "seqType": "Sequelize.INTEGER"
                 },
                 "lastVisit": {
-                    "allowNull": false,
+                    "allowNull": true,
                     "field": "lastVisit",
                     "seqType": "Sequelize.DATE"
                 },
@@ -232,19 +227,29 @@
                     "seqType": "Sequelize.STRING"
                 },
                 "address": {
-                    "allowNull": false,
+                    "allowNull": true,
                     "field": "address",
                     "seqType": "Sequelize.STRING"
                 },
                 "email": {
-                    "allowNull": false,
+                    "allowNull": true,
                     "field": "email",
                     "seqType": "Sequelize.STRING"
                 },
                 "jamiaId": {
-                    "allowNull": false,
+                    "allowNull": true,
                     "field": "jamiaId",
                     "seqType": "Sequelize.STRING"
+                },
+                "createdAt": {
+                    "allowNull": false,
+                    "field": "createdAt",
+                    "seqType": "Sequelize.DATE"
+                },
+                "updatedAt": {
+                    "allowNull": false,
+                    "field": "updatedAt",
+                    "seqType": "Sequelize.DATE"
                 }
             },
             "indexes": []
@@ -357,8 +362,8 @@
             "indexes": []
         }
     },
-    "path": "/home/sarfraz/hmsv2/server/migrations/_current.json",
-    "backupPath": "/home/sarfraz/hmsv2/server/migrations/_current_bak.json",
+    "path": "/home/husain/dev/hmsv2/server/migrations/_current.json",
+    "backupPath": "/home/husain/dev/hmsv2/server/migrations/_current_bak.json",
     "exists": true,
-    "revision": 4
+    "revision": 6
 }

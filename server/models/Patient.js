@@ -27,9 +27,14 @@ export default function (sequelize, DataTypes, Model) {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      sex: {
+        type: DataTypes.ENUM,
+        values: ["m", "f", "o"],
+        allowNull: false,
+      },
       lastVisit: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
       },
       contact: {
         type: DataTypes.STRING,
@@ -37,21 +42,21 @@ export default function (sequelize, DataTypes, Model) {
       },
       address: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       email: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       jamiaId: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
     },
     {
       sequelize,
       modelName: "Patient",
-      timestamps: false,
+      timestamps: true,
     }
   );
 
