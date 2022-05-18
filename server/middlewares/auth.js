@@ -1,4 +1,4 @@
-import { verifyJWT } from "../utils/jwt";
+import { verifyJWT } from "../utils/jwt.js";
 
 export const checkAuth = (req, res, next) => {
   const token = req.headers["authorization"];
