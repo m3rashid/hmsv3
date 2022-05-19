@@ -86,10 +86,14 @@ function CreateUserModal(props) {
               padding: "10px 24px 0 24px",
             }}
           >
+<<<<<<< HEAD
             <Button
               style={{ marginRight: "10px" }}
               onClick={props.handleCancel}
             >
+=======
+            <Button style={{ marginRight: "10px" }} onClick={props.handleCancel}>
+>>>>>>> create user interface
               Cancel
             </Button>
             <Button type="primary" htmlType="submit">
