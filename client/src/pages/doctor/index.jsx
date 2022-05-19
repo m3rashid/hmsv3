@@ -5,15 +5,13 @@ import Header from "../../components/Header";
 import Appointments from "./modules/Appointments";
 import Patients from "./modules/patients";
 import Notifications from "./modules/notifications";
+import { authState } from "../../atoms/auth";
+import { useRecoilValue } from "recoil";
 
 const Doctor = () => {
   const [online, setOnline] = React.useState(true);
-  const user = {
-    name: "Doctor Dan",
-    email: "doctordan@gmail.com",
-    online: online,
-  };
-
+  const Auth = useRecoilValue(authState);
+  const user = Auth.user;
   return (
     <div
       style={{

@@ -20,10 +20,13 @@ function AuthModal(props) {
         user: data.user,
         token: data.token,
       });
+
+      localStorage.setItem("refresh_token", data.refreshToken);
       message.success({
         content: "Login Successful",
         key: "auth/login",
       });
+      props.handleCancel();
     } catch (error) {
       message.error({
         content: "Login Failed",
@@ -56,17 +59,17 @@ function AuthModal(props) {
         >
           <Form.Item
             rules={[{ required: true, message: "Please enter your username!" }]}
-            name="username"
-            label="Username"
+            name="email"
+            label="Email"
           >
-            <Input placeholder="Username" />
+            <Input placeholder="Email" />
           </Form.Item>
           <Form.Item
             name="password"
             label="Password"
             rules={[{ required: true, message: "Please enter your password!" }]}
           >
-            <Input placeholder="Password" />
+            <Input placeholder="Password" type="password" />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit">
