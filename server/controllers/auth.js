@@ -5,6 +5,7 @@ import { issueJWT, revalidateJWT } from "../utils/jwt.js";
 
 export const login = async (req, res) => {
   try {
+    console.log(req.body);
     const { email, password } = req.body;
     if (!email || !password) throw new Error("No credentials");
 

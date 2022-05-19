@@ -8,10 +8,10 @@ export const createUser = async (req, res) => {
     if (!email || !password || !role || !name) {
       throw new Error("No credentials");
     }
-    const userId= uuidv4();
+    const userId = uuidv4();
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await db.Auth.create({
-      id:userId,
+      id: userId,
       name,
       email,
       password: hashedPassword,
