@@ -25,7 +25,6 @@ const GenerateData = (count) => {
 };
 
 const Receptionists = () => {
-  
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const columns = [
     {
