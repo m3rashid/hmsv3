@@ -10,6 +10,7 @@ import {
   Table,
   PageHeader,
 } from "antd";
+import CreateUserModal from "../../../components/Modal/CreateUserModal";
 const { TextArea } = Input;
 const GenerateData = (count) => {
   const data = [];
@@ -24,6 +25,7 @@ const GenerateData = (count) => {
 };
 
 const Receptionists = () => {
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
   const columns = [
     {
       title: "Name",
@@ -59,40 +61,27 @@ const Receptionists = () => {
   return (
     <div
       style={{
-        marginTop: "20px",
+        marginTop: "10px",
       }}
     >
       <div>
-        <PageHeader title="Register a Receptionist" subTitle="" />
+        <Button
+          style={{ marginBottom: "20px" }}
+          onClick={() => setIsModalVisible(true)}
+        >
+          Register Receptionist
+        </Button>
 
-        <Form labelAlign="left" labelCol={{ span: 2 }} wrapperCol={{ span: 4 }}>
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[{ required: true, message: "Please Enter a name!" }]}
-          >
-            <Input type="text" />
-          </Form.Item>
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[{ required: true, message: "Please Enter an email!" }]}
-          >
-            <Input type="text" />
-          </Form.Item>
-          <Form.Item
-            label="Password"
-            name="Password"
-            rules={[{ required: true, message: "Please Enter a password!" }]}
-          >
-            <Input type="password" />
-          </Form.Item>
-          <Form.Item wrapperCol={{ offset: 2 }}>
-            <Button type="primary" htmlType="submit">
-              Create
-            </Button>
-          </Form.Item>
-        </Form>
+        <CreateUserModal
+          isModalVisible={isModalVisible}
+          handleOk={() => {
+            setIsModalVisible(true);
+          }}
+          handleCancel={() => {
+            setIsModalVisible(false);
+          }}
+          role="RECEPTIONIST"
+        />
       </div>
 
       <Table
