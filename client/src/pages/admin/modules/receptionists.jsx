@@ -61,12 +61,11 @@ const Receptionists = () => {
   return (
     <div
       style={{
-        marginTop: "20px",
+        marginTop: "10px",
       }}
     >
       <div>
-        <PageHeader title="Register a Receptionist" subTitle="" />
-        <Button onClick={() => setIsModalVisible(true)}>
+        <Button style={{marginBottom:"20px"}}  onClick={() => setIsModalVisible(true)}>
           Register Receptionist
         </Button>
 

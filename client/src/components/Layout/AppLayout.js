@@ -15,7 +15,7 @@ function Index(props) {
   const handleClick = () => {
     navigate("/");
   };
-
+  
   return (
     <Layout className={styles.layout}>
       <Layout.Header>

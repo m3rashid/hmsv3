@@ -63,13 +63,12 @@ const Doctors = () => {
   return (
     <div
       style={{
-        marginTop: "20px",
+        marginTop: "10px",
         marginLeft: "0px",
       }}
     >
       <div>
-        <PageHeader title="Register a Doctor" subTitle="" />
-        <Button onClick={() => setIsModalVisible(true)}>Register Doctor</Button>
+        <Button style={{marginBottom:"20px"}} onClick={() => setIsModalVisible(true)}>Register Doctor</Button>
         <CreateUserModal
           isModalVisible={isModalVisible}
           handleOk={() => {

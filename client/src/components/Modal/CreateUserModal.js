@@ -48,6 +48,7 @@ function CreateUserModal(props) {
         visible={props.isModalVisible}
         onOk={props.handleOk}
         onCancel={props.handleCancel}
+        footer={null}
       >
         <Form
           name="Create User"
@@ -76,11 +77,22 @@ function CreateUserModal(props) {
           >
             <Input placeholder="Password" type="password" />
           </Form.Item>
-          <Form.Item>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              borderTop: "1px solid #f0f0f0",
+              margin: "24px -24px -10px -24px",
+              padding: "10px 24px 0 24px",
+            }}
+          >
+            <Button style={{ marginRight: "10px" }} onClick={props.handleCancel}>
+              Cancel
+            </Button>
             <Button type="primary" htmlType="submit">
               Create User
             </Button>
-          </Form.Item>
+          </div>
         </Form>
       </Modal>
     </React.Fragment>
