@@ -1,15 +1,26 @@
+import React, { useEffect } from "react";
+import "./styles/theme.less";
 import AppLayout from "./components/Layout/AppLayout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-import Home from "./pages/home";
-import Doctor from "./pages/doctor";
-import Patient from "./pages/patient";
-import Pharmacy from "./pages/pharmacy";
-import Reception from "./pages/reception";
-import Appointments from "./pages/appointments";
-import Admin from "./pages/admin";
+import routes, { validateRoute } from "./routes";
+import { useRecoilState } from "recoil";
+import { authState } from "./atoms/auth";
+import { useQuery } from "react-query";
+import { revalidateJWT } from "./api/auth/revalidateJWT";
+import Loading from "./components/Loading/Loading";
+import { message } from "antd";
 
 function App() {
+  const [Auth, setAuth] = useRecoilState(authState);
+
+  const { isLoading } = useQuery(["revalidate", setAuth], () =>
+    revalidateJWT(setAuth)
+  );
+
+  if (isLoading) {
+    return <Loading text="App is Loading.." />;
+  }
+
   return (
     <BrowserRouter>
       <AppLayout>
@@ -20,13 +31,16 @@ function App() {
             }}
           >
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/admin" element={<Admin />} />
-              <Route path="/doctor" element={<Doctor />} />
-              <Route path="/patient" element={<Patient />} />
-              <Route path="/pharmacy" element={<Pharmacy />} />
-              <Route path="/reception" element={<Reception />} />
-              <Route path="/appointments" element={<Appointments />} />
+              {routes.map((route, index) => {
+                if (!validateRoute(Auth, route)) return null;
+                return (
+                  <Route
+                    key={index}
+                    path={route.path}
+                    element={<route.component />}
+                  />
+                );
+              })}
             </Routes>
           </div>
         </div>

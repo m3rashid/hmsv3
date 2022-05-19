@@ -11,10 +11,6 @@ const Header = ({ title, user, subTitle, avatar }) => {
         title={title}
         subTitle={subTitle}
         avatar={{ src: `${Avatar}` }}
-        style={{
-          borderRadius: "5px",
-          background: "#077842",
-        }}
         // extra={[
         //   <Button key="3">Operation</Button>,
         //   <Button key="2">Operation</Button>,
@@ -26,10 +22,7 @@ const Header = ({ title, user, subTitle, avatar }) => {
         <Row>
           <Col span={12}>
             {user && (
-              <Badge.Ribbon
-                color={user.online ? "green" : "gray"}
-                text={user.online ? "Online" : "Offline"}
-              >
+              <Badge.Ribbon color="green" text="Online">
                 <Card title={user.name} size="small">
                   Email: {user.email}
                 </Card>
