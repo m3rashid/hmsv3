@@ -34,7 +34,7 @@ const Home = () => {
         {data.map((entry) => {
           const { title, image, link } = entry;
           return (
-            <div style={{ maxWidth: 240 }}>
+            <div key={`home ${link}`} style={{ maxWidth: 240 }}>
               <Link to={link}>
                 <Card
                   hoverable

@@ -1,4 +1,3 @@
-import Home from "./pages/home";
 import Doctor from "./pages/doctor";
 import Patient from "./pages/patient";
 import Pharmacy from "./pages/pharmacy";
@@ -7,69 +6,58 @@ import Appointments from "./pages/appointments";
 import Admin from "./pages/admin";
 
 export const validateRoute = (Auth, route) => {
-  if (Auth.isLoggedIn) {
-    const { user } = Auth;
-
-    if (!route.role.includes(user.role)) {
-      return false;
-    }
-  } else {
-    if (route.isLoggedIn === true) {
-      return false;
-    }
+  console.log(Auth);
+  if (!Auth.isLoggedIn) {
+    return false;
   }
-  return true;
+
+  const userType = Auth.user.role;
+  console.log(userType);
+  if (userType === "ADMIN") {
+    return true;
+  } else if (!route.role.includes(userType)) {
+    return false;
+  } else {
+    return true;
+  }
 };
 
 const routes = [
   {
-    path: "/",
-    component: Home,
-    text: "Home",
-    role: ["ADMIN", "RECEPTIONIST", "DOCTOR", "PATIENT", "PHARMACY"],
-    isLoggedIn: false,
-  },
-  {
     path: "/admin",
     component: Admin,
     text: "Admin",
-    role: ["ADMIN"],
-    isLoggedIn: true,
+    role: [],
   },
   {
     path: "/doctor",
     component: Doctor,
     text: "Doctor",
-    role: ["ADMIN", "DOCTOR"],
-    isLoggedIn: true,
+    role: ["DOCTOR"],
   },
   {
     path: "/patient",
     component: Patient,
     text: "Patient",
-    role: ["ADMIN", "PATIENT"],
-    isLoggedIn: true,
+    role: ["PATIENT"],
   },
   {
     path: "/pharmacy",
     component: Pharmacy,
     text: "Pharmacy",
-    role: ["ADMIN", "PHARMACY"],
-    isLoggedIn: true,
+    role: ["PHARMACY"],
   },
   {
     path: "/reception",
     component: Reception,
     text: "Reception",
-    role: ["ADMIN", "RECEPTIONIST"],
-    isLoggedIn: true,
+    role: ["RECEPTIONIST"],
   },
   {
     path: "/appointments",
     component: Appointments,
     text: "Appointments",
-    role: ["ADMIN", "RECEPTIONIST"],
-    isLoggedIn: true,
+    role: ["RECEPTIONIST"],
   },
 ];
 

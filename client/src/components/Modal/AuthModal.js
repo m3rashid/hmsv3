@@ -1,11 +1,11 @@
 import React from "react";
-
-import { Modal, Button, Input, Form, message } from "antd";
 import { useRecoilState } from "recoil";
+import { Modal, Button, Input, Form, message } from "antd";
+
 import { authState } from "../../atoms/auth";
 import { instance } from "../../api/instance";
 
-function AuthModal(props) {
+function AuthModal({ handleCancel, isModalVisible, handleOk }) {
   const [, setAuth] = useRecoilState(authState);
   const onFinish = async (values) => {
     try {
@@ -26,7 +26,7 @@ function AuthModal(props) {
         content: "Login Successful",
         key: "auth/login",
       });
-      props.handleCancel();
+      handleCancel();
     } catch (error) {
       message.error({
         content: "Login Failed",
@@ -44,41 +44,51 @@ function AuthModal(props) {
   };
 
   return (
-    <React.Fragment>
-      <Modal
-        title="Login"
-        visible={props.isModalVisible}
-        onOk={props.handleOk}
-        onCancel={props.handleCancel}
+    <Modal
+      title="Login"
+      footer={null}
+      visible={isModalVisible}
+      onOk={handleOk}
+      onCancel={handleCancel}
+    >
+      <Form
+        name="login"
+        onFinish={onFinish}
+        initialValues={{ remember: true }}
+        onFinishFailed={onFinishFailed}
       >
-        <Form
-          name="login"
-          onFinish={onFinish}
-          initialValues={{ remember: true }}
-          onFinishFailed={onFinishFailed}
+        <Form.Item
+          rules={[{ required: true, message: "Please enter your username!" }]}
+          name="email"
+          label="Email"
         >
-          <Form.Item
-            rules={[{ required: true, message: "Please enter your username!" }]}
-            name="email"
-            label="Email"
-          >
-            <Input placeholder="Email" />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            label="Password"
-            rules={[{ required: true, message: "Please enter your password!" }]}
-          >
-            <Input placeholder="Password" type="password" />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit">
-              Login
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
-    </React.Fragment>
+          <Input placeholder="Email" />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          label="Password"
+          rules={[{ required: true, message: "Please enter your password!" }]}
+        >
+          <Input placeholder="Password" type="password" />
+        </Form.Item>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            borderTop: "1px solid #f0f0f0",
+            margin: "24px -24px -10px -24px",
+            padding: "10px 24px 0 24px",
+          }}
+        >
+          <Button style={{ marginRight: "10px" }} onClick={handleCancel}>
+            Cancel
+          </Button>
+          <Button type="primary" htmlType="submit">
+            Login
+          </Button>
+        </div>
+      </Form>
+    </Modal>
   );
 }
 

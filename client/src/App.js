@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./styles/theme.less";
 import AppLayout from "./components/Layout/AppLayout";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -8,7 +8,8 @@ import { authState } from "./atoms/auth";
 import { useQuery } from "react-query";
 import { revalidateJWT } from "./api/auth/revalidateJWT";
 import Loading from "./components/Loading/Loading";
-import { message } from "antd";
+import Home from "./pages/home";
+import UnAuthPage from "./pages/unAuthenticated";
 
 function App() {
   const [Auth, setAuth] = useRecoilState(authState);
@@ -25,22 +26,22 @@ function App() {
     <BrowserRouter>
       <AppLayout>
         <div className="App">
-          <div
-            style={{
-              height: "100vh",
-            }}
-          >
+          <div style={{ height: "100vh" }}>
             <Routes>
               {routes.map((route, index) => {
-                if (!validateRoute(Auth, route)) return null;
+                const validated = validateRoute(Auth, route);
+                if (!validated) {
+                  return <Route path="*" element={<UnAuthPage />} />;
+                }
                 return (
                   <Route
-                    key={index}
+                    key={`route ${index} ${route.path}`}
                     path={route.path}
                     element={<route.component />}
                   />
                 );
               })}
+              <Route path="/" element={<Home />} />
             </Routes>
           </div>
         </div>

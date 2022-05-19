@@ -9,7 +9,11 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) throw new Error("No credentials");
 
-    const user = await db.Auth.findOne({ email });
+    const user = await db.Auth.findOne({
+      where: {
+        email,
+      },
+    });
     if (!user) throw new Error("User not found");
 
     const matched = await bcrypt.compare(password, user.password);
