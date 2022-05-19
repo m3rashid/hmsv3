@@ -1,19 +1,28 @@
 import Sequelize from "sequelize";
 import Appointment from "./Appointment.js";
-
 import Auth from "./Auth.js";
 import Doctor from "./Doctor.js";
 import Medicine from "./Medicine.js";
 import Patient from "./Patient.js";
 import Prescription from "./Prescription.js";
 import Receptionist from "./Receptionist.js";
+import fs from "fs";
+import path from "path";
+const __dirname = path.resolve();
+
+// read json from config file
+const config = JSON.parse(
+  fs.readFileSync(path.join(__dirname, `/config/config.json`), "utf8")
+);
+
+const useConfig = "development";
 
 const sequelize = new Sequelize({
-  host: "localhost",
-  dialect: "mysql",
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  host: config[useConfig]?.host,
+  dialect: config[useConfig]?.dialect,
+  username: config[useConfig]?.username,
+  password: config[useConfig]?.password,
+  database: config[useConfig]?.database,
 });
 
 const db = {

@@ -199,6 +199,7 @@
       },
       "indexes": []
     },
+<<<<<<< HEAD
     "Patients": {
       "tableName": "Patients",
       "schema": {
@@ -362,3 +363,10 @@
   "exists": true,
   "revision": 4
 }
+=======
+    "path": "/home/husain/dev/hmsv2/server/migrations/_current.json",
+    "backupPath": "/home/husain/dev/hmsv2/server/migrations/_current_bak.json",
+    "exists": true,
+    "revision": 6
+}
+>>>>>>> f4f0708fb8d579b931b3036266b4830796ce4bf2

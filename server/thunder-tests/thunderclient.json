@@ -54,5 +54,107 @@
       "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOiIxZTQ5ZGE3Yi1lZjYwLTRlOGEtYWEzYS01ZmQwZDM2OTNmYTQiLCJyb2xlIjoiRE9DVE9SIn0sImlhdCI6MTY1MjM3NTk4OTcyN30.IS8nSfkHp3LL9Y7EsX8fFrRqbhidl_p-IjgTrOhlmKY"
     },
     "tests": []
+  },
+  {
+    "_id": "b5319de6-a09b-439b-b564-269f4ec0f9e9",
+    "colId": "d1a2e790-5dd2-4d22-8a83-8905fd84f263",
+    "containerId": "",
+    "name": "Create Patient",
+    "url": "http://localhost:5000/api/patient/create",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2022-05-16T20:56:53.462Z",
+    "modified": "2022-05-16T21:17:54.402Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n    \"name\":\"Sarfraz Alam\",\n    \"age\":69,\n    \"sex\":\"o\",\n    \"contact\":\"+912134141414\",\n    \"address\":\"jamia nagar, new delhi\",\n    \"email\": \"unheard@bye.com\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "7134b5d4-11c4-4a0c-bbb5-ba868dcb95e0",
+    "colId": "d1a2e790-5dd2-4d22-8a83-8905fd84f263",
+    "containerId": "",
+    "name": "Get By Id",
+    "url": "http://localhost:5000/api/patient/055569e5-d9d3-4814-ad35-5bf0bd6e8f35",
+    "method": "GET",
+    "sortNum": 20000,
+    "created": "2022-05-16T21:03:02.740Z",
+    "modified": "2022-05-16T21:21:22.233Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "b3096c99-a91a-4064-9c1b-2a39fcee36a6",
+    "colId": "d1a2e790-5dd2-4d22-8a83-8905fd84f263",
+    "containerId": "",
+    "name": "Search",
+    "url": "http://localhost:5000/api/patient/search?name=amber&minAge=18&maxAge=75&contact&address&email&lastVisitedBefore&lastVisitedAfter",
+    "method": "GET",
+    "sortNum": 30000,
+    "created": "2022-05-16T21:04:42.831Z",
+    "modified": "2022-05-16T21:27:07.453Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "name",
+        "value": "amber",
+        "isPath": false
+      },
+      {
+        "name": "minAge",
+        "value": "18",
+        "isPath": false
+      },
+      {
+        "name": "maxAge",
+        "value": "75",
+        "isPath": false
+      },
+      {
+        "name": "contact",
+        "value": "",
+        "isPath": false
+      },
+      {
+        "name": "address",
+        "value": "",
+        "isPath": false
+      },
+      {
+        "name": "email",
+        "value": "",
+        "isPath": false
+      },
+      {
+        "name": "lastVisitedBefore",
+        "value": "",
+        "isPath": false
+      },
+      {
+        "name": "lastVisitedAfter",
+        "value": "",
+        "isPath": false
+      }
+    ],
+    "tests": []
+  },
+  {
+    "_id": "826352a6-0392-446e-baf4-2641f5c0f0e9",
+    "colId": "d1a2e790-5dd2-4d22-8a83-8905fd84f263",
+    "containerId": "",
+    "name": "Delete",
+    "url": "http://localhost:5000/api/patient/9064344a-4d1d-48ab-9824-049378b718c2",
+    "method": "DELETE",
+    "sortNum": 40000,
+    "created": "2022-05-16T21:23:03.308Z",
+    "modified": "2022-05-16T21:23:36.216Z",
+    "headers": [],
+    "params": [],
+    "tests": []
   }
 ]

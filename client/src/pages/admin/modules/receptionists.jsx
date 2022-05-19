@@ -1,7 +1,16 @@
 import faker from "@faker-js/faker";
-import { Button, Space, Table } from "antd";
 import React from "react";
-
+import {
+  Form,
+  Button,
+  Radio,
+  Input,
+  InputNumber,
+  Space,
+  Table,
+  PageHeader,
+} from "antd";
+const { TextArea } = Input;
 const GenerateData = (count) => {
   const data = [];
   for (let i = 0; i < count; i++) {
@@ -53,6 +62,39 @@ const Receptionists = () => {
         marginTop: "20px",
       }}
     >
+      <div>
+        <PageHeader title="Register a Receptionist" subTitle="" />
+
+        <Form labelAlign="left" labelCol={{ span: 2 }} wrapperCol={{ span: 4 }}>
+          <Form.Item
+            label="Name"
+            name="name"
+            rules={[{ required: true, message: "Please Enter a name!" }]}
+          >
+            <Input type="text" />
+          </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[{ required: true, message: "Please Enter an email!" }]}
+          >
+            <Input type="text" />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="Password"
+            rules={[{ required: true, message: "Please Enter a password!" }]}
+          >
+            <Input type="password" />
+          </Form.Item>
+          <Form.Item wrapperCol={{ offset: 2 }}>
+            <Button type="primary" htmlType="submit">
+              Create
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+
       <Table
         dataSource={data}
         columns={columns}
