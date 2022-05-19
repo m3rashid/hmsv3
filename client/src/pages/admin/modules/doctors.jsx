@@ -1,8 +1,16 @@
 import faker from "@faker-js/faker";
 import React from "react";
-import { Form, Button, Radio, Input, InputNumber, Space, Table, PageHeader } from "antd";
+import {
+  Form,
+  Button,
+  Radio,
+  Input,
+  InputNumber,
+  Space,
+  Table,
+  PageHeader,
+} from "antd";
 const { TextArea } = Input;
-
 
 const GenerateData = (count) => {
   const data = [];
