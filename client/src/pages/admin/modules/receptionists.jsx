@@ -65,7 +65,10 @@ const Receptionists = () => {
       }}
     >
       <div>
-        <Button style={{marginBottom:"20px"}}  onClick={() => setIsModalVisible(true)}>
+        <Button
+          style={{ marginBottom: "20px" }}
+          onClick={() => setIsModalVisible(true)}
+        >
           Register Receptionist
         </Button>
 

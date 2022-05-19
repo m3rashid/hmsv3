@@ -86,7 +86,10 @@ function CreateUserModal(props) {
               padding: "10px 24px 0 24px",
             }}
           >
-            <Button style={{ marginRight: "10px" }} onClick={props.handleCancel}>
+            <Button
+              style={{ marginRight: "10px" }}
+              onClick={props.handleCancel}
+            >
               Cancel
             </Button>
             <Button type="primary" htmlType="submit">
