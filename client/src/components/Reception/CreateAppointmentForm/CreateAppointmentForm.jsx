@@ -1,26 +1,46 @@
-import React from "react";
-import { Form, Button, Input, AutoComplete, DatePicker } from "antd";
-
+import React, { useEffect, useState } from "react";
+import { Form, Button, Input, AutoComplete, DatePicker, message } from "antd";
+import { socket } from "../../../api/socket";
+import { instance } from "../../../api/instance";
 const CreateAppointmentForm = () => {
-  const doctors = [
-    {
-      label: "Dr. Sarfraz Alam",
-      value: "Dr. Sarfraz Alam",
-    },
-    {
-      label: "Dr. Husain Shahid",
-      value: "Dr. Husain Shahid",
-    },
-    {
-      label: "Dr. Zafar Ali",
-      value: "Dr. Zafar Ali",
-    },
-  ];
+  const [doctors, setDoctors] = useState([]);
+  const formSubmitHandler = (values) => {
+    console.log(values);
+    socket.emit("create-appointment", {
+      patientId: values.patient,
+      doctorId: values.doctor,
+      date: values.datetime,
+    });
+  };
+  useEffect(() => {
+    instance.get("/reception/doctors").then((res) => {
+      console.log(res.data);
+      setDoctors(
+        res.data?.map((doctor) => ({
+          value: doctor.email,
+          label: `${doctor.name}`,
+        }))
+      );
+    });
+    socket.on("created-appointment", (data) => {
+      console.log(data);
+      message.success(`Appointment ${data.title} created successfully!`);
+    });
+
+    return () => {
+      socket.off("created-appointment");
+    };
+  }, []);
 
   return (
-    <Form labelAlign="left" labelCol={{ span: 3 }} wrapperCol={{ span: 8 }}>
+    <Form
+      onFinish={formSubmitHandler}
+      labelAlign="left"
+      labelCol={{ span: 3 }}
+      wrapperCol={{ span: 8 }}
+    >
       <Form.Item
-        label="Patient (ID or email)"
+        label="Patient (email or id)"
         name="patient"
         rules={[{ required: true, message: "Please select a patient!" }]}
       >

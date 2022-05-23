@@ -1,19 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { socket } from "../../../api/socket";
+import { useRecoilValue } from "recoil";
+import { authState } from "../../../atoms/auth";
 import { Button, Space, Table } from "antd";
-import { faker } from "@faker-js/faker";
-
-const GenerateData = (count) => {
-  const data = [];
-  for (let i = 0; i < count; i++) {
-    data.push({
-      title: faker.name.findName(),
-      date: faker.date.past().toDateString(),
-    });
-  }
-  return data;
-};
 
 function Appointments() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { user } = useRecoilValue(authState);
+
+  useEffect(() => {
+    socket.emit("get-doctor-appointments", {
+      doctorId: user.id,
+    });
+  }, [user.id]);
+
+  useEffect(() => {
+    socket.on("found-doctor-appointments", (data) => {
+      const { doctorId, appointments } = data;
+      console.log(appointments);
+      setData(appointments);
+      setLoading(false);
+    });
+    return () => {
+      socket.off("found-doctor-appointments");
+    };
+  }, []);
   const columns = [
     {
       title: "Title",
@@ -38,8 +50,6 @@ function Appointments() {
       ),
     },
   ];
-
-  const data = GenerateData(10);
 
   return (
     <div
