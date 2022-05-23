@@ -1,15 +1,6 @@
 import faker from "@faker-js/faker";
 import React from "react";
-import {
-  Form,
-  Button,
-  Radio,
-  Input,
-  InputNumber,
-  Space,
-  Table,
-  PageHeader,
-} from "antd";
+import { Button, Input, Space, Table } from "antd";
 import CreateUserModal from "../../../components/Modal/CreateUserModal";
 
 const { TextArea } = Input;
@@ -68,16 +59,20 @@ const Doctors = () => {
       }}
     >
       <div>
-<<<<<<< HEAD
         <Button
           style={{ marginBottom: "20px" }}
           onClick={() => setIsModalVisible(true)}
         >
           Register Doctor
         </Button>
-=======
-        <Button style={{marginBottom:"20px"}} onClick={() => setIsModalVisible(true)}>Register Doctor</Button>
->>>>>>> create user interface
+
+        <Button
+          style={{ marginBottom: "20px" }}
+          onClick={() => setIsModalVisible(true)}
+        >
+          Register Doctor
+        </Button>
+
         <CreateUserModal
           isModalVisible={isModalVisible}
           handleOk={() => {

@@ -65,14 +65,10 @@ const Receptionists = () => {
       }}
     >
       <div>
-<<<<<<< HEAD
         <Button
           style={{ marginBottom: "20px" }}
           onClick={() => setIsModalVisible(true)}
         >
-=======
-        <Button style={{marginBottom:"20px"}}  onClick={() => setIsModalVisible(true)}>
->>>>>>> create user interface
           Register Receptionist
         </Button>
 

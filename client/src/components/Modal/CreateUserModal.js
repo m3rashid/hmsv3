@@ -19,7 +19,7 @@ function CreateUserModal(props) {
 
       console.log(createdUser);
       const { data } = await instance.post("/auth/createUser", createdUser);
-
+      console.log(data);
       message.success({
         content: `${RoleName} created Successfully`,
         key: "auth/createUser",
@@ -86,14 +86,10 @@ function CreateUserModal(props) {
               padding: "10px 24px 0 24px",
             }}
           >
-<<<<<<< HEAD
             <Button
               style={{ marginRight: "10px" }}
               onClick={props.handleCancel}
             >
-=======
-            <Button style={{ marginRight: "10px" }} onClick={props.handleCancel}>
->>>>>>> create user interface
               Cancel
             </Button>
             <Button type="primary" htmlType="submit">
