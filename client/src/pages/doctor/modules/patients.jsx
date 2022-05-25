@@ -1,22 +1,32 @@
 import faker from "@faker-js/faker";
 import { Button, Space, Table } from "antd";
-import React from "react";
-
-const GenerateData = (count) => {
-  const data = [];
-  for (let i = 0; i < count; i++) {
-    data.push({
-      name: faker.name.findName(),
-      mobile: faker.phone.phoneNumber(),
-      address: faker.address.streetAddress(),
-      lastVisit: faker.date.past().toDateString(),
-      prescription: faker.lorem.paragraph(),
-    });
-  }
-  return data;
-};
+import React, { useEffect, useState } from "react";
+import { socket } from "../../../api/socket";
+import { useRecoilValue } from "recoil";
+import { authState } from "../../../atoms/auth";
 
 const Patients = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { user } = useRecoilValue(authState);
+
+  useEffect(() => {
+    socket.emit("get-doctor-patients", {
+      doctorId: user.id,
+    });
+  }, [user.id]);
+
+  useEffect(() => {
+    socket.on("found-doctor-patients", (data) => {
+      const { doctorId, patients } = data;
+      setData(patients);
+      setLoading(false);
+    });
+    return () => {
+      socket.off("found-doctor-patients");
+    };
+  }, []);
+
   const columns = [
     {
       title: "Name",
@@ -57,7 +67,7 @@ const Patients = () => {
     },
   ];
 
-  const data = GenerateData(10);
+  // const data = GenerateData(10);
 
   return (
     <div
@@ -66,6 +76,7 @@ const Patients = () => {
       }}
     >
       <Table
+        loading={loading}
         dataSource={data}
         columns={columns}
         pagination={{
