@@ -7,6 +7,7 @@ import Patients from "./modules/patients";
 import Notifications from "./modules/notifications";
 import { authState } from "../../atoms/auth";
 import { useRecoilValue } from "recoil";
+import PrescriptionForm from "../../components/Doctor/prescribeMedicine";
 
 const Doctor = () => {
   const [online, setOnline] = React.useState(true);
@@ -26,6 +27,9 @@ const Doctor = () => {
         </Tabs.TabPane>
         <Tabs.TabPane tab="Notifications" key="4">
           <Notifications />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Prescription" key="5">
+          <PrescriptionForm />
         </Tabs.TabPane>
       </Tabs>
     </div>
