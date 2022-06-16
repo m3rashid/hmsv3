@@ -15,7 +15,7 @@ import { instrument } from "@socket.io/admin-ui";
 // TODO add a production client here after deployment
 const corsOrigin = [
   process.env.NODE_ENV === "production"
-    ? "http://localhost:3000"
+    ? "https://ansarihms.netlify.app"
     : "http://localhost:3000",
   "https://admin.socket.io",
 ];

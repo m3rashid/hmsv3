@@ -7,3 +7,6 @@ package-lock.json
 .DS_Store
 server/config/
 server/migrations
+
+# Local Netlify folder
+.netlify
