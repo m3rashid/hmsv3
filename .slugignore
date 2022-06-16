@@ -1,0 +1,15 @@
+app.jpg
+./client
+./.husky
+./.idea
+./.vscode
+./thunder-tests
+./docker-compose.yml
+./Dockerfile
+./.dockerignore
+./*.md
+./LICENSE
+./.prettierrc
+./.prettierignore
+./.eslintignore
+./.eslintrc.json
