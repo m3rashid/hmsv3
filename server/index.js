@@ -41,11 +41,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => res.send("Hello World"));
 
-if (process.env.NODE_ENV !== "production") {
-  app.use("/api/auth", AuthRoutes);
-  app.use("/api/patient", PatientRoutes);
-  app.use("/api/doctor", DoctorRoutes);
-}
+// if (process.env.NODE_ENV !== "production") {
+app.use("/api/auth", AuthRoutes);
+app.use("/api/patient", PatientRoutes);
+app.use("/api/doctor", DoctorRoutes);
+// }
 const startServer = async () => {
   try {
     instrument(io, {
