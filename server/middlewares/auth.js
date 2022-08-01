@@ -1,6 +1,6 @@
-import { verifyJWT } from "../utils/jwt.js";
+const { verifyJWT } = require("../utils/jwt.js");
 
-export const checkAuth = (req, res, next) => {
+const checkAuth = (req, res, next) => {
   const token = req.headers["authorization"];
   if (!token) {
     return res.status(401).json({
@@ -16,4 +16,8 @@ export const checkAuth = (req, res, next) => {
   req.isAuthenticated = true;
   req.user = payload.sub;
   next();
+};
+
+module.exports = {
+  checkAuth,
 };

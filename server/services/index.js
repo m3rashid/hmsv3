@@ -1,22 +1,34 @@
-export {
+const {
   loginService,
   logoutService,
   revalidateService,
   signupService,
-} from "./auth.js";
+} = require("./auth.js");
 
-export { createUserService } from "./createUser.js";
+const { createUserService } = require("./createUser.js");
 
-export {
+const {
   getDoctorAppointmentsService,
   getDoctorPatientsService,
-} from "./doctor.js";
+} = require("./doctor.js");
 
-export {
+const {
   createPatientService,
   deletePatientService,
   getPatientByIdService,
   searchPatientsService,
-} from "./patient.js";
+} = require("./patient.js");
 
-export {} from "./reception.js";
+module.exports = {
+  loginService,
+  logoutService,
+  revalidateService,
+  signupService,
+  createUserService,
+  getDoctorAppointmentsService,
+  getDoctorPatientsService,
+  createPatientService,
+  deletePatientService,
+  getPatientByIdService,
+  searchPatientsService,
+};

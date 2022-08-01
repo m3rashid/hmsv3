@@ -1,1 +1,5 @@
-export const createBill = async (receipt) => {};
+const createBill = async (receipt) => {};
+
+module.exports = {
+  createBill,
+};

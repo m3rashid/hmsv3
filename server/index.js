@@ -1,25 +1,22 @@
-import express from "express";
-import "dotenv/config";
-import cors from "cors";
-// import db from "./models/index.js";
-import http from "http";
-import { Server } from "socket.io";
+const express = require("express");
+require("dotenv").config();
+const cors = require("cors");
+const http = require("http");
+const { Server } = require("socket.io");
+const { instrument } = require("@socket.io/admin-ui");
 
-import models from "./models/index.js";
-import AuthRoutes from "./routes/auth.routes.js";
-import DoctorRoutes from "./routes/doctor.routes.js";
-import socketHandler from "./routes/sockets/index.js";
-import PatientRoutes from "./routes/patient.routes.js";
-import { instrument } from "@socket.io/admin-ui";
+const { router: AuthRoutes } = require("./routes/auth.routes.js");
+const { router: DoctorRoutes } = require("./routes/doctor.routes.js");
+const { router: socketHandler } = require("./routes/sockets/index.js");
+const { router: PatientRoutes } = require("./routes/patient.routes.js");
+const prisma = require("./utils/prisma.js");
 
-// TODO add a production client here after deployment
 const corsOrigin = [
+  "https://admin.socket.io",
   process.env.NODE_ENV === "production"
     ? "https://ansarihms.netlify.app"
     : "http://localhost:3000",
-  "https://admin.socket.io",
 ];
-const PORT = process.env.PORT || 5000;
 
 const app = express();
 const server = http.createServer(app);
@@ -41,30 +38,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => res.send("Hello World"));
 
-// if (process.env.NODE_ENV !== "production") {
 app.use("/api/auth", AuthRoutes);
 app.use("/api/patient", PatientRoutes);
 app.use("/api/doctor", DoctorRoutes);
-// }
+
+const PORT = process.env.PORT || 5000;
+
 const startServer = async () => {
   try {
-    instrument(io, {
-      auth: false,
-    });
-
-    // await models.sequelize.sync({
-    //   // alter: true,
-    //   // force: true,
-    // });
-
-    await models.sequelize.authenticate({
-      logging: process.env.NODE_ENV !== "production",
-    });
-    console.log("Connection has been established successfully");
+    instrument(io, { auth: false });
+    await prisma.$connect();
+    console.log("Connection established successfully");
     server.listen(PORT, () =>
       console.log(`Server on http://localhost:${PORT}`)
     );
   } catch (err) {
+    await prisma.$disconnect();
     console.log(err);
     process.exit(1);
   }

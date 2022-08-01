@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  DOCTOR
+  ADMIN
+  RECEPTIONIST
+  PHARMACIST
+  OTHER
+}
+
+enum Sex {
+  m
+  f
+  o
+}
+
+model Auth {
+  id           BigInt         @id @default(autoincrement())
+  name         String
+  email        String         @unique
+  role         Role           @default(OTHER)
+  password     String
+  Pharmacist   Pharmacist[]
+  Receptionist Receptionist[]
+  Doctor       Doctor[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now())
+}
+
+model Doctor {
+  id           BigInt         @id @default(autoincrement())
+  age          Int
+  availability String
+  designation  String
+  contact      String         @unique
+  address      String
+  appointments Appointment[]
+  Prescription Prescription[]
+  auth         Auth           @relation(fields: [id], references: [id])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now())
+}
+
+model Pharmacist {
+  id        BigInt   @id @default(autoincrement())
+  email     String   @unique
+  contact   String   @unique
+  address   String
+  auth      Auth     @relation(fields: [id], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Receptionist {
+  id        BigInt   @id @default(autoincrement())
+  email     String   @unique
+  contact   String   @unique
+  address   String
+  auth      Auth     @relation(fields: [id], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Patient {
+  id           BigInt         @id @default(autoincrement())
+  name         String
+  age          Int
+  sex          Sex
+  lastVisit    DateTime
+  contact      String         @unique
+  address      String?
+  email        String?
+  jamiaId      String?
+  Appointment  Appointment[]
+  Prescription Prescription[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now())
+}
+
+model Appointment {
+  id           BigInt         @id @default(autoincrement())
+  date         DateTime       @default(now())
+  Prescription Prescription[]
+  patientId    BigInt
+  patient      Patient        @relation(fields: [patientId], references: [id])
+  doctorId     BigInt
+  doctor       Doctor         @relation(fields: [doctorId], references: [id])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now())
+}
+
+model Prescription {
+  id              BigInt      @id @default(autoincrement())
+  symptoms        String
+  diagnosis       String // prescription
+  CustomMedicines String
+  datePrescribed  DateTime    @default(now())
+  doctorId        BigInt
+  doctor          Doctor      @relation(fields: [doctorId], references: [id])
+  patientId       BigInt
+  patient         Patient     @relation(fields: [patientId], references: [id])
+  appointmentId   BigInt
+  appointment     Appointment @relation(fields: [appointmentId], references: [id])
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @default(now())
+}
+
+model Inventory {
+  id          BigInt   @id @default(autoincrement())
+  name        String
+  quantity    Int
+  price       Decimal
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model Medicine {
+  id        BigInt   @id @default(autoincrement())
+  name      String
+  price     Decimal
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}

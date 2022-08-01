@@ -1,11 +1,11 @@
-import {
+const {
   createPatientService,
   deletePatientService,
   getPatientByIdService,
   searchPatientsService,
-} from "../services/patient.js";
+} = require("../services/patient.js");
 
-export const createPatient = async (req, res) => {
+const createPatient = async (req, res) => {
   try {
     const { newPatient } = await createPatientService(...req.body);
     return res.status(200).json({
@@ -20,7 +20,7 @@ export const createPatient = async (req, res) => {
   }
 };
 
-export const deletePatient = async (req, res) => {
+const deletePatient = async (req, res) => {
   try {
     await deletePatientService(req.params.id);
     return res.status(200).json({
@@ -34,7 +34,7 @@ export const deletePatient = async (req, res) => {
   }
 };
 
-export const getPatientById = async (req, res) => {
+const getPatientById = async (req, res) => {
   try {
     const { patient } = await getPatientByIdService(req.params.id);
     return res.status(200).json({
@@ -49,7 +49,7 @@ export const getPatientById = async (req, res) => {
   }
 };
 
-export const searchPatients = async (req, res) => {
+const searchPatients = async (req, res) => {
   try {
     console.log(req.query);
     const { count, patients } = await searchPatientsService(req.query);
@@ -64,4 +64,11 @@ export const searchPatients = async (req, res) => {
       err,
     });
   }
+};
+
+module.exports = {
+  createPatient,
+  deletePatient,
+  getPatientById,
+  searchPatients,
 };

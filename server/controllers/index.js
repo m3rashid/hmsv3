@@ -1,14 +1,29 @@
-export { login, logout, revalidate, signup } from "./auth.js";
+const { login, logout, revalidate, signup } = require("./auth.js");
 
-export { createUser } from "./createUser.js";
+const { createUser } = require("./createUser.js");
 
-export { getDoctorAppointments, getDoctorPatients } from "./doctor.js";
+const { getDoctorAppointments, getDoctorPatients } = require("./doctor.js");
 
-export {
+const {
   createPatient,
   deletePatient,
   getPatientById,
   searchPatients,
-} from "./patient.js";
+} = require("./patient.js");
 
-export { createReception } from "./reception.js";
+const { createReception } = require("./reception.js");
+
+module.exports = {
+  login,
+  logout,
+  revalidate,
+  signup,
+  createUser,
+  getDoctorAppointments,
+  getDoctorPatients,
+  createPatient,
+  deletePatient,
+  getPatientById,
+  searchPatients,
+  createReception,
+};

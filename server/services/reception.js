@@ -1,6 +1,4 @@
-import db from "../models/index.js";
-
-export const createAppointmentService = async ({
+const createAppointmentService = async ({
   patientId,
   doctorId,
   patient,
@@ -15,19 +13,14 @@ export const createAppointmentService = async ({
 
   try {
     console.log(appointment);
-    const newAppointment = await db.Appointment.create(appointment, {
-      include: [
-        {
-          model: db.Patient,
-          as: "Patient",
-        },
-        {
-          model: db.Doctor,
-          as: "Doctor",
-        },
-      ],
-      plain: true,
-      raw: true,
+    const newAppointment = await prisma.Appointment.create({
+      data: {
+        ...appointment,
+      },
+      include: {
+        patient: true,
+        doctor: true,
+      },
     });
 
     const appointmentPatient = await newAppointment.getPatient();
@@ -48,29 +41,15 @@ export const createAppointmentService = async ({
   }
 };
 
-export const getAppointmentByIdService = async (appointmentId) => {
+const getAppointmentByIdService = async (appointmentId) => {
   try {
-    const appointment = await db.Appointment.findOne(
-      {
-        where: {
-          id: appointmentId,
-        },
-        include: [
-          {
-            model: db.Patient,
-            as: "Patient",
-          },
-          {
-            model: db.Doctor,
-            as: "Doctor",
-          },
-        ],
+    const appointment = await prisma.Appointment.findUnique({
+      where: { id: appointmentId },
+      include: {
+        patient: true,
+        doctor: true,
       },
-      {
-        raw: true,
-        plain: true,
-      }
-    );
+    });
 
     console.log(appointment);
 
@@ -82,4 +61,9 @@ export const getAppointmentByIdService = async (appointmentId) => {
     console.log(err);
     return new Error("Internal Server Error");
   }
+};
+
+module.exports = {
+  createAppointmentService,
+  getAppointmentByIdService,
 };

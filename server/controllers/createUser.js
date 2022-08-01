@@ -1,6 +1,6 @@
-import { createUserService } from "../services/createUser.js";
+const { createUserService } = require("../services/createUser.js");
 
-export const createUser = async (req, res) => {
+const createUser = async (req, res) => {
   try {
     const { email, password, role, name } = req.body;
     const { user } = await createUserService(email, password, role, name);
@@ -15,4 +15,8 @@ export const createUser = async (req, res) => {
       error: err,
     });
   }
+};
+
+module.exports = {
+  createUser,
 };

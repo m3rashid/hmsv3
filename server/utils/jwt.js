@@ -1,15 +1,10 @@
-import JWT from "jsonwebtoken";
-import path from "path";
-import fs from "fs";
-import url from "url";
-
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const JWT = require("jsonwebtoken");
+const fs = require("fs");
 
 const keys = JSON.parse(fs.readFileSync(__dirname + "/keys/keys.json"));
 console.log(keys);
 
-export const issueJWT = (user) => {
+const issueJWT = (user) => {
   const expiresIn = "1d";
   const payload = {
     sub: { id: user.id, role: user.role },
@@ -28,7 +23,7 @@ export const issueJWT = (user) => {
   };
 };
 
-export const verifyJWT = (token) => {
+const verifyJWT = (token) => {
   try {
     const extractedToken = token.split(" ")[1];
     const decoded = JWT.verify(extractedToken, keys.ACCESS_SECRET);
@@ -47,7 +42,7 @@ export const verifyJWT = (token) => {
   }
 };
 
-export const revalidateJWT = (token) => {
+const revalidateJWT = (token) => {
   try {
     const extractedToken = token.split(" ")[1];
     const decoded = JWT.verify(extractedToken, keys.RESET_SECRET, {});
@@ -65,4 +60,10 @@ export const revalidateJWT = (token) => {
       payload: null,
     };
   }
+};
+
+module.exports = {
+  issueJWT,
+  verifyJWT,
+  revalidateJWT,
 };

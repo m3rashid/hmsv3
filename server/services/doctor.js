@@ -1,42 +1,29 @@
-import { Op } from "sequelize";
-import db from "../models/index.js";
-import { UserDetails } from "./auth.js";
+const { UserDetails } = require("./auth.js");
+const prisma = require("../utils/prisma");
 
-export const getDoctorAppointmentsService = async (userId) => {
+const getDoctorAppointmentsService = async (userId) => {
   const Doc = await UserDetails(userId, "DOCTOR");
-  const appointments = await db.Appointment.findAll({
-    where: {
-      DoctorId: Doc.id,
-    },
-    include: [
-      {
-        model: db.Doctor,
-        as: "Doctor",
-      },
-      {
-        model: db.Patient,
-        as: "Patient",
-      },
-    ],
-    order: [["date", "DESC"]],
-    raw: true,
-    nest: true,
+  const appointments = await prisma.Appointment.findMany({
+    where: { doctorId: Doc.id },
+    include: { doctor: true, patient: true },
+    orderBy: { date: "desc" },
   });
 
-  console.log(JSON.parse(JSON.stringify(appointments)));
+  console.log(appointments);
   return { appointments };
 };
 
-export const getDoctorPatientsService = async (doctorId) => {
-  const patients = await db.Patient.findAll({
+// FIX this bad query
+const getDoctorPatientsService = async (doctorId) => {
+  const patients = await prisma.Patient.findMany({
     where: {},
   });
   return { patients };
 };
 
-export const createDoctorService = async (doctor) => {
+const createDoctorService = async (doctor) => {
   try {
-    const newDoctor = await db.Doctor.create(doctor);
+    const newDoctor = await prisma.Doctor.create(doctor);
     return { newDoctor };
   } catch (err) {
     console.log(err);
@@ -44,7 +31,7 @@ export const createDoctorService = async (doctor) => {
   }
 };
 
-export const searchDoctorsService = async ({
+const searchDoctorsService = async ({
   name,
   minAge,
   maxAge,
@@ -53,34 +40,21 @@ export const searchDoctorsService = async ({
   email,
   address,
 }) => {
-  const whereClause = {};
-  if (name) {
-    whereClause.name = { [Op.like]: `%${name}%` };
-  }
-  if (minAge) {
-    whereClause.age = { [Op.gte]: minAge };
-  }
-  if (maxAge) {
-    whereClause.age = { [Op.lte]: maxAge };
-  }
-
-  if (designation) {
-    whereClause.designation = { [Op.like]: designation };
-  }
-
-  if (contact) {
-    whereClause.contact = { [Op.like]: `%${contact}%` };
-  }
-  if (address) {
-    whereClause.address = { [Op.like]: `%${address}%` };
-  }
-  if (email) {
-    whereClause.email = { [Op.like]: `%${email}%` };
-  }
+  // FIX this bad query
+  const whereClause = {
+    ...(name && { name: { [Op.like]: `%${name}%` } }),
+    ...(minAge && { age: { [Op.gte]: minAge } }),
+    ...(maxAge && { age: { [Op.lte]: maxAge } }),
+    ...(minAge && { [Op.gte]: minAge }),
+    ...(designation && { [Op.like]: designation }),
+    ...(contact && { [Op.like]: `%${contact}%` }),
+    ...(address && { [Op.like]: `%${address}%` }),
+    ...(email && { [Op.like]: `%${email}%` }),
+  };
 
   console.log(whereClause);
 
-  const doctors = await db.Doctor.findAll({
+  const doctors = await prisma.Doctor.findAll({
     where: {
       [Op.or]: whereClause,
     },
@@ -91,40 +65,28 @@ export const searchDoctorsService = async ({
   return { count: doctors.length, doctors };
 };
 
-export const createPrescriptionByDoctorService = async (
+const createPrescriptionByDoctorService = async (
   appointment,
   symptoms,
   prescription,
   CustomMedicines,
   datetime
 ) => {
-  const newPrescription = await db.Prescription.create(
-    {
+  // Fix this bad query
+  const newPrescription = await prisma.Prescription.create({
+    data: {
       appointmentId: appointment,
       symptoms,
       prescription,
       CustomMedicines,
       datePrescribed: datetime,
     },
-    {
-      include: [
-        {
-          model: db.Appointment,
-          as: "appointment",
-        },
-        {
-          model: db.Doctor,
-          as: "Doctor",
-        },
-        {
-          model: db.Patient,
-          as: "Patient",
-        },
-      ],
-      raw: true,
-      plain: true,
-    }
-  );
+    include: {
+      appointment: true,
+      doctor: true,
+      patient: true,
+    },
+  });
 
   const newPresDetails = await newPrescription.getAppointment();
   const patient = await newPresDetails.getPatient();
@@ -135,4 +97,12 @@ export const createPrescriptionByDoctorService = async (
     doctor,
     patient,
   };
+};
+
+module.exports = {
+  getDoctorAppointmentsService,
+  getDoctorPatientsService,
+  createDoctorService,
+  searchDoctorsService,
+  createPrescriptionByDoctorService,
 };

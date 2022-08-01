@@ -1,11 +1,11 @@
-import {
+const {
   createDummyService,
   loginService,
   revalidateService,
   signupService,
-} from "../services/auth.js";
+} = require("../services/auth.js");
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
   try {
     console.log(req.body);
     const { email, password } = req.body;
@@ -32,7 +32,7 @@ export const login = async (req, res) => {
   }
 };
 
-export const signup = async (req, res) => {
+const signup = async (req, res) => {
   try {
     const { email, password, role, name } = req.body;
     const user = await signupService(email, password, role, name);
@@ -50,9 +50,9 @@ export const signup = async (req, res) => {
   }
 };
 
-export const logout = (req, res) => {};
+const logout = (req, res) => {};
 
-export const revalidate = async (req, res) => {
+const revalidate = async (req, res) => {
   try {
     const refreshToken = req.headers["authorization"];
     const { user, userDetails, token, expires } = await revalidateService(
@@ -76,7 +76,7 @@ export const revalidate = async (req, res) => {
   }
 };
 
-export const createDummy = async (req, res) => {
+const createDummy = async (req, res) => {
   const { count } = req.body;
 
   try {
@@ -95,4 +95,12 @@ export const createDummy = async (req, res) => {
       error: err,
     });
   }
+};
+
+module.exports = {
+  login,
+  signup,
+  logout,
+  revalidate,
+  createDummy,
 };

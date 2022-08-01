@@ -1,7 +1,7 @@
-import crypto from "crypto";
-import path from "path";
-import fs from "fs";
-import url from "url";
+const crypto = require("crypto");
+const path = require("path");
+const fs = require("fs");
+const url = require("url");
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

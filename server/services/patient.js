@@ -1,8 +1,6 @@
-import { Op } from "sequelize";
+const prisma = require("../utils/prisma");
 
-import db from "../models/index.js";
-
-export const createPatientService = async (
+const createPatientService = async (
   name,
   age,
   sex,
@@ -14,44 +12,32 @@ export const createPatientService = async (
   if (!name || !age || !sex || !contact || !email)
     throw new Error("Missing credentials");
 
-  const newPatient = await db.Patient.create({
-    name,
-    age,
-    sex,
-    contact,
-    address,
-    email,
-    jamiaId,
+  const newPatient = await prisma.Patient.create({
+    data: { name, age, sex, contact, address, email, jamiaId },
   });
 
-  console.log(newPatient);
   return { newPatient };
 };
 
-export const deletePatientService = async (patientId) => {
-  const patient = await db.Patient.findOne({
-    where: {
-      id: patientId,
-    },
+const deletePatientService = async (patientId) => {
+  const patient = await prisma.Patient.delete({
+    where: { id: patientId },
   });
   if (!patient) throw new Error("Patient not found");
 
-  await patient.destroy();
   return;
 };
 
-export const getPatientByIdService = async (patientId) => {
-  const patient = await db.Patient.findOne({
-    where: {
-      id: patientId,
-    },
+const getPatientByIdService = async (patientId) => {
+  const patient = await prisma.Patient.findUnique({
+    where: { id: patientId },
   });
   if (!patient) throw new Error("Patient not found");
 
   return { patient };
 };
 
-export const searchPatientsService = async ({
+const searchPatientsService = async ({
   name,
   minAge,
   maxAge,
@@ -63,53 +49,40 @@ export const searchPatientsService = async ({
   lastVisitedBefore,
   lastVisitedAfter,
 }) => {
-  const whereClause = {};
-  if (name) {
-    whereClause.name = { [Op.like]: `%${name}%` };
-  }
-  if (minAge) {
-    whereClause.age = { [Op.gte]: minAge };
-  }
-  if (maxAge) {
-    whereClause.age = { [Op.lte]: maxAge };
-  }
-  if (sex) {
-    whereClause.sex = { [Op.eq]: sex };
-  }
-
-  if (contact) {
-    whereClause.contact = { [Op.like]: `%${contact}%` };
-  }
-  if (address) {
-    whereClause.address = { [Op.like]: `%${address}%` };
-  }
-  if (email) {
-    whereClause.email = { [Op.like]: `%${email}%` };
-  }
-  if (jamiaId) {
-    whereClause.jamiaId = { [Op.like]: `%${jamiaId}%` };
-  }
-  if (lastVisitedBefore) {
-    whereClause.lastVisit = {
+  // FIX this bad query
+  const whereClause = {
+    ...(name && { [Op.like]: `%${name}%` }),
+    ...(age && { [Op.gte]: minAge }),
+    ...(age && { [Op.lte]: maxAge }),
+    ...(sex && { [Op.eq]: sex }),
+    ...(contact && { [Op.like]: `%${contact}%` }),
+    ...(address && { [Op.like]: `%${address}%` }),
+    ...(email && { [Op.like]: `%${email}%` }),
+    ...(jamiaId && { [Op.like]: `%${jamiaId}%` }),
+    ...(lastVisit && {
       [Op.lte]: new Date(lastVisitedBefore).toISOString(),
-    };
-  }
-  if (lastVisitedAfter) {
-    whereClause.lastVisit = {
+    }),
+    ...(lastVisit && {
       [Op.gte]: new Date(lastVisitedAfter).toISOString(),
-    };
-  }
+    }),
+  };
 
   console.log(whereClause);
 
-  const patients = await db.Patient.findAll({
-    where: {
-      [Op.or]: whereClause,
+  const patients = await prisma.Patient.findMany({
+    where: { [Op.or]: whereClause },
+    orderBy: {
+      createdAt: "desc",
     },
-    order: [["createdAt", "DESC"]],
-    raw: true,
   });
 
   console.log(patients);
   return { count: patients.length, patients };
+};
+
+module.exports = {
+  createPatientService,
+  deletePatientService,
+  getPatientByIdService,
+  searchPatientsService,
 };

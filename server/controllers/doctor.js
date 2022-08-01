@@ -1,13 +1,14 @@
-import {
+const { faker } = require("@faker-js/faker");
+
+const {
   getDoctorAppointmentsService,
   getDoctorPatientsService,
   searchDoctorsService,
-} from "../services/doctor.js";
-import { faker } from "@faker-js/faker";
-import db from "../models/index.js";
-import { getAppointmentByIdService } from "../services/reception.js";
+} = require("../services/doctor.js");
+const { getAppointmentByIdService } = require("../services/reception.js");
+const prisma = require("../utils/prisma");
 
-export const getDoctorAppointments = async (req, res) => {
+const getDoctorAppointments = async (req, res) => {
   try {
     if (!req.user || !req.user.id || req.user.role !== "DOCTOR")
       throw new Error("Unauthorized");
@@ -22,7 +23,7 @@ export const getDoctorAppointments = async (req, res) => {
   }
 };
 
-export const getAppointmentById = async (req, res) => {
+const getAppointmentById = async (req, res) => {
   try {
     if (!req.user || !req.user.id || req.user.role !== "DOCTOR")
       throw new Error("Unauthorized");
@@ -40,7 +41,7 @@ export const getAppointmentById = async (req, res) => {
   }
 };
 
-export const getDoctorPatients = async (req, res) => {
+const getDoctorPatients = async (req, res) => {
   try {
     if (!req.user || !req.user.id || req.user.role !== "DOCTOR")
       throw new Error("Unauthorized");
@@ -55,7 +56,7 @@ export const getDoctorPatients = async (req, res) => {
   }
 };
 
-export const searchDoctors = async (req, res) => {
+const searchDoctors = async (req, res) => {
   try {
     const { count, doctors } = await searchDoctorsService(req.query);
     return res.status(200).json({
@@ -70,7 +71,7 @@ export const searchDoctors = async (req, res) => {
   }
 };
 
-export const FillDummy = async (req, res) => {
+const FillDummy = async (req, res) => {
   try {
     const count = req.body.count;
     const designations = ["MBBS", "MD", "MS", "DNB", "BDS", "BHMS", "BAMS"];
@@ -88,7 +89,7 @@ export const FillDummy = async (req, res) => {
         address: faker.address.streetAddress(),
       };
 
-      await db.Doctor.create(info);
+      await prisma.Doctor.create(info);
     }
 
     return res.status(200).json({
@@ -100,4 +101,12 @@ export const FillDummy = async (req, res) => {
       message: err.message || "Internal Server Error",
     });
   }
+};
+
+module.exports = {
+  getDoctorAppointments,
+  getDoctorPatients,
+  getAppointmentById,
+  searchDoctors,
+  FillDummy,
 };

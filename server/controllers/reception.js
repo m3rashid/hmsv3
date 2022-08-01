@@ -1,4 +1,4 @@
-export const createReception = (io, socket) => (patientData) => {
+const createReception = (io, socket) => (patientData) => {
   console.log(patientData);
   //   first create the patient in the database
   //
@@ -9,3 +9,7 @@ export const createReception = (io, socket) => (patientData) => {
 };
 
 //  user groups bhi banane hai yrr, auth options ke basis pe :/
+
+module.exports = {
+  createReception,
+};

@@ -1,4 +1,4 @@
-export const socketConstants = {
+const socketConstants = {
   receptionistLeft: "receptionist-left",
   doctorLeft: "doctor-left",
   pharmacistLeft: "pharmacist-left",
@@ -26,7 +26,7 @@ export const socketConstants = {
   pharmacistLeft: "pharmacist-left",
 };
 
-import {
+const {
   createAppointment,
   createPatient,
   createReceptionist,
@@ -40,7 +40,7 @@ import {
   receptionistLeft,
   searchPatients,
   createPrescriptionByDoctor,
-} from "./handlers.js";
+} = require("./handlers.js");
 
 const socketHandler = (io, socket) => {
   socket.on(socketConstants.receptionistLeft, receptionistLeft(io, socket));
@@ -64,4 +64,7 @@ const socketHandler = (io, socket) => {
   );
 };
 
-export default socketHandler;
+module.exports = {
+  socketHandler,
+  socketConstants,
+};

@@ -1,12 +1,12 @@
-import express from "express";
-import { checkAuth } from "../middlewares/auth.js";
-import {
+const express = require("express");
+const { checkAuth } = require("../middlewares/auth.js");
+const {
   getDoctorAppointments,
   getDoctorPatients,
   searchDoctors,
   FillDummy,
   getAppointmentById,
-} from "../controllers/doctor.js";
+} = require("../controllers/doctor.js");
 const router = express.Router();
 
 router.get("/get-appointments", checkAuth, getDoctorAppointments);
@@ -16,4 +16,6 @@ router.post("/dummy", FillDummy);
 
 router.post("/get-patients", checkAuth, getDoctorPatients);
 
-export default router;
+module.exports = {
+  router,
+};

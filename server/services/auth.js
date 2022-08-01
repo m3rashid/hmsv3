@@ -1,35 +1,18 @@
-import { faker } from "@faker-js/faker";
-import bcrypt from "bcrypt";
+const { faker } = require("@faker-js/faker");
+const bcrypt = require("bcrypt");
 
-import db from "../models/index.js";
-import { issueJWT, revalidateJWT } from "../utils/jwt.js";
+const prisma = require("../utils/prisma");
+const { issueJWT, revalidateJWT } = require("../utils/jwt.js");
 
-export const UserDetails = async (userId, role) => {
-  console.log(userId, role);
+const UserDetails = async (userId, role) => {
   try {
     switch (role) {
       case "DOCTOR":
-        const doctor = await db.Doctor.findOne(
-          {
-            where: {
-              AuthId: userId,
-            },
-          },
-          {
-            include: [
-              {
-                model: db.Auth,
-                as: "Auth",
-              },
-            ],
-            raw: true,
-          }
-        );
-        console.log(doctor);
-        return {
-          ...doctor.dataValues,
-          id: doctor.dataValues.id,
-        };
+        const doctor = await prisma.Doctor.findUnique({
+          where: { id: userId },
+          include: { auth: true },
+        });
+        return doctor;
       case "PATIENT":
         return null;
       default:
@@ -41,23 +24,17 @@ export const UserDetails = async (userId, role) => {
   }
 };
 
-export const loginService = async (email, password) => {
+const loginService = async (email, password) => {
   if (!email || !password) throw new Error("No credentials");
 
-  const user = await db.Auth.findOne({
-    where: {
-      email,
-    },
+  const user = await prisma.Auth.findUnique({
+    where: { email },
   });
   if (!user) throw new Error("User not found");
   const matched = await bcrypt.compare(password, user.password);
   if (!matched) throw new Error("Wrong Credentials");
 
-  console.log(user);
-  const { id, role } = user.dataValues;
-
-  const userDetails = await UserDetails(id, role);
-
+  const userDetails = await UserDetails(user.id, user.role);
   const { token, refreshToken, expires } = issueJWT(user);
 
   return {
@@ -69,14 +46,14 @@ export const loginService = async (email, password) => {
   };
 };
 
-export const signupService = async (email, password, role, name) => {
+const signupService = async (email, password, role, name) => {
   if (!email || !password || !role || !name) {
     throw new Error("No credentials");
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
   console.log("creating user");
-  const user = await db.Auth.create({
+  const user = await prisma.Auth.create({
     name,
     email,
     password: hashedPassword,
@@ -88,9 +65,9 @@ export const signupService = async (email, password, role, name) => {
   return user;
 };
 
-export const logoutService = async () => {};
+const logoutService = async () => {};
 
-export const revalidateService = async (refreshToken) => {
+const revalidateService = async (refreshToken) => {
   if (!refreshToken) throw new Error("Unauthorized");
 
   const { valid, expired, payload } = revalidateJWT(refreshToken);
@@ -98,18 +75,21 @@ export const revalidateService = async (refreshToken) => {
   if (!valid || expired) throw new Error("Unauthorized");
   const payloadid = payload.sub.id;
 
-  const user = await db.Auth.findOne({ where: { id: payloadid } });
+  const user = await prisma.Auth.findUnique({ where: { id: payloadid } });
   if (!user) throw new Error("Unauthorized");
 
-  const { id, role } = user.dataValues;
-
-  const userDetails = await UserDetails(id, role);
+  const userDetails = await UserDetails(user.id, user.role);
 
   const { token, expires } = issueJWT(user);
-  return { user, userDetails, token, expires };
+  return {
+    user,
+    userDetails,
+    token,
+    expires,
+  };
 };
 
-export const createDummyService = async () => {
+const createDummyService = async () => {
   const roles = ["DOCTOR", "RECEPTIONIST", "ADMIN", "PATIENT", "PHARMACIST"];
   const role = roles[Math.floor(Math.random() * roles.length)];
   const sex = ["m", "f", "o"];
@@ -124,7 +104,7 @@ export const createDummyService = async () => {
       email: faker.internet.email(),
     };
 
-    await db.Patient.create(patientData);
+    await prisma.Patient.create(patientData);
     return;
   }
 
@@ -135,9 +115,9 @@ export const createDummyService = async () => {
     role,
   };
 
-  const user = await db.Auth.create(data);
+  const user = await prisma.Auth.create(data);
 
-  const AuthId = user.dataValues.id;
+  const AuthId = user.id;
 
   const designation = ["MBBS", "MD", "MS", "DNB", "DNB", "DNB"];
 
@@ -155,13 +135,8 @@ export const createDummyService = async () => {
         AuthId: AuthId,
       };
 
-      await db.Doctor.create(doctorData, {
-        include: [
-          {
-            model: db.Auth,
-            as: "Auth",
-          },
-        ],
+      await prisma.Doctor.create(doctorData, {
+        include: { auth: true },
       });
 
       break;
@@ -173,7 +148,7 @@ export const createDummyService = async () => {
         AuthId: AuthId,
       };
 
-      await db.Receptionist.create(receptionistData);
+      await prisma.Receptionist.create(receptionistData);
       break;
     case "PHARMACIST":
       const pharmacistData = {
@@ -183,7 +158,15 @@ export const createDummyService = async () => {
         AuthId: AuthId,
       };
 
-      await db.Pharmacist.create(pharmacistData);
+      await prisma.Pharmacist.create(pharmacistData);
       break;
   }
+};
+
+module.exports = {
+  loginService,
+  logoutService,
+  signupService,
+  revalidateService,
+  createDummyService,
 };

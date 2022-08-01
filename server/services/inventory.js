@@ -1,11 +1,8 @@
-// import db from "../models/index.js";
-// import bcrypt from "bcrypt";
+const addMedicine = async (name, quantity, price, description) => {};
 
-export const addMedicine = async (name, quantity, price, description) => {};
+const removeMedicine = async (medicineId) => {};
 
-export const removeMedicine = async (medicineId) => {};
-
-export const editMedicine = async (
+const editMedicine = async (
   medicineId,
   name,
   quantity,
@@ -13,4 +10,11 @@ export const editMedicine = async (
   description
 ) => {};
 
-export const getMedicine = async (medicineId) => {};
+const getMedicine = async (medicineId) => {};
+
+module.exports = {
+  addMedicine,
+  removeMedicine,
+  editMedicine,
+  getMedicine,
+};

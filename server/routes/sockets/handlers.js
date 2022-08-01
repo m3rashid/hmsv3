@@ -1,12 +1,14 @@
-import {
+const {
   createPatientService,
   createUserService,
   getDoctorAppointmentsService,
-} from "../../services/index.js";
-import { createAppointmentService } from "../../services/reception.js";
-import { createPrescriptionByDoctorService } from "../../services/doctor.js";
+} = require("../../services/index.js");
+const { createAppointmentService } = require("../../services/reception.js");
+const {
+  createPrescriptionByDoctorService,
+} = require("../../services/doctor.js");
 
-export const createUser =
+const createUser =
   (io, socket) =>
   async ({ email, password, role, name }) => {
     try {
@@ -21,7 +23,7 @@ export const createUser =
     }
   };
 
-export const getDoctorAppointments =
+const getDoctorAppointments =
   (io, socket) =>
   async ({ doctorId }) => {
     try {
@@ -38,7 +40,7 @@ export const getDoctorAppointments =
     }
   };
 
-export const getDoctorPatients =
+const getDoctorPatients =
   (io, socket) =>
   async ({ doctorId }) => {
     try {
@@ -55,7 +57,7 @@ export const getDoctorPatients =
     }
   };
 
-export const createPatient =
+const createPatient =
   (io, socket) =>
   async ({ name, age, sex, contact, address, email, jamiaId }) => {
     try {
@@ -77,7 +79,7 @@ export const createPatient =
     }
   };
 
-export const deletePatient =
+const deletePatient =
   (io, socket) =>
   async ({ patientId }) => {
     try {
@@ -91,7 +93,7 @@ export const deletePatient =
     }
   };
 
-export const getPatientById =
+const getPatientById =
   (io, socket) =>
   async ({ patientId }) => {
     try {
@@ -108,7 +110,7 @@ export const getPatientById =
     }
   };
 
-export const searchPatients =
+const searchPatients =
   (io, socket) =>
   async ({
     name,
@@ -147,7 +149,7 @@ export const searchPatients =
     }
   };
 
-export const createReceptionist = (io, socket) => () => {
+const createReceptionist = (io, socket) => () => {
   try {
   } catch (err) {
     console.log(err);
@@ -157,7 +159,7 @@ export const createReceptionist = (io, socket) => () => {
   }
 };
 
-export const receptionistLeft =
+const receptionistLeft =
   (io, socket) =>
   ({ receptionistId }) => {
     try {
@@ -170,7 +172,7 @@ export const receptionistLeft =
     }
   };
 
-export const doctorLeft =
+const doctorLeft =
   (io, socket) =>
   ({ doctorId }) => {
     try {
@@ -183,7 +185,7 @@ export const doctorLeft =
     }
   };
 
-export const pharmacistLeft =
+const pharmacistLeft =
   (io, socket) =>
   ({ pharmacistId }) => {
     try {
@@ -196,7 +198,7 @@ export const pharmacistLeft =
     }
   };
 
-export const createAppointment =
+const createAppointment =
   (io, socket) =>
   async ({ patientId, doctorId, date, patient, doctor }) => {
     try {
@@ -218,7 +220,7 @@ export const createAppointment =
     }
   };
 
-export const createPrescriptionByDoctor =
+const createPrescriptionByDoctor =
   (io, socket) =>
   async ({
     appointment,
@@ -245,3 +247,19 @@ export const createPrescriptionByDoctor =
       });
     }
   };
+
+module.exports = {
+  createUser,
+  getDoctorAppointments,
+  getDoctorPatients,
+  createPatient,
+  deletePatient,
+  getPatientById,
+  searchPatients,
+  createReceptionist,
+  receptionistLeft,
+  doctorLeft,
+  pharmacistLeft,
+  createAppointment,
+  createPrescriptionByDoctor,
+};
