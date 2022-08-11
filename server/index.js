@@ -14,7 +14,7 @@ const prisma = require("./utils/prisma.js");
 const corsOrigin = [
   "https://admin.socket.io",
   process.env.NODE_ENV === "production"
-    ? "https://ansarihms.netlify.app"
+    ? "https://ansarihms.surge.sh"
     : "http://localhost:3000",
 ];
 
