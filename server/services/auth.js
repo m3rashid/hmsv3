@@ -101,9 +101,20 @@ const revalidateService = async (refreshToken) => {
 };
 
 const createDummyService = async () => {
-  const roles = ["DOCTOR", "RECEPTIONIST", "ADMIN", "PATIENT", "PHARMACIST"];
+  const roles = [
+    "DOCTOR",
+    "RECEPTIONIST",
+    "ADMIN",
+    "PATIENT",
+    "PHARMACIST",
+    "INVENTORY_MANAGER",
+    "CO_ADMIN",
+  ];
+
   const role = roles[Math.floor(Math.random() * roles.length)];
+
   const sex = ["m", "f", "o"];
+
   if (role === "PATIENT") {
     const patientData = {
       name: faker.name.findName(),

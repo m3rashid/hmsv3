@@ -62,7 +62,7 @@ const routes = [
     path: "/inventory",
     component: Inventory,
     text: "Inventory",
-    role: ["PHARMACIST"],
+    role: ["INVENTORY_MANAGER"],
   },
 ];
 

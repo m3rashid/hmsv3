@@ -1,4 +1,8 @@
-const { addDummy, searchInventoryService } = require("../services/inventory");
+const {
+  addDummy,
+  searchInventoryService,
+  addMedicineService,
+} = require("../services/inventory");
 
 const CreateDummyInventory = async (req, res) => {
   const count = req.body.count;
@@ -38,7 +42,24 @@ const SearchInventory = async (req, res) => {
   }
 };
 
+const addMedicine = async (req, res) => {
+  const { name, quantity, price, description } = req.body;
+  try {
+    await addMedicineService(name, quantity, price, description);
+    return res.status(200).json({
+      message: "Medicine added",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: err.message || "Internal Server Error",
+      error: err,
+    });
+  }
+};
+
 module.exports = {
   CreateDummyInventory,
   SearchInventory,
+  addMedicine,
 };

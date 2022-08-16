@@ -1,84 +1,61 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Form,
   Button,
-  // Input,
   AutoComplete,
-  DatePicker,
   message,
   Typography,
-  // Space,
-  // Grid,
-  Row,
   Col,
+  Input,
+  Space,
+  Card,
 } from "antd";
-import { socket } from "../../../api/socket";
 import { instance } from "../../../api/instance";
 import axios from "axios";
+import TextArea from "antd/lib/input/TextArea";
 
 const AddNew = () => {
-  const [doctors, setDoctors] = useState({
+  const [itemlist, setItemlist] = useState({
     data: [],
     cancelToken: undefined,
   });
   const [FormSelected, setFormSelected] = useState({
-    doctor: null,
-    patient: null,
+    item: null,
   });
-
-  console.log(FormSelected, setFormSelected);
-
-  useEffect(() => {
-    socket.on("new-appointment-created", (data) => {
-      message.success(`Appointment for ${data.id} created successfully!`);
-    });
-
-    return () => {
-      socket.off("new-appointment-created");
-    };
-  }, []);
 
   const [form] = Form.useForm();
 
-  const formSubmitHandler = (values) => {
-    console.log(values);
-    socket.emit("create-appointment", {
-      patientId: values.patient,
-      patient: FormSelected.patient,
-      doctor: FormSelected.doctor,
-      doctorId: values.doctor,
-      date: values.datetime,
-    });
+  const formSubmitHandler = async (values) => {
+    console.log(values, FormSelected);
+    try {
+      const res = await instance.post("/inventory/add", {
+        name: values.name,
+        quantity: parseInt(values.quantity),
+        price: parseInt(values.price),
+        description: values.description,
+      });
+
+      setFormSelected({});
+
+      if (res.status === 200) {
+        message.success("Medicine added");
+        form.resetFields();
+      }
+    } catch (err) {
+      console.error(err);
+      message.error("Error");
+    }
   };
-  useEffect(() => {
-    instance.get("/reception/doctors").then((res) => {
-      console.log(res.data);
-      setDoctors(
-        res.data?.map((doctor) => ({
-          value: doctor.email,
-          label: `${doctor.name}`,
-        }))
-      );
-    });
-    socket.on("created-appointment", (data) => {
-      console.log(data);
-      message.success(`Appointment ${data.title} created successfully!`);
-    });
 
-    return () => {
-      socket.off("created-appointment");
-    };
-  }, []);
-
-  const UpdateDoctors = async (value) => {
-    if (doctors.cancelToken) {
-      doctors.cancelToken.cancel();
+  const UpdateMedicine = async (value) => {
+    if (itemlist.cancelToken) {
+      itemlist.cancelToken.cancel();
     }
 
     try {
       const CancelToken = axios.CancelToken.source();
 
-      setDoctors({
+      setItemlist({
         data: [
           {
             value: "",
@@ -88,21 +65,18 @@ const AddNew = () => {
         cancelToken: CancelToken,
       });
 
-      const { data } = await instance.get("/doctor/search", {
+      const { data } = await instance.get("/inventory/search", {
         params: {
           name: value,
-          email: value,
-          designation: value,
-          contact: value,
         },
       });
 
-      setDoctors({
-        ...doctors,
-        data: data.doctors.map((doctor) => {
+      setItemlist({
+        ...itemlist,
+        data: data.inventory.map((item) => {
           return {
-            value: doctor.id,
-            data: doctor,
+            value: item.id,
+            data: item,
             label: (
               <Col
                 direction="vertical"
@@ -111,22 +85,12 @@ const AddNew = () => {
                   fontSize: 12,
                 }}
               >
-                <Row>
-                  <Typography.Text>{doctor.name}</Typography.Text>
-                  <Typography.Text type="danger">
-                    {"("}
-                    {doctor.designation}
-                    {")"}
-                  </Typography.Text>
-                </Row>
-                <Row>
-                  <Typography.Text disabled>{doctor.email}</Typography.Text>
-                </Row>
+                <Typography.Text>{item.name}</Typography.Text>
               </Col>
             ),
           };
         }),
-        cancelToken: doctors.cancelToken ? doctors.cancelToken : CancelToken,
+        cancelToken: itemlist.cancelToken || CancelToken,
       });
     } catch (err) {
       console.log(err);
@@ -142,40 +106,101 @@ const AddNew = () => {
       wrapperCol={{ span: 8 }}
     >
       <Form.Item
-        label="Medicine Name"
-        name="doctor"
-        rules={[{ required: true, message: "Please select a doctor!" }]}
+        label="Item Name"
+        name="name"
+        rules={[{ required: true, message: "Please select an item!" }]}
       >
         <AutoComplete
-          options={doctors.data}
-          id="doctor"
-          placeholder="Doctor Name"
-          onSearch={(value) => UpdateDoctors(value)}
+          options={itemlist.data}
+          id="name"
+          placeholder="Item Name"
+          onSearch={(value) => UpdateMedicine(value)}
           onSelect={(value) => {
-            form.setFieldsValue({
-              doctor: value,
-            });
+            console.log(value);
+            const item = itemlist.data.find((item) => item.value === value);
+            form.setFieldValue("name", item.data.name);
             setFormSelected({
               ...FormSelected,
-              doctor: doctors.data.find((doctor) => doctor.value === value),
+              item: item,
+            });
+          }}
+          onChange={(value) => {
+            console.log({ value });
+            if (value === "") {
+              form.setFieldValue("name", "");
+              setFormSelected({
+                ...FormSelected,
+                item: null,
+              });
+            } else {
+              const item = itemlist.data.find(
+                (doctor) => doctor.value === value
+              );
+              console.log(item?.data?.name || value);
+              form.setFieldValue("name", item?.data?.name || value);
+
+              setFormSelected({
+                ...FormSelected,
+                item: itemlist.data.find(
+                  (doctor) => doctor.value === parseInt(value)
+                ),
+              });
+            }
+          }}
+          onClear={() => {
+            setFormSelected({
+              ...FormSelected,
+              item: null,
             });
           }}
         />
-        <Typography.Text
+        <Typography.Title
           disabled
           style={{
             fontSize: 10,
           }}
         >
-          *Search by (name or designation)
-        </Typography.Text>
+          *Search by name
+        </Typography.Title>
+      </Form.Item>
+
+      {FormSelected.item && (
+        <Card title={FormSelected.item?.data?.name} bordered>
+          <Space direction="vertical">
+            <Typography.Text type="danger">
+              ID : {FormSelected.item?.data?.id}
+            </Typography.Text>
+            <Typography.Text
+              style={{
+                opacity: 0.8,
+              }}
+            >
+              {FormSelected.item?.data?.description}
+            </Typography.Text>
+          </Space>
+        </Card>
+      )}
+      <Form.Item
+        label="Price"
+        name="price"
+        rules={[{ required: true, message: "Please enter price!" }]}
+      >
+        <Input placeholder="Price" name="price" />
+      </Form.Item>
+
+      <Form.Item
+        label="Quantity"
+        name="quantity"
+        rules={[{ required: true, message: "Please enter quantity!" }]}
+      >
+        <Input type="number" min={1} />
       </Form.Item>
       <Form.Item
-        label="Date"
-        name="datetime"
-        rules={[{ required: true, message: "Please enter date and time !" }]}
+        label="Description"
+        name="description"
+        rules={[{ required: true, message: "Please enter description!" }]}
       >
-        <DatePicker showTime />
+        <TextArea rows={4} placeholder="Description" />
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 2 }}>
         <Button type="primary" htmlType="submit">

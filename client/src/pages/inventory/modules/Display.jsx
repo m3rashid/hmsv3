@@ -1,5 +1,5 @@
-import { Col, Input, Row, Space, Typography } from "antd";
-import React from "react";
+import { Col, Input, Modal, Row, Space, Typography } from "antd";
+import React, { useState } from "react";
 import styles from "../style.module.css";
 import { List } from "antd";
 import VirtualList from "rc-virtual-list";
@@ -8,6 +8,10 @@ import { instance } from "../../../api/instance";
 
 function Display() {
   const [SearchQuery, setSearchQuery] = React.useState("");
+  const [isModalVisible, setIsModalVisible] = useState({
+    open: false,
+    data: {},
+  });
 
   const { data, isLoading, isError } = useQuery(
     ["inventory", SearchQuery],
@@ -42,7 +46,18 @@ function Display() {
             itemKey="id"
           >
             {(item) => (
-              <List.Item key={item.id}>
+              <List.Item
+                key={item.id}
+                onClick={() => {
+                  setIsModalVisible({
+                    open: true,
+                    data: item,
+                  });
+                }}
+                style={{
+                  cursor: "pointer",
+                }}
+              >
                 <Row
                   style={{
                     width: "100%",
@@ -111,6 +126,32 @@ function Display() {
             )}
           </VirtualList>
         </List>
+      )}
+
+      {isModalVisible.open && (
+        <Modal
+          title="Medicine Details"
+          visible={isModalVisible}
+          onOk={() => setIsModalVisible({ open: false, data: {} })}
+          onCancel={() => setIsModalVisible({ open: false, data: {} })}
+        >
+          <Space direction="vertical">
+            <Typography.Text> ID : {isModalVisible.data.id}</Typography.Text>
+            <Typography.Title level={4}>
+              {isModalVisible?.data?.name}
+            </Typography.Title>
+            <Typography.Text>
+              {isModalVisible?.data?.description}
+            </Typography.Text>
+            <Typography.Text type="danger">
+              {isModalVisible?.data?.quantity} Left
+            </Typography.Text>
+            <Typography.Text>
+              <Typography.Text type="danger">₹</Typography.Text>
+              {isModalVisible?.data?.price}
+            </Typography.Text>
+          </Space>
+        </Modal>
       )}
     </div>
   );

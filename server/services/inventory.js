@@ -72,7 +72,7 @@ const dummymedicines = [
   "Zubsolv",
 ];
 
-const addMedicine = async (name, quantity, price, description) => {
+const addMedicineService = async (name, quantity, price, description) => {
   const data = { name, quantity, price, description };
   console.log(data);
   const addMedicine = await prisma.inventory.create({ data });
@@ -133,7 +133,7 @@ const searchInventoryService = async ({ quantity, price, name }) => {
 };
 
 module.exports = {
-  addMedicine,
+  addMedicineService,
   removeMedicine,
   editMedicine,
   getMedicine,
