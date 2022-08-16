@@ -9,23 +9,22 @@ const createPatientService = async ({
   email,
   jamiaId,
 }) => {
-  if (!name || !age || !sex || !contact || !email)
+  const data = { name, age, sex, contact, address, email, jamiaId };
+  console.log(data);
+  if (!name || !age || !sex || !contact || !email) {
     throw new Error("Missing credentials");
-
-  const newPatient = await prisma.Patient.create({
-    data: { name, age, sex, contact, address, email, jamiaId },
-  });
-
+  }
+  const newPatient = await prisma.Patient.create({ data });
   return { patient: newPatient };
 };
 
 const deletePatientService = async (patientId) => {
+  console.log({ patientId });
   const patient = await prisma.Patient.delete({
     where: { id: patientId },
   });
   if (!patient) throw new Error("Patient not found");
-
-  return;
+  return patient;
 };
 
 const getPatientByIdService = async (patientId) => {
@@ -51,31 +50,15 @@ const searchPatientsService = async ({
 }) => {
   const patients = await prisma.Patient.findMany({
     where: {
-      name: {
-        contains: name,
-      },
-      age: {
-        gte: minAge,
-      },
-      age: {
-        lte: maxAge,
-      },
-      sex: {
-        eq: sex,
-      },
-      contact: {
-        contains: contact,
-      },
-      address: {
-        contains: address,
-      },
-      email: {
-        contains: email,
-      },
+      name: { contains: name },
+      age: { gte: minAge },
+      age: { lte: maxAge },
+      sex: { eq: sex },
+      contact: { contains: contact },
+      address: { contains: address },
+      email: { contains: email },
     },
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy: { createdAt: "desc" },
   });
 
   return { count: patients.length, patients };

@@ -11,21 +11,10 @@ const createAppointmentService = async ({
     const newAppointment = await prisma.Appointment.create({
       data: {
         date,
-        patient: {
-          connect: {
-            id: patientId,
-          },
-        },
-        doctor: {
-          connect: {
-            id: doctorId,
-          },
-        },
+        patient: { connect: { id: patientId } },
+        doctor: { connect: { id: doctorId } },
       },
-      include: {
-        patient: true,
-        doctor: true,
-      },
+      include: { patient: true, doctor: true },
     });
 
     return newAppointment;
@@ -39,10 +28,7 @@ const getAppointmentByIdService = async (appointmentId) => {
   try {
     const appointment = await prisma.Appointment.findUnique({
       where: { id: appointmentId },
-      include: {
-        patient: true,
-        doctor: true,
-      },
+      include: { patient: true, doctor: true },
     });
 
     console.log(appointment);

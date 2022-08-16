@@ -3,7 +3,7 @@ import {
   Button,
   // Col,
   Form,
-  Input,
+  // Input,
   InputNumber,
   notification,
   // Row,
@@ -14,11 +14,12 @@ import {
 import React, { useState } from "react";
 import FixedUseContext from "../../Hooks/FixedUseContext";
 import { PharmacyContext } from "../../pages/pharmacy";
-const { TextArea } = Input;
+// const { TextArea } = Input;
 const { Option } = Select;
 
 function CreateReceipts() {
-  const [loading, setLoading] = useState(false);
+  const loading = false;
+  // const [loading, setLoading] = useState(false);
   const { prescription, getMedicine, reduceMedicine } =
     FixedUseContext(PharmacyContext);
   const [SelectedPrescription, setSelectedPrescription] = useState(null);
@@ -113,11 +114,7 @@ function CreateReceipts() {
                       });
                     }}
                   />
-                  <span
-                    style={{
-                      padding: "10",
-                    }}
-                  >
+                  <span style={{ padding: "10" }}>
                     max. {getMedicine(item)[0].qty}
                   </span>
                 </Space>

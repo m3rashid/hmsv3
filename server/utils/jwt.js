@@ -2,7 +2,7 @@ const JWT = require("jsonwebtoken");
 const fs = require("fs");
 
 const keys = JSON.parse(fs.readFileSync(__dirname + "/keys/keys.json"));
-console.log(keys);
+// console.log(keys);
 
 const issueJWT = (user) => {
   const expiresIn = "1d";

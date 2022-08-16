@@ -85,12 +85,7 @@ const CreateAppointmentForm = () => {
       const CancelToken = axios.CancelToken.source();
 
       setPatients({
-        data: [
-          {
-            value: "",
-            label: "Loading..",
-          },
-        ],
+        data: [{ value: "", label: "Loading.." }],
         cancelToken: CancelToken,
       });
 
@@ -103,9 +98,7 @@ const CreateAppointmentForm = () => {
             jamiaId: value,
           },
         },
-        {
-          cancelToken: CancelToken.token,
-        }
+        { cancelToken: CancelToken.token }
       );
       console.log(data);
 
@@ -116,13 +109,7 @@ const CreateAppointmentForm = () => {
             value: patient.id,
             data: patient,
             label: (
-              <Col
-                direction="vertical"
-                size={"small"}
-                style={{
-                  fontSize: 12,
-                }}
-              >
+              <Col direction="vertical" size={"small"} style={{ fontSize: 12 }}>
                 <Row>
                   <Typography.Text>{patient.name}</Typography.Text>
                   <Typography.Text type="danger">
@@ -154,12 +141,7 @@ const CreateAppointmentForm = () => {
       const CancelToken = axios.CancelToken.source();
 
       setDoctors({
-        data: [
-          {
-            value: "",
-            label: "Loading..",
-          },
-        ],
+        data: [{ value: "", label: "Loading.." }],
         cancelToken: CancelToken,
       });
 
@@ -179,13 +161,7 @@ const CreateAppointmentForm = () => {
             value: doctor.id,
             data: doctor,
             label: (
-              <Col
-                direction="vertical"
-                size={"small"}
-                style={{
-                  fontSize: 12,
-                }}
-              >
+              <Col direction="vertical" size={"small"} style={{ fontSize: 12 }}>
                 <Row>
                   <Typography.Text>{doctor.name}</Typography.Text>
                   <Typography.Text type="danger">
@@ -227,9 +203,7 @@ const CreateAppointmentForm = () => {
           options={patients.data}
           onSearch={(value) => UpdatePatients(value)}
           onSelect={(value) => {
-            form.setFieldsValue({
-              patient: value,
-            });
+            form.setFieldsValue({ patient: value });
             setFormSelected({
               ...FormSelected,
               patient: patients.data.find((patient) => patient.value === value),
@@ -237,12 +211,7 @@ const CreateAppointmentForm = () => {
           }}
         />
 
-        <Typography.Text
-          disabled
-          style={{
-            fontSize: 10,
-          }}
-        >
+        <Typography.Text disabled style={{ fontSize: 10 }}>
           *Search by (name or email or jamia Id)
         </Typography.Text>
       </Form.Item>
@@ -258,21 +227,14 @@ const CreateAppointmentForm = () => {
           placeholder="Doctor Name"
           onSearch={(value) => UpdateDoctors(value)}
           onSelect={(value) => {
-            form.setFieldsValue({
-              doctor: value,
-            });
+            form.setFieldsValue({ doctor: value });
             setFormSelected({
               ...FormSelected,
               doctor: doctors.data.find((doctor) => doctor.value === value),
             });
           }}
         />
-        <Typography.Text
-          disabled
-          style={{
-            fontSize: 10,
-          }}
-        >
+        <Typography.Text disabled style={{ fontSize: 10 }}>
           *Search by (name or designation)
         </Typography.Text>
       </Form.Item>
@@ -285,7 +247,7 @@ const CreateAppointmentForm = () => {
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 2 }}>
         <Button type="primary" htmlType="submit">
-          Create
+          Create Appointment
         </Button>
       </Form.Item>
     </Form>

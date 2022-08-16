@@ -12,7 +12,6 @@ const getDoctorAppointmentsService = async (userId) => {
   return { appointments };
 };
 
-// Hopefully this is the correct query
 const getDoctorPatientsService = async (doctorId) => {
   const patients = await prisma.Patient.findMany({
     where: {

@@ -115,9 +115,7 @@ const createDummyService = async () => {
       email: faker.internet.email(),
     };
 
-    await prisma.patient.create({
-      data: patientData,
-    });
+    await prisma.patient.create({ data: patientData });
     return;
   }
 
@@ -144,17 +142,13 @@ const createDummyService = async () => {
         contact: faker.phone.phoneNumber("+91 ##### #####"),
         availability: "Yes",
         auth: {
-          connect: {
-            id: AuthId,
-          },
+          connect: { id: AuthId },
         },
       };
 
       console.log(doctorData);
 
-      await prisma.Doctor.create({
-        data: doctorData,
-      });
+      await prisma.Doctor.create({ data: doctorData });
 
       break;
     case "RECEPTIONIST":
@@ -164,9 +158,7 @@ const createDummyService = async () => {
         contact: faker.phone.phoneNumber("+91 ##### #####"),
         address: faker.address.city(),
         auth: {
-          connect: {
-            id: AuthId,
-          },
+          connect: { id: AuthId },
         },
       };
 
@@ -179,9 +171,7 @@ const createDummyService = async () => {
         contact: faker.phone.phoneNumber("+91 ##### #####"),
         address: faker.address.city(),
         auth: {
-          connect: {
-            id: AuthId,
-          },
+          connect: { id: AuthId },
         },
       };
 

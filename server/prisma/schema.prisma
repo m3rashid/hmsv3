@@ -13,6 +13,8 @@ enum Role {
   ADMIN
   RECEPTIONIST
   PHARMACIST
+  INVENTORY_MANAGER
+  CO_ADMIN
   OTHER
 }
 
@@ -35,19 +37,19 @@ model Auth {
 }
 
 model Doctor {
-  id           Int            @id @default(sequence())
+  id           Int           @id @default(sequence())
   name         String
   age          Int
-  availability String         @default("Yes")
+  availability String        @default("Yes")
   designation  String
-  contact      String         @unique
+  contact      String        @unique
   address      String
   appointments Appointment[]
   // Prescription Prescription[]
   authId       Int
-  auth         Auth           @relation(fields: [authId], references: [id])
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @default(now())
+  auth         Auth          @relation(fields: [authId], references: [id])
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @default(now())
 }
 
 model Pharmacist {
@@ -75,19 +77,19 @@ model Receptionist {
 }
 
 model Patient {
-  id           Int            @id @default(sequence())
-  name         String
-  age          Int
-  sex          Sex
-  lastVisit    DateTime?
-  contact      String         @unique
-  address      String?
-  email        String?
-  jamiaId      String?
-  Appointment  Appointment[]
+  id          Int           @id @default(sequence())
+  name        String
+  age         Int
+  sex         Sex
+  lastVisit   DateTime?
+  contact     String        @unique
+  address     String?
+  email       String?
+  jamiaId     String?
+  Appointment Appointment[]
   // Prescription Prescription[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @default(now())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
 }
 
 model Appointment {

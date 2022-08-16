@@ -8,9 +8,7 @@ const CreatePatientForm = () => {
   const formSubmitHandler = (values) => {
     if (loading) return;
     setLoading(true);
-    socket.emit("create-patient", {
-      ...values,
-    });
+    socket.emit("create-patient", { ...values });
   };
   useEffect(() => {
     socket.on("new-patient-created", ({ data }) => {
@@ -69,7 +67,7 @@ const CreatePatientForm = () => {
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 2 }}>
         <Button loading={loading} type="primary" htmlType="submit">
-          Create
+          Register Patient
         </Button>
       </Form.Item>
     </Form>

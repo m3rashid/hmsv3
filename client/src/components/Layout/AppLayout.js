@@ -30,7 +30,7 @@ function Index(props) {
                   handleClick();
                 }}
               />
-              Dr. M.A Ansari Hospital
+              Dr. M.A Ansari Health Centre
             </Typography.Title>
           </Col>
           <Col className={styles.theme}>

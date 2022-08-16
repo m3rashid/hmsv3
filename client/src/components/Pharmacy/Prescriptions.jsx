@@ -81,13 +81,7 @@ function Prescriptions() {
             <h4>
               <strong>Prescription Info </strong>
             </h4>
-            <Space
-              direction="vertical"
-              size={3}
-              style={{
-                padding: "10px",
-              }}
-            >
+            <Space direction="vertical" size={3} style={{ padding: "10px" }}>
               <div>
                 <strong>Patient Name: </strong>
                 {ModalVisible.data?.patientname}
