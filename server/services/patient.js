@@ -1,14 +1,14 @@
 const prisma = require("../utils/prisma");
 
-const createPatientService = async (
+const createPatientService = async ({
   name,
   age,
   sex,
   contact,
   address,
   email,
-  jamiaId
-) => {
+  jamiaId,
+}) => {
   if (!name || !age || !sex || !contact || !email)
     throw new Error("Missing credentials");
 
@@ -16,7 +16,7 @@ const createPatientService = async (
     data: { name, age, sex, contact, address, email, jamiaId },
   });
 
-  return { newPatient };
+  return { patient: newPatient };
 };
 
 const deletePatientService = async (patientId) => {
@@ -49,34 +49,35 @@ const searchPatientsService = async ({
   lastVisitedBefore,
   lastVisitedAfter,
 }) => {
-  // FIX this bad query
-  const whereClause = {
-    ...(name && { [Op.like]: `%${name}%` }),
-    ...(age && { [Op.gte]: minAge }),
-    ...(age && { [Op.lte]: maxAge }),
-    ...(sex && { [Op.eq]: sex }),
-    ...(contact && { [Op.like]: `%${contact}%` }),
-    ...(address && { [Op.like]: `%${address}%` }),
-    ...(email && { [Op.like]: `%${email}%` }),
-    ...(jamiaId && { [Op.like]: `%${jamiaId}%` }),
-    ...(lastVisit && {
-      [Op.lte]: new Date(lastVisitedBefore).toISOString(),
-    }),
-    ...(lastVisit && {
-      [Op.gte]: new Date(lastVisitedAfter).toISOString(),
-    }),
-  };
-
-  console.log(whereClause);
-
   const patients = await prisma.Patient.findMany({
-    where: { [Op.or]: whereClause },
+    where: {
+      name: {
+        contains: name,
+      },
+      age: {
+        gte: minAge,
+      },
+      age: {
+        lte: maxAge,
+      },
+      sex: {
+        eq: sex,
+      },
+      contact: {
+        contains: contact,
+      },
+      address: {
+        contains: address,
+      },
+      email: {
+        contains: email,
+      },
+    },
     orderBy: {
       createdAt: "desc",
     },
   });
 
-  console.log(patients);
   return { count: patients.length, patients };
 };
 

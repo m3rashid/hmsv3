@@ -1,22 +1,27 @@
-const { UserDetails } = require("./auth.js");
+const dayjs = require("dayjs");
 const prisma = require("../utils/prisma");
 
 const getDoctorAppointmentsService = async (userId) => {
-  const Doc = await UserDetails(userId, "DOCTOR");
-  const appointments = await prisma.Appointment.findMany({
-    where: { doctorId: Doc.id },
+  console.log(userId);
+  const appointments = await prisma.appointment.findMany({
+    where: { doctorId: userId },
     include: { doctor: true, patient: true },
-    orderBy: { date: "desc" },
   });
 
   console.log(appointments);
   return { appointments };
 };
 
-// FIX this bad query
+// Hopefully this is the correct query
 const getDoctorPatientsService = async (doctorId) => {
   const patients = await prisma.Patient.findMany({
-    where: {},
+    where: {
+      Appointment: {
+        some: {
+          doctorId: doctorId,
+        },
+      },
+    },
   });
   return { patients };
 };
@@ -39,63 +44,79 @@ const searchDoctorsService = async ({
   contact,
   email,
   address,
+  availability,
 }) => {
-  // FIX this bad query
-  const whereClause = {
-    ...(name && { name: { [Op.like]: `%${name}%` } }),
-    ...(minAge && { age: { [Op.gte]: minAge } }),
-    ...(maxAge && { age: { [Op.lte]: maxAge } }),
-    ...(minAge && { [Op.gte]: minAge }),
-    ...(designation && { [Op.like]: designation }),
-    ...(contact && { [Op.like]: `%${contact}%` }),
-    ...(address && { [Op.like]: `%${address}%` }),
-    ...(email && { [Op.like]: `%${email}%` }),
-  };
-
-  console.log(whereClause);
-
-  const doctors = await prisma.Doctor.findAll({
+  const doctors = await prisma.Doctor.findMany({
     where: {
-      [Op.or]: whereClause,
+      name: {
+        contains: name,
+      },
+      age: {
+        gte: minAge,
+      },
+      age: {
+        lte: maxAge,
+      },
+      designation: {
+        contains: designation,
+      },
+      contact: {
+        contains: contact,
+      },
+      address: {
+        contains: address,
+      },
     },
-    raw: true,
   });
-
-  console.log(doctors);
   return { count: doctors.length, doctors };
 };
 
-const createPrescriptionByDoctorService = async (
+const createPrescriptionByDoctorService = async ({
   appointment,
   symptoms,
-  prescription,
+  diagnosis,
   CustomMedicines,
-  datetime
-) => {
+  datetime,
+  medicines,
+}) => {
   // Fix this bad query
-  const newPrescription = await prisma.Prescription.create({
+  const newPrescription = await prisma.prescription.create({
     data: {
-      appointmentId: appointment,
+      appointment: {
+        connect: {
+          id: appointment,
+        },
+      },
       symptoms,
-      prescription,
+      diagnosis,
       CustomMedicines,
-      datePrescribed: datetime,
+      datePrescribed: dayjs(datetime).toDate(),
+      medicines: {
+        createMany: {
+          data: medicines.map((medicine) => ({
+            quantity: parseInt(medicine.quantity),
+            dosage: medicine?.dosage,
+            description: medicine.description,
+            MedicineId: parseInt(medicine.name),
+          })),
+        },
+      },
     },
     include: {
       appointment: true,
-      doctor: true,
-      patient: true,
+      // doctor: true,
+      // patient: true,
     },
   });
 
-  const newPresDetails = await newPrescription.getAppointment();
-  const patient = await newPresDetails.getPatient();
-  const doctor = await newPresDetails.getDoctor();
+  // const newPresDetails = await newPrescription.getAppointment();
+  // const patient = await newPresDetails.getPatient();
+  // const doctor = await newPresDetails.getDoctor();
 
   return {
     prescription: newPrescription,
-    doctor,
-    patient,
+    // doctor,
+    // patient,
   };
 };
 
