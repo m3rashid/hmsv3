@@ -3,6 +3,7 @@ import { faker } from "@faker-js/faker";
 
 const GenerateData = (count) => {
   const data = [];
+
   for (let i = 0; i < count; i++) {
     data.push({
       patient: faker.name.findName(),
