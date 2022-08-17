@@ -25,16 +25,6 @@ const getDoctorPatientsService = async (doctorId) => {
   return { patients };
 };
 
-const createDoctorService = async (doctor) => {
-  try {
-    const newDoctor = await prisma.Doctor.create(doctor);
-    return { newDoctor };
-  } catch (err) {
-    console.log(err);
-    return new Error("Internal Server Error");
-  }
-};
-
 const searchDoctorsService = async ({
   name,
   minAge,
@@ -47,30 +37,18 @@ const searchDoctorsService = async ({
 }) => {
   const doctors = await prisma.Doctor.findMany({
     where: {
-      name: {
-        contains: name,
-      },
-      age: {
-        gte: minAge,
-      },
-      age: {
-        lte: maxAge,
-      },
-      designation: {
-        contains: designation,
-      },
-      contact: {
-        contains: contact,
-      },
-      address: {
-        contains: address,
-      },
+      name: { contains: name },
+      age: { gte: minAge },
+      age: { lte: maxAge },
+      designation: { contains: designation },
+      contact: { contains: contact },
+      address: { contains: address },
     },
   });
   return { count: doctors.length, doctors };
 };
 
-const createPrescriptionByDoctorService = async ({
+const createPrescriptionService = async ({
   appointment,
   symptoms,
   diagnosis,
@@ -122,7 +100,6 @@ const createPrescriptionByDoctorService = async ({
 module.exports = {
   getDoctorAppointmentsService,
   getDoctorPatientsService,
-  createDoctorService,
   searchDoctorsService,
-  createPrescriptionByDoctorService,
+  createPrescriptionService,
 };

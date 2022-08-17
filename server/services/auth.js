@@ -1,13 +1,12 @@
-const { faker } = require("@faker-js/faker");
 const bcrypt = require("bcrypt");
-const dayjs = require("dayjs");
+
 const prisma = require("../utils/prisma");
+const permissions = require("../utils/auth.helpers");
 const { issueJWT, revalidateJWT } = require("../utils/jwt.js");
 
 const loginService = async (email, password) => {
-  if (!email || !password) throw new Error("No credentials");
-
   console.log({ email, password });
+  if (!email || !password) throw new Error("No credentials");
 
   const user = await prisma.auth.findUnique({
     where: { email },
@@ -25,7 +24,7 @@ const loginService = async (email, password) => {
 
   return {
     user: {
-      roles: user.role,
+      permissions: user.permissions,
       dataValues: user,
     },
     userDetails,
@@ -36,22 +35,82 @@ const loginService = async (email, password) => {
 };
 
 const signupService = async (email, password, role) => {
-  if (!email || !password || !role) {
-    throw new Error("No credentials");
+  console.log({ email, password, role });
+  if (!email || !password || !role) throw new Error("No credentials");
+
+  let allowedActions = [];
+  switch (role) {
+    case "DOCTOR":
+      allowedActions = [
+        permissions.SEARCH_DOCTOR,
+        permissions.CREATE_PRESCRIPTION,
+        permissions.GET_DOCTOR_PATIENTS,
+        permissions.GET_DOCTOR_APPOINTMENTS,
+        permissions.SEARCH_PATIENT,
+        permissions.GET_PATIENT_BY_ID,
+      ];
+      break;
+    case "ADMIN":
+      allowedActions = [permissions.ADMIN];
+      break;
+    case "RECEPTIONIST":
+      allowedActions = [
+        permissions.SEARCH_DOCTOR,
+        permissions.SEARCH_PATIENT,
+        permissions.GET_PATIENT_BY_ID,
+      ];
+      break;
+    case "PHARMACIST":
+      allowedActions = [
+        permissions.REMOVE_MEDICINE,
+        permissions.SEARCH_MEDICINES,
+        permissions.GET_MEDICINE_BY_ID,
+        permissions.EDIT_MEDICINE,
+      ];
+      break;
+    case "INVENTORY_MANAGER":
+      allowedActions = [
+        permissions.ADD_MEDICINE,
+        permissions.EDIT_MEDICINE,
+        permissions.REMOVE_MEDICINE,
+        permissions.SEARCH_MEDICINES,
+        permissions.GET_MEDICINE_BY_ID,
+        permissions.SEARCH_OTHER_ASSETS,
+        permissions.ADD_OTHER_ASSETS,
+        permissions.EDIT_OTHER_ASSETS,
+        permissions.REMOVE_OTHER_ASSETS,
+        permissions.SEARCH_NON_MEDICINES,
+        permissions.ADD_NON_MEDICINES,
+        permissions.EDIT_NON_MEDICINES,
+        permissions.REMOVE_NON_MEDICINES,
+      ];
+      break;
+    case "CO_ADMIN":
+      allowedActions = [
+        permissions.CREATE_PATIENT,
+        permissions.GET_PATIENT_BY_ID,
+        permissions.DELETE_PATIENT,
+        permissions.SEARCH_DOCTOR,
+      ];
+      break;
+    case "OTHER":
+      allowedActions = [];
+      break;
+    default:
+      allowedActions = [];
+      break;
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  console.log("creating user");
   const user = await prisma.Auth.create({
     data: {
       email,
       password: hashedPassword,
-      role: role,
+      permissions: allowedActions,
     },
   });
 
-  console.log("user created");
-  console.log(user);
+  console.log({ user });
   return user;
 };
 
@@ -65,15 +124,17 @@ const revalidateService = async (refreshToken) => {
   if (!valid || expired) throw new Error("Unauthorized");
   const payloadid = payload.sub.id;
 
-  const user = await prisma.Auth.findUnique({ where: { id: payloadid } });
+  const user = await prisma.auth.findUnique({ where: { id: payloadid } });
   if (!user) throw new Error("Unauthorized");
 
-  const userDetails = await UserDetails(user.id, user.role);
+  const userDetails = await prisma.profile.findUnique({
+    where: { id: user.id },
+  });
 
   const { token, expires } = issueJWT(user);
   return {
     user: {
-      role: user.role,
+      permissions: user.permissions,
       dataValues: user,
     },
     userDetails,
@@ -82,101 +143,9 @@ const revalidateService = async (refreshToken) => {
   };
 };
 
-const createDummyService = async () => {
-  const roles = [
-    "DOCTOR",
-    "RECEPTIONIST",
-    "ADMIN",
-    "PATIENT",
-    "PHARMACIST",
-    "INVENTORY_MANAGER",
-    "CO_ADMIN",
-  ];
-
-  const role = roles[Math.floor(Math.random() * roles.length)];
-
-  const sex = ["m", "f", "o"];
-
-  if (role === "PATIENT") {
-    const patientData = {
-      name: faker.name.findName(),
-      age: faker.datatype.number({ min: 18, max: 60 }),
-      sex: sex[Math.floor(Math.random() * sex.length)],
-      lastVisit: dayjs().toDate(),
-      contact: faker.phone.phoneNumber("+91 ##### #####"),
-      address: faker.address.city(),
-      email: faker.internet.email(),
-    };
-
-    await prisma.patient.create({ data: patientData });
-    return;
-  }
-
-  const data = {
-    email: faker.internet.email(),
-    password: await bcrypt.hash("admin123", 10),
-    role,
-  };
-
-  const user = await prisma.Auth.create({ data });
-
-  const AuthId = user.id;
-
-  const designation = ["MBBS", "MD", "MS", "DNB", "DNB", "DNB"];
-
-  switch (role) {
-    case "DOCTOR":
-      const doctorData = {
-        name: faker.name.findName(),
-        designation:
-          designation[Math.floor(Math.random() * designation.length)],
-        age: faker.datatype.number({ min: 18, max: 60 }),
-        address: faker.address.city(),
-        contact: faker.phone.phoneNumber("+91 ##### #####"),
-        availability: "Yes",
-        auth: {
-          connect: { id: AuthId },
-        },
-      };
-
-      console.log(doctorData);
-
-      await prisma.Doctor.create({ data: doctorData });
-
-      break;
-    case "RECEPTIONIST":
-      const receptionistData = {
-        name: faker.name.findName(),
-        email: data.email,
-        contact: faker.phone.phoneNumber("+91 ##### #####"),
-        address: faker.address.city(),
-        auth: {
-          connect: { id: AuthId },
-        },
-      };
-
-      await prisma.receptionist.create({ data: receptionistData });
-      break;
-    case "PHARMACIST":
-      const pharmacistData = {
-        name: faker.name.findName(),
-        email: data.email,
-        contact: faker.phone.phoneNumber("+91 ##### #####"),
-        address: faker.address.city(),
-        auth: {
-          connect: { id: AuthId },
-        },
-      };
-
-      await prisma.Pharmacist.create({ data: pharmacistData });
-      break;
-  }
-};
-
 module.exports = {
   loginService,
   logoutService,
   signupService,
   revalidateService,
-  createDummyService,
 };
