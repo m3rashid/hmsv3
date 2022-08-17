@@ -1,8 +1,3 @@
-### To be done before morning
-
-- [ ] Update Pharmacist UI [rashid]
-- [ ] Checkout flow, (prescription to medicine dispence) [rashid]
-
 ## High Priority
 
 - [ ] reduce number of tabs (actions left panel rather than tabs) [sarf]
@@ -15,6 +10,8 @@
 - [ ] change notification to active appointments (must be first tab) [husain]
 - [ ] click on notification to go to certain appoinment for rescription
 - [ ] admin ui [rashid]
+- [ ] Update Pharmacist UI [rashid]
+- [ ] Checkout flow, (prescription to medicine dispence) [rashid]
 
 ## Bugs
 
