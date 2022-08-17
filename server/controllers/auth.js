@@ -7,11 +7,8 @@ const {
 
 const login = async (req, res) => {
   try {
-    console.log(req.body);
-    const { email, password } = req.body;
-
     const { user, token, refreshToken, expires, userDetails } =
-      await loginService(email, password);
+      await loginService(req.body.email, req.body.password);
 
     res.status(200).json({
       message: "Login Successful",
@@ -20,7 +17,7 @@ const login = async (req, res) => {
       expires,
       user: {
         ...user.dataValues,
-        [user.role]: userDetails,
+        userDetails: userDetails,
       },
     });
   } catch (err) {
@@ -34,13 +31,14 @@ const login = async (req, res) => {
 
 const signup = async (req, res) => {
   try {
-    const { email, password, role } = req.body;
-    const user = await signupService(email, password, role);
+    const user = await signupService(
+      req.body.email,
+      req.body.password,
+      req.body.name,
+      req.body.role
+    );
 
-    return res.status(200).json({
-      message: "Signup Successful",
-      user,
-    });
+    return res.status(200).json({ message: "Signup Successful", user });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
@@ -62,10 +60,7 @@ const revalidate = async (req, res) => {
       message: "Token revalidated",
       token,
       expires,
-      user: {
-        ...user.dataValues,
-        [user.role]: userDetails,
-      },
+      user: { ...user.dataValues, [user.role]: userDetails },
     });
   } catch (err) {
     console.log(err);
@@ -80,9 +75,7 @@ const createDummy = async (req, res) => {
   const { count } = req.body;
 
   try {
-    for (let i = 0; i < count; i++) {
-      await createDummyService();
-    }
+    for (let i = 0; i < count; i++) await createDummyService();
 
     return res.status(200).json({
       message: "Dummy data created",

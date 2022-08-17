@@ -8,13 +8,9 @@ const CreateDummyInventory = async (req, res) => {
   const count = req.body.count;
 
   try {
-    for (let i = 0; i < count; i++) {
-      await addDummy();
-    }
+    for (let i = 0; i < count; i++) await addDummy();
 
-    return res.status(200).json({
-      message: "Dummy inventory created",
-    });
+    return res.status(200).json({ message: "Dummy inventory created" });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
@@ -24,7 +20,7 @@ const CreateDummyInventory = async (req, res) => {
   }
 };
 
-const SearchInventory = async (req, res) => {
+const SearchMedicines = async (req, res) => {
   const { quantity, price, name } = req.query;
 
   try {
@@ -46,9 +42,7 @@ const addMedicine = async (req, res) => {
   const { name, quantity, price, description } = req.body;
   try {
     await addMedicineService(name, quantity, price, description);
-    return res.status(200).json({
-      message: "Medicine added",
-    });
+    return res.status(200).json({ message: "Medicine added" });
   } catch (err) {
     console.log(err);
     return res.status(500).json({
@@ -60,6 +54,6 @@ const addMedicine = async (req, res) => {
 
 module.exports = {
   CreateDummyInventory,
-  SearchInventory,
+  SearchMedicines,
   addMedicine,
 };

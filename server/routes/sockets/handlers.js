@@ -2,7 +2,7 @@ const {
   createPatientService,
   createUserService,
   getDoctorAppointmentsService,
-  getDoctorPatientsService
+  getDoctorPatientsService,
 } = require("../../services/index.js");
 const { createAppointmentService } = require("../../services/reception.js");
 const {
@@ -63,16 +63,16 @@ const createPatient =
   (io, socket) =>
   async ({ name, age, sex, contact, address, email, jamiaId }) => {
     try {
-      const { patient } = await createPatientService(
-        {name,
+      const { patient } = await createPatientService({
+        name,
         age,
         sex,
         contact,
         address,
         email,
-        jamiaId}
-      );
-      console.log(patient, "New patient created")
+        jamiaId,
+      });
+      console.log(patient, "New patient created");
       io.emit("new-patient-created", { data: patient });
     } catch (err) {
       console.log(err);

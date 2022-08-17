@@ -16,7 +16,7 @@ const loginService = async (email, password) => {
   if (!matched) throw new Error("Wrong Credentials");
 
   const userDetails = await prisma.profile.findUnique({
-    where: { id: user.id },
+    where: { authId: user.id },
   });
   const { token, refreshToken, expires } = issueJWT(user);
 
@@ -34,9 +34,9 @@ const loginService = async (email, password) => {
   };
 };
 
-const signupService = async (email, password, role) => {
-  console.log({ email, password, role });
-  if (!email || !password || !role) throw new Error("No credentials");
+const signupService = async (email, password, name, role) => {
+  console.log({ email, password, name, role });
+  if (!email || !password || !name || !role) throw new Error("No credentials");
 
   let allowedActions = [];
   switch (role) {
@@ -105,6 +105,7 @@ const signupService = async (email, password, role) => {
   const user = await prisma.Auth.create({
     data: {
       email,
+      name,
       password: hashedPassword,
       permissions: allowedActions,
     },

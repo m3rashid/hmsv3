@@ -20,6 +20,43 @@ const createUserService = async (email, password, permissions, name) => {
   return { user };
 };
 
+const createProfileService = async (
+  userId,
+  designation,
+  contact,
+  address,
+  bio,
+  sex,
+  availability,
+  availableDays,
+  roomNumber,
+  authorityName,
+  category,
+  origin
+) => {
+  if (!userId || !sex) throw new Error("Insufficient data");
+  const profile = await prisma.profile.create({
+    data: {
+      authId: userId,
+      designation,
+      contact,
+      address,
+      bio,
+      sex,
+      availability,
+      available_days: availableDays,
+      room_number: roomNumber,
+      authority_name: authorityName,
+      category,
+      origin,
+    },
+  });
+
+  console.log({ profile });
+  return profile;
+};
+
 module.exports = {
   createUserService,
+  createProfileService,
 };

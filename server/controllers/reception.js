@@ -3,6 +3,7 @@ const {
   getAppointmentByIdService,
 } = require("../services/reception.js");
 const { createPatientService } = require("../services/patient.js");
+
 const createAppointment = async (req, res) => {
   try {
     if (!req.user || !req.user.id || req.user.role !== "RECEPTIONIST")

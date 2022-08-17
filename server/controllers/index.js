@@ -1,17 +1,12 @@
-const { login, logout, revalidate, signup } = require("./auth.js");
-
-const { createUser } = require("./createUser.js");
-
-const { getDoctorAppointments, getDoctorPatients } = require("./doctor.js");
-
 const {
   createPatient,
   deletePatient,
   getPatientById,
   searchPatients,
 } = require("./patient.js");
-
-const { createReception } = require("./reception.js");
+const { createUser } = require("./createUser.js");
+const { login, logout, revalidate, signup } = require("./auth.js");
+const { getDoctorAppointments, getDoctorPatients } = require("./doctor.js");
 
 module.exports = {
   login,
@@ -25,5 +20,4 @@ module.exports = {
   deletePatient,
   getPatientById,
   searchPatients,
-  createReception,
 };

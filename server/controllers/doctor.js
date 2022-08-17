@@ -29,8 +29,6 @@ const getAppointmentById = async (req, res) => {
     if (!req.user || !req.user.id || req.user.role !== "DOCTOR")
       throw new Error("Unauthorized");
 
-    // console.log(req.query);
-
     const data = await getAppointmentByIdService(req.query.id);
     console.log(data);
     return res.status(200).json(data);

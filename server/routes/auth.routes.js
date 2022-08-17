@@ -1,5 +1,4 @@
 const express = require("express");
-const router = express.Router();
 
 const {
   login,
@@ -8,7 +7,11 @@ const {
   signup,
   createDummy,
 } = require("../controllers/auth.js");
+const permissions = require("../utils/auth.helpers.js");
 const { createUser } = require("../controllers/createUser.js");
+const { checkRouteAccess, checkAuth } = require("../middlewares/auth.js");
+
+const router = express.Router();
 
 router.post("/login", login);
 
@@ -18,7 +21,12 @@ router.post("/logout", logout);
 
 router.post("/revalidate", revalidate);
 
-router.post("/createUser", createUser);
+router.post(
+  "/createUser",
+  checkAuth,
+  checkRouteAccess(permissions.CREATE_USER),
+  createUser
+);
 
 router.post("/dummy", createDummy);
 
