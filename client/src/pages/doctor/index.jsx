@@ -18,7 +18,7 @@ export const DoctorContext = React.createContext();
 const Doctor = () => {
   const [online, setOnline] = React.useState(true);
   const [AppointmentsData, setAppointmentsData] = React.useState([]);
-  const {notifications, markAllAsSeen} = useNotifications()
+  const {unseenNotifications, markAllAsSeen} = useNotifications()
   const Auth = useRecoilValue(authState);
 
   const getAppointments = useCallback(async () => {
@@ -79,7 +79,7 @@ const Doctor = () => {
           </Tabs.TabPane>
           <Tabs.TabPane tab={
             <div onClick={()=>markAllAsSeen()}>
-          <Badge  count={notifications.unseen} showZero={false}  offset={[5,-5]}>
+          <Badge  count={unseenNotifications()} showZero={false}  offset={[5,-5]}>
           Notifications
           </Badge> 
           </div>

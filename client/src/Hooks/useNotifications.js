@@ -7,36 +7,28 @@ const  useNotifications = () => {
         title,
         message,
         action,
+        seen = false,
         time = new Date(),
     }) => {
 
-           localStorage.setItem("notifications", JSON.stringify({
-            data: [{ type, title, message, action, time }, ...notifications.data],
-            lastUpdated: Date.now(),
-            unseen: notifications.unseen + 1,
-        }));
-        setNotifications({
-            data: [{ type, title, message, action, time }, ...notifications.data],
-            lastUpdated: Date.now(),
-            unseen: notifications.unseen + 1,
-        });
-     
-
-
+           localStorage.setItem("notifications", JSON.stringify([{type, title, message, action, seen, time}, ...notifications]));
+        setNotifications([{type, title, message, action, seen, time}, ...notifications]);
     }
     const markAllAsSeen = () => {
-        localStorage.setItem("notifications", JSON.stringify({
-            ...notifications, unseen: 0,
-        }));
-        setNotifications({...notifications, unseen: 0});
+        setNotifications(notifications.map((notification) => ({...notification, seen: true})));
+        localStorage.setItem("notifications", JSON.stringify(notifications.map((notification) => ({...notification, seen: true}))));
     }
     const clearNotifications = () => {
-        setNotifications({
-            data: [],
-            lastUpdated: Date.now(),
-            unseen: 0,
-        });
-        localStorage.removeItem("notifications");
+        setNotifications([]);
+    }
+    const unseenNotifications = () => {
+        return notifications.reduce((acc, notification) => {
+            if(!notification.seen) {
+                acc++;
+            }
+            return acc;
+        }
+        , 0);
     }
 
     return {
@@ -44,6 +36,7 @@ const  useNotifications = () => {
         addNotification,
         markAllAsSeen,
         clearNotifications,
+         unseenNotifications
     }
  
 }
