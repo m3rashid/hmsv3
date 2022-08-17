@@ -85,8 +85,8 @@ model Profile {
   origin         String?       @default("JMI")
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @default(now())
-  Appointment    Appointment[]
   Auth           Auth[]
+  Appointment    Appointment[]
 }
 
 model Patient {
@@ -107,6 +107,7 @@ model Patient {
 model Appointment {
   id           Int            @id @default(sequence())
   date         DateTime       @default(now())
+  refered_by   String?
   Prescription Prescription[]
   patientId    Int
   patient      Patient        @relation(fields: [patientId], references: [id])

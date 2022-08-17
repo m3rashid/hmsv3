@@ -5,9 +5,9 @@
 
 ## High Priority
 
-- [ ] Auth permissions (client/server)
-  > > - [ ] custom roles based co-admin module
-  > > - [ ] fetch medicines on doctor login on client side
+- [ ] Auth permissions (client)
+  - [ ] custom roles based co-admin module (client)
+  - [ ] fetch medicines on doctor login on client side
 - [ ] doctor can refer to other doctors/departments
 - [ ] click on notification to go to certain appoinment for rescription
 - [ ] change notification to active appointments (must be first tab)
