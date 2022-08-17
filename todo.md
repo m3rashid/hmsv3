@@ -31,13 +31,9 @@
 - [ ] medicine frequency (OD, BD, TD, OW, BW, TW)
 - [ ] medicine_frequency * duration = total_duration
 <!-- - [ ] cron job for remaining medicine -->
-- [ ]
 - [ ] active/past prescriptions for pharmacist
 - [ ] allotted if medicine is present in store or not
 - [ ] revamp pharmacy
 - [ ] redesign medicines schema for syrups, tablets, etc.
 
 - [ ] reduce number of tabs
-<!-- -
-
- [ ]  -->

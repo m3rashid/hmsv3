@@ -14,7 +14,7 @@ const Notifications = () => {
         gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
       }}
     >
-      {notifications.data.map((item, index) => {
+      {notifications.map((item, index) => {
         return (
           <div
             key={index}

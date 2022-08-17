@@ -20,7 +20,7 @@ const Pharmacy = () => {
   const { Inventory, setInventory, getMedicine, reduceMedicine } =
     usePharmacy();
 
-  const { notifications, addNotification, markAllAsSeen } = useNotifications();
+  const {unseenNotifications, addNotification, markAllAsSeen } = useNotifications();
 
   React.useEffect(() => {
     socket.on("new-prescription-by-doctor-created", ({ data }) => {
@@ -89,7 +89,7 @@ const Pharmacy = () => {
             tab={
               <div onClick={() => markAllAsSeen()}>
                 <Badge
-                  count={notifications.unseen}
+                  count={unseenNotifications()}
                   showZero={false}
                   offset={[5, -5]}
                 >
