@@ -1,8 +1,56 @@
 const bcrypt = require("bcrypt");
-
+const { faker } = require("@faker-js/faker");
 const prisma = require("../utils/prisma");
 const { permissions } = require("../utils/auth.helpers");
 const { issueJWT, revalidateJWT } = require("../utils/jwt.js");
+
+const addActions = (role) => {
+  let allowedActions = [];
+  switch (role) {
+    case "DOCTOR":
+      allowedActions = [
+        permissions.DOCTOR_APPOINTMENTS,
+        permissions.DOCTOR_PRESCRIBE_MEDICINE,
+      ];
+      break;
+    case "ADMIN":
+      allowedActions = [permissions.ADMIN];
+      break;
+    case "RECEPTIONIST":
+      allowedActions = [
+        permissions.RECEPTION_CREATE_PATIENT,
+        permissions.RECEPTION_ADD_APPOINTMENT,
+      ];
+      break;
+    case "PHARMACIST":
+      allowedActions = [
+        permissions.PHARMACY_PRESCRIPTIONS,
+        permissions.PHARMACY_RECIEPT,
+      ];
+      break;
+    case "INVENTORY_MANAGER":
+      allowedActions = [
+        permissions.INVENTORY_ADD_MEDICINE,
+        permissions.INVENTORY_VIEW,
+      ];
+      break;
+    case "CO_ADMIN":
+      allowedActions = [
+        permissions.DOCTOR_APPOINTMENTS,
+        permissions.INVENTORY_VIEW,
+        permissions.RECEPTION_ADD_APPOINTMENT,
+      ];
+      break;
+    case "OTHER":
+      allowedActions = [];
+      break;
+    default:
+      allowedActions = [];
+      break;
+  }
+
+  return allowedActions;
+};
 
 const loginService = async (email, password) => {
   console.log({ email, password });
@@ -72,68 +120,7 @@ const signupService = async (
 
   if (!email || !password || !name || !role) throw new Error("No credentials");
 
-  let allowedActions = [];
-  switch (role) {
-    case "DOCTOR":
-      allowedActions = [
-        permissions.SEARCH_DOCTOR,
-        permissions.CREATE_PRESCRIPTION,
-        permissions.GET_DOCTOR_PATIENTS,
-        permissions.GET_DOCTOR_APPOINTMENTS,
-        permissions.SEARCH_PATIENT,
-        permissions.GET_PATIENT_BY_ID,
-      ];
-      break;
-    case "ADMIN":
-      allowedActions = [permissions.ADMIN];
-      break;
-    case "RECEPTIONIST":
-      allowedActions = [
-        permissions.SEARCH_DOCTOR,
-        permissions.SEARCH_PATIENT,
-        permissions.GET_PATIENT_BY_ID,
-      ];
-      break;
-    case "PHARMACIST":
-      allowedActions = [
-        permissions.REMOVE_MEDICINE,
-        permissions.SEARCH_MEDICINES,
-        permissions.GET_MEDICINE_BY_ID,
-        permissions.EDIT_MEDICINE,
-      ];
-      break;
-    case "INVENTORY_MANAGER":
-      allowedActions = [
-        permissions.ADD_MEDICINE,
-        permissions.EDIT_MEDICINE,
-        permissions.REMOVE_MEDICINE,
-        permissions.SEARCH_MEDICINES,
-        permissions.GET_MEDICINE_BY_ID,
-        permissions.SEARCH_OTHER_ASSETS,
-        permissions.ADD_OTHER_ASSETS,
-        permissions.EDIT_OTHER_ASSETS,
-        permissions.REMOVE_OTHER_ASSETS,
-        permissions.SEARCH_NON_MEDICINES,
-        permissions.ADD_NON_MEDICINES,
-        permissions.EDIT_NON_MEDICINES,
-        permissions.REMOVE_NON_MEDICINES,
-      ];
-      break;
-    case "CO_ADMIN":
-      allowedActions = [
-        permissions.CREATE_PATIENT,
-        permissions.GET_PATIENT_BY_ID,
-        permissions.DELETE_PATIENT,
-        permissions.SEARCH_DOCTOR,
-      ];
-      break;
-    case "OTHER":
-      allowedActions = [];
-      break;
-    default:
-      allowedActions = [];
-      break;
-  }
+  const allowedActions = addActions(role);
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -199,9 +186,44 @@ const revalidateService = async (refreshToken) => {
   };
 };
 
+const createDummyService = async () => {
+  const role = [
+    "DOCTOR",
+    "ADMIN",
+    "RECEPTIONIST",
+    "PHARMACIST",
+    "INVENTORY_MANAGER",
+    "CO_ADMIN",
+    "PATIENT",
+  ][Math.floor(Math.random() * 7)];
+
+  if (role === "PATIENT") {
+    await prisma.patient.create({
+      data: {
+        name: faker.name.fullName(),
+        age: Math.floor(Math.random() * 100),
+        contact: faker.phone.number(),
+        sex: "m",
+        address: faker.address.city(),
+        email: faker.internet.email(),
+      },
+    });
+
+    return;
+  }
+
+  // const auth_data = {
+  //   email: faker.internet.email(),
+  //   password: "admin123",
+  //   name: faker.name.findName(),
+  //   permissions: addActions(role),
+  // };
+};
+
 module.exports = {
   loginService,
   logoutService,
   signupService,
   revalidateService,
+  createDummyService,
 };

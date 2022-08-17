@@ -29,11 +29,18 @@ const Header = ({ online, setOnline }) => {
   console.log(auth);
 
   return (
-    <div className="site-page-header-ghost-wrapper">
+    <div
+      className="site-page-header-ghost-wrapper"
+      style={{
+        width: "50%",
+        margin: 10,
+        borderRadius: 10,
+      }}
+    >
       <PageHeader
         ghost={false}
         onBack={() => window.history.back()}
-        title={auth.user.role}
+        title={auth.user.name}
         subTitle={""}
         avatar={{ src: `${Avatar}` }}
         // extra={[
@@ -45,7 +52,7 @@ const Header = ({ online, setOnline }) => {
         // ]}
       >
         <Row>
-          <Col span={12}>
+          <Col span={24}>
             {auth.user && (
               <Badge.Ribbon color="green" text="Online">
                 <Card title={auth.user[auth.user.role]?.name} size="small">
@@ -54,7 +61,7 @@ const Header = ({ online, setOnline }) => {
               </Badge.Ribbon>
             )}
           </Col>
-          <Col span={12}></Col>
+          {/* <Col span={12}></Col> */}
         </Row>
       </PageHeader>
     </div>

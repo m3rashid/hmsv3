@@ -1,9 +1,11 @@
 import { Button, Modal, Space, Table } from "antd";
 import React, { useContext } from "react";
+import { useRecoilValue } from "recoil";
+import { pharmacyState } from "../../atoms/pharmacy";
 import { PharmacyContext } from "../../pages/pharmacy";
 
 function Prescriptions() {
-  const { prescription } = useContext(PharmacyContext);
+  const pharmacyData = useRecoilValue(pharmacyState);
   const [ModalVisible, setModalVisible] = React.useState({
     visible: false,
     id: null,
@@ -61,7 +63,7 @@ function Prescriptions() {
 
   return (
     <React.Fragment>
-      <Table dataSource={prescription} columns={columns} />
+      <Table dataSource={pharmacyData.prescriptions} columns={columns} />
       <Modal
         visible={ModalVisible.visible}
         onOk={ToggleModal}

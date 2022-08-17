@@ -10,11 +10,11 @@ import {
   Space,
   Card,
 } from "antd";
-import { instance } from "../../../api/instance";
+import { instance } from "../../api/instance";
 import axios from "axios";
 import TextArea from "antd/lib/input/TextArea";
 
-const AddNew = () => {
+const AddNewInventory = () => {
   const [itemlist, setItemlist] = useState({
     data: [],
     cancelToken: undefined,
@@ -211,4 +211,4 @@ const AddNew = () => {
   );
 };
 
-export default AddNew;
+export default AddNewInventory;

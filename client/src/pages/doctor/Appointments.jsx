@@ -1,20 +1,25 @@
-import React, { useContext, useEffect, useState } from "react";
-import { socket } from "../../../api/socket";
-import { useRecoilValue } from "recoil";
-import { authState } from "../../../atoms/auth";
-import { Button, Modal, Space, Table } from "antd";
-import { DoctorContext } from "..";
+import React, { useCallback, useEffect, useState } from "react";
+import { socket } from "../../api/socket";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authState } from "../../atoms/auth";
+import { doctorState } from "../../atoms/doctor";
+import { Button, Modal, Space, Table, Typography } from "antd";
 // import { useQuery } from "react-query";
 // import { instance } from "../../../api/instance";
 
-function Appointments() {
+function DoctorAppointments() {
   // const [loading, setLoading] = useState(true);
+  const [doctorData, setDoctorData] = useRecoilState(doctorState);
   const { user } = useRecoilValue(authState);
   const [ModalVisible, setModalVisible] = useState({
     visible: false,
     id: null,
     data: {},
   });
+
+  const loadInitialData = useCallback(() => {}, []);
+
+  useEffect(() => {}, []);
 
   const ToggleModal = () => {
     setModalVisible({
@@ -28,25 +33,6 @@ function Appointments() {
       doctorId: user.id,
     });
   }, [user.id]);
-
-  const { AppointmentsData } = useContext(DoctorContext);
-
-  useEffect(() => {
-    console.log(AppointmentsData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // useEffect(() => {
-  //   socket.on("found-doctor-appointments", (data) => {
-  //     const { doctorId, appointments } = data;
-  //     console.log(data);
-  //     setData(appointments);
-  //     setLoading(false);
-  //   });
-  //   return () => {
-  //     socket.off("found-doctor-appointments");
-  //   };
-  // }, []);
 
   const columns = [
     {
@@ -91,11 +77,20 @@ function Appointments() {
         marginTop: "20px",
       }}
     >
+      <Typography.Title
+        level={4}
+        style={{
+          width: "100%",
+          textAlign: "center",
+        }}
+      >
+        Doctor Appointments
+      </Typography.Title>
       <Table
-        dataSource={AppointmentsData}
+        dataSource={doctorData.appointments}
         columns={columns}
         pagination={{
-          total: AppointmentsData.length,
+          total: doctorData.appointments.length,
           defaultPageSize: 5,
         }}
       />
@@ -146,4 +141,4 @@ function Appointments() {
   );
 }
 
-export default Appointments;
+export default DoctorAppointments;

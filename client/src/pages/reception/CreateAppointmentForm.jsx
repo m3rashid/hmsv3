@@ -11,10 +11,12 @@ import {
   // Grid,
   Row,
   Col,
+  Divider,
 } from "antd";
-import { socket } from "../../../api/socket";
-import { instance } from "../../../api/instance";
+import { socket } from "../../api/socket";
+import { instance } from "../../api/instance";
 import axios from "axios";
+import Header from "../../components/Header";
 
 const CreateAppointmentForm = () => {
   const [doctors, setDoctors] = useState({
@@ -185,72 +187,86 @@ const CreateAppointmentForm = () => {
   };
 
   return (
-    <Form
-      form={form}
-      onFinish={formSubmitHandler}
-      labelAlign="left"
-      labelCol={{ span: 4 }}
-      wrapperCol={{ span: 8 }}
-    >
-      <Form.Item
-        label="Patient"
-        name="patient"
-        rules={[{ required: true, message: "Please select a patient!" }]}
-      >
-        <AutoComplete
-          id="patient"
-          placeholder="Patient Name"
-          options={patients.data}
-          onSearch={(value) => UpdatePatients(value)}
-          onSelect={(value) => {
-            form.setFieldsValue({ patient: value });
-            setFormSelected({
-              ...FormSelected,
-              patient: patients.data.find((patient) => patient.value === value),
-            });
-          }}
-        />
+    <React.Fragment>
+      <Header />
 
-        <Typography.Text disabled style={{ fontSize: 10 }}>
-          *Search by (name or email or jamia Id)
-        </Typography.Text>
-      </Form.Item>
+      <Divider />
 
-      <Form.Item
-        label="Doctor Name"
-        name="doctor"
-        rules={[{ required: true, message: "Please select a doctor!" }]}
+      <Form
+        form={form}
+        onFinish={formSubmitHandler}
+        labelAlign="left"
+        labelCol={{ span: 6 }}
+        wrapperCol={{ span: 12 }}
+        style={{
+          padding: 20,
+        }}
       >
-        <AutoComplete
-          options={doctors.data}
-          id="doctor"
-          placeholder="Doctor Name"
-          onSearch={(value) => UpdateDoctors(value)}
-          onSelect={(value) => {
-            form.setFieldsValue({ doctor: value });
-            setFormSelected({
-              ...FormSelected,
-              doctor: doctors.data.find((doctor) => doctor.value === value),
-            });
-          }}
-        />
-        <Typography.Text disabled style={{ fontSize: 10 }}>
-          *Search by (name or designation)
-        </Typography.Text>
-      </Form.Item>
-      <Form.Item
-        label="Date"
-        name="datetime"
-        rules={[{ required: true, message: "Please enter date and time !" }]}
-      >
-        <DatePicker showTime />
-      </Form.Item>
-      <Form.Item wrapperCol={{ offset: 2 }}>
-        <Button type="primary" htmlType="submit">
+        <Typography.Title level={4} style={{ marginTop: 10, marginBottom: 30 }}>
           Create Appointment
-        </Button>
-      </Form.Item>
-    </Form>
+        </Typography.Title>
+        <Form.Item
+          label="Patient"
+          name="patient"
+          rules={[{ required: true, message: "Please select a patient!" }]}
+        >
+          <AutoComplete
+            id="patient"
+            placeholder="Patient Name"
+            options={patients.data}
+            onSearch={(value) => UpdatePatients(value)}
+            onSelect={(value) => {
+              form.setFieldsValue({ patient: value });
+              setFormSelected({
+                ...FormSelected,
+                patient: patients.data.find(
+                  (patient) => patient.value === value
+                ),
+              });
+            }}
+          />
+
+          <Typography.Text disabled style={{ fontSize: 10 }}>
+            *Search by (name or email or jamia Id)
+          </Typography.Text>
+        </Form.Item>
+
+        <Form.Item
+          label="Doctor Name"
+          name="doctor"
+          rules={[{ required: true, message: "Please select a doctor!" }]}
+        >
+          <AutoComplete
+            options={doctors.data}
+            id="doctor"
+            placeholder="Doctor Name"
+            onSearch={(value) => UpdateDoctors(value)}
+            onSelect={(value) => {
+              form.setFieldsValue({ doctor: value });
+              setFormSelected({
+                ...FormSelected,
+                doctor: doctors.data.find((doctor) => doctor.value === value),
+              });
+            }}
+          />
+          <Typography.Text disabled style={{ fontSize: 10 }}>
+            *Search by (name or designation)
+          </Typography.Text>
+        </Form.Item>
+        <Form.Item
+          label="Date"
+          name="datetime"
+          rules={[{ required: true, message: "Please enter date and time !" }]}
+        >
+          <DatePicker showTime />
+        </Form.Item>
+        <Form.Item wrapperCol={{ offset: 2 }}>
+          <Button type="primary" htmlType="submit">
+            Create Appointment
+          </Button>
+        </Form.Item>
+      </Form>
+    </React.Fragment>
   );
 };
 

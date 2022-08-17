@@ -1,12 +1,12 @@
 import { Col, Input, Modal, Row, Space, Typography } from "antd";
 import React, { useState } from "react";
-import styles from "../style.module.css";
+import styles from "./style.module.css";
 import { List } from "antd";
 import VirtualList from "rc-virtual-list";
 import { useQuery } from "react-query";
-import { instance } from "../../../api/instance";
+import { instance } from "../../api/instance";
 
-function Display() {
+function InventoryDisplay() {
   const [SearchQuery, setSearchQuery] = React.useState("");
   const [isModalVisible, setIsModalVisible] = useState({
     open: false,
@@ -133,4 +133,4 @@ function Display() {
   );
 }
 
-export default Display;
+export default InventoryDisplay;

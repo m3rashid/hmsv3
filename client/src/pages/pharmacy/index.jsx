@@ -4,14 +4,14 @@ import React, { createContext } from "react";
 
 import { socket } from "../../api/socket";
 import Header from "../../components/Header";
-import Notifications from "../doctor/modules/notifications";
+import Notifications from "../doctor/notifications";
 import usePharmacy from "../../components/Pharmacy/usePharmacy";
 
 import useNotifications from "../../Hooks/useNotifications";
 
-import Prescriptions from "../../components/Pharmacy/Prescriptions";
-import InventoryTable from "../../components/Pharmacy/InventoryTable";
-import CreateReceipts from "../../components/Pharmacy/CreateReceipts";
+import Prescriptions from "./Prescriptions";
+import InventoryTable from "./InventoryTable";
+import CreateReceipts from "./CreateReceipts";
 
 export const PharmacyContext = createContext();
 
@@ -20,7 +20,8 @@ const Pharmacy = () => {
   const { Inventory, setInventory, getMedicine, reduceMedicine } =
     usePharmacy();
 
-  const {unseenNotifications, addNotification, markAllAsSeen } = useNotifications();
+  const { unseenNotifications, addNotification, markAllAsSeen } =
+    useNotifications();
 
   React.useEffect(() => {
     socket.on("new-prescription-by-doctor-created", ({ data }) => {

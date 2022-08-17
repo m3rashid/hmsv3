@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Menu, Typography, Divider, Layout } from "antd";
 
 import PageHeader from "../../components/Header";
-import CreatePatientForm from "../../components/Reception/CreatePatientForm/CreatePatientForm";
-import CreateAppointmentForm from "../../components/Reception/CreateAppointmentForm/CreateAppointmentForm";
+import CreatePatientForm from "./CreatePatientForm";
+import CreateAppointmentForm from "./CreateAppointmentForm";
 
 const Reception = () => {
   const [online, setOnline] = useState(true);

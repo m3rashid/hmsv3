@@ -2,15 +2,15 @@ import React, { useCallback, useEffect } from "react";
 import { Tabs, Divider, Badge } from "antd";
 
 import Header from "../../components/Header";
-import Appointments from "./modules/Appointments";
-import Patients from "./modules/patients";
-import Notifications from "./modules/notifications";
+import DoctorAppointments from "./Appointments";
+import DoctorPatients from "./patients";
+import Notifications from "./notifications";
 import { authState } from "../../atoms/auth";
 import { useRecoilValue } from "recoil";
 import { socket } from "../../api/socket";
 import moment from "moment";
 import { instance } from "../../api/instance";
-import PrescriptionForm from "../../components/Doctor/prescribeMedicine";
+import PrescriptionForm from "./prescribeMedicine";
 import useNotifications from "../../Hooks/useNotifications";
 
 export const DoctorContext = React.createContext();
@@ -18,7 +18,7 @@ export const DoctorContext = React.createContext();
 const Doctor = () => {
   const [online, setOnline] = React.useState(true);
   const [AppointmentsData, setAppointmentsData] = React.useState([]);
-  const {unseenNotifications, markAllAsSeen} = useNotifications()
+  const { unseenNotifications, markAllAsSeen } = useNotifications();
   const Auth = useRecoilValue(authState);
 
   const getAppointments = useCallback(async () => {
@@ -72,18 +72,25 @@ const Doctor = () => {
 
         <Tabs defaultActiveKey="1">
           <Tabs.TabPane tab="Appointments" key="1">
-            <Appointments />
+            <DoctorAppointments />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Patients" key="3">
-            <Patients />
+            <DoctorPatients />
           </Tabs.TabPane>
-          <Tabs.TabPane tab={
-            <div onClick={()=>markAllAsSeen()}>
-          <Badge  count={unseenNotifications()} showZero={false}  offset={[5,-5]}>
-          Notifications
-          </Badge> 
-          </div>
-      } key="4" >
+          <Tabs.TabPane
+            tab={
+              <div onClick={() => markAllAsSeen()}>
+                <Badge
+                  count={unseenNotifications()}
+                  showZero={false}
+                  offset={[5, -5]}
+                >
+                  Notifications
+                </Badge>
+              </div>
+            }
+            key="4"
+          >
             <Notifications />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Prescription" key="5">

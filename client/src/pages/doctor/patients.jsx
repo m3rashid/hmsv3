@@ -1,11 +1,11 @@
 // import faker from "@faker-js/faker";
 import { Button, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { socket } from "../../../api/socket";
+import { socket } from "../../api/socket";
 import { useRecoilValue } from "recoil";
-import { authState } from "../../../atoms/auth";
+import { authState } from "../../atoms/auth";
 
-const Patients = () => {
+const DoctorPatients = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useRecoilValue(authState);
@@ -88,4 +88,4 @@ const Patients = () => {
   );
 };
 
-export default Patients;
+export default DoctorPatients;

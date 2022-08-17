@@ -1,9 +1,10 @@
 ## High Priority
 
-- [ ] reduce number of tabs (actions left panel rather than tabs) [sarf]
-- [ ] Auth permissions (client) [sarf]
-  - [ ] custom roles based co-admin module (client)
+- [X] reduce number of tabs (actions left panel rather than tabs) [sarf]
+- [X] Auth permissions (client) [sarf]
+  - [X] custom roles based co-admin module (client)
   - [ ] fetch medicines on doctor login on client side
+- [ ] Fix Client Side Errors on Inventory Page [sarf]
 - [ ] generate PDF from appointment + prescription tables [anzal]
 - [ ] doctor can refer to other doctors/departments [husain]
 - [ ] show name instead of id in antd auto complete [husain]
@@ -14,7 +15,6 @@
 - [ ] Checkout flow, (prescription to medicine dispence) [rashid]
 
 ## Bugs
-
 - [ ] Get notifications on the notif panel (pharmacist) [who]
 - [ ] show all unattended appointments in notifications (may use filter)
 - [ ] debug antd autocomplete search

@@ -63,6 +63,7 @@ const createPrescriptionService = async ({
   medicines,
 }) => {
   // Fix this bad query
+
   const newPrescription = await prisma.prescription.create({
     data: {
       appointment: {

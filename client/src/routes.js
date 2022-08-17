@@ -1,24 +1,36 @@
-import Doctor from "./pages/doctor";
 import Patient from "./pages/patient";
-import Pharmacy from "./pages/pharmacy";
-import Reception from "./pages/reception";
 import Appointments from "./pages/appointments";
 import Admin from "./pages/admin";
-import Inventory from "./pages/inventory";
+import DoctorAppointments from "./pages/doctor/Appointments";
+import PrescriptionForm from "./pages/doctor/prescribeMedicine";
+import Prescriptions from "./pages/pharmacy/Prescriptions";
+import CreateReceipts from "./pages/pharmacy/CreateReceipts";
+import CreateAppointmentForm from "./pages/reception/CreateAppointmentForm";
+import InventoryDisplay from "./pages/inventory/Display";
+import AddNewInventory from "./pages/inventory/AddNew";
 
 export const validateRoute = (Auth, route) => {
   if (!Auth.isLoggedIn) {
     return false;
   }
 
-  const userType = Auth.user.role;
-  if (userType === "ADMIN") {
-    return true;
-  } else if (!route.role.includes(userType)) {
-    return false;
-  } else {
-    return true;
-  }
+  const userType = Auth.user.permissions;
+  if (userType === "ADMIN") return true;
+  const contains = route.role.some((role) => userType.includes(role));
+  return contains;
+};
+
+const permissions = {
+  // all access to this special role admin
+  ADMIN: "ADMIN",
+  DOCTOR_APPOINTMENTS: "DOCTOR_APPOINTMENTS",
+  DOCTOR_PRESCRIBE_MEDICINE: "DOCTOR_PRESCRIBE_MEDICINE",
+  PHARMACY_PRESCRIPTIONS: "PHARMACY_PRESCRIPTIONS",
+  PHARMACY_RECIEPT: "PHARMACY_RECIEPT",
+  RECEPTION_ADD_APPOINTMENT: "RECEPTION_ADD_APPOINTMENT",
+  RECEPTION_CREATE_PATIENT: "RECEPTION_CREATE_PATIENT",
+  INVENTORY_VIEW: "INVENTORY_VIEW",
+  INVENTORY_ADD_MEDICINE: "INVENTORY_ADD_MEDICINE",
 };
 
 const routes = [
@@ -26,13 +38,19 @@ const routes = [
     path: "/admin",
     component: Admin,
     text: "Admin",
-    role: [],
+    role: ["ADMIN"],
   },
   {
-    path: "/doctor",
-    component: Doctor,
-    text: "Doctor",
-    role: ["DOCTOR"],
+    path: "/doctor/appointments",
+    component: DoctorAppointments,
+    text: "Doctor Appointents",
+    role: [permissions.DOCTOR_APPOINTMENTS],
+  },
+  {
+    path: "/doctor/prescribe-medicine",
+    component: PrescriptionForm,
+    text: "Prescribe Medicine",
+    role: [permissions.DOCTOR_PRESCRIBE_MEDICINE],
   },
   {
     path: "/patient",
@@ -41,28 +59,40 @@ const routes = [
     role: ["PATIENT"],
   },
   {
-    path: "/pharmacy",
-    component: Pharmacy,
+    path: "/pharmacy/prescriptions",
+    component: Prescriptions,
     text: "Pharmacy",
-    role: ["PHARMACIST"],
+    role: [permissions.PHARMACY_PRESCRIPTIONS],
   },
   {
-    path: "/reception",
-    component: Reception,
+    path: "/pharmacy/reciept",
+    component: CreateReceipts,
+    text: "Create Reciepts",
+    role: [permissions.PHARMACY_RECIEPT],
+  },
+  {
+    path: "/reception/add-appointment",
+    component: CreateAppointmentForm,
     text: "Reception",
-    role: ["RECEPTIONIST"],
+    role: [permissions.RECEPTION_ADD_APPOINTMENT],
   },
   {
-    path: "/appointments",
+    path: "/appointment/create-patient",
     component: Appointments,
     text: "Appointments",
-    role: ["RECEPTIONIST"],
+    role: [permissions.RECEPTION_CREATE_PATIENT],
   },
   {
-    path: "/inventory",
-    component: Inventory,
+    path: "/inventory/view",
+    component: InventoryDisplay,
     text: "Inventory",
-    role: ["INVENTORY_MANAGER"],
+    role: [permissions.INVENTORY_VIEW],
+  },
+  {
+    path: "/inventory/add-medicine",
+    component: AddNewInventory,
+    text: "Add Medicine",
+    role: [permissions.INVENTORY_ADD_MEDICINE],
   },
 ];
 

@@ -13,7 +13,7 @@ import {
 } from "antd";
 import React, { useState } from "react";
 import FixedUseContext from "../../Hooks/FixedUseContext";
-import { PharmacyContext } from "../../pages/pharmacy";
+import { PharmacyContext } from ".";
 // const { TextArea } = Input;
 const { Option } = Select;
 
