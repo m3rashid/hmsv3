@@ -4,46 +4,28 @@ const dayjs = require("dayjs");
 const prisma = require("../utils/prisma");
 const { issueJWT, revalidateJWT } = require("../utils/jwt.js");
 
-const UserDetails = async (userId, role) => {
-  try {
-    switch (role) {
-      case "DOCTOR":
-        const doctor = await prisma.Doctor.findUnique({
-          where: { id: userId },
-          include: { auth: false },
-        });
-        return JSON.parse(
-          JSON.stringify(doctor, (key, value) =>
-            typeof value === "bigint" ? value.toString() : value
-          )
-        );
-      case "PATIENT":
-        return null;
-      default:
-        return null;
-    }
-  } catch (err) {
-    console.log(err);
-    return new Error("Internal Server Error");
-  }
-};
-
 const loginService = async (email, password) => {
   if (!email || !password) throw new Error("No credentials");
 
-  console.log(email, password);
+  console.log({ email, password });
 
-  const user = await prisma.auth.findUnique({ where: { email } });
+  const user = await prisma.auth.findUnique({
+    where: { email },
+  });
   if (!user) throw new Error("User not found");
   const matched = await bcrypt.compare(password, user.password);
   if (!matched) throw new Error("Wrong Credentials");
 
-  const userDetails = await UserDetails(user.id, user.role);
+  const userDetails = await prisma.profile.findUnique({
+    where: { id: user.id },
+  });
   const { token, refreshToken, expires } = issueJWT(user);
-  console.log(user, userDetails);
+
+  console.log({ user, userDetails });
+
   return {
     user: {
-      role: user.role,
+      roles: user.role,
       dataValues: user,
     },
     userDetails,
@@ -192,7 +174,6 @@ const createDummyService = async () => {
 };
 
 module.exports = {
-  UserDetails,
   loginService,
   logoutService,
   signupService,

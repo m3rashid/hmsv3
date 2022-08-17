@@ -61,10 +61,11 @@ enum Dosage {
 }
 
 model Auth {
-  id       Int    @id @default(sequence())
-  name     String
-  email    String @unique
-  password String
+  id          Int      @id @default(sequence())
+  name        String
+  email       String   @unique
+  password    String
+  permissions String[]
 }
 
 model Profile {

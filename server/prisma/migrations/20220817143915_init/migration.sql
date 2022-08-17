@@ -22,6 +22,7 @@ CREATE TABLE "Auth" (
     "name" STRING NOT NULL,
     "email" STRING NOT NULL,
     "password" STRING NOT NULL,
+    "permissions" STRING[],
 
     CONSTRAINT "Auth_pkey" PRIMARY KEY ("id")
 );
