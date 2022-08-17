@@ -5,8 +5,6 @@ const {
   signupService,
 } = require("./auth.js");
 
-const { createUserService } = require("./createUser.js");
-
 const {
   getDoctorAppointmentsService,
   getDoctorPatientsService,
@@ -26,7 +24,6 @@ module.exports = {
   logoutService,
   revalidateService,
   signupService,
-  createUserService,
   getDoctorAppointmentsService,
   getDoctorPatientsService,
   createPatientService,

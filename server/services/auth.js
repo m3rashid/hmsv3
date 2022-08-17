@@ -16,7 +16,7 @@ const loginService = async (email, password) => {
   if (!matched) throw new Error("Wrong Credentials");
 
   const userDetails = await prisma.profile.findUnique({
-    where: { authId: user.id },
+    where: { id: user.id },
   });
   const { token, refreshToken, expires } = issueJWT(user);
 
@@ -34,8 +34,42 @@ const loginService = async (email, password) => {
   };
 };
 
-const signupService = async (email, password, name, role) => {
-  console.log({ email, password, name, role });
+const signupService = async (
+  email,
+  password,
+  name,
+  role,
+  designation,
+  contact,
+  address,
+  bio,
+  sex,
+  availability,
+  availableDays,
+  roomNumber,
+  authorityName,
+  category,
+  origin
+) => {
+  console.log({
+    email,
+    password,
+    name,
+    role,
+    designation,
+    contact,
+    address,
+    bio,
+    sex,
+    availability,
+    availableDays,
+    roomNumber,
+    authorityName,
+    category,
+    origin,
+  });
+  // use this as a transaction
+
   if (!email || !password || !name || !role) throw new Error("No credentials");
 
   let allowedActions = [];
@@ -102,16 +136,37 @@ const signupService = async (email, password, name, role) => {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
+
+  const profile = await prisma.profile.create({
+    data: {
+      designation,
+      contact,
+      address,
+      bio,
+      sex,
+      availability,
+      available_days: availableDays,
+      room_number: roomNumber,
+      authority_name: authorityName,
+      category,
+      origin,
+    },
+  });
+
   const user = await prisma.Auth.create({
     data: {
       email,
       name,
+      profileId: profile.id,
       password: hashedPassword,
       permissions: allowedActions,
     },
+    include: {
+      profile: true,
+    },
   });
 
-  console.log({ user });
+  console.log({ user, profile });
   return user;
 };
 

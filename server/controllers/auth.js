@@ -35,7 +35,18 @@ const signup = async (req, res) => {
       req.body.email,
       req.body.password,
       req.body.name,
-      req.body.role
+      req.body.role,
+      req.body.designation,
+      req.body.contact,
+      req.body.address,
+      req.body.bio,
+      req.body.sex,
+      req.body.availability,
+      req.body.availableDays,
+      req.body.roomNumber,
+      req.body.authorityName,
+      req.body.category,
+      req.body.origin
     );
 
     return res.status(200).json({ message: "Signup Successful", user });

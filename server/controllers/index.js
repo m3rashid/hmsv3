@@ -4,7 +4,6 @@ const {
   getPatientById,
   searchPatients,
 } = require("./patient.js");
-const { createUser } = require("./createUser.js");
 const { login, logout, revalidate, signup } = require("./auth.js");
 const { getDoctorAppointments, getDoctorPatients } = require("./doctor.js");
 
@@ -13,7 +12,6 @@ module.exports = {
   logout,
   revalidate,
   signup,
-  createUser,
   getDoctorAppointments,
   getDoctorPatients,
   createPatient,
