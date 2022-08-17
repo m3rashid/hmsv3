@@ -5,24 +5,13 @@ const {
   addMedicine,
   SearchMedicines,
 } = require("../controllers/inventory");
-const permissions = require("../utils/auth.helpers");
-const { checkAuth, checkRouteAccess } = require("../middlewares/auth");
+const { checkAuth } = require("../middlewares/auth");
 
 const router = express.Router();
 
 router.post("/dummy", CreateDummyInventory);
-router.get(
-  "/search",
-  checkAuth,
-  checkRouteAccess(permissions.SEARCH_MEDICINES),
-  SearchMedicines
-);
-router.post(
-  "/add",
-  checkAuth,
-  checkRouteAccess(permissions.ADD_MEDICINE),
-  addMedicine
-);
+router.get("/search", checkAuth, SearchMedicines);
+router.post("/add", checkAuth, addMedicine);
 
 module.exports = {
   router,

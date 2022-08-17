@@ -5,16 +5,16 @@
 
 ## High Priority
 
-- [ ] Auth permissions (client)
+- [ ] reduce number of tabs (actions left panel rather than tabs) [sarf]
+- [ ] Auth permissions (client) [sarf]
   - [ ] custom roles based co-admin module (client)
   - [ ] fetch medicines on doctor login on client side
-- [ ] doctor can refer to other doctors/departments
-- [ ] click on notification to go to certain appoinment for rescription
-- [ ] change notification to active appointments (must be first tab)
-- [ ] show name instead of id in antd auto complete
-- [ ] admin ui
-- [ ] reduce number of tabs
 - [ ] generate PDF from appointment + prescription tables [anzal]
+- [ ] doctor can refer to other doctors/departments [husain]
+- [ ] show name instead of id in antd auto complete [husain]
+- [ ] change notification to active appointments (must be first tab) [husain]
+- [ ] click on notification to go to certain appoinment for rescription
+- [ ] admin ui [rashid]
 
 ## Bugs
 

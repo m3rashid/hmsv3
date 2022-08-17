@@ -39,4 +39,14 @@ const permissions = {
   GET_APPOINTMENT_BY_ID: "GET_APPOINTMENT_BY_ID",
 };
 
-module.exports = permissions;
+const checkAccess = (routeAccess, permissions) => {
+  if (!routeAccess) return false;
+  if (!permissions.includes(routeAccess)) return false;
+
+  return true;
+};
+
+module.exports = {
+  permissions,
+  checkAccess,
+};

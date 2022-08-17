@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 
 const prisma = require("../utils/prisma");
-const permissions = require("../utils/auth.helpers");
+const { permissions } = require("../utils/auth.helpers");
 const { issueJWT, revalidateJWT } = require("../utils/jwt.js");
 
 const loginService = async (email, password) => {

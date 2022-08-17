@@ -1,17 +1,21 @@
-const express = require("express");
 require("dotenv").config();
+const fs = require("fs");
 const cors = require("cors");
 const http = require("http");
+const express = require("express");
+const JWT = require("jsonwebtoken");
 const { Server } = require("socket.io");
 const { instrument } = require("@socket.io/admin-ui");
 
+const prisma = require("./utils/prisma.js");
 const { router: AuthRoutes } = require("./routes/auth.routes.js");
 const { router: DoctorRoutes } = require("./routes/doctor.routes.js");
-const { router: ReceptionRoutes } = require("./routes/reception.routes.js");
 const { router: socketHandler } = require("./routes/sockets/index.js");
 const { router: PatientRoutes } = require("./routes/patient.routes.js");
 const { router: InventoryRoutes } = require("./routes/inventory.routes");
-const prisma = require("./utils/prisma.js");
+const { router: ReceptionRoutes } = require("./routes/reception.routes.js");
+
+const keys = JSON.parse(fs.readFileSync(__dirname + "/utils/keys/keys.json"));
 
 const corsOrigin = [
   "https://admin.socket.io",
@@ -25,9 +29,26 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: corsOrigin,
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "HEAD", "OPTIONS"],
     credentials: true,
   },
+});
+
+io.use((socket, next) => {
+  try {
+    const token = socket.handshake.auth.token;
+    if (!token) throw new Error("Auth error");
+    const payload = JWT.verify(token, keys.ACCESS_SECRET);
+
+    socket.user = payload.sub;
+    console.log({ socketUser: socket.user });
+
+    next();
+    return next();
+  } catch (err) {
+    console.log({ socketErr: err });
+    next(err);
+  }
 });
 
 io.on("connection", (socket) => {

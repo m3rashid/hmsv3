@@ -7,4 +7,7 @@ const baseUrl =
 
 export const socket = io(baseUrl, {
   autoConnect: false,
+  auth: {
+    token: localStorage.getItem("refresh_token"),
+  },
 });

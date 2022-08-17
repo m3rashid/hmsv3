@@ -1,8 +1,14 @@
 const dayjs = require("dayjs");
+
 const prisma = require("../utils/prisma");
+const { checkAccess, permissions } = require("../utils/auth.helpers");
 
 const getDoctorAppointmentsService = async (userId) => {
-  console.log(userId);
+  console.log({ userId });
+  if (!checkAccess(permissions.GET_DOCTOR_APPOINTMENTS)) {
+    throw new Error("Forbidden");
+  }
+
   const appointments = await prisma.appointment.findMany({
     where: { doctorId: userId },
     include: { doctor: true, patient: true },

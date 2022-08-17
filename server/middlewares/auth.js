@@ -19,19 +19,6 @@ const checkAuth = (req, res, next) => {
   }
 };
 
-const checkRouteAccess = (routeAccess) => (req, res, next) => {
-  try {
-    if (!routeAccess) throw new Error("Route access not defined");
-    const { permissions } = req.user;
-    if (!permissions.includes(routeAccess)) throw new Error();
-    next();
-  } catch (err) {
-    console.log(err);
-    return res.status(403).json({ message: err.message || "Forbidden" });
-  }
-};
-
 module.exports = {
   checkAuth,
-  checkRouteAccess,
 };

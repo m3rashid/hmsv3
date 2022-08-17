@@ -5,31 +5,15 @@ const {
   getAppointmentById,
   createPatient,
 } = require("../controllers/reception.js");
-const permissions = require("../utils/auth.helpers");
-const { checkAuth, checkRouteAccess } = require("../middlewares/auth.js");
+const { checkAuth } = require("../middlewares/auth.js");
 
 const router = express.Router();
 
-router.post(
-  "/create-appointment",
-  checkAuth,
-  checkRouteAccess(permissions.CREATE_APPOINTMENT),
-  createAppointment
-);
+router.post("/create-appointment", checkAuth, createAppointment);
 
-router.post(
-  "/create-patient",
-  checkAuth,
-  checkRouteAccess(permissions.CREATE_PATIENT),
-  createPatient
-);
+router.post("/create-patient", checkAuth, createPatient);
 
-router.get(
-  "/appointment",
-  checkAuth,
-  checkRouteAccess(permissions.GET_APPOINTMENT_BY_ID),
-  getAppointmentById
-);
+router.get("/appointment", checkAuth, getAppointmentById);
 
 module.exports = {
   router,

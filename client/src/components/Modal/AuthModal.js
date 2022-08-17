@@ -23,7 +23,7 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
       });
 
       localStorage.setItem("refresh_token", data.refreshToken);
-
+      socket.io.opts.auth.token = data.token;
       socket.connect();
 
       message.success({
