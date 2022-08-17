@@ -1,5 +1,6 @@
-import React from "react";
-import { faker } from "@faker-js/faker";
+import React, {useEffect} from "react";
+import useNotifications from "../../../Hooks/useNotifications";
+import dayjs from "dayjs";
 
 const GenerateData = (count) => {
   const data = [];
@@ -15,7 +16,7 @@ const GenerateData = (count) => {
 };
 
 const Notifications = () => {
-  const data = GenerateData(10);
+  const { notifications} = useNotifications();
 
   return (
     <div
@@ -25,7 +26,7 @@ const Notifications = () => {
         gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
       }}
     >
-      {data.map((item, index) => {
+      {notifications.data.map((item, index) => {
         return (
           <div
             key={index}
@@ -36,7 +37,11 @@ const Notifications = () => {
               color: "white",
             }}
           >
-            <div>
+          <h3>{item.title}</h3>
+          <p>{item.message}</p>
+          <p>{dayjs(item.tile).format("HH:mm:ss a, DD-MM")}</p>
+
+            {/* <div>
               <b>Patient : &nbsp; </b> {item.patient}
             </div>
             <div>
@@ -45,7 +50,7 @@ const Notifications = () => {
             <div>
               <b>Disease : &nbsp; </b>
               {item.disease}
-            </div>
+            </div> */}
           </div>
         );
       })}
