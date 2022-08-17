@@ -18,62 +18,71 @@ enum Role {
   OTHER
 }
 
+enum MedType {
+  TABLET
+  SYRUP
+}
+
 enum Sex {
   m
   f
   o
 }
 
+enum Days {
+  MON
+  TUE
+  WED
+  THU
+  FRI
+  SAT
+  SUN
+}
+
+enum Category {
+  GENERAL_MEDICINE
+  CARDIOLOGY
+  DERMATOLOGY
+  INTERNAL_MEDICINE
+  OPHTHALMOLOGY
+  ENT
+  GYNAECOLOGY
+}
+
+enum Dosage {
+  OD
+  BD
+  TD
+  QD
+  OW
+  BW
+  TW
+  QW
+}
+
 model Auth {
-  id           Int            @id @default(sequence())
-  email        String         @unique
-  role         Role           @default(OTHER)
-  password     String
-  Pharmacist   Pharmacist[]
-  Receptionist Receptionist[]
-  Doctor       Doctor[]
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @default(now())
+  id       Int    @id @default(sequence())
+  name     String
+  email    String @unique
+  password String
 }
 
-model Doctor {
-  id           Int           @id @default(sequence())
-  name         String
-  age          Int
-  availability String        @default("Yes")
-  designation  String
-  contact      String        @unique
-  address      String
-  appointments Appointment[]
-  // Prescription Prescription[]
-  authId       Int
-  auth         Auth          @relation(fields: [authId], references: [id])
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @default(now())
-}
-
-model Pharmacist {
-  id        Int      @id @default(sequence())
-  name      String
-  email     String   @unique
-  contact   String   @unique
-  address   String
-  authId    Int
-  auth      Auth     @relation(fields: [authId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-}
-
-model Receptionist {
-  id        Int      @id @default(sequence())
-  name      String
-  email     String   @unique
-  contact   String   @unique
-  address   String
-  authId    Int
-  auth      Auth     @relation(fields: [authId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+model Profile {
+  authId         Int           @id
+  designation    String?
+  contact        String?
+  address        String?
+  bio            String?
+  sex            Sex
+  availability   String[] // time range
+  available_days Days[]
+  room_number    Int?
+  authority_name String?
+  category       Category?
+  origin         String?       @default("JMI")
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now())
+  Appointment    Appointment[]
 }
 
 model Patient {
@@ -81,13 +90,12 @@ model Patient {
   name        String
   age         Int
   sex         Sex
-  lastVisit   DateTime?
+  lastVisit   String?
   contact     String        @unique
   address     String?
   email       String?
   jamiaId     String?
   Appointment Appointment[]
-  // Prescription Prescription[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @default(now())
 }
@@ -99,7 +107,7 @@ model Appointment {
   patientId    Int
   patient      Patient        @relation(fields: [patientId], references: [id])
   doctorId     Int
-  doctor       Doctor         @relation(fields: [doctorId], references: [id])
+  doctor       Profile        @relation(fields: [doctorId], references: [authId])
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @default(now())
 }
@@ -118,23 +126,48 @@ model Prescription {
 }
 
 model PrescribedMedicine {
-  id             Int           @id @default(sequence())
-  quantity       Int
-  dosage         String?
-  description    String
-  MedicineId     Int
-  Medicine       Inventory     @relation(fields: [MedicineId], references: [id])
-  Prescription   Prescription? @relation(fields: [prescriptionId], references: [id])
-  prescriptionId Int?
+  id              Int           @id @default(sequence())
+  duration        Int
+  dosage          Dosage?
+  quantityPerDose String? // only for  syrups
+  description     String
+  MedicineId      Int
+  Medicine        Medicine      @relation(fields: [MedicineId], references: [id])
+  Prescription    Prescription? @relation(fields: [prescriptionId], references: [id])
+  prescriptionId  Int?
 }
 
-model Inventory {
+// Store module start
+
+model Medicine {
   id                 Int                  @id @default(sequence())
   name               String
   quantity           Int
-  price              Decimal
-  description        String
+  batchNumber        String
+  expiry_date        String
+  category           Category
+  medType            MedType
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @default(now())
   PrescribedMedicine PrescribedMedicine[]
 }
+
+model NonMedicine {
+  id          Int      @id @default(sequence())
+  name        String
+  quantity    Int
+  batchNumber String
+  expiry_date String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model OtherAssets {
+  id        Int      @id @default(sequence())
+  name      String
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+// Store module end

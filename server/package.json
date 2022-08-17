@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^7.1.0",
-    "@prisma/client": "^4.1.1",
+    "@prisma/client": "4.2.1",
     "@socket.io/admin-ui": "^0.3.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
@@ -24,6 +24,6 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "prisma": "^4.1.1"
+    "prisma": "4.2.1"
   }
 }
