@@ -1,22 +1,10 @@
-import React, {useEffect} from "react";
+import React from "react";
+
 import useNotifications from "../../../Hooks/useNotifications";
 import dayjs from "dayjs";
 
-const GenerateData = (count) => {
-  const data = [];
-
-  for (let i = 0; i < count; i++) {
-    data.push({
-      patient: faker.name.findName(),
-      disease: faker.lorem.sentence(),
-      time: faker.date.past().toDateString(),
-    });
-  }
-  return data;
-};
-
 const Notifications = () => {
-  const { notifications} = useNotifications();
+  const { notifications } = useNotifications();
 
   return (
     <div
@@ -37,9 +25,9 @@ const Notifications = () => {
               color: "white",
             }}
           >
-          <h3>{item.title}</h3>
-          <p>{item.message}</p>
-          <p>{dayjs(item.tile).format("HH:mm:ss a, DD-MM")}</p>
+            <h3>{item.title}</h3>
+            <p>{item.message}</p>
+            <p>{dayjs(item.tile).format("HH:mm:ss a, DD-MM")}</p>
 
             {/* <div>
               <b>Patient : &nbsp; </b> {item.patient}
