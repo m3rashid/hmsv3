@@ -1,13 +1,10 @@
 const dayjs = require("dayjs");
 
 const prisma = require("../utils/prisma");
-const { checkAccess, permissions } = require("../utils/auth.helpers");
+const { permissions } = require("../utils/auth.helpers");
 
 const getDoctorAppointmentsService = async (userId) => {
   console.log({ userId });
-  if (!checkAccess(permissions.GET_DOCTOR_APPOINTMENTS)) {
-    throw new Error("Forbidden");
-  }
 
   const appointments = await prisma.appointment.findMany({
     where: { doctorId: userId },
@@ -41,14 +38,30 @@ const searchDoctorsService = async ({
   address,
   availability,
 }) => {
-  const doctors = await prisma.Doctor.findMany({
+  const doctors = await prisma.auth.findMany({
     where: {
-      name: { contains: name },
-      age: { gte: minAge },
-      age: { lte: maxAge },
-      designation: { contains: designation },
-      contact: { contains: contact },
-      address: { contains: address },
+      OR: [
+        {
+          name: {
+            contains: name,
+          },
+        },
+        {
+          email: {
+            contains: email,
+          },
+        },
+      ],
+      AND: [
+        {
+          permissions: {
+            has: permissions.DOCTOR_PRESCRIBE_MEDICINE,
+          },
+        },
+      ],
+    },
+    include: {
+      profile: true,
     },
   });
   return { count: doctors.length, doctors };

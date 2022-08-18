@@ -1,20 +1,31 @@
+const { checkAccess, permissions } = require("../utils/auth.helpers");
 const prisma = require("../utils/prisma");
 
-const createPatientService = async ({
-  name,
-  age,
-  sex,
-  contact,
-  address,
-  email,
-  jamiaId,
-}) => {
+const createPatientService = async (
+  { name, age, sex, contact, address, email, jamiaId },
+  UserPermissions
+) => {
+  if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions))
+    throw new Error("Forbidden");
+
   const data = { name, age, sex, contact, address, email, jamiaId };
   console.log(data);
   if (!name || !age || !sex || !contact || !email) {
     throw new Error("Missing credentials");
   }
-  const newPatient = await prisma.Patient.create({ data });
+
+  const newPatient = await prisma.patient.create({
+    data: {
+      name,
+      age,
+      contact,
+      sex,
+      address,
+      email,
+      jamiaId,
+    },
+  });
+  console.log("new Patient", newPatient);
   return { patient: newPatient };
 };
 
@@ -50,13 +61,14 @@ const searchPatientsService = async ({
 }) => {
   const patients = await prisma.Patient.findMany({
     where: {
-      name: { contains: name },
-      age: { gte: minAge },
-      age: { lte: maxAge },
-      sex: { eq: sex },
-      contact: { contains: contact },
-      address: { contains: address },
-      email: { contains: email },
+      OR: [
+        { name: { contains: name } },
+        { age: { gte: minAge, lte: maxAge } },
+        { sex: { eq: sex } },
+        { contact: { contains: contact } },
+        { address: { contains: address } },
+        { email: { contains: email } },
+      ],
     },
     orderBy: { createdAt: "desc" },
   });

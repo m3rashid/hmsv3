@@ -63,15 +63,19 @@ const createPatient =
   (io, socket) =>
   async ({ name, age, sex, contact, address, email, jamiaId }) => {
     try {
-      const { patient } = await createPatientService({
-        name,
-        age,
-        sex,
-        contact,
-        address,
-        email,
-        jamiaId,
-      });
+      console.log(socket.user);
+      const { patient } = await createPatientService(
+        {
+          name,
+          age,
+          sex,
+          contact,
+          email,
+          address,
+          jamiaId,
+        },
+        socket?.user?.permissions
+      );
       console.log(patient, "New patient created");
       io.emit("new-patient-created", { data: patient });
     } catch (err) {
@@ -213,7 +217,6 @@ const createAppointment =
         doctorId,
         date,
       });
-      console.log(data);
       io.emit("new-appointment-created", data);
     } catch (err) {
       console.log(err);
@@ -234,14 +237,18 @@ const createPrescriptionByDoctor =
     medicines,
   }) => {
     try {
-      const data = await createPrescriptionByDoctorService({
-        appointment,
-        symptoms,
-        prescription,
-        CustomMedicines,
-        datetime,
-        medicines,
-      });
+      console.log(socket.user);
+      const data = await createPrescriptionByDoctorService(
+        {
+          appointment,
+          symptoms,
+          prescription,
+          CustomMedicines,
+          datetime,
+          medicines,
+        },
+        socket?.user?.permissions
+      );
 
       console.log(data);
       io.emit("new-prescription-by-doctor-created", { data });

@@ -43,17 +43,15 @@ io.use((socket, next) => {
     socket.user = payload.sub;
     console.log({ socketUser: socket.user });
 
-    next();
+    io.on("connection", (socket) => {
+      console.log("Socket connected:", socket.id);
+      return socketHandler(io, socket);
+    });
     return next();
   } catch (err) {
     console.log({ socketErr: err });
     next(err);
   }
-});
-
-io.on("connection", (socket) => {
-  console.log("Socket connected:", socket.id);
-  return socketHandler(io, socket);
 });
 
 app.use(cors({ origin: corsOrigin, optionsSuccessStatus: 200 }));

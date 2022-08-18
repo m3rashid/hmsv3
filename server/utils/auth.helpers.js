@@ -12,8 +12,11 @@ const permissions = {
 };
 
 const checkAccess = (routeAccess, permissions) => {
+  console.log({ routeAccess, permissions });
   if (!routeAccess) return false;
-  return routeAccess.some((role) => permissions.includes(role));
+  const contains = routeAccess.some((role) => permissions.includes(role));
+  console.log({ contains });
+  return contains;
 };
 
 module.exports = {
