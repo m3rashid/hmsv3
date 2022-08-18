@@ -1,7 +1,11 @@
 import "./styles/theme.less";
-import { message } from "antd";
+// import { message } from "antd";
 import { useRecoilState } from "recoil";
-import { Routes, Route, useLocation } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  // useLocation
+} from "react-router-dom";
 import React, { useCallback, useEffect, useState } from "react";
 
 import AppLayout from "./components/Layout/AppLayout";
@@ -12,7 +16,7 @@ import Loading from "./components/Loading/Loading";
 import Home from "./pages/home";
 import UnAuthPage from "./pages/unAuthenticated";
 import { socket } from "./api/socket";
-import useNotifications from "./Hooks/useNotifications";
+// import useNotifications from "./Hooks/useNotifications";
 import useFetchDoctor from "./components/Doctor/useFetchDoctor";
 
 export const SocketContext = React.createContext();
@@ -21,7 +25,7 @@ function App() {
   useFetchDoctor();
   const [Auth, setAuth] = useRecoilState(authState);
   const [isLoading, setisLoading] = useState(true);
-  const location = useLocation();
+  // const location = useLocation();
   const revalidate = useCallback(() => {
     revalidateJWT(setAuth)
       .then((res) => {
