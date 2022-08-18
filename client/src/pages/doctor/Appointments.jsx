@@ -76,7 +76,11 @@ function DoctorAppointments() {
   ];
 
   return (
-    <div style={{ marginTop: "20px" }}>
+    <div
+      style={{
+        marginTop: "20px",
+      }}
+    >
       <Header />
       <Divider />
       <Typography.Title
