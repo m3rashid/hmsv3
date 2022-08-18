@@ -1,7 +1,7 @@
 import { Tabs } from "antd";
 import React from "react";
 import { InventoryTypes } from "../../../utils/inventoryTypes";
-import InventoryTable from "./InventoryTable";
+import InventoryTable from "./components/InventoryTable";
 
 function InventoryDisplay() {
   return (
