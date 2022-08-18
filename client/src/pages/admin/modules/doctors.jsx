@@ -1,14 +1,12 @@
 import React from "react";
-import { Button, Table } from "antd";
+import { Table } from "antd";
 import { useRecoilState } from "recoil";
 
 import { instance } from "../../../api/instance";
 import { adminState } from "../../../atoms/admin";
 import { columns, formatForTable } from "./table.helpers";
-import CreateUserModal from "../../../components/Modal/CreateUserModal";
 
 const Doctors = () => {
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [adminData, setAdminData] = useRecoilState(adminState);
 
   const getAllDoctors = async () => {
@@ -34,28 +32,6 @@ const Doctors = () => {
 
   return (
     <div style={{ marginTop: "10px", marginLeft: "0px" }}>
-      <div>
-        <Button
-          style={{ marginBottom: "20px" }}
-          onClick={() => setIsModalVisible(true)}
-        >
-          Register Doctor
-        </Button>
-
-        <Button
-          style={{ marginBottom: "20px" }}
-          onClick={() => setIsModalVisible(true)}
-        >
-          Register Doctor
-        </Button>
-
-        <CreateUserModal
-          isModalVisible={isModalVisible}
-          handleOk={() => setIsModalVisible(true)}
-          handleCancel={() => setIsModalVisible(false)}
-          role="DOCTOR"
-        />
-      </div>
       <Table
         dataSource={adminData.doctors}
         columns={columns}

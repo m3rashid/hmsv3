@@ -1,14 +1,12 @@
 import React from "react";
 import { useRecoilState } from "recoil";
-import { Button, Table } from "antd";
+import { Table } from "antd";
 
 import { instance } from "../../../api/instance";
 import { adminState } from "../../../atoms/admin";
-import CreateUserModal from "../../../components/Modal/CreateUserModal";
 import { columns, formatForTable } from "./table.helpers";
 
 const Receptionists = () => {
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [adminData, setAdminData] = useRecoilState(adminState);
 
   const getAllReceptionists = async () => {
@@ -34,22 +32,6 @@ const Receptionists = () => {
 
   return (
     <div style={{ marginTop: "10px" }}>
-      <div>
-        <Button
-          style={{ marginBottom: "20px" }}
-          onClick={() => setIsModalVisible(true)}
-        >
-          Register Receptionist
-        </Button>
-
-        <CreateUserModal
-          isModalVisible={isModalVisible}
-          handleOk={() => setIsModalVisible(true)}
-          handleCancel={() => setIsModalVisible(false)}
-          role="RECEPTIONIST"
-        />
-      </div>
-
       <Table
         dataSource={adminData.receptionists}
         columns={columns}
