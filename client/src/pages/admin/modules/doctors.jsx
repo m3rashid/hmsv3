@@ -51,12 +51,8 @@ const Doctors = () => {
 
         <CreateUserModal
           isModalVisible={isModalVisible}
-          handleOk={() => {
-            setIsModalVisible(true);
-          }}
-          handleCancel={() => {
-            setIsModalVisible(false);
-          }}
+          handleOk={() => setIsModalVisible(true)}
+          handleCancel={() => setIsModalVisible(false)}
           role="DOCTOR"
         />
       </div>

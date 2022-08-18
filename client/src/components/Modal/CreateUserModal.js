@@ -1,10 +1,23 @@
 import React from "react";
 import { Modal, Button, Input, Form, message } from "antd";
+
 import { instance } from "../../api/instance";
+
+const supportedUserRoles = [
+  "DOCTOR",
+  "ADMIN",
+  "RECEPTIONIST",
+  "PHARMACIST",
+  "INVENTORY_MANAGER",
+  "CO_ADMIN",
+  "OTHER",
+];
 
 function CreateUserModal(props) {
   const RoleName = props.role[0] + props.role.toLowerCase().slice(1);
+
   console.log(RoleName);
+
   const onFinish = async (values) => {
     try {
       message.loading({

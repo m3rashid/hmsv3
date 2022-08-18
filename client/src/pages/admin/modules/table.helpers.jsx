@@ -20,9 +20,9 @@ export const formatForTable = (users) => {
         joined: user.createdAt,
         designation: user.designation,
         origin: user.origin,
-        role: user.role,
+        role: user.role.charAt(0) + user.role.slice(1).toLowerCase(),
         roomNumber: user.room_number,
-        sex: user.sex,
+        sex: user.sex === "m" ? "Male" : user.sex === "f" ? "Female" : "Others",
       },
     ],
     []
