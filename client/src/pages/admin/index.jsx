@@ -31,23 +31,23 @@ const Admin = () => {
           <Doctors />
         </Tabs.TabPane>
 
-        <Tabs.TabPane tab="Pharmacists" key="2">
+        <Tabs.TabPane tab="Pharmacists" key="4">
           <Pharmacists />
         </Tabs.TabPane>
 
-        <Tabs.TabPane tab="Inventory Managers" key="2">
+        <Tabs.TabPane tab="Inventory Managers" key="5">
           <InventoryManagers />
         </Tabs.TabPane>
 
-        <Tabs.TabPane tab="Co Admins" key="2">
+        <Tabs.TabPane tab="Co-Admins" key="6">
           <CoAdmins />
         </Tabs.TabPane>
 
-        <Tabs.TabPane tab="Others" key="2">
+        <Tabs.TabPane tab="Others" key="7">
           <Others />
         </Tabs.TabPane>
 
-        <Tabs.TabPane tab="Patients" key="4">
+        <Tabs.TabPane tab="Patients" key="8">
           <Patients />
         </Tabs.TabPane>
       </Tabs>
