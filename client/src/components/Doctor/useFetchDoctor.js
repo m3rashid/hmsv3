@@ -34,7 +34,7 @@ export default function useFetchDoctor() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
-  const loadMedicine = useCallback(async () => {}, []);
+  const loadMedicine = useCallback(async () => { }, []);
 
   const addAppointment = useCallback(
     async (data) => {
