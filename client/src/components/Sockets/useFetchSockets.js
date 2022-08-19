@@ -41,6 +41,7 @@ export default function useFetchSockets() {
         },
       });
 
+
       setInventoryData({
         [InventoryTypes.Medicine]: MedicineInventory.data,
         [InventoryTypes.NonMedicine]: NonMedicineInventory.data,
@@ -52,9 +53,11 @@ export default function useFetchSockets() {
   }, [setInventoryData]);
 
   useEffect(() => {
+    console.log(auth)
     if (
       auth.isLoggedIn &&
       (auth.user.permissions.includes(permissions.INVENTORY_VIEW) ||
+        auth.user.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE) ||
         auth.user.permissions.includes(permissions.INVENTORY_ADD_MEDICINE))
     ) {
       loadInventoryItems();
@@ -90,14 +93,14 @@ export default function useFetchSockets() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
-  const loadMedicine = useCallback(async () => {}, []);
+  const loadMedicine = useCallback(async () => { }, []);
 
   /**
    * Add Appointment in Doctor Appointments
    */
   const addAppointment = useCallback(
     async (data) => {
-      console.log(DoctorData, data);
+
       setDoctorData((prev) => {
         return {
           ...prev,
@@ -105,9 +108,13 @@ export default function useFetchSockets() {
         };
       });
     },
-    [DoctorData, setDoctorData]
+    [setDoctorData]
   );
-
+  const setAppointmentPendingStatus = useCallback(
+    async (id, pending) => {
+      setDoctorData(prev => ({ ...prev, appointments: prev.appointments.map(apt => apt.id === id ? { ...apt, pending } : apt) }));
+    }, [setDoctorData]
+  );
   /**
    * On Doctor Create New Prescription
    */
@@ -119,17 +126,19 @@ export default function useFetchSockets() {
     )
       return;
 
-    console.log("Connected New Prescription By Doctor");
     socket.on("new-prescription-by-doctor-created", ({ data }) => {
+      console.log(data);
+      setAppointmentPendingStatus(data.prescription.appointment.id, false);
       message.success(
         `New Prescription for ${data.prescription.id} created successfully!`
       );
+
     });
 
     return () => {
       socket.off("new-prescription-by-doctor-created");
     };
-  }, [auth]);
+  }, [auth, setAppointmentPendingStatus]);
 
   /**
    * Notify Doctor on New Appointment Created
@@ -159,6 +168,7 @@ export default function useFetchSockets() {
       });
       addAppointment(data);
     });
+
     return () => {
       socket.off("new-appointment-created");
     };

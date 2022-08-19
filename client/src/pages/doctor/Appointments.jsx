@@ -3,15 +3,18 @@ import { socket } from "../../api/socket";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { authState } from "../../atoms/auth";
 import { doctorState } from "../../atoms/doctor";
-import { Button, Divider, Modal, Space, Table, Typography } from "antd";
+import { Button, Divider, Modal, Space, Table, Typography, Popconfirm, Tabs } from "antd";
 import Header from "../../components/Header";
 import dayjs from "dayjs";
+import { useNavigate } from 'react-router-dom';
+const { TabPane } = Tabs;
 
 // import { useQuery } from "react-query";
 // import { instance } from "../../../api/instance";
 
 function DoctorAppointments() {
   // const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
   const { user } = useRecoilValue(authState);
   const [doctorData, setDoctorData] = useRecoilState(doctorState);
   const [ModalVisible, setModalVisible] = useState({
@@ -33,7 +36,7 @@ function DoctorAppointments() {
     });
   }, [user.id]);
 
-  const columns = [
+  const columnsPending = [
     {
       title: "PatientName",
       dataIndex: "patient",
@@ -70,10 +73,82 @@ function DoctorAppointments() {
             {" "}
             View Form{" "}
           </Button>
+          <Popconfirm
+            title="Create a prescription for this appointment?"
+            onConfirm={() => {
+              console.log(record);
+              navigate(`/doctor/prescribe-medicine?appointmentId=${record.id}`);
+            }}
+
+            okText="Yes"
+            cancelText="Cancel"
+          >
+
+            <Button>
+              {" "}
+              Precribe{" "}
+            </Button>
+          </Popconfirm>
         </Space>
       ),
     },
   ];
+
+
+  const columnsPrevious = [
+    {
+      title: "PatientName",
+      dataIndex: "patient",
+      key: "patient",
+      sorter: (a, b) => a?.patient?.name?.localeCompare(b.patientname),
+      render: (item) => {
+        console.log(item);
+        return <Typography.Text>{item?.name}</Typography.Text>;
+      },
+    },
+    {
+      title: "Date/Time",
+      dataIndex: "date",
+      key: "date",
+      sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      render: (item) => dayjs(item).format("MMMM DD YYYY, h:mm:ss a"),
+    },
+      {
+      title: "Remarks",
+      dataIndex: "remarks",
+      key: "remarks",
+      render: (item) => <Typography.Text ellipsis={true}>{item}</Typography.Text>,
+    },
+    {
+      title: "Actions",
+      dataIndex: "actions",
+      key: "actions",
+      render: (text, record) => (
+        <Space>
+          <Button
+            onClick={() => {
+              console.log(record);
+              setModalVisible({
+                visible: true,
+                id: record.id,
+                data: record,
+              });
+            }}
+          >
+            {" "}
+            View Form{" "}
+          </Button>
+            <Button>
+              {" "}
+              View Prescription{" "}
+            </Button>
+        </Space>
+      ),
+    },
+  ];
+
+
+
 
   return (
     <div
@@ -87,16 +162,33 @@ function DoctorAppointments() {
         level={4}
         style={{ width: "100%", textAlign: "center" }}
       >
-        Doctor Appointments
+        Appointments
       </Typography.Title>
-      <Table
-        dataSource={doctorData.appointments}
-        columns={columns}
-        pagination={{
-          total: doctorData.appointments.length,
-          defaultPageSize: 5,
-        }}
-      />
+
+
+      <Tabs defaultActiveKey="1" centered>
+        <TabPane tab="Pending" key="1">
+          <Table
+            dataSource={doctorData.appointments.filter(apt => apt.pending)}
+            columns={columnsPending}
+            pagination={{
+              total: doctorData.appointments.length,
+              defaultPageSize: 5,
+            }}
+          />
+        </TabPane>
+        <TabPane tab="Past" key="2">
+          <Table
+            dataSource={doctorData.appointments.filter(apt => !apt.pending)}
+            columns={columnsPrevious}
+            pagination={{
+              total: doctorData.appointments.length,
+              defaultPageSize: 5,
+            }}
+          />
+        </TabPane>
+      </Tabs>
+
 
       <Modal
         visible={ModalVisible.visible}

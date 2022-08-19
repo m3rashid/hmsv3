@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import moment from "moment";
 import {
   Form,
@@ -25,32 +25,54 @@ import { doctorState } from "../../atoms/doctor";
 import Header from "../../components/Header";
 import useFetchSockets from "../../components/Sockets/useFetchSockets";
 import dayjs from "dayjs";
+import { useSearchParams, useNavigate } from 'react-router-dom'
 
 const { TextArea } = Input;
 const { Option } = Select;
 
 const PrescriptionForm = () => {
-  const [loading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  let [searchParams] = useSearchParams();
 
   const doctorData = useRecoilValue(doctorState);
-  const [formData, setformData] = useState({});
+  const [formData, setFormData] = useState({});
   const [medicines, setMedicines] = useState([]);
   const [form] = Form.useForm();
 
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    socket.on("new-prescription-by-doctor-created", (data) => {
+      setLoading(false);
+      navigate("/doctor/appointments");
+    });
+    return () => {
+      socket.off("new-prescription-by-doctor-created");
+    };
+  }, [navigate]);
+
   const formSubmitHandler = (values) => {
+
     if (loading) return;
-    console.log(values);
-    // socket.emit("create-prescription-by-doctor", {
-    //   ...values,
-    //   datetime: moment().format("YYYY-MM-DD"),
-    //   medicines,
-    // });
+  
+    const data = {
+      appointment: formData.appointmentInfo.id,
+      symptoms: values.symptoms,
+      diagnosis: values.diagnosis,
+      CustomMedicines: values.CustomMedicines,
+      datetime: new Date(),
+      medicines: medicines,
+    };
+    if (loading) return;
+    setLoading(true);
+    socket.emit("create-prescription-by-doctor", data);
   };
 
   const addEmptyMedicine = () => {
     setMedicines([
       ...medicines,
-      { name: "", dosage: "", quantity: 0, description: "" },
+      { dosage: "", duration: 0, description: "", medicineId: "" },
     ]);
   };
 
@@ -58,11 +80,48 @@ const PrescriptionForm = () => {
     setMedicines([...medicines.slice(0, index), ...medicines.slice(index + 1)]);
   };
 
-  console.log(formData);
+  const appointmentId = searchParams.get('appointmentId');
+
+
+  const handleAppointmentSelect = useCallback((appointment_id) => {
+    console.log(medicines)
+    appointment_id = parseInt(appointment_id);
+    const selectedAppointment = doctorData.appointments.find(
+      (appointment) => appointment.id === appointment_id
+    );
+
+    if (selectedAppointment) {
+      setFormData(formData => ({
+        ...formData,
+        appointment: `${selectedAppointment.patient.name}-${selectedAppointment.date}`,
+        appointmentInfo: selectedAppointment,
+      }));
+      form.setFieldValue(
+        "appointment",
+        `${selectedAppointment.patient.name}-${dayjs(
+          selectedAppointment.date
+        ).format("MMMM DD YYYY HH:mm A")}`
+      );
+    } else {
+      setFormData(formData => ({
+        ...formData,
+        appointment: "",
+        appointmentInfo: {},
+      }));
+      form.setFieldValue("appointment", "");
+    }
+  }, [doctorData.appointments, form])
+
+
 
   useEffect(() => {
-    console.log(medicines);
-  }, [medicines]);
+    // return;
+    if (appointmentId !== null && doctorData.appointments.length > 0) {
+
+      handleAppointmentSelect(appointmentId);
+    }
+
+  }, [appointmentId, doctorData.appointments.length, handleAppointmentSelect]);
 
   console.log(form.getFieldsValue(true));
 
@@ -94,45 +153,25 @@ const PrescriptionForm = () => {
                 ]}
               >
                 <Select
+
                   style={{
                     width: "100%",
                   }}
-                  placeholder="select an appointment"
+
+                  placeholder="Select an appointment"
                   allowClear
+
                   onChange={(value) => {
                     console.log("changed", value);
-                    const selectedAppointment = doctorData.appointments.find(
-                      (appointment) => appointment.id === value
-                    );
-
-                    console.log(selectedAppointment);
-                    if (selectedAppointment) {
-                      setformData({
-                        ...formData,
-                        appointment: `${selectedAppointment.patient.name}-${selectedAppointment.date}`,
-                        appointmentInfo: selectedAppointment,
-                      });
-                      form.setFieldValue(
-                        "appointment",
-                        `${selectedAppointment.patient.name}-${dayjs(
-                          selectedAppointment.date
-                        ).format("MMMM DD YYYY HH:mm A")}`
-                      );
-                    } else {
-                      setformData({
-                        ...formData,
-                        appointment: "",
-                        appointmentInfo: {},
-                      });
-                      form.setFieldValue("appointment", "");
-                    }
+                    handleAppointmentSelect(value);
                   }}
+
                   optionLabelProp="Appointment"
                 >
                   {doctorData.appointments.map((appointment) => (
                     <Option key={appointment.id} value={appointment.id}>
                       <span>
-                        {appointment.patient.name} -{" "}
+                        {appointment.patient?.name} -{" "}
                         {dayjs(appointment.date).format("MMMM DD YYYY HH:mm A")}
                       </span>
                     </Option>
@@ -145,7 +184,7 @@ const PrescriptionForm = () => {
                   placeholder="Enter symptoms"
                   allowClear
                   onChange={(e) => {
-                    setformData({ ...formData, symptoms: e.target.value });
+                    setFormData({ ...formData, symptoms: e.target.value });
                   }}
                 />
               </Form.Item>
