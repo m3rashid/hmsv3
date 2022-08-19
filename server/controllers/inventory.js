@@ -21,10 +21,13 @@ const CreateDummyInventory = async (req, res) => {
 };
 
 const SearchMedicines = async (req, res) => {
-  const { quantity, price, name } = req.query;
+  const { quantity, name, type } = req.query;
 
   try {
-    const inventory = await searchInventoryService({ quantity, price, name });
+    const inventory = await searchInventoryService(type, {
+      quantity,
+      name,
+    });
     return res.status(200).json({
       message: `${inventory.length} Inventory found`,
       inventory,
@@ -39,9 +42,9 @@ const SearchMedicines = async (req, res) => {
 };
 
 const addMedicine = async (req, res) => {
-  const { name, quantity, price, description } = req.body;
+  const { type, data } = req.body;
   try {
-    await addMedicineService(name, quantity, price, description);
+    await addMedicineService(type, data);
     return res.status(200).json({ message: "Medicine added" });
   } catch (err) {
     console.log(err);
