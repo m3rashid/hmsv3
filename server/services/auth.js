@@ -129,7 +129,9 @@ const signupService = async (
   });
   // use this as a transaction
 
-  if (!email || !password || !name || !role) throw new Error("No credentials");
+  if (!email || !password || !name || !role || !sex) {
+    throw new Error("Insufficient credentials");
+  }
 
   if (!allowedRoles.includes(role)) throw new Error("Invalid role");
   const allowedActions = addActions(role);

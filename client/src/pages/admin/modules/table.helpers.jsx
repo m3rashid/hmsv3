@@ -1,6 +1,8 @@
 import { Button, Space } from "antd";
 import React from "react";
 
+import { showGender, toSentenceCase } from "../../../components/utils/strings";
+
 export const formatForTable = (users) => {
   return users.reduce(
     (acc, user) => [
@@ -20,9 +22,9 @@ export const formatForTable = (users) => {
         joined: user.createdAt,
         designation: user.designation,
         origin: user.origin,
-        role: user.role,
+        role: toSentenceCase(user.role),
         roomNumber: user.room_number,
-        sex: user.sex,
+        sex: showGender(user.sex),
       },
     ],
     []

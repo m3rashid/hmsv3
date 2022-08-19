@@ -1,10 +1,20 @@
 import React from "react";
-import { Modal, Button, Input, Form, message } from "antd";
+import { Modal, Button, Input, Form, message, Select } from "antd";
+
 import { instance } from "../../api/instance";
+import { showGender, toSentenceCase } from "../utils/strings";
+
+export const supportedUserRoles = [
+  "DOCTOR",
+  "ADMIN",
+  "RECEPTIONIST",
+  "PHARMACIST",
+  "INVENTORY_MANAGER",
+  "CO_ADMIN",
+  "OTHER",
+];
 
 function CreateUserModal(props) {
-  const RoleName = props.role[0] + props.role.toLowerCase().slice(1);
-  console.log(RoleName);
   const onFinish = async (values) => {
     try {
       message.loading({
@@ -12,22 +22,22 @@ function CreateUserModal(props) {
         key: "auth/createUser",
       });
 
-      const createdUser = {
-        ...values,
-        role: `${props.role}`,
-      };
+      const createdUser = { ...values };
 
       console.log(createdUser);
-      const { data } = await instance.post("/auth/createUser", createdUser);
+
+      const { data } = await instance.post("/auth/signup", createdUser);
+
       console.log(data);
+
       message.success({
-        content: `${RoleName} created Successfully`,
+        content: "User created Successfully",
         key: "auth/createUser",
       });
       props.handleCancel();
     } catch (error) {
       message.error({
-        content: `${RoleName} creation Failed`,
+        content: "User creation Failed",
         key: "auth/createUser",
       });
     }
@@ -36,7 +46,7 @@ function CreateUserModal(props) {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
     message.error({
-      content: `${RoleName} Creation Failed`,
+      content: "User creation Failed",
       key: "auth/createUser",
     });
   };
@@ -53,7 +63,6 @@ function CreateUserModal(props) {
         <Form
           name="Create User"
           onFinish={onFinish}
-          initialValues={{ remember: true }}
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
@@ -76,6 +85,45 @@ function CreateUserModal(props) {
             rules={[{ required: true, message: "Please enter your password!" }]}
           >
             <Input placeholder="Password" type="password" />
+          </Form.Item>
+          <Form.Item
+            name="role"
+            label="Role"
+            rules={[
+              { required: true, message: "Please select a role!" },
+              {
+                validator: (_, value) => {
+                  if (!supportedUserRoles.includes(value)) {
+                    return Promise.reject(new Error("Role not supported!"));
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ]}
+          >
+            <Select placeholder="Select Role">
+              {supportedUserRoles.map((role) => (
+                <Select.Option value={role}>
+                  {role
+                    .split("_")
+                    .map((r) => toSentenceCase(r))
+                    .join(" ")}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="sex"
+            label="Gender"
+            rules={[{ required: true, message: "Please select a gender!" }]}
+          >
+            <Select placeholder="Select Gender">
+              {["m", "f", "o"].map((gender) => (
+                <Select.Option value={gender}>
+                  {showGender(gender)}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           <div
             style={{

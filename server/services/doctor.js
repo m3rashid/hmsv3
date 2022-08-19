@@ -92,7 +92,7 @@ const createPrescriptionService = async ({
   datetime,
   medicines,
 }) => {
-  console.log(medicines)
+
   // hopefully works
 
   const newPrescription = await prisma.prescription.create({
@@ -109,6 +109,7 @@ const createPrescriptionService = async ({
         createMany: {
           data: medicines.map((medicine) => ({
             MedicineId: parseInt(medicine.MedicineId),
+
             duration : parseInt(medicine.duration),
             dosage: medicine.dosage,
             ...(medicine.type==="fluid" ? {
@@ -129,8 +130,10 @@ const createPrescriptionService = async ({
     },
     data: {
       pending: false,
+
     },
   });
+   
 
 
   // const newPresDetails = await newPrescription.getAppointment();

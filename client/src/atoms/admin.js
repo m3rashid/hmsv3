@@ -3,6 +3,10 @@ import { atom } from "recoil";
 export const adminDefaultState = {
   receptionists: [],
   doctors: [],
+  pharmacists: [],
+  inventoryManagers: [],
+  coAdmins: [],
+  others: [],
   patients: [],
 };
 

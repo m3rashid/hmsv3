@@ -11,6 +11,7 @@ import {
 } from "antd";
 import { socket } from "../../api/socket";
 import Header from "../../components/Header";
+import { showGender } from "../../components/utils/strings";
 const { TextArea } = Input;
 
 const CreatePatientForm = () => {
@@ -58,9 +59,9 @@ const CreatePatientForm = () => {
           rules={[{ required: true, message: "Please select patient sex!" }]}
         >
           <Radio.Group size="large">
-            <Radio.Button value="m">Male</Radio.Button>
-            <Radio.Button value="f">Female</Radio.Button>
-            <Radio.Button value="o">Other</Radio.Button>
+            {["m", "f", "o"].map((gender) => (
+              <Radio.Button value={gender}>{showGender(gender)}</Radio.Button>
+            ))}
           </Radio.Group>
         </Form.Item>
         <Form.Item
