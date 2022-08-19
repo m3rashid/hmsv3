@@ -3,13 +3,30 @@ const dayjs = require("dayjs");
 const prisma = require("../utils/prisma");
 const { permissions } = require("../utils/auth.helpers");
 
-const getDoctorAppointmentsService = async (userId) => {
+const getDoctorAppointmentsService = async (userId, {
+  limit,
+  offset,
+  pending,
+}={}) => {
   console.log({ userId });
+  const query = {
+    where: {
+      doctor: {
+        id: userId,
+      },
+      ...(pending ? { pending: true }:{}),
+    },
+    include: {
+      patient: true,
+    },
+    orderBy: {
+      date: "desc",
+    },
+    skip: offset || 0,
+    take: limit || 500,
+  };
 
-  const appointments = await prisma.appointment.findMany({
-    where: { doctorId: userId },
-    include: { doctor: true, patient: true },
-  });
+  const appointments = await prisma.appointment.findMany(query);
 
   console.log(appointments);
   return { appointments };
@@ -75,7 +92,7 @@ const createPrescriptionService = async ({
   datetime,
   medicines,
 }) => {
-  // Fix this bad query
+  // hopefully works
 
   const newPrescription = await prisma.prescription.create({
     data: {
@@ -91,20 +108,30 @@ const createPrescriptionService = async ({
       medicines: {
         createMany: {
           data: medicines.map((medicine) => ({
-            quantity: parseInt(medicine.quantity),
-            dosage: medicine?.dosage,
-            description: medicine.description,
             MedicineId: parseInt(medicine.name),
+            duration : parseInt(medicine.duration),
+            dosage: medicine.dosage,
+            ...(medicine.type==="fluid" ? {
+              quantityPerDose: parseInt(medicine.quantityPerDose),
+            }:{}),
+            description: medicine.description,
           })),
         },
       },
     },
     include: {
       appointment: true,
-      // doctor: true,
-      // patient: true,
     },
   });
+   await prisma.appointment.update({
+    where: {
+      id: appointment,
+    },
+    data: {
+      pending: false,
+    },
+  });
+
 
   // const newPresDetails = await newPrescription.getAppointment();
   // const patient = await newPresDetails.getPatient();
@@ -117,9 +144,30 @@ const createPrescriptionService = async ({
   };
 };
 
+const updateAppointmentService = async ({
+  appointmentId,
+  date,
+  remarks,
+  pending,
+}) => {
+  const updatedAppointment = await prisma.appointment.update({
+    where: {
+      id: appointmentId,
+    },
+    data: {
+      ...(date ? { date } : {}),
+      ...(remarks ? { remarks } : {}),
+      ...(pending ? { pending } : {}),
+    },
+  });
+  return {
+    appointment: updatedAppointment,
+  };
+}
 module.exports = {
   getDoctorAppointmentsService,
   getDoctorPatientsService,
   searchDoctorsService,
   createPrescriptionService,
+  updateAppointmentService
 };

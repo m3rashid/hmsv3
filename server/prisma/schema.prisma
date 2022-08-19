@@ -105,6 +105,7 @@ model Patient {
   updatedAt   DateTime      @default(now())
 }
 
+
 model Appointment {
   id           Int            @id @default(sequence())
   date         DateTime       @default(now())
@@ -116,6 +117,8 @@ model Appointment {
   doctor       Profile        @relation(fields: [doctorId], references: [id])
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @default(now())
+  pending      Boolean        @default(true)
+  remarks      String?
 }
 
 model Prescription {
