@@ -1,8 +1,39 @@
 import React from "react";
 import PropTypes from "prop-types";
 import InventoryFormHandler from "../../../../components/Inventory/FormHandler";
+import { instance } from "../../../../api/instance";
+import { useRecoilState } from "recoil";
+import { inventoryState } from "../../../../atoms/inventory";
 
 function EditMedicine(props) {
+  const [inventoryData, setInventoryData] = useRecoilState(inventoryState);
+
+  const UpdateMedicine = async (data) => {
+    console.log(data);
+    const { data: MedicineData } = await instance.post("/inventory/edit/", {
+      type: props.type,
+      data: data.values,
+      id: props.data.id,
+    });
+
+    setInventoryData((prevState) => {
+      console.log(prevState[props.type]);
+      return {
+        ...prevState,
+        [props.type]: {
+          ...prevState[props.type],
+
+          inventory: [
+            ...prevState[props.type].inventory.filter(
+              (item) => item.id !== props.data.id
+            ),
+            MedicineData.medicine,
+          ],
+        },
+      };
+    });
+  };
+
   return (
     <div>
       <InventoryFormHandler
@@ -12,6 +43,7 @@ function EditMedicine(props) {
           label: 12,
           wrapper: 12,
         }}
+        formSubmit={UpdateMedicine}
       />
     </div>
   );

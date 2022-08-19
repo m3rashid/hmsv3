@@ -3,6 +3,7 @@ import {
   Button,
   Col,
   Input,
+  message,
   Modal,
   Row,
   Space,
@@ -13,7 +14,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { instance } from "../../../../api/instance";
 import PropTypes from "prop-types";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { authState } from "../../../../atoms/auth";
 import { permissions } from "../../../../routes";
 import { useNavigate } from "react-router-dom";
@@ -22,13 +23,14 @@ import EditMedicine from "./EditMedicine";
 
 function InventoryTable(prop) {
   const auth = useRecoilValue(authState);
-  const inventory = useRecoilValue(inventoryState);
+  const [inventory, setinventoryData] = useRecoilState(inventoryState);
   console.log(inventory);
   const [SearchQuery, setSearchQuery] = React.useState({});
   const [isModalVisible, setIsModalVisible] = useState({
     open: false,
     isEdit: false,
     isDeleting: false,
+    isDeleteLoading: false,
     data: {},
   });
   const [data, setData] = useState(inventory[prop.type].inventory);
@@ -36,12 +38,12 @@ function InventoryTable(prop) {
   useEffect(() => {
     setData(
       inventory[prop.type]?.inventory?.filter((item) =>
-        item?.name?.toLowerCase().includes(SearchQuery[prop.type] || "")
+        item?.name
+          ?.toLowerCase()
+          .includes(SearchQuery[prop.type]?.toLowerCase() || "")
       )
     );
   }, [inventory, SearchQuery, prop.type]);
-
-  console.log(data);
 
   const hasEditPermission = useMemo(() => {
     if (auth.user.permissions.includes(permissions.INVENTORY_ADD_MEDICINE)) {
@@ -49,8 +51,6 @@ function InventoryTable(prop) {
     }
     return false;
   }, [auth.user.permissions]);
-
-  console.log(hasEditPermission);
 
   const navigate = useNavigate();
 
@@ -74,6 +74,8 @@ function InventoryTable(prop) {
       title: "#",
       dataIndex: "id",
       key: "id",
+      defaultSortOrder: "ascend",
+      sorter: (a, b) => a.id - b.id,
     },
     {
       title: "Name",
@@ -105,6 +107,40 @@ function InventoryTable(prop) {
       ),
     },
   ];
+
+  const DeleteInventoryItem = async () => {
+    try {
+      setIsModalVisible({
+        ...isModalVisible,
+        isDeleteLoading: true,
+      });
+      const id = isModalVisible.data.id;
+      await instance.post(`/inventory/delete`, {
+        type: prop.type,
+        medicineId: id,
+      });
+
+      setData(data.filter((item) => item.id !== id));
+
+      setinventoryData((prevState) => ({
+        ...prevState,
+        [prop.type]: {
+          ...prevState[prop.type],
+          inventory: prevState[prop.type].inventory.filter(
+            (item) => item.id !== id
+          ),
+        },
+      }));
+      message.success("Item deleted successfully");
+      setIsModalVisible({
+        ...isModalVisible,
+        open: false,
+        isDeleteLoading: false,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div>
@@ -222,12 +258,6 @@ function InventoryTable(prop) {
                 description="Deleting this medicine will remove the entire item from the inventory"
                 type="error"
                 showIcon
-                onClose={() => {
-                  setIsModalVisible({
-                    ...isModalVisible,
-                    isDeleting: false,
-                  });
-                }}
                 action={
                   <Space
                     direction="horizontal"
@@ -236,7 +266,13 @@ function InventoryTable(prop) {
                       marginBottom: 20,
                     }}
                   >
-                    <Button danger>Accept</Button>
+                    <Button
+                      danger
+                      onClick={DeleteInventoryItem}
+                      loading={isModalVisible.isDeleteLoading}
+                    >
+                      Accept
+                    </Button>
                     <Button
                       type="dashed"
                       onClick={() => {

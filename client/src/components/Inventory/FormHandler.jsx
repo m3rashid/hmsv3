@@ -40,19 +40,7 @@ function InventoryFormHandler(props) {
   const formSubmitHandler = async (values) => {
     console.log(values, FormSelected);
     try {
-      const res = await instance.post("/inventory/add", {
-        name: values.name,
-        quantity: parseInt(values.quantity),
-        price: parseInt(values.price),
-        description: values.description,
-      });
-
-      setFormSelected({});
-
-      if (res.status === 200) {
-        message.success("Medicine added");
-        form.resetFields();
-      }
+      props.formSubmit({ values, FormSelected, form });
     } catch (err) {
       console.error(err);
       message.error("Error");
@@ -139,14 +127,16 @@ function InventoryFormHandler(props) {
         wrapperCol={{ span: props?.Col?.wrapper || 8 }}
         initialValues={{
           ...props?.defaultValues,
-          expiry_date: moment(props?.defaultValues?.expiry_date, "YYYY-MM-DD"),
+          expiry_date: props?.defaultValues?.expiry_date
+            ? moment(props?.defaultValues?.expiry_date, "YYYY-MM-DD")
+            : undefined,
         }}
       >
         <Form.Item
           label="Inventory Type"
           name="type"
           style={{
-            display: FormSelected.type ? "none" : "block",
+            display: props?.type ? "none" : "block",
           }}
         >
           <Select
@@ -301,6 +291,7 @@ InventoryFormHandler.propTypes = {
     label: PropTypes.number,
     wrapper: PropTypes.number,
   }),
+  formSubmit: PropTypes.func.isRequired,
 };
 
 export default InventoryFormHandler;
