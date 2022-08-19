@@ -46,6 +46,7 @@ function Index(props) {
             </Menu.Item>
             {routes.map((route, index) => {
               if (!checkAccess(Auth, route)) return null;
+              if (route?.showInNav === false) return null;
               return (
                 <Menu.Item key={`${index} ${route.path}`}>
                   <Link to={route.path}>{route.text}</Link>

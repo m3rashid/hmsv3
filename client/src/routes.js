@@ -7,7 +7,7 @@ import Prescriptions from "./pages/pharmacy/Prescriptions";
 import CreateReceipts from "./pages/pharmacy/CreateReceipts";
 import CreateAppointmentForm from "./pages/reception/CreateAppointmentForm";
 import InventoryDisplay from "./pages/inventory/Display";
-import AddNewInventory from "./pages/inventory/AddNew";
+import AddNewInventory from "./pages/inventory/New";
 import CreatePatientForm from "./pages/reception/CreatePatientForm";
 
 export const checkAccess = (Auth, route) => {
@@ -86,14 +86,15 @@ const routes = [
   {
     path: "/inventory/view",
     component: InventoryDisplay,
-    text: "Inventory",
+    text: "View Inventory",
     role: [permissions.INVENTORY_VIEW],
   },
   {
-    path: "/inventory/add-medicine",
+    path: "/inventory/new",
     component: AddNewInventory,
     text: "Add Medicine",
     role: [permissions.INVENTORY_ADD_MEDICINE],
+    showInNav: false,
   },
 ];
 

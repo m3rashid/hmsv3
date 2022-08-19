@@ -8,12 +8,58 @@ import { doctorState } from "../../atoms/doctor";
 import { instance } from "../../api/instance";
 import React, { useCallback, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { inventoryState } from "../../atoms/inventory";
+import { InventoryTypes } from "../../utils/inventoryTypes";
 
 // Used for all on socket events
 export default function useFetchSockets() {
   const auth = useRecoilValue(authState);
   const [DoctorData, setDoctorData] = useRecoilState(doctorState);
+  const [InventoryData, setInventoryData] = useRecoilState(inventoryState);
   const { addNotification } = useNotifications();
+
+  /** Socket Events for Inventory Roles */
+  const loadInventoryItems = useCallback(async () => {
+    try {
+      const MedicineInventory = await instance.get("/inventory/search", {
+        params: {
+          type: InventoryTypes.Medicine,
+          name: "",
+        },
+      });
+      const NonMedicineInventory = await instance.get("/inventory/search", {
+        params: {
+          type: InventoryTypes.NonMedicine,
+          name: "",
+        },
+      });
+
+      const otherAssetsInventory = await instance.get("/inventory/search", {
+        params: {
+          type: InventoryTypes.OtherAssets,
+          name: "",
+        },
+      });
+
+      setInventoryData({
+        [InventoryTypes.Medicine]: MedicineInventory.data,
+        [InventoryTypes.NonMedicine]: NonMedicineInventory.data,
+        [InventoryTypes.OtherAssets]: otherAssetsInventory.data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }, [setInventoryData]);
+
+  useEffect(() => {
+    if (
+      auth.isLoggedIn &&
+      (auth.user.permissions.includes(permissions.INVENTORY_VIEW) ||
+        auth.user.permissions.includes(permissions.INVENTORY_ADD_MEDICINE))
+    ) {
+      loadInventoryItems();
+    }
+  }, [auth, loadInventoryItems]);
 
   /** Socket events for Pharmacy Roles */
 

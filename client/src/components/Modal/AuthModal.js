@@ -22,6 +22,9 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
         token: data.token,
       });
 
+      instance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${data.token}`;
       localStorage.setItem("refresh_token", data.refreshToken);
       socket.io.opts.auth.token = data.token;
       socket.disconnect().connect();
