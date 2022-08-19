@@ -6,7 +6,7 @@ const {
 } = require("../../services/index.js");
 const { createAppointmentService } = require("../../services/reception.js");
 const {
-  createPrescriptionByDoctorService,
+  createPrescriptionService,
 } = require("../../services/doctor.js");
 
 const createUser =
@@ -231,18 +231,18 @@ const createPrescriptionByDoctor =
   async ({
     appointment,
     symptoms,
-    prescription,
+    diagnosis,
     CustomMedicines,
     datetime,
     medicines,
   }) => {
     try {
       console.log(socket.user);
-      const data = await createPrescriptionByDoctorService(
+      const data = await createPrescriptionService(
         {
           appointment,
           symptoms,
-          prescription,
+          diagnosis,
           CustomMedicines,
           datetime,
           medicines,
