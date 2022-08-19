@@ -280,24 +280,58 @@ const addMedicineService = async (type, data) => {
   }
 };
 
-const removeMedicine = async (medicineId) => {
-  console.log({ medicineId });
-  const removedMedicine = await prisma.inventory.delete({
-    where: { id: medicineId },
-  });
-  console.log({ removedMedicine });
-  return removedMedicine;
+const DeleteInventoryService = async (medicineId, type) => {
+  if (!medicineId) throw new Error("Invalid medicineId");
+  console.log(medicineId);
+  if (type == InventoryTypes.Medicine) {
+    const medicine = await prisma.medicine.delete({
+      where: {
+        id: medicineId,
+      },
+    });
+    return medicine;
+  } else if (type == InventoryTypes.NonMedicine) {
+    const nonMedicine = await prisma.nonMedicine.delete({
+      where: {
+        id: medicineId,
+      },
+    });
+    return nonMedicine;
+  } else if (type == InventoryTypes.OtherAssets) {
+    const otherAssets = await prisma.otherAssets.delete({
+      where: {
+        id: medicineId,
+      },
+    });
+    return otherAssets;
+  } else {
+    throw new Error("Invalid type");
+  }
 };
 
-const editMedicine = async (medicineId, name, quantity, price, description) => {
-  const data = { name, quantity, price, description };
-  console.log(data);
-  const updatedMedicine = await prisma.inventory.update({
-    where: { id: medicineId },
-    data,
-  });
-  console.log({ updatedMedicine });
-  return updatedMedicine;
+const editMedicineService = async (id, data, type) => {
+  let medicine;
+  console.log(id, data, type);
+  if (type == InventoryTypes.Medicine) {
+    medicine = await prisma.medicine.update({
+      where: { id: id },
+      data: data,
+    });
+  } else if (type === InventoryTypes.NonMedicine) {
+    medicine = await prisma.nonMedicine.update({
+      where: { id: id },
+      data: data,
+    });
+  } else if (type === InventoryTypes.OtherAssets) {
+    medicine = await prisma.otherAssets.update({
+      where: { id: id },
+      data: data,
+    });
+  } else {
+    throw new Error("Invalid type");
+  }
+
+  return medicine;
 };
 
 const getMedicine = async (medicineId) => {
@@ -376,8 +410,8 @@ const searchInventoryService = async (type, { quantity, price, name }) => {
 
 module.exports = {
   addMedicineService,
-  removeMedicine,
-  editMedicine,
+  DeleteInventoryService,
+  editMedicineService,
   getMedicine,
   addDummy,
   searchInventoryService,
