@@ -92,6 +92,7 @@ const createPrescriptionService = async ({
   datetime,
   medicines,
 }) => {
+  console.log(medicines)
   // hopefully works
 
   const newPrescription = await prisma.prescription.create({
@@ -102,13 +103,12 @@ const createPrescriptionService = async ({
         },
       },
       symptoms,
-      diagnosis,
       CustomMedicines,
       datePrescribed: dayjs(datetime).toDate(),
       medicines: {
         createMany: {
           data: medicines.map((medicine) => ({
-            MedicineId: parseInt(medicine.name),
+            MedicineId: parseInt(medicine.MedicineId),
             duration : parseInt(medicine.duration),
             dosage: medicine.dosage,
             ...(medicine.type==="fluid" ? {
