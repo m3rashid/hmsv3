@@ -377,5 +377,31 @@
       }
     ],
     "tests": []
+  },
+  {
+    "_id": "c472d05f-ae53-40e3-9da4-838a8b6d7265",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:5000/api/inventory/dummy",
+    "url": "http://localhost:5000/api/inventory/dummy",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-08-18T18:29:26.162Z",
+    "modified": "2022-08-18T18:31:32.013Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "count",
+        "value": "100",
+        "isDisabled": true,
+        "isPath": false
+      }
+    ],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"count\" : 100\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]
