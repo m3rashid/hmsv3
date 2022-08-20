@@ -1,5 +1,14 @@
 import React from "react";
-import { Modal, Button, Input, Form, message, Select } from "antd";
+import {
+  Modal,
+  Button,
+  Input,
+  Form,
+  message,
+  Select,
+  Collapse,
+  TextArea,
+} from "antd";
 
 import {
   showGender,
@@ -17,22 +26,114 @@ export const supportedUserRoles = [
   "OTHER",
 ];
 
+const requiredFormFields = [
+  { key: "name", label: "Name", inputType: "text", otherRules: {} },
+  { key: "email", label: "Email", inputType: "email", otherRules: {} },
+  { key: "password", label: "Password", inputType: "password", otherRules: {} },
+  {
+    key: "role",
+    label: "Role",
+    inputType: "select",
+    otherRules: {
+      validator: (_, value) => {
+        if (!supportedUserRoles.includes(value)) {
+          return Promise.reject(new Error("Role not supported!"));
+        }
+        return Promise.resolve();
+      },
+    },
+    options: supportedUserRoles.map((role) => ({
+      key: role,
+      label: role
+        .split("_")
+        .map((r) => toSentenceCase(r))
+        .join(" "),
+    })),
+  },
+  {
+    key: "sex",
+    label: "Gender",
+    inputType: "select",
+    otherRules: {},
+    options: ["m", "f", "o"].map((gender) => ({
+      key: gender,
+      label: showGender(gender),
+    })),
+  },
+];
+
+const otherFormFields = [
+  { key: "bio", label: "Introduction", inputType: "textarea" },
+  {
+    key: "availableDays",
+    label: "Available Days",
+    inputType: "select",
+    options: [
+      { key: "MON", label: "Monday" },
+      { key: "TUE", label: "Tuesday" },
+      { key: "WED", label: "Wednesday" },
+      { key: "THU", label: "Thursday" },
+      { key: "FRI", label: "Friday" },
+      { key: "SAT", label: "Saturday" },
+      { key: "SUN", label: "Sunday" },
+    ],
+  },
+  { key: "designation", label: "Designation", inputType: "text" },
+  { key: "contact", label: "Contact", inputType: "number" },
+  { key: "address", label: "Address", inputType: "text" },
+  { key: "availability", label: "Availability", inputType: "text" },
+  { key: "roomNumber", label: "Room Number", inputType: "number" },
+  { key: "authorityName", label: "Authority Name", inputType: "text" },
+  { key: "category", label: "Category", inputType: "text" },
+  { key: "origin", label: "Origin", inputType: "text" },
+];
+
+const RenderFormFields = ({ formFields, required }) => {
+  return (
+    <React.Fragment>
+      {formFields.map((f) => (
+        <Form.Item
+          {...(required
+            ? {
+                rules: [
+                  {
+                    required: true,
+                    message: `Please ${
+                      f.inputType === "select" ? "select" : "enter"
+                    } a ${f.label}`,
+                  },
+                  f.otherRules,
+                ],
+              }
+            : {})}
+          key={f.key}
+          name={f.key}
+          label={f.label}
+        >
+          {f.inputType === "select" ? (
+            <Select placeholder={`Select ${f.label}`}>
+              {f.options.map((o) => (
+                <Select.Option value={o.key}>{o.label}</Select.Option>
+              ))}
+            </Select>
+          ) : f.inputType === "textarea" ? (
+            <TextArea rows={3} />
+          ) : (
+            <Input placeholder={f.label} type={f.inputType ?? "text"} />
+          )}
+        </Form.Item>
+      ))}
+    </React.Fragment>
+  );
+};
+
 function CreateUserModal(props) {
   const onFinish = async (values) => {
     try {
-      message.loading({
-        content: "Loading...",
-        key: "auth/createUser",
-      });
+      message.loading({ content: "Loading...", key: "auth/createUser" });
 
-      const createdUser = { ...values };
-
-      console.log(createdUser);
-
-      const { data } = await instance.post("/auth/signup", createdUser);
-
-      console.log(data);
-
+      const res = await instance.post("/auth/signup", { ...values });
+      console.log({ userCreated: res.data });
       message.success({
         content: "User created Successfully",
         key: "auth/createUser",
@@ -68,66 +169,15 @@ function CreateUserModal(props) {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
-          <Form.Item
-            rules={[{ required: true, message: "Please enter a username!" }]}
-            name="name"
-            label="Name"
-          >
-            <Input placeholder="Name" />
-          </Form.Item>
-          <Form.Item
-            rules={[{ required: true, message: "Please enter an email!" }]}
-            name="email"
-            label="Email"
-          >
-            <Input placeholder="Email" />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            label="Password"
-            rules={[{ required: true, message: "Please enter your password!" }]}
-          >
-            <Input placeholder="Password" type="password" />
-          </Form.Item>
-          <Form.Item
-            name="role"
-            label="Role"
-            rules={[
-              { required: true, message: "Please select a role!" },
-              {
-                validator: (_, value) => {
-                  if (!supportedUserRoles.includes(value)) {
-                    return Promise.reject(new Error("Role not supported!"));
-                  }
-                  return Promise.resolve();
-                },
-              },
-            ]}
-          >
-            <Select placeholder="Select Role">
-              {supportedUserRoles.map((role) => (
-                <Select.Option value={role}>
-                  {role
-                    .split("_")
-                    .map((r) => toSentenceCase(r))
-                    .join(" ")}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="sex"
-            label="Gender"
-            rules={[{ required: true, message: "Please select a gender!" }]}
-          >
-            <Select placeholder="Select Gender">
-              {["m", "f", "o"].map((gender) => (
-                <Select.Option value={gender}>
-                  {showGender(gender)}
-                </Select.Option>
-              ))}
-            </Select>
-          </Form.Item>
+          <RenderFormFields formFields={requiredFormFields} required={true} />
+
+          {/* other user details */}
+          <Collapse bordered={false} style={{ padding: 0, margin: 0 }}>
+            <Collapse.Panel header="Other Details" key="1">
+              <RenderFormFields formFields={otherFormFields} required={false} />
+            </Collapse.Panel>
+          </Collapse>
+
           <div
             style={{
               display: "flex",
