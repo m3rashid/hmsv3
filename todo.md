@@ -6,7 +6,7 @@
   - [x] fetch medicines on doctor login on client side
 - [x] Fix Client Side Errors on Inventory Page [sarf]
 - [x] generate PDF from appointment + prescription tables [anzal]
-- [ ] doctor can refer to other doctors/departments [husain]
+- [ ] doctor can refer to other doctors/departments [rashid]
 - [x] show name instead of id in antd auto complete [husain]
 - [x] click on notification to go to certain appoinment for rescription [sarf]
 - [x] admin ui [rashid]
@@ -19,3 +19,7 @@
 
 - [x] debug antd autocomplete search
 - [ ] same patient register creates issues in doctor tab
+
+## Known Bugs
+
+- [ ]
