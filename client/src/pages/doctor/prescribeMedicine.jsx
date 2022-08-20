@@ -39,6 +39,7 @@ const PrescriptionForm = () => {
   const doctorData = useRecoilValue(doctorState);
   const [formData, setFormData] = useState({});
   const [medicines, setMedicines] = useState([]);
+  const [prescription, setPrescription] = useState([]);
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
@@ -55,18 +56,20 @@ const PrescriptionForm = () => {
 
   const formSubmitHandler = (values) => {
     if (loading) return;
-
-    const data = {
-      appointment: formData.appointmentInfo.id,
-      symptoms: values.symptoms,
-      diagnosis: values.diagnosis,
-      CustomMedicines: values.CustomMedicines,
-      datetime: new Date(),
-      medicines: medicines,
-    };
-    if (loading) return;
-    setLoading(true);
-    socket.emit("create-prescription-by-doctor", data);
+    console.log(values);
+    setPrescription([
+      {
+        ...values,
+        datetime: moment().format("YYYY-MM-DD HH:mm:ss"),
+        medicines,
+      },
+    ]);
+    // console.log(prescription);
+    // socket.emit("create-prescription-by-doctor", {
+    //   ...values,
+    //   datetime: moment().format("YYYY-MM-DD"),
+    //   medicines,
+    // });
   };
 
   const addEmptyMedicine = () => {
@@ -347,6 +350,7 @@ const PrescriptionForm = () => {
             </Card>
           </Col>
         </Row>
+        <GeneratePdf data={prescription} />
       </div>
     </React.Fragment>
   );
