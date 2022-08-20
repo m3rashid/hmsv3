@@ -40,6 +40,7 @@ const PrescriptionForm = () => {
   const doctorData = useRecoilValue(doctorState);
   const [formData, setFormData] = useState({});
   const [medicines, setMedicines] = useState([]);
+  const [prescription, setPrescription] = useState([]);
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
