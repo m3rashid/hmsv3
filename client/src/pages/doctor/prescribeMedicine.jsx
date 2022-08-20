@@ -26,13 +26,9 @@ import { doctorState } from "../../atoms/doctor";
 import Header from "../../components/Header";
 import useFetchSockets from "../../components/Sockets/useFetchSockets";
 import dayjs from "dayjs";
-<<<<<<< HEAD
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { quantityCalculator } from "../../components/Doctor/quantityCalculator";
-import GeneratePdf from "../../components/generatePdf.jsx";
-=======
 import GeneratePdf from "../../atoms/generatePdf";
->>>>>>> pdf section complete
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -44,7 +40,6 @@ const PrescriptionForm = () => {
   const doctorData = useRecoilValue(doctorState);
   const [formData, setFormData] = useState({});
   const [medicines, setMedicines] = useState([]);
-  const [prescription, setPrescription] = useState([]);
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
@@ -61,20 +56,18 @@ const PrescriptionForm = () => {
 
   const formSubmitHandler = (values) => {
     if (loading) return;
-    console.log(values);
-    setPrescription([
-      {
-        ...values,
-        datetime: moment().format("YYYY-MM-DD HH:mm:ss"),
-        medicines,
-      },
-    ]);
-    // console.log(prescription);
-    // socket.emit("create-prescription-by-doctor", {
-    //   ...values,
-    //   datetime: moment().format("YYYY-MM-DD"),
-    //   medicines,
-    // });
+
+    const data = {
+      appointment: formData.appointmentInfo.id,
+      symptoms: values.symptoms,
+      diagnosis: values.diagnosis,
+      CustomMedicines: values.CustomMedicines,
+      datetime: new Date(),
+      medicines: medicines,
+    };
+    if (loading) return;
+    setLoading(true);
+    socket.emit("create-prescription-by-doctor", data);
   };
 
   const addEmptyMedicine = () => {
@@ -355,7 +348,6 @@ const PrescriptionForm = () => {
             </Card>
           </Col>
         </Row>
-<<<<<<< HEAD
         <GeneratePdf
           data={[
             {
@@ -365,9 +357,6 @@ const PrescriptionForm = () => {
             },
           ]}
         />
-=======
-        <GeneratePdf data={prescription} />
->>>>>>> pdf section complete
       </div>
     </React.Fragment>
   );
