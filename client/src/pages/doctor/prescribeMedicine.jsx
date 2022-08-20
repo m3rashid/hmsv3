@@ -57,20 +57,18 @@ const PrescriptionForm = () => {
 
   const formSubmitHandler = (values) => {
     if (loading) return;
-    console.log(values);
-    setPrescription([
-      {
-        ...values,
-        datetime: moment().format("YYYY-MM-DD HH:mm:ss"),
-        medicines,
-      },
-    ]);
-    // console.log(prescription);
-    // socket.emit("create-prescription-by-doctor", {
-    //   ...values,
-    //   datetime: moment().format("YYYY-MM-DD"),
-    //   medicines,
-    // });
+
+    const data = {
+      appointment: formData.appointmentInfo.id,
+      symptoms: values.symptoms,
+      diagnosis: values.diagnosis,
+      CustomMedicines: values.CustomMedicines,
+      datetime: new Date(),
+      medicines: medicines,
+    };
+    if (loading) return;
+    setLoading(true);
+    socket.emit("create-prescription-by-doctor", data);
   };
 
   const addEmptyMedicine = () => {

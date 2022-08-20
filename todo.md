@@ -1,5 +1,6 @@
 ## High Priority
 
+- [ ] the past(already attended) appoimtments are still available in the list to be handled
 - [x] reduce number of tabs (actions left panel rather than tabs) [sarf]
 - [x] Auth permissions (client) [sarf]
   - [x] custom roles based co-admin module (client)
@@ -22,4 +23,4 @@
 
 ## Known Bugs
 
-- [ ]
+- [ ] doctor can only see the appointments on refresh
