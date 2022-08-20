@@ -15,7 +15,7 @@ const UserDetailsModal = ({ data }) => {
         <Button onClick={openModal}>Details</Button>
       </Space>
       <Modal
-        title="User Details"
+        title={data.name + ", " + data.origin}
         visible={isModalVisible}
         onOk={closeModal}
         onCancel={closeModal}

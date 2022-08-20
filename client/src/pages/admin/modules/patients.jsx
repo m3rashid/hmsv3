@@ -1,19 +1,5 @@
 import React from "react";
-import faker from "@faker-js/faker";
 import { Button, Space, Table } from "antd";
-
-const GenerateData = (count) => {
-  const data = [];
-  for (let i = 0; i < count; i++) {
-    data.push({
-      name: faker.name.findName(),
-      mobile: faker.phone.phoneNumber(),
-      address: faker.address.streetAddress(),
-      lastVisit: faker.date.past().toDateString(),
-    });
-  }
-  return data;
-};
 
 const Patients = () => {
   const columns = [
@@ -51,14 +37,10 @@ const Patients = () => {
     },
   ];
 
-  const data = GenerateData(10);
+  const data = [];
 
   return (
-    <div
-      style={{
-        marginTop: "20px",
-      }}
-    >
+    <div style={{ marginTop: "20px" }}>
       <Table
         dataSource={data}
         columns={columns}
