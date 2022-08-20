@@ -65,7 +65,13 @@ const PrescriptionForm = () => {
       diagnosis: values.diagnosis,
       CustomMedicines: values.CustomMedicines,
       datetime: new Date(),
-      medicines: medicines,
+      medicines: medicines.map((item) => {
+        return {
+          ...item,
+          MedicineId: item.id,
+          dosage: item.dosage.value,
+        };
+      }),
     };
     if (loading) return;
     setLoading(true);
@@ -84,6 +90,7 @@ const PrescriptionForm = () => {
   };
 
   const appointmentId = searchParams.get('appointmentId');
+
 
 
   const handleAppointmentSelect = useCallback((appointment_id) => {
@@ -115,6 +122,29 @@ const PrescriptionForm = () => {
   }, [doctorData.appointments, form])
 
 
+      if (selectedAppointment) {
+        setFormData((formData) => ({
+          ...formData,
+          appointment: `${selectedAppointment.patient.name}-${selectedAppointment.date}`,
+          appointmentInfo: selectedAppointment,
+        }));
+        form.setFieldValue(
+          "appointment",
+          `${selectedAppointment.patient.name}-${dayjs(
+            selectedAppointment.date
+          ).format("MMMM DD YYYY hh:mm A")}`
+        );
+      } else {
+        setFormData((formData) => ({
+          ...formData,
+          appointment: "",
+          appointmentInfo: {},
+        }));
+        form.setFieldValue("appointment", "");
+      }
+    },
+    [doctorData.appointments, form]
+  );
 
   useEffect(() => {
     // return;
