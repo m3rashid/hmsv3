@@ -6,16 +6,7 @@ import {
   toSentenceCase,
 } from "../../../../components/utils/strings";
 import { instance } from "../../../../api/instance";
-
-export const supportedUserRoles = [
-  "DOCTOR",
-  "ADMIN",
-  "RECEPTIONIST",
-  "PHARMACIST",
-  "INVENTORY_MANAGER",
-  "CO_ADMIN",
-  "OTHER",
-];
+import { supportedUserRoles } from "../../../../components/utils/constants";
 
 const requiredFormFields = [
   { key: "name", label: "Name", inputType: "text", otherRules: {} },
@@ -104,9 +95,7 @@ const RenderFormFields = ({ formFields, required }) => {
           {f.inputType === "select" ? (
             <Select placeholder={`Select ${f.label}`}>
               {f.options.map((o) => (
-                <Select.Option placeholder={f.label} value={o.key}>
-                  {o.label}
-                </Select.Option>
+                <Select.Option value={o.key}>{o.label}</Select.Option>
               ))}
             </Select>
           ) : f.inputType === "textarea" ? (
