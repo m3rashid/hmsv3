@@ -116,8 +116,13 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
               handleChange(Item, "medicine");
             }}
           >
-            <OptGroup label="Medicine">
-              {medicineDB.Medicine?.inventory.map((medicine) => {
+          <OptGroup label="Tablets">
+              {medicineDB.Medicine?.inventory.filter(m=>m.medType==="TABLET").map((medicine) => {
+                return <Option value={medicine.id}>{medicine.name}</Option>;
+              })}
+            </OptGroup>
+            <OptGroup label="Syrups">
+              {medicineDB.Medicine?.inventory.filter(m=>m.medType==="SYRUP").map((medicine) => {
                 return <Option value={medicine.id}>{medicine.name}</Option>;
               })}
             </OptGroup>
@@ -156,7 +161,8 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
             ))}
           </Select>
         </Space>
-        {medicine.type === "fluid" && (
+        {
+          medicine.medType === 'SYRUP' &&
           <Space
             style={{
               width: "100%",
@@ -172,7 +178,7 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
               addonAfter={"ml"}
             />
           </Space>
-        )}
+        }
 
         <Space
           style={{
