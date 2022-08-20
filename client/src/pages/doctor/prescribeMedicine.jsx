@@ -26,9 +26,13 @@ import { doctorState } from "../../atoms/doctor";
 import Header from "../../components/Header";
 import useFetchSockets from "../../components/Sockets/useFetchSockets";
 import dayjs from "dayjs";
+<<<<<<< HEAD
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { quantityCalculator } from "../../components/Doctor/quantityCalculator";
 import GeneratePdf from "../../components/generatePdf.jsx";
+=======
+import GeneratePdf from "../../atoms/generatePdf";
+>>>>>>> pdf section complete
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -351,6 +355,7 @@ const PrescriptionForm = () => {
             </Card>
           </Col>
         </Row>
+<<<<<<< HEAD
         <GeneratePdf
           data={[
             {
@@ -360,6 +365,9 @@ const PrescriptionForm = () => {
             },
           ]}
         />
+=======
+        <GeneratePdf data={prescription} />
+>>>>>>> pdf section complete
       </div>
     </React.Fragment>
   );
