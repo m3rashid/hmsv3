@@ -1,14 +1,5 @@
 import React from "react";
-import {
-  Modal,
-  Button,
-  Input,
-  Form,
-  message,
-  Select,
-  Collapse,
-  TextArea,
-} from "antd";
+import { Modal, Button, Input, Form, message, Select, Collapse } from "antd";
 
 import {
   showGender,
@@ -113,11 +104,13 @@ const RenderFormFields = ({ formFields, required }) => {
           {f.inputType === "select" ? (
             <Select placeholder={`Select ${f.label}`}>
               {f.options.map((o) => (
-                <Select.Option value={o.key}>{o.label}</Select.Option>
+                <Select.Option placeholder={f.label} value={o.key}>
+                  {o.label}
+                </Select.Option>
               ))}
             </Select>
           ) : f.inputType === "textarea" ? (
-            <TextArea rows={3} />
+            <Input.TextArea placeholder={f.label} rows={3} />
           ) : (
             <Input placeholder={f.label} type={f.inputType ?? "text"} />
           )}
