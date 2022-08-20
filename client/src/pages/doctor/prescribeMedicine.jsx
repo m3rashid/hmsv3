@@ -25,6 +25,7 @@ import { doctorState } from "../../atoms/doctor";
 import Header from "../../components/Header";
 import useFetchSockets from "../../components/Sockets/useFetchSockets";
 import dayjs from "dayjs";
+import GeneratePdf from "../../atoms/generatePdf";
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -35,11 +36,20 @@ const PrescriptionForm = () => {
   const doctorData = useRecoilValue(doctorState);
   const [formData, setformData] = useState({});
   const [medicines, setMedicines] = useState([]);
+  const [prescription, setPrescription] = useState([]);
   const [form] = Form.useForm();
 
   const formSubmitHandler = (values) => {
     if (loading) return;
     console.log(values);
+    setPrescription([
+      {
+        ...values,
+        datetime: moment().format("YYYY-MM-DD HH:mm:ss"),
+        medicines,
+      },
+    ]);
+    // console.log(prescription);
     // socket.emit("create-prescription-by-doctor", {
     //   ...values,
     //   datetime: moment().format("YYYY-MM-DD"),
@@ -233,6 +243,7 @@ const PrescriptionForm = () => {
             </Space>
           </Col>
         </Row>
+        <GeneratePdf data={prescription} />
       </div>
     </React.Fragment>
   );
