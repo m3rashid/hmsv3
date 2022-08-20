@@ -4,7 +4,7 @@ import { useRecoilState } from "recoil";
 
 import { instance } from "../../../api/instance";
 import { adminState } from "../../../atoms/admin";
-import { columns, formatForTable } from "./table.helpers";
+import { columns, formatForTable } from "./helpers/table";
 
 const Doctors = () => {
   const [adminData, setAdminData] = useRecoilState(adminState);

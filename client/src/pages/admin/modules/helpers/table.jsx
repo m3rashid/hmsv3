@@ -1,7 +1,10 @@
-import { Button, Space } from "antd";
 import React from "react";
 
-import { showGender, toSentenceCase } from "../../../components/utils/strings";
+import {
+  showGender,
+  toSentenceCase,
+} from "../../../../components/utils/strings";
+import UserDetailsModal from "./userDetailsModal";
 
 export const formatForTable = (users) => {
   return users.reduce(
@@ -59,10 +62,6 @@ export const columns = [
     title: "Actions",
     dataIndex: "actions",
     key: "actions",
-    render: (text, record) => (
-      <Space>
-        <Button> Details </Button>
-      </Space>
-    ),
+    render: (text, record) => <UserDetailsModal data={record} />,
   },
 ];

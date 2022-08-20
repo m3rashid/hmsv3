@@ -2,9 +2,9 @@ import React from "react";
 import { Table } from "antd";
 import { useRecoilState } from "recoil";
 
-import { columns, formatForTable } from "./table.helpers";
-import { adminState } from "../../../atoms/admin";
 import { instance } from "../../../api/instance";
+import { adminState } from "../../../atoms/admin";
+import { columns, formatForTable } from "./helpers/table";
 
 const Others = () => {
   const [adminData, setAdminData] = useRecoilState(adminState);

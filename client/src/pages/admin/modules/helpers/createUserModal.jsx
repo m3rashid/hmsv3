@@ -1,8 +1,11 @@
 import React from "react";
 import { Modal, Button, Input, Form, message, Select } from "antd";
 
-import { instance } from "../../api/instance";
-import { showGender, toSentenceCase } from "../utils/strings";
+import {
+  showGender,
+  toSentenceCase,
+} from "../../../../components/utils/strings";
+import { instance } from "../../../../api/instance";
 
 export const supportedUserRoles = [
   "DOCTOR",
