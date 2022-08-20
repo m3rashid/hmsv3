@@ -28,6 +28,7 @@ import useFetchSockets from "../../components/Sockets/useFetchSockets";
 import dayjs from "dayjs";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { quantityCalculator } from "../../components/Doctor/quantityCalculator";
+import GeneratePdf from "../../atoms/generatePdf";
 
 const { TextArea } = Input;
 const { Option } = Select;
