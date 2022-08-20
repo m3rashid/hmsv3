@@ -32,15 +32,18 @@ const login = async (req, res) => {
 const signup = async (req, res) => {
   try {
     const user = await signupService(
+      // required: true
+      req.body.name,
       req.body.email,
       req.body.password,
-      req.body.name,
       req.body.role,
+      req.body.sex,
+
+      // required: false
       req.body.designation,
       req.body.contact,
       req.body.address,
       req.body.bio,
-      req.body.sex,
       req.body.availability,
       req.body.availableDays,
       req.body.roomNumber,

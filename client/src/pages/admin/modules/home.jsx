@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 
-import CreateUserModal from "../../../components/Modal/CreateUserModal";
+import CreateUserModal from "./helpers/createUserModal";
 
 const Home = () => {
   const [isModalVisible, setIsModalVisible] = React.useState(false);

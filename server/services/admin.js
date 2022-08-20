@@ -24,7 +24,17 @@ const getAllUsersService = async (userRole) => {
   return users;
 };
 
+const editPermissionsService = async (userId, permissions) => {
+  if (!userId || !permissions) throw new Error("Invalid data");
+  const user = await prisma.auth.update({
+    where: { id: userId },
+    data: { permissions },
+  });
+  return user;
+};
+
 module.exports = {
   supportedUserRoles,
   getAllUsersService,
+  editPermissionsService,
 };
