@@ -1,11 +1,18 @@
-import { Button, Typography } from "antd";
+import { Button, Card, Col, Row, Space, Table, Typography } from "antd";
 import React, { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+import { useRecoilValue } from "recoil";
+import { authState } from "../atoms/auth";
+import { quantityCalculator } from "./Doctor/quantityCalculator";
 
 const GeneratePdf = (props) => {
   const parchiData = props.data[0];
   // console.log(parchiData?.medicines);
+  const { user } = useRecoilValue(authState);
+
+  console.log(user);
   const componentRef = useRef();
+  console.log(props.data);
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
@@ -175,88 +182,112 @@ const GeneratePdf = (props) => {
                     marginTop: "50px",
                     textAlign: "right",
                     marginRight: "50px",
-                    fontSize: "18px",
-                    fontWeight: "bold",
+                    fontSize: "15px",
                   }}
                 >
                   <span>
-                    {" "}
-                    Date :&nbsp;
-                    {parchiData?.datetime !== undefined
-                      ? parchiData.datetime.split(" ")[0]
-                      : ""}
+                    Date :{" "}
+                    <strong>{parchiData?.date && parchiData.date}</strong>
                   </span>
                 </div>
-                <div
+                <Space
+                  direction="vertical"
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
                     marginTop: "50px",
-                    fontSize: "20px",
-                    fontWeight: "bold",
+                    padding: "20px",
                     marginLeft: "50px",
+                    fontSize: "15px",
+                    width: "80%",
                   }}
                 >
-                  <span>
-                    {" "}
-                    Patient Name :&nbsp;
-                    {parchiData?.appointment !== undefined
-                      ? parchiData.appointment.split("-")[0]
-                      : ""}
-                  </span>
-                  <span style={{ marginTop: "20px" }}>
-                    {" "}
-                    Symptoms :&nbsp;
-                    {parchiData?.symptoms !== undefined
-                      ? parchiData.symptoms.split("-")[0]
-                      : ""}
-                  </span>
-                </div>
+                  <Row>
+                    <Col span={8}>By</Col>
+                    <Col span={16}>
+                      <strong>{user.name}</strong>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col span={8}>Patient Name</Col>
+                    <Col span={16}>
+                      <strong>
+                        {parchiData?.appointment &&
+                          parchiData.appointment.split("-")[0]}
+                      </strong>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col span={8}>Symptoms</Col>
+                    <Col span={16}>
+                      <strong>
+                        {parchiData?.symptoms &&
+                          parchiData.symptoms.split("-")[0]}
+                      </strong>
+                    </Col>
+                  </Row>
+                </Space>
                 <div
                   style={{
                     marginTop: "20px",
                     marginLeft: "50px",
                     fontSize: "20px",
-                    fontWeight: "bold",
+                    // fontWeight: "bold",
                   }}
                 >
-                  Medicines :
-                  {parchiData?.medicines !== undefined ? (
-                    parchiData?.medicines.map((medicine) => (
-                      <>
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "30px",
-                            marginLeft: "20px",
-                            fontSize: "16px",
-                            marginTop: "5px",
-                          }}
-                        >
-                          <span>Name : {medicine.name}</span>
-                          <span>Dosage : {medicine.dosage}</span>
-                          <span>Quantity : {medicine.quantity}</span>
-                          <span>Description : {medicine.description}</span>
-                        </div>
-                      </>
-                    ))
-                  ) : (
-                    <></>
-                  )}
+                  <Table
+                    columns={[
+                      {
+                        title: "Medicine",
+                        dataIndex: "medicine",
+                        render: (text) => <span>{text?.name}</span>,
+                      },
+                      {
+                        title: "Dosage",
+                        dataIndex: "dosage",
+                        render: (text, record) => (
+                          <span>{record?.dosage?.value}</span>
+                        ),
+                      },
+                      {
+                        title: "Quantity",
+                        dataIndex: "quantity",
+                        render: (text, record) => (
+                          <span>
+                            {quantityCalculator(
+                              record?.duration,
+                              record?.dosage?.value
+                            )}
+                          </span>
+                        ),
+                      },
+                      {
+                        title: "Description",
+                        dataIndex: "description",
+                      },
+                    ]}
+                    dataSource={parchiData?.medicines}
+                    pagination={false}
+                  />
                 </div>
-                <div
+                <Space
+                  direction="vertical"
                   style={{
                     marginTop: "20px",
+                    padding: "20px",
                     marginLeft: "50px",
-                    fontSize: "20px",
-                    fontWeight: "bold",
+                    fontSize: "15px",
+                    width: "80%",
                   }}
                 >
-                  Custom Medicines :&nbsp;
-                  {parchiData?.CustomMedicines !== undefined
-                    ? parchiData.CustomMedicines
-                    : ""}
-                </div>
+                  <Row>
+                    <Col span={8}>CustomMedicines</Col>
+                    <Col span={16}>
+                      <strong>
+                        {parchiData?.CustomMedicines &&
+                          parchiData.CustomMedicines}
+                      </strong>
+                    </Col>
+                  </Row>
+                </Space>
               </div>
             </div>
           </div>
