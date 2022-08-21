@@ -1,17 +1,14 @@
 import { message, Tabs, Badge } from "antd";
-import { faker } from "@faker-js/faker";
 import React, { createContext } from "react";
 
 import { socket } from "../../api/socket";
-import Header from "../../components/Header";
-import Notifications from "../doctor/notifications";
-import usePharmacy from "../../components/Pharmacy/usePharmacy";
-
-import useNotifications from "../../Hooks/useNotifications";
-
 import Prescriptions from "./Prescriptions";
+import Header from "../../components/Header";
 import InventoryTable from "./InventoryTable";
 import CreateReceipts from "./CreateReceipts";
+import Notifications from "../doctor/notifications";
+import useNotifications from "../../Hooks/useNotifications";
+import usePharmacy from "../../components/Pharmacy/usePharmacy";
 
 export const PharmacyContext = createContext();
 
@@ -55,9 +52,7 @@ const Pharmacy = () => {
     };
   }, [addNotification]);
 
-  const [prescription, setPrescription] = React.useState([
-  
-  ]);
+  const [prescription, setPrescription] = React.useState([]);
 
   return (
     <PharmacyContext.Provider

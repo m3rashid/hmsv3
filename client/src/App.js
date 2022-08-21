@@ -1,21 +1,16 @@
 import "./styles/theme.less";
-// import { message } from "antd";
 import { useRecoilState } from "recoil";
-import {
-  Routes,
-  Route,
-  // useLocation
-} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import React, { useCallback, useEffect, useState } from "react";
 
-import AppLayout from "./components/Layout/AppLayout";
-import routes, { checkAccess } from "./routes";
-import { authState } from "./atoms/auth";
-import { revalidateJWT } from "./api/auth/revalidateJWT";
-import Loading from "./components/Loading/Loading";
 import Home from "./pages/home";
-import UnAuthPage from "./pages/unAuthenticated";
 import { socket } from "./api/socket";
+import { authState } from "./atoms/auth";
+import routes, { checkAccess } from "./routes";
+import UnAuthPage from "./pages/unAuthenticated";
+import Loading from "./components/Loading/Loading";
+import AppLayout from "./components/Layout/AppLayout";
+import { revalidateJWT } from "./api/auth/revalidateJWT";
 import useFetchSockets from "./components/Sockets/useFetchSockets";
 
 export const SocketContext = React.createContext();
@@ -24,7 +19,7 @@ function App() {
   useFetchSockets();
   const [Auth, setAuth] = useRecoilState(authState);
   const [isLoading, setisLoading] = useState(true);
-  // const location = useLocation();
+
   const revalidate = useCallback(() => {
     revalidateJWT(setAuth)
       .then((res) => {
@@ -32,9 +27,7 @@ function App() {
         socket.io.opts.auth.token = res.token;
         socket.disconnect().connect();
       })
-      .finally(() => {
-        setisLoading(false);
-      });
+      .finally(() => setisLoading(false));
   }, [setAuth]);
 
   useEffect(() => {
