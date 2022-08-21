@@ -1,8 +1,8 @@
 const {
-  createDummyService,
   loginService,
   revalidateService,
   signupService,
+  createDummyPatientService,
 } = require("../services/auth.js");
 
 const login = async (req, res) => {
@@ -89,7 +89,7 @@ const createDummy = async (req, res) => {
   const { count } = req.body;
 
   try {
-    for (let i = 0; i < count; i++) await createDummyService();
+    for (let i = 0; i < count; i++) await createDummyPatientService();
 
     return res.status(200).json({
       message: "Dummy data created",

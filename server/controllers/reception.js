@@ -50,8 +50,6 @@ const createPatient = async (req, res) => {
   }
 };
 
-//  user groups bhi banane hai yrr, auth options ke basis pe :/
-
 module.exports = {
   createAppointment,
   getAppointmentById,

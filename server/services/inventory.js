@@ -2,6 +2,7 @@ const { faker } = require("@faker-js/faker");
 
 const prisma = require("../utils/prisma");
 const { Category, MedType } = require("@prisma/client");
+const { InventoryTypes } = require("../utils/constants");
 
 const dummymedicines = [
   "Acetaminophen",
@@ -259,12 +260,6 @@ const dummyotherassets = [
   "RAHUL BHABHAR\nJUNE 18, 2022 AT 8:10 PM\n\nHI..\nMUJHE SABHI TARAH KI ITEMS LENA HAI ??",
 ];
 
-const InventoryTypes = {
-  Medicine: "Medicine",
-  NonMedicine: "NonMedicine",
-  OtherAssets: "OtherAssets",
-};
-
 const addMedicineService = async (type, data) => {
   if (type == InventoryTypes.Medicine) {
     const medicine = await prisma.medicine.create({ data });
@@ -285,23 +280,17 @@ const DeleteInventoryService = async (medicineId, type) => {
   console.log(medicineId);
   if (type == InventoryTypes.Medicine) {
     const medicine = await prisma.medicine.delete({
-      where: {
-        id: medicineId,
-      },
+      where: { id: medicineId },
     });
     return medicine;
   } else if (type == InventoryTypes.NonMedicine) {
     const nonMedicine = await prisma.nonMedicine.delete({
-      where: {
-        id: medicineId,
-      },
+      where: { id: medicineId },
     });
     return nonMedicine;
   } else if (type == InventoryTypes.OtherAssets) {
     const otherAssets = await prisma.otherAssets.delete({
-      where: {
-        id: medicineId,
-      },
+      where: { id: medicineId },
     });
     return otherAssets;
   } else {
@@ -379,30 +368,20 @@ const searchInventoryService = async (type, { quantity, price, name }) => {
   console.log(name, quantity);
   let inventory = [];
   const queries = [
-    {
-      quantity: { gte: quantity },
-    },
-    {
-      name: { contains: name },
-    },
+    { quantity: { gte: quantity } },
+    { name: { contains: name } },
   ];
   if (type == InventoryTypes.Medicine) {
     inventory = await prisma.medicine.findMany({
-      where: {
-        OR: queries,
-      },
+      where: { OR: queries },
     });
   } else if (type == InventoryTypes.NonMedicine) {
     inventory = await prisma.nonMedicine.findMany({
-      where: {
-        OR: queries,
-      },
+      where: { OR: queries },
     });
   } else if (type == InventoryTypes.OtherAssets) {
     inventory = await prisma.otherAssets.findMany({
-      where: {
-        OR: queries,
-      },
+      where: { OR: queries },
     });
   }
   return inventory;

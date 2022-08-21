@@ -1,14 +1,5 @@
 const prisma = require("../utils/prisma");
-
-const supportedUserRoles = [
-  "DOCTOR",
-  "ADMIN",
-  "RECEPTIONIST",
-  "PHARMACIST",
-  "INVENTORY_MANAGER",
-  "CO_ADMIN",
-  "OTHER",
-];
+const { supportedUserRoles } = require("../utils/constants");
 
 const getAllUsersService = async (userRole) => {
   if (!userRole) return [];
@@ -34,7 +25,6 @@ const editPermissionsService = async (userId, permissions) => {
 };
 
 module.exports = {
-  supportedUserRoles,
   getAllUsersService,
   editPermissionsService,
 };

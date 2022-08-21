@@ -2,18 +2,9 @@ const bcrypt = require("bcrypt");
 const { faker } = require("@faker-js/faker");
 
 const prisma = require("../utils/prisma");
-const { permissions } = require("../utils/auth.helpers");
-const { issueJWT, revalidateJWT } = require("../utils/jwt.js");
 
-const allowedRoles = [
-  "DOCTOR",
-  "ADMIN",
-  "RECEPTIONIST",
-  "PHARMACIST",
-  "INVENTORY_MANAGER",
-  "CO_ADMIN",
-  "OTHER",
-];
+const { issueJWT, revalidateJWT } = require("../utils/jwt.js");
+const { supportedUserRoles, permissions } = require("../utils/constants");
 
 const addActions = (role) => {
   let allowedActions = [];
@@ -127,13 +118,12 @@ const signupService = async (
     category,
     origin,
   });
-  // use this as a transaction
 
   if (!email || !password || !name || !role || !sex) {
     throw new Error("Insufficient credentials");
   }
 
-  if (!allowedRoles.includes(role)) throw new Error("Invalid role");
+  if (!supportedUserRoles.includes(role)) throw new Error("Invalid role");
   const allowedActions = addActions(role);
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -201,38 +191,19 @@ const revalidateService = async (refreshToken) => {
   };
 };
 
-const createDummyService = async () => {
-  const role = [
-    "DOCTOR",
-    "ADMIN",
-    "RECEPTIONIST",
-    "PHARMACIST",
-    "INVENTORY_MANAGER",
-    "CO_ADMIN",
-    "PATIENT",
-  ][Math.floor(Math.random() * 7)];
+const createDummyPatientService = async () => {
+  const patient = await prisma.patient.create({
+    data: {
+      name: faker.name.fullName(),
+      age: Math.floor(Math.random() * 100),
+      contact: faker.phone.number(),
+      sex: "m",
+      address: faker.address.city(),
+      email: faker.internet.email(),
+    },
+  });
 
-  if (role === "PATIENT") {
-    await prisma.patient.create({
-      data: {
-        name: faker.name.fullName(),
-        age: Math.floor(Math.random() * 100),
-        contact: faker.phone.number(),
-        sex: "m",
-        address: faker.address.city(),
-        email: faker.internet.email(),
-      },
-    });
-
-    return;
-  }
-
-  // const auth_data = {
-  //   email: faker.internet.email(),
-  //   password: "admin123",
-  //   name: faker.name.findName(),
-  //   permissions: addActions(role),
-  // };
+  return patient;
 };
 
 module.exports = {
@@ -240,6 +211,5 @@ module.exports = {
   logoutService,
   signupService,
   revalidateService,
-  createDummyService,
-  allowedRoles,
+  createDummyPatientService,
 };

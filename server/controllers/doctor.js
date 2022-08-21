@@ -7,8 +7,8 @@ const {
   createPrescriptionByDoctorService,
   referAnotherDoctorAppointmentService,
 } = require("../services/doctor.js");
-const { getAppointmentByIdService } = require("../services/reception.js");
 const prisma = require("../utils/prisma");
+const { getAppointmentByIdService } = require("../services/reception.js");
 
 const getDoctorAppointments = async (req, res) => {
   try {

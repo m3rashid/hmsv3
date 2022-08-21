@@ -1,5 +1,6 @@
-const { checkAccess, permissions } = require("../utils/auth.helpers");
 const prisma = require("../utils/prisma");
+const { permissions } = require("../utils/constants");
+const { checkAccess } = require("../utils/auth.helpers");
 
 const createPatientService = async (
   { name, age, sex, contact, address, email, jamiaId },

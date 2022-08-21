@@ -1,7 +1,7 @@
 const dayjs = require("dayjs");
 
 const prisma = require("../utils/prisma");
-const { permissions } = require("../utils/auth.helpers");
+const { permissions } = require("../utils/constants");
 
 const getDoctorAppointmentsService = async (
   userId,
@@ -10,17 +10,11 @@ const getDoctorAppointmentsService = async (
   console.log({ userId });
   const query = {
     where: {
-      doctor: {
-        id: userId,
-      },
+      doctor: { id: userId },
       ...(pending ? { pending: true } : {}),
     },
-    include: {
-      patient: true,
-    },
-    orderBy: {
-      date: "desc",
-    },
+    include: { patient: true },
+    orderBy: { date: "desc" },
     skip: offset || 0,
     take: limit || 500,
   };
@@ -33,13 +27,7 @@ const getDoctorAppointmentsService = async (
 
 const getDoctorPatientsService = async (doctorId) => {
   const patients = await prisma.Patient.findMany({
-    where: {
-      Appointment: {
-        some: {
-          doctorId: doctorId,
-        },
-      },
-    },
+    where: { Appointment: { some: { doctorId: doctorId } } },
   });
   return { patients };
 };
@@ -56,29 +44,10 @@ const searchDoctorsService = async ({
 }) => {
   const doctors = await prisma.auth.findMany({
     where: {
-      OR: [
-        {
-          name: {
-            contains: name,
-          },
-        },
-        {
-          email: {
-            contains: email,
-          },
-        },
-      ],
-      AND: [
-        {
-          permissions: {
-            has: permissions.DOCTOR_PRESCRIBE_MEDICINE,
-          },
-        },
-      ],
+      OR: [{ name: { contains: name } }, { email: { contains: email } }],
+      AND: [{ permissions: { has: permissions.DOCTOR_PRESCRIBE_MEDICINE } }],
     },
-    include: {
-      profile: true,
-    },
+    include: { profile: true },
   });
   return { count: doctors.length, doctors };
 };
@@ -96,9 +65,7 @@ const createPrescriptionService = async ({
   const newPrescription = await prisma.prescription.create({
     data: {
       appointment: {
-        connect: {
-          id: appointment,
-        },
+        connect: { id: appointment },
       },
       symptoms,
       CustomMedicines,
@@ -113,9 +80,7 @@ const createPrescriptionService = async ({
               duration: parseInt(medicine.duration),
               dosage: medicine.dosage,
               ...(medicine.type === "SYRUP"
-                ? {
-                    quantityPerDose: parseInt(medicine.quantityPerDose),
-                  }
+                ? { quantityPerDose: parseInt(medicine.quantityPerDose) }
                 : {}),
               description: medicine.description,
             };
@@ -126,19 +91,10 @@ const createPrescriptionService = async ({
     include: {
       appointment: {
         select: {
-          patient: {
-            select: {
-              name: true,
-              contact: true,
-            },
-          },
+          patient: { select: { name: true, contact: true } },
           doctor: {
             select: {
-              Auth: {
-                select: {
-                  name: true,
-                },
-              },
+              Auth: { select: { name: true } },
               designation: true,
             },
           },
@@ -147,22 +103,12 @@ const createPrescriptionService = async ({
     },
   });
   await prisma.appointment.update({
-    where: {
-      id: appointment,
-    },
-    data: {
-      pending: false,
-    },
+    where: { id: appointment },
+    data: { pending: false },
   });
-
-  // const newPresDetails = await newPrescription.getAppointment();
-  // const patient = await newPresDetails.getPatient();
-  // const doctor = await newPresDetails.getDoctor();
 
   return {
     prescription: newPrescription,
-    // doctor,
-    // patient,
   };
 };
 
@@ -173,9 +119,7 @@ const updateAppointmentService = async ({
   pending,
 }) => {
   const updatedAppointment = await prisma.appointment.update({
-    where: {
-      id: appointmentId,
-    },
+    where: { id: appointmentId },
     data: {
       ...(date ? { date } : {}),
       ...(remarks ? { remarks } : {}),
@@ -186,6 +130,9 @@ const updateAppointmentService = async ({
     appointment: updatedAppointment,
   };
 };
+
+const referAnotherDoctorAppointmentService = async ({}) => {};
+
 module.exports = {
   searchDoctorsService,
   getDoctorPatientsService,
