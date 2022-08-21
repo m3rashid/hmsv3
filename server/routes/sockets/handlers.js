@@ -9,6 +9,7 @@ const {
   createPrescriptionService,
 } = require("../../services/doctor.js");
 
+const {dispensePrescriptionService} = require("../../services/pharmacist.js");
 const createUser =
   (io, socket) =>
   async ({ email, password, role, name }) => {
@@ -260,6 +261,20 @@ const createPrescriptionByDoctor =
     }
   };
 
+
+  const dispensePrescription = (io, socket) => async ({ prescriptionId, medicines }) => {
+    console.log(prescriptionId, medicines);
+    try {
+      const data = await dispensePrescriptionService({prescriptionId, medicines});
+      io.emit("prescription-dispensed", { data });
+    } catch (err) {
+      console.log(err);
+      io.emit("error", {
+        message: err.message || "An error occured",
+      });
+    }
+  }
+
 module.exports = {
   createUser,
   getDoctorAppointments,
@@ -274,4 +289,6 @@ module.exports = {
   pharmacistLeft,
   createAppointment,
   createPrescriptionByDoctor,
+  dispensePrescription
+
 };

@@ -162,7 +162,7 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
           </Select>
         </Space>
         {
-          medicine.medType === 'SYRUP' &&
+          medicine?.medicine?.medType === 'SYRUP' &&
           <Space
             style={{
               width: "100%",

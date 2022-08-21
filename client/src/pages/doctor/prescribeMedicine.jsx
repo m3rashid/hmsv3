@@ -174,6 +174,7 @@ const PrescriptionForm = () => {
               </Form.Item>
               <Form.Item label="Symptoms" name="symptoms">
                 <TextArea
+                  required
                   type="text"
                   placeholder="Enter symptoms"
                   allowClear
