@@ -1,69 +1,32 @@
-import {
-  AutoComplete,
-  Button,
-  Col,
-  Input,
-  Row,
-  Select,
-  Space,
-  Typography,
-} from "antd";
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import styles from "./medicineinput.module.css";
-import { instance } from "../../api/instance";
-import axios from "axios";
 import { useRecoilValue } from "recoil";
+import { Button, Input, Select, Space, Typography } from "antd";
+
+import styles from "./medicineinput.module.css";
 import { inventoryState } from "../../atoms/inventory";
-const { Option, OptGroup } = Select;
 
 function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
   const dosages = [
-    {
-      value: "OD",
-      label: "Once a day",
-    },
-    {
-      value: "BD",
-      label: "Twice a day",
-    },
-    {
-      value: "TD",
-      label: "Three times a day",
-    },
-    {
-      value: "QD",
-      label: "Four times a day",
-    },
-    {
-      value: "OW",
-      label: "Once a week",
-    },
-    {
-      value: "BW",
-      label: "Twice a week",
-    },
-    {
-      value: "TW",
-      label: "Three times a week",
-    },
+    { value: "OD", label: "Once a day" },
+    { value: "BD", label: "Twice a day" },
+    { value: "TD", label: "Three times a day" },
+    { value: "QD", label: "Four times a day" },
+    { value: "OW", label: "Once a week" },
+    { value: "BW", label: "Twice a week" },
+    { value: "TW", label: "Three times a week" },
   ];
 
   const medicineDB = useRecoilValue(inventoryState);
   console.log(medicine);
 
   const handleChange = (value, type) => {
-    console.log(`${type} ${value}`);
-
-    //   Update the medicine object
+    console.log(`${type}: ${value}`);
 
     setMedicines((prevState) => {
       return prevState.map((medicine, i) => {
         if (i === index) {
-          return {
-            ...medicine,
-            [type]: value,
-          };
+          return { ...medicine, [type]: value };
         }
         return medicine;
       });
@@ -75,7 +38,7 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
       direction="vertical"
       style={{
         width: "90%",
-        marginLeft: 20,
+        padding: "0 5px 5px 5px",
       }}
       size="middle"
     >
@@ -89,17 +52,10 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
       </div>
 
       <div className={styles.container}>
-        <Space
-          size={"middle"}
-          style={{
-            width: "100%",
-          }}
-        >
-          <Typography.Text>Meidcine :</Typography.Text>
+        <Space size={"middle"} style={{ width: "100%" }}>
+          <Typography.Text>Medicine :</Typography.Text>
           <Select
-            style={{
-              width: 300,
-            }}
+            style={{ width: 300 }}
             showSearch
             optionFilterProp="children"
             filterOption={(input, option) => option.children?.includes(input)}
@@ -116,35 +72,37 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
               handleChange(Item, "medicine");
             }}
           >
-          <OptGroup label="Tablets">
-              {medicineDB.Medicine?.inventory.filter(m=>m.medType==="TABLET").map((medicine) => {
-                return <Option value={medicine.id}>{medicine.name}</Option>;
-              })}
-            </OptGroup>
-            <OptGroup label="Syrups">
-              {medicineDB.Medicine?.inventory.filter(m=>m.medType==="SYRUP").map((medicine) => {
-                return <Option value={medicine.id}>{medicine.name}</Option>;
-              })}
-            </OptGroup>
-            {/* <OptGroup label="Non Medicine">
-            {medicineDB.NonMedicine?.inventory.map((item) => {
-              return (
-                <Option value={item.id}>{item.name}</Option>
-              );
-            }
-            )}
-          </OptGroup> */}
+            <Select.OptGroup label="Tablets">
+              {medicineDB.Medicine?.inventory
+                .filter((m) => m.medType === "TABLET")
+                .map((medicine) => {
+                  return (
+                    <Select.Option value={medicine.id}>
+                      {medicine.name}
+                    </Select.Option>
+                  );
+                })}
+            </Select.OptGroup>
+
+            <Select.OptGroup label="Syrups">
+              {medicineDB.Medicine?.inventory
+                .filter((m) => m.medType === "SYRUP")
+                .map((medicine) => {
+                  return (
+                    <Select.Option value={medicine.id}>
+                      {medicine.name}
+                    </Select.Option>
+                  );
+                })}
+            </Select.OptGroup>
           </Select>
+
           <Typography.Text type="danger">
             {medicine?.medicine?.quantity} left!
           </Typography.Text>
         </Space>
-        <Space
-          style={{
-            width: "100%",
-            display: "flex",
-          }}
-        >
+
+        <Space style={{ width: "100%", display: "flex" }}>
           <Typography>Dosage :</Typography>
           <Select
             style={{ width: 200, flexGrow: 1 }}
@@ -161,14 +119,8 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
             ))}
           </Select>
         </Space>
-        {
-          medicine.medType === 'SYRUP' &&
-          <Space
-            style={{
-              width: "100%",
-              display: "flex",
-            }}
-          >
+        {medicine.medType === "SYRUP" && (
+          <Space style={{ width: "100%", display: "flex" }}>
             <Typography>Dosage Amount :</Typography>
             <Input
               type="number"
@@ -178,13 +130,9 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
               addonAfter={"ml"}
             />
           </Space>
-        }
+        )}
 
-        <Space
-          style={{
-            width: "100%",
-          }}
-        >
+        <Space style={{ width: "100%" }}>
           <Typography>Duration : </Typography>
           <Input
             type={"number"}
@@ -196,13 +144,7 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
           />
         </Space>
         <div className={styles.description}>
-          <Typography
-            style={{
-              width: 150,
-            }}
-          >
-            Description :
-          </Typography>
+          <Typography style={{ width: 150 }}>Description :</Typography>
           <Input.TextArea
             className={styles.textarea}
             defaultValue={medicine.description}
