@@ -84,23 +84,23 @@ const loginService = async (email, password) => {
   };
 };
 
-const signupService = async (
+const signupService = async ({
   email,
   password,
   name,
   role,
+  sex,
   designation,
   contact,
   address,
   bio,
-  sex,
   availability,
   availableDays,
   roomNumber,
   authorityName,
   category,
-  origin
-) => {
+  origin,
+}) => {
   console.log({
     email,
     password,

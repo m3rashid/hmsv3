@@ -31,26 +31,24 @@ const login = async (req, res) => {
 
 const signup = async (req, res) => {
   try {
-    const user = await signupService(
-      // required: true
-      req.body.name,
-      req.body.email,
-      req.body.password,
-      req.body.role,
-      req.body.sex,
+    const user = await signupService({
+      email: req.body.email,
+      password: req.body.password,
+      name: req.body.name,
+      role: req.body.role,
+      sex: req.body.sex,
 
-      // required: false
-      req.body.designation,
-      req.body.contact,
-      req.body.address,
-      req.body.bio,
-      req.body.availability,
-      req.body.availableDays,
-      req.body.roomNumber,
-      req.body.authorityName,
-      req.body.category,
-      req.body.origin
-    );
+      designation: req.body.designation,
+      contact: req.body.contact,
+      address: req.body.address,
+      bio: req.body.bio,
+      availability: req.body.availability,
+      availableDays: req.body.availableDays,
+      roomNumber: req.body.roomNumber,
+      authorityName: req.body.authorityName,
+      category: req.body.category,
+      origin: req.body.origin,
+    });
 
     return res.status(200).json({ message: "Signup Successful", user });
   } catch (err) {
