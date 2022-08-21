@@ -9,7 +9,6 @@ import {
   Typography,
   Row,
   Col,
-  TextArea,
   Collapse,
   Modal,
 } from "antd";
@@ -115,7 +114,7 @@ const PrescriptionForm = () => {
                 </Select>
               </Form.Item>
               <Form.Item label="Symptoms" name="symptoms">
-                <TextArea
+                <Input.TextArea
                   required
                   type="text"
                   placeholder="Enter symptoms"
