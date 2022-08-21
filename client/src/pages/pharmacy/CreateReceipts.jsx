@@ -8,6 +8,7 @@ import { pharmacyState } from "../../atoms/pharmacy";
 import dayjs from "dayjs";
 import { instance } from "../../api/instance";
 import MedicineTable from "../../components/Pharmacy/MedicineTable";
+import { socket } from "../../api/socket";
 // const { TextArea } = Input;
 const { Option } = Select;
 
@@ -67,16 +68,18 @@ function CreateReceipts() {
   const formSubmitHandler = async (values) => {
     if (loading) return;
     console.log(selectedPrescription, selectedMedicines);
-    const resp = await instance.post(`/pharmacy/dispense`, {
+    // const resp = await instance.post(`/pharmacy/dispense`, {
+    //   prescriptionId: selectedPrescription.id,
+    //   medicines: selectedMedicines,
+    // })
+    socket.emit("dispense-prescription", {
       prescriptionId: selectedPrescription.id,
       medicines: selectedMedicines,
     })
 
-    message.success(`Receipt for ${selectedPrescription.appointment.patient.name} has been created`);
-
     setTotal({});
     setSelectedPrescription(null);
-    setSelectedPrescriptionData({data:[]});
+    setSelectedPrescriptionData({ data: [] });
     form.resetFields();
     navigate('/pharmacy/prescriptions');
   };
@@ -120,7 +123,7 @@ function CreateReceipts() {
         </Form.Item>
 
         <Spin spinning={selectedPrescriptionData.loading}>
-        <MedicineTable medicines={selectedPrescriptionData.data?.medicines || []} setSelectedMedicines={setSelectedMedicines} selectedMedicine={selectedMedicines} />
+          <MedicineTable medicines={selectedPrescriptionData.data?.medicines || []} setSelectedMedicines={setSelectedMedicines} selectedMedicine={selectedMedicines} />
           <Form.Item wrapperCol={{ offset: 12 }}>
             <Button loading={loading} type="primary" htmlType="submit">
               Save

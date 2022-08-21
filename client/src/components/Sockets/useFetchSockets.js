@@ -103,11 +103,28 @@ export default function useFetchSockets() {
       }));
       message.info(`New Prescription for ${data.prescription.id}!`);
     });
+    socket.on("prescription-dispensed", ({ data }) => {
+      // setPharmacyData((prevData) => ({
+      //   ...prevData,
+      //   prescriptions: prevData.prescriptions.map((prescription) => {
+      //     if (prescription.id === data.prescription.id) {
+      //       return {
+      //         ...prescription,
+      //         status: "dispensed",
+      //       };
+      //     }
+      //     return prescription;
+      //   }),
+      // }));
+      loadPharmacyPrescriptions();
+      message.success(`Prescription ${data.prescription.id} has been dispensed!`);
+    })
 
     return () => {
       socket.off("new-prescription-by-doctor-created");
+      socket.off("prescription-dispensed");
     };
-  }, [auth, loadPharmacyPrescriptions]);
+  }, [auth, loadPharmacyPrescriptions, setPharmacyData]);
 
   /** Socket events for Doctor Roles */
 
@@ -136,7 +153,7 @@ export default function useFetchSockets() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
-  const loadMedicine = useCallback(async () => {}, []);
+  const loadMedicine = useCallback(async () => { }, []);
 
   /**
    * Add Appointment in Doctor Appointments

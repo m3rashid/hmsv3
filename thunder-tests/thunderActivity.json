@@ -1,0 +1,40 @@
+[
+  {
+    "_id": "471d23b3-4dbd-4afb-b22f-8be07a51c58e",
+    "colId": "history",
+    "containerId": "",
+    "name": "localhost:5000/inventory/dummy",
+    "url": "localhost:5000/inventory/dummy",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-08-21T07:53:18.857Z",
+    "modified": "2022-08-21T07:53:18.939Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"count\":20\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "cf914e50-c5ef-49af-95b5-d62e071d61fd",
+    "colId": "history",
+    "containerId": "",
+    "name": "localhost:5000/api/inventory/dummy",
+    "url": "localhost:5000/api/inventory/dummy",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2022-08-21T07:53:26.262Z",
+    "modified": "2022-08-21T07:54:44.009Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"count\":100\n}",
+      "form": []
+    },
+    "tests": []
+  }
+]

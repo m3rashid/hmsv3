@@ -12,6 +12,7 @@ const socketConstants = {
   createReceptionist: "create-receptionist",
   createAppointment: "create-appointment",
   createPrescriptionByDoctor: "create-prescription-by-doctor",
+  dispensePrescription: "dispense-prescription",
 
   // not handled
   foundDoctorAppointments: "found-doctor-appointments",
@@ -40,6 +41,7 @@ const {
   receptionistLeft,
   searchPatients,
   createPrescriptionByDoctor,
+  dispensePrescription
 } = require("./handlers.js");
 
 const router = (io, socket) => {
@@ -62,6 +64,7 @@ const router = (io, socket) => {
     socketConstants.createPrescriptionByDoctor,
     createPrescriptionByDoctor(io, socket)
   );
+  socket.on(socketConstants.dispensePrescription, dispensePrescription(io, socket));
 };
 
 module.exports = {

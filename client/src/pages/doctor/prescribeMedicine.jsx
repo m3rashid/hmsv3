@@ -1,3 +1,5 @@
+import React, { useCallback, useEffect, useState } from "react";
+import moment from "moment";
 import {
   Form,
   Button,
@@ -7,14 +9,10 @@ import {
   Typography,
   Row,
   Col,
-  Card,
+  TextArea,
   Collapse,
   Modal,
-  message,
 } from "antd";
-import dayjs from "dayjs";
-import React, { useEffect } from "react";
-
 import { socket } from "../../api/socket";
 import Header from "../../components/Header";
 import GeneratePdf from "../../components/generatePdf.jsx";
@@ -23,7 +21,7 @@ import MedicineInput from "../../components/Doctor/MedicineInput";
 import usePrescribeMedicines from "./helpers/prescribeMeds.hook";
 import SingleMedicine from "./helpers/singleMedicine";
 import DisplayMedicine from "./helpers/DisplayMedicine";
-
+import dayjs from "dayjs";
 const PrescriptionForm = () => {
   const {
     state: {
@@ -117,7 +115,8 @@ const PrescriptionForm = () => {
                 </Select>
               </Form.Item>
               <Form.Item label="Symptoms" name="symptoms">
-                <Input.TextArea
+                <TextArea
+                  required
                   type="text"
                   placeholder="Enter symptoms"
                   allowClear

@@ -160,8 +160,14 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
             ))}
           </Select>
         </Space>
-        {medicine.medType === "SYRUP" && (
-          <Space style={{ width: "100%", display: "flex" }}>
+        {
+          medicine?.medicine?.medType === 'SYRUP' &&
+          <Space
+            style={{
+              width: "100%",
+              display: "flex",
+            }}
+          >
             <Typography>Dosage Amount :</Typography>
             <Input
               type="number"
@@ -171,7 +177,7 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
               addonAfter={"ml"}
             />
           </Space>
-        )}
+        }
 
         <Space style={{ width: "100%" }}>
           <Typography>Duration : </Typography>
