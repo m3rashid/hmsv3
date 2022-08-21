@@ -9,123 +9,67 @@ import {
   Typography,
   Row,
   Col,
-  Card,
+  TextArea,
+  Collapse,
+  Modal,
 } from "antd";
 import { socket } from "../../api/socket";
-import MedicineInput from "../../components/Doctor/MedicineInput";
-import { useRecoilValue } from "recoil";
-import { doctorState } from "../../atoms/doctor";
 import Header from "../../components/Header";
-import dayjs from "dayjs";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { quantityCalculator } from "../../components/Doctor/quantityCalculator";
 import GeneratePdf from "../../components/generatePdf.jsx";
+import MedicineInput from "../../components/Doctor/MedicineInput";
 
-const { TextArea } = Input;
-const { Option } = Select;
-
+import usePrescribeMedicines from "./helpers/prescribeMeds.hook";
+import SingleMedicine from "./helpers/singleMedicine";
+import DisplayMedicine from "./helpers/DisplayMedicine";
+import dayjs from "dayjs";
 const PrescriptionForm = () => {
-  const [loading, setLoading] = useState(false);
-  const [searchParams] = useSearchParams();
-
-  const doctorData = useRecoilValue(doctorState);
-  const [formData, setFormData] = useState({});
-  const [medicines, setMedicines] = useState([]);
-  const [prescription, setPrescription] = useState([]);
-  const [referToAnotherDoctor, setReferToAnotherDoctor] = useState(false);
-
-  const [form] = Form.useForm();
-
-  const navigate = useNavigate();
+  const {
+    state: {
+      loading,
+      print,
+      formData,
+      medicines,
+      doctorData,
+      appointmentId,
+      // referToAnotherDoctor,
+      navigate,
+      form,
+      PrintButtonRef,
+      CreatePrescriptionModalVisible,
+    },
+    actions: {
+      setPrint,
+      setLoading,
+      setFormData,
+      setMedicines,
+      // setReferToAnotherDoctor,
+      formSubmitHandler,
+      addEmptyMedicine,
+      deleteMedicine,
+      handleReferPatientModalShow,
+      handleAppointmentSelect,
+      setCreatePrescriptionModalVisible,
+    },
+  } = usePrescribeMedicines(socket);
 
   useEffect(() => {
     socket.on("new-prescription-by-doctor-created", (data) => {
-      setLoading(false);
-      navigate("/doctor/appointments");
+      setLoading({
+        PrescribeMedicines: false,
+      });
+      PrintButtonRef.current.click();
     });
     return () => {
       socket.off("new-prescription-by-doctor-created");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
-  const formSubmitHandler = (values) => {
-    if (loading) return;
-    const data = {
-      appointment: formData.appointmentInfo.id,
-      symptoms: values.symptoms,
-      diagnosis: values.diagnosis,
-      CustomMedicines: values.CustomMedicines,
-      datetime: new Date(),
-      medicines: medicines.map((item) => {
-        return {
-          ...item,
-          MedicineId: item.id,
-          dosage: item.dosage.value,
-        };
-      }),
-    };
-    if (loading) return;
-    setLoading(true);
-    socket.emit("create-prescription-by-doctor", data);
-  };
-
-  const addEmptyMedicine = () => {
-    setMedicines([
-      ...medicines,
-      { dosage: "", duration: 0, description: "", medicineId: "" },
-    ]);
-  };
-
-  const deleteMedicine = (index) => {
-    setMedicines([...medicines.slice(0, index), ...medicines.slice(index + 1)]);
-  };
-
-  const appointmentId = searchParams.get("appointmentId");
-
-  const handleAppointmentSelect = useCallback(
-    (appointment_id) => {
-      appointment_id = parseInt(appointment_id);
-      const selectedAppointment = doctorData.appointments.find(
-        (appointment) => appointment.id === appointment_id
-      );
-
-      if (selectedAppointment) {
-        setFormData((formData) => ({
-          ...formData,
-          appointment: `${selectedAppointment.patient.name}-${selectedAppointment.date}`,
-          appointmentInfo: selectedAppointment,
-        }));
-        form.setFieldValue(
-          "appointment",
-          `${selectedAppointment.patient.name}-${dayjs(
-            selectedAppointment.date
-          ).format("MMMM DD YYYY hh:mm A")}`
-        );
-      } else {
-        setFormData((formData) => ({
-          ...formData,
-          appointment: "",
-          appointmentInfo: {},
-        }));
-        form.setFieldValue("appointment", "");
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [doctorData.appointments, form]
-  );
-
   useEffect(() => {
-    // return;
     if (appointmentId !== null && doctorData.appointments.length > 0) {
       handleAppointmentSelect(appointmentId);
     }
   }, [appointmentId, doctorData.appointments.length, handleAppointmentSelect]);
-
-  console.log(form.getFieldsValue(true));
-
-  const handleReferPatientModalShow = async () => {
-    setReferToAnotherDoctor(true);
-  };
 
   return (
     <React.Fragment>
@@ -151,9 +95,7 @@ const PrescriptionForm = () => {
                 ]}
               >
                 <Select
-                  style={{
-                    width: "100%",
-                  }}
+                  style={{ width: "100%" }}
                   placeholder="Select an appointment"
                   allowClear
                   onChange={(value) => {
@@ -163,12 +105,12 @@ const PrescriptionForm = () => {
                   optionLabelProp="Appointment"
                 >
                   {doctorData.appointments.map((appointment) => (
-                    <Option key={appointment.id} value={appointment.id}>
+                    <Select.Option key={appointment.id} value={appointment.id}>
                       <span>
                         {appointment.patient?.name} -{" "}
                         {dayjs(appointment.date).format("MMMM DD YYYY HH:mm A")}
                       </span>
-                    </Option>
+                    </Select.Option>
                   ))}
                 </Select>
               </Form.Item>
@@ -186,14 +128,13 @@ const PrescriptionForm = () => {
 
               <Space direction="vertical" style={{ width: "100%" }}>
                 {medicines.map((medicine, index) => (
-                  <React.Fragment>
-                    <MedicineInput
-                      index={index}
-                      medicine={medicine}
-                      deleteMedicine={deleteMedicine}
-                      setMedicines={setMedicines}
-                    />
-                  </React.Fragment>
+                  <MedicineInput
+                    key={index}
+                    index={index}
+                    medicine={medicine}
+                    deleteMedicine={deleteMedicine}
+                    setMedicines={setMedicines}
+                  />
                 ))}
 
                 <Button
@@ -207,7 +148,7 @@ const PrescriptionForm = () => {
               </Space>
 
               <Form.Item label="Custom Medicines" name="CustomMedicines">
-                <TextArea
+                <Input.TextArea
                   type="text"
                   placeholder="Enter custom medicines"
                   allowClear
@@ -219,100 +160,28 @@ const PrescriptionForm = () => {
                   }}
                 />
               </Form.Item>
-              <Form.Item wrapperCol={{ offset: 3 }}>
-                <Button loading={loading} type="primary" htmlType="submit">
-                  Create
+
+              <Form.Item
+                style={{ display: "flex", justifyContent: "flex-end" }}
+              >
+                <Button
+                  loading={loading.PrescribeMedicines}
+                  type="primary"
+                  htmlType="button"
+                  onClick={() => setCreatePrescriptionModalVisible(true)}
+                >
+                  Confirm Create Prescription
                 </Button>
               </Form.Item>
             </Form>
           </Col>
-          <Col span={12} style={{ padding: "10px" }}>
-            <Typography.Title level={4}>Prescription Preview</Typography.Title>
-            <Card
-              title="Appointment Details"
-              style={{ background: "transparent" }}
-            >
-              <Space direction="vertical">
-                <Typography.Text>
-                  Appointment ID: {formData?.appointmentInfo?.id}
-                </Typography.Text>
-                <Typography.Text>
-                  Patient Name: {formData?.appointmentInfo?.patient.name}
-                </Typography.Text>
-                <Typography.Text>
-                  Date:{" "}
-                  {dayjs(formData?.appointmentInfo?.date).format(
-                    "MMMM DD YYYY HH:mm A"
-                  )}
-                </Typography.Text>
-              </Space>
-            </Card>
-            <Space
-              direction="vertical"
-              style={{
-                marginLeft: 20,
-                padding: 20,
-                width: "75%",
-                borderRadius: 15,
-                backgroundColor: "#fff",
-              }}
-            >
-              <Typography.Text type="success">Symptoms:</Typography.Text>
-              <Typography.Text>{formData?.symptoms}</Typography.Text>
-            </Space>
-
-            <Card title="Medicines" style={{ background: "transparent" }}>
-              <Space direction="vertical" size={"large"}>
-                {medicines.map((medicine, index) => (
-                  <Space
-                    direction="vertical"
-                    key={index}
-                    style={{ marginLeft: 20 }}
-                  >
-                    <Space>
-                      <Typography.Text style={{ fontWeight: "bold" }}>
-                        {medicine?.medicine?.name}
-                      </Typography.Text>
-                      <Typography.Text
-                        style={{
-                          padding: "5px 10px",
-                          borderRadius: 5,
-                          fontSize: "12px",
-                          backgroundColor: "#ff4d4f",
-                          color: "#fff",
-                        }}
-                      >
-                        # {medicine?.medicine?.id}
-                      </Typography.Text>
-                    </Space>
-                    <Space direction="vertical" style={{ padding: "10px" }}>
-                      <Typography.Text>
-                        Duration : <strong>{medicine?.duration} Days</strong>
-                      </Typography.Text>
-                      <Typography.Text>
-                        Dosage : <strong>{medicine?.dosage?.label}</strong>
-                      </Typography.Text>
-                      <Typography.Text>
-                        Quantity Required :{" "}
-                        <strong>
-                          {quantityCalculator(
-                            medicine?.duration,
-                            medicine?.dosage?.value
-                          )}
-                        </strong>
-                      </Typography.Text>
-                      <Typography.Text>{medicine?.description}</Typography.Text>
-                    </Space>
-                  </Space>
-                ))}
-              </Space>
-            </Card>
-            <Card
-              title="Custom Medicines"
-              style={{ background: "transparent" }}
-            >
-              {formData?.CustomMedicines}
-            </Card>
+          <Col
+            span={12}
+            style={{
+              padding: "10px",
+            }}
+          >
+            <DisplayMedicine formData={formData} medicines={medicines} />
           </Col>
         </Row>
 
@@ -321,9 +190,20 @@ const PrescriptionForm = () => {
             width: "100%",
             display: "flex",
             alignItems: "center",
+            marginBottom: "30px",
             justifyContent: "center",
+            gap: "50px",
           }}
         >
+          <Button
+            type="primary"
+            onClick={() => setPrint(true)}
+            className="print__button"
+            ref={PrintButtonRef}
+          >
+            Print Prescription
+          </Button>
+
           <Button
             type="primary"
             style={{ background: "#ff0000", border: "none" }}
@@ -333,15 +213,34 @@ const PrescriptionForm = () => {
           </Button>
         </div>
 
-        <GeneratePdf
-          data={[
-            {
-              ...formData,
-              medicines: medicines,
-              date: dayjs().format("MMMM DD YYYY HH:mm A"),
-            },
-          ]}
-        />
+        {/* Alert on Submit Modal */}
+        <Modal
+          visible={CreatePrescriptionModalVisible}
+          onOk={() => {
+            setCreatePrescriptionModalVisible(false);
+            form.submit();
+          }}
+          onCancel={() => setCreatePrescriptionModalVisible(false)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <DisplayMedicine formData={formData} medicines={medicines} />
+        </Modal>
+
+        <Collapse bordered={false} style={{ padding: 0, margin: 0 }}>
+          <Collapse.Panel header="Show print preview" key="1">
+            <GeneratePdf
+              print={print}
+              data={[
+                {
+                  ...formData,
+                  medicines: medicines,
+                  date: dayjs().format("MMMM DD YYYY HH:mm A"),
+                },
+              ]}
+            />
+          </Collapse.Panel>
+        </Collapse>
       </div>
     </React.Fragment>
   );

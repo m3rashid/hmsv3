@@ -1,42 +1,34 @@
-import { Button, Card, Col, Row, Space, Table, Typography } from "antd";
-import React, { useRef } from "react";
-import { useReactToPrint } from "react-to-print";
 import { useRecoilValue } from "recoil";
+import { useEffect, useRef } from "react";
+import { useReactToPrint } from "react-to-print";
+import { Col, Row, Space, Table, Typography } from "antd";
+
 import { authState } from "../atoms/auth";
 import { quantityCalculator } from "./Doctor/quantityCalculator";
 
 const GeneratePdf = (props) => {
   const parchiData = props.data[0];
-  // console.log(parchiData?.medicines);
   const { user } = useRecoilValue(authState);
-
-  console.log(user);
   const componentRef = useRef();
-  console.log(props.data);
-  const handlePrint = useReactToPrint({
+
+  const printPdf = useReactToPrint({
     content: () => componentRef.current,
   });
 
+  useEffect(() => {
+    if (!props.print) return;
+    printPdf();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.print]);
+
+  const normalTextStyles = { fontWeight: "normal", fontSize: "16px" };
+
   return (
     <>
-      <div
-        className="print__section"
-        style={{
-          marginTop: "20px",
-        }}
-      >
+      <div className="print__section" style={{ marginTop: "20px" }}>
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <Button
-                type="primary"
-                onClick={handlePrint}
-                className="print__button"
-                style={{ margin: "10px" }}
-              >
-                {" "}
-                Print{" "}
-              </Button>
               <div
                 ref={componentRef}
                 className="card"
@@ -84,12 +76,7 @@ const GeneratePdf = (props) => {
                     fontWeight: "lighter",
                   }}
                 >
-                  <span
-                    style={{
-                      fontWeight: "normal",
-                      fontSize: "16px",
-                    }}
-                  >
+                  <span style={normalTextStyles}>
                     डॉक्टर एम.ए अंसारी स्वास्थ्य केंद्र
                   </span>
                 </div>
@@ -100,12 +87,7 @@ const GeneratePdf = (props) => {
                     fontWeight: "lighter",
                   }}
                 >
-                  <span
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: "16px",
-                    }}
-                  >
+                  <span style={normalTextStyles}>
                     Jamia Millia Islamia (Accredited "A" Grade by NAAC)
                   </span>
                 </div>
@@ -116,12 +98,7 @@ const GeneratePdf = (props) => {
                     fontWeight: "lighter",
                   }}
                 >
-                  <span
-                    style={{
-                      fontWeight: "normal",
-                      fontSize: "16px",
-                    }}
-                  >
+                  <span style={normalTextStyles}>
                     जामिया मिलिया इस्लामिया (NAAC द्वारा मान्यता प्राप्त "ए"
                     ग्रेड)
                   </span>
@@ -133,12 +110,7 @@ const GeneratePdf = (props) => {
                     fontWeight: "lighter",
                   }}
                 >
-                  <span
-                    style={{
-                      fontWeight: "normal",
-                      fontSize: "12px",
-                    }}
-                  >
+                  <span style={{ fontWeight: "normal", fontSize: "12px" }}>
                     (A Central University by an Act of Parliament)( संसद के एक
                     अधिनियम द्वारा एक केंद्रीय विश्वविद्यालय)
                   </span>
@@ -150,12 +122,7 @@ const GeneratePdf = (props) => {
                     fontWeight: "lighter",
                   }}
                 >
-                  <span
-                    style={{
-                      fontWeight: "normal",
-                      fontSize: "16px",
-                    }}
-                  >
+                  <span style={normalTextStyles}>
                     Maulana Mohammad Ali Jauhar Marg,New Delhi -110025 ,Ph
                     2698717 Ext. 1781,26984625
                   </span>
@@ -167,12 +134,7 @@ const GeneratePdf = (props) => {
                     fontWeight: "lighter",
                   }}
                 >
-                  <span
-                    style={{
-                      fontWeight: "normal",
-                      fontSize: "16px",
-                    }}
-                  >
+                  <span style={normalTextStyles}>
                     मौलाना मोहम्मद अली जौहर मार्ग, नई दिल्ली -110025, फोन
                     2698717 एक्सटेंशन 1781,26984625
                   </span>
@@ -230,7 +192,6 @@ const GeneratePdf = (props) => {
                     marginTop: "20px",
                     marginLeft: "50px",
                     fontSize: "20px",
-                    // fontWeight: "bold",
                   }}
                 >
                   <Table
@@ -259,10 +220,7 @@ const GeneratePdf = (props) => {
                           </span>
                         ),
                       },
-                      {
-                        title: "Description",
-                        dataIndex: "description",
-                      },
+                      { title: "Description", dataIndex: "description" },
                     ]}
                     dataSource={parchiData?.medicines}
                     pagination={false}
