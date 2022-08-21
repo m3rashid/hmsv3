@@ -7,7 +7,6 @@ import { useDebounce } from "use-debounce";
 import styles from "./medicineinput.module.css";
 import { inventoryState } from "../../atoms/inventory";
 import { instance } from "../../api/instance";
-
 function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
   const dosages = [
     { value: "OD", label: "Once a day" },
