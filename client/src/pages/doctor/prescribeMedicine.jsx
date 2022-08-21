@@ -3,28 +3,19 @@ import moment from "moment";
 import {
   Form,
   Button,
-  // Radio,
   Input,
-  // InputNumber,
-  message,
   Select,
   Space,
   Typography,
   Row,
   Col,
   Card,
-  Divider,
-  // AutoComplete,
 } from "antd";
-// import { socket } from "../../api/socket";
-import FixedUseContext from "../../Hooks/FixedUseContext";
-import { DoctorContext } from ".";
 import { socket } from "../../api/socket";
 import MedicineInput from "../../components/Doctor/MedicineInput";
 import { useRecoilValue } from "recoil";
 import { doctorState } from "../../atoms/doctor";
 import Header from "../../components/Header";
-import useFetchSockets from "../../components/Sockets/useFetchSockets";
 import dayjs from "dayjs";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { quantityCalculator } from "../../components/Doctor/quantityCalculator";
@@ -41,6 +32,8 @@ const PrescriptionForm = () => {
   const [formData, setFormData] = useState({});
   const [medicines, setMedicines] = useState([]);
   const [prescription, setPrescription] = useState([]);
+  const [referToAnotherDoctor, setReferToAnotherDoctor] = useState(false);
+
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
@@ -57,7 +50,6 @@ const PrescriptionForm = () => {
 
   const formSubmitHandler = (values) => {
     if (loading) return;
-
     const data = {
       appointment: formData.appointmentInfo.id,
       symptoms: values.symptoms,
@@ -118,6 +110,7 @@ const PrescriptionForm = () => {
         form.setFieldValue("appointment", "");
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [doctorData.appointments, form]
   );
 
@@ -130,16 +123,16 @@ const PrescriptionForm = () => {
 
   console.log(form.getFieldsValue(true));
 
+  const handleReferPatientModalShow = async () => {
+    setReferToAnotherDoctor(true);
+  };
+
   return (
     <React.Fragment>
       <div>
         <Header />
       </div>
-      <div
-        style={{
-          padding: 10,
-        }}
-      >
+      <div style={{ padding: 10 }}>
         <Row>
           <Col span={12}>
             <Typography.Title level={4}>Create Prescription</Typography.Title>
@@ -190,12 +183,7 @@ const PrescriptionForm = () => {
                 />
               </Form.Item>
 
-              <Space
-                direction="vertical"
-                style={{
-                  width: "100%",
-                }}
-              >
+              <Space direction="vertical" style={{ width: "100%" }}>
                 {medicines.map((medicine, index) => (
                   <React.Fragment>
                     <MedicineInput
@@ -211,10 +199,7 @@ const PrescriptionForm = () => {
                   type="primary"
                   htmlType="button"
                   onClick={addEmptyMedicine}
-                  style={{
-                    marginTop: 10,
-                    marginBottom: 10,
-                  }}
+                  style={{ marginTop: 10, marginBottom: 10 }}
                 >
                   + Add New Medicines
                 </Button>
@@ -240,18 +225,11 @@ const PrescriptionForm = () => {
               </Form.Item>
             </Form>
           </Col>
-          <Col
-            span={12}
-            style={{
-              padding: "10px",
-            }}
-          >
+          <Col span={12} style={{ padding: "10px" }}>
             <Typography.Title level={4}>Prescription Preview</Typography.Title>
             <Card
               title="Appointment Details"
-              style={{
-                background: "transparent",
-              }}
+              style={{ background: "transparent" }}
             >
               <Space direction="vertical">
                 <Typography.Text>
@@ -282,27 +260,16 @@ const PrescriptionForm = () => {
               <Typography.Text>{formData?.symptoms}</Typography.Text>
             </Space>
 
-            <Card
-              title="Medicines"
-              style={{
-                background: "transparent",
-              }}
-            >
+            <Card title="Medicines" style={{ background: "transparent" }}>
               <Space direction="vertical" size={"large"}>
                 {medicines.map((medicine, index) => (
                   <Space
                     direction="vertical"
                     key={index}
-                    style={{
-                      marginLeft: 20,
-                    }}
+                    style={{ marginLeft: 20 }}
                   >
                     <Space>
-                      <Typography.Text
-                        style={{
-                          fontWeight: "bold",
-                        }}
-                      >
+                      <Typography.Text style={{ fontWeight: "bold" }}>
                         {medicine?.medicine?.name}
                       </Typography.Text>
                       <Typography.Text
@@ -317,12 +284,7 @@ const PrescriptionForm = () => {
                         # {medicine?.medicine?.id}
                       </Typography.Text>
                     </Space>
-                    <Space
-                      direction="vertical"
-                      style={{
-                        padding: "10px",
-                      }}
-                    >
+                    <Space direction="vertical" style={{ padding: "10px" }}>
                       <Typography.Text>
                         Duration : <strong>{medicine?.duration} Days</strong>
                       </Typography.Text>
@@ -346,14 +308,30 @@ const PrescriptionForm = () => {
             </Card>
             <Card
               title="Custom Medicines"
-              style={{
-                background: "transparent",
-              }}
+              style={{ background: "transparent" }}
             >
               {formData?.CustomMedicines}
             </Card>
           </Col>
         </Row>
+
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Button
+            type="primary"
+            style={{ background: "#ff0000", border: "none" }}
+            onClick={handleReferPatientModalShow}
+          >
+            Refer Patient to another doctor
+          </Button>
+        </div>
+
         <GeneratePdf
           data={[
             {

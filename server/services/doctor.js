@@ -112,7 +112,7 @@ const createPrescriptionService = async ({
 
               duration: parseInt(medicine.duration),
               dosage: medicine.dosage,
-              ...(medicine.medType === "SYRUP"
+              ...(medicine.type === "SYRUP"
                 ? {
                     quantityPerDose: parseInt(medicine.quantityPerDose),
                   }
@@ -187,9 +187,11 @@ const updateAppointmentService = async ({
   };
 };
 module.exports = {
-  getDoctorAppointmentsService,
-  getDoctorPatientsService,
   searchDoctorsService,
+  getDoctorPatientsService,
+  updateAppointmentService,
   createPrescriptionService,
   updateAppointmentService,
+  getDoctorAppointmentsService,
+  referAnotherDoctorAppointmentService,
 };

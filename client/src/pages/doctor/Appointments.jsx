@@ -1,8 +1,3 @@
-import React, { useEffect, useState } from "react";
-import { socket } from "../../api/socket";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { authState } from "../../atoms/auth";
-import { doctorState } from "../../atoms/doctor";
 import {
   Button,
   Divider,
@@ -13,13 +8,17 @@ import {
   Popconfirm,
   Tabs,
 } from "antd";
-import Header from "../../components/Header";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
-const { TabPane } = Tabs;
+import React, { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 
-// import { useQuery } from "react-query";
-// import { instance } from "../../../api/instance";
+import { socket } from "../../api/socket";
+import Header from "../../components/Header";
+import { authState } from "../../atoms/auth";
+import { doctorState } from "../../atoms/doctor";
+
+const { TabPane } = Tabs;
 
 function DoctorAppointments() {
   // const [loading, setLoading] = useState(true);

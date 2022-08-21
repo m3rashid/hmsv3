@@ -5,6 +5,7 @@ const {
   getDoctorPatientsService,
   searchDoctorsService,
   createPrescriptionByDoctorService,
+  referAnotherDoctorAppointmentService,
 } = require("../services/doctor.js");
 const { getAppointmentByIdService } = require("../services/reception.js");
 const prisma = require("../utils/prisma");
@@ -124,11 +125,31 @@ const createPrescriptionByDoctor = async (req, res) => {
     });
   }
 };
+
+const referAnotherDoctor = async (req, res) => {
+  try {
+    const appointment = await referAnotherDoctorAppointmentService({
+      patientId: req.body.patientId,
+      prevDoctorId: req.body.prevDoctorId,
+      nextDoctorId: req.body.nextDoctorId,
+      date: req.body.date,
+      remarks: req.body.remarks,
+    });
+    return res.status(200).json({ appointment });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      message: err.message || "Internal Server Error",
+    });
+  }
+};
+
 module.exports = {
-  getDoctorAppointments,
-  getDoctorPatients,
-  getAppointmentById,
-  searchDoctors,
   FillDummy,
+  searchDoctors,
+  getDoctorPatients,
+  referAnotherDoctor,
+  getAppointmentById,
+  getDoctorAppointments,
   createPrescriptionByDoctor,
 };
