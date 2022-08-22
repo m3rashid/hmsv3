@@ -23,18 +23,19 @@ const keys = JSON.parse(fs.readFileSync(__dirname + "/utils/keys/keys.json"));
 const corsOrigin =
   process.env.NODE_ENV === "production"
     ? ["https://admin.socket.io", "https://ansarihms.surge.sh"]
-    : [
-        "https://admin.socket.io",
-        "http://localhost:3000",
-        "http://192.168.156.113:3000",
-      ];
+    : // [
+      // "https://admin.socket.io",
+      // "http://localhost:3000",
+      // "http://10.31.5.172:3000",
+      "*";
+// ];
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: corsOrigin,
-    methods: ["GET", "POST", "HEAD", "OPTIONS"],
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });

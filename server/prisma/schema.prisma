@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "cockroachdb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -70,7 +70,7 @@ enum TestType {
 }
 
 model Auth {
-  id          Int      @id @default(sequence())
+  id          Int      @id @default(autoincrement())
   name        String
   email       String   @unique
   password    String
@@ -80,7 +80,7 @@ model Auth {
 }
 
 model Profile {
-  id             Int           @id @default(sequence())
+  id             Int           @id @default(autoincrement())
   designation    String?
   contact        String?
   address        String?
@@ -100,7 +100,7 @@ model Profile {
 }
 
 model Patient {
-  id          Int           @id @default(sequence())
+  id          Int           @id @default(autoincrement())
   name        String
   age         Int
   sex         Sex
@@ -115,7 +115,7 @@ model Patient {
 }
 
 model Appointment {
-  id           Int            @id @default(sequence())
+  id           Int            @id @default(autoincrement())
   date         DateTime       @default(now())
   refered_by   String?
   Prescription Prescription[]
@@ -130,7 +130,7 @@ model Appointment {
 }
 
 model Prescription {
-  id              Int                  @id @default(sequence())
+  id              Int                  @id @default(autoincrement())
   symptoms        String
   diagnosis       String? // prescription
   CustomMedicines String?
@@ -145,7 +145,7 @@ model Prescription {
 }
 
 model PrescribedMedicine {
-  id              Int           @id @default(sequence())
+  id              Int           @id @default(autoincrement())
   duration        Int
   dosage          Dosage?
   quantityPerDose String? // only for  syrups
@@ -157,7 +157,7 @@ model PrescribedMedicine {
 }
 
 model Medicine {
-  id                 Int                  @id @default(sequence())
+  id                 Int                  @id @default(autoincrement())
   name               String
   quantity           Int
   batchNumber        String
@@ -170,7 +170,7 @@ model Medicine {
 }
 
 model NonMedicine {
-  id          Int      @id @default(sequence())
+  id          Int      @id @default(autoincrement())
   name        String
   quantity    Int
   batchNumber String
@@ -180,7 +180,7 @@ model NonMedicine {
 }
 
 model OtherAssets {
-  id        Int      @id @default(sequence())
+  id        Int      @id @default(autoincrement())
   name      String
   quantity  Int
   createdAt DateTime @default(now())
@@ -188,7 +188,7 @@ model OtherAssets {
 }
 
 model Test {
-  id             Int          @id @default(sequence())
+  id             Int          @id @default(autoincrement())
   name           String
   description    String?
   prescriptionId Int
