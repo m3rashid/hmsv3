@@ -18,6 +18,7 @@ import DisplayMedicine from "./helpers/DisplayMedicine";
 import GeneratePdf from "../../components/generatePdf.jsx";
 import usePrescribeMedicines from "./helpers/prescribeMeds.hook";
 import MedicineInput from "../../components/Doctor/MedicineInput";
+import ReferPatientModal from "./helpers/referPatientModal";
 
 const PrescriptionForm = () => {
   const {
@@ -27,7 +28,7 @@ const PrescriptionForm = () => {
       medicines,
       doctorData,
       appointmentId,
-      // referToAnotherDoctor,
+      referToAnotherDoctor,
       printContainerRef,
       navigate,
       form,
@@ -39,7 +40,7 @@ const PrescriptionForm = () => {
       setLoading,
       setFormData,
       setMedicines,
-      // setReferToAnotherDoctor,
+      setReferToAnotherDoctor,
       formSubmitHandler,
       addEmptyMedicine,
       deleteMedicine,
@@ -177,27 +178,37 @@ const PrescriptionForm = () => {
           </Col>
         </Row>
 
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "30px",
-            justifyContent: "center",
-            gap: "50px",
-          }}
-        >
-          <Button
-            type="primary"
-            style={{ background: "#ff0000", border: "none" }}
-            onClick={handleReferPatientModalShow}
+        {formData.appointmentInfo && (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "30px",
+              justifyContent: "center",
+              gap: "50px",
+            }}
           >
-            Refer Patient to another doctor
-          </Button>
-          <Button type="primary" className="print__button" onClick={printPdf}>
-            Print Prescription
-          </Button>
-        </div>
+            <Button type="primary" className="print__button" onClick={printPdf}>
+              Print Prescription
+            </Button>
+
+            <Button
+              type="primary"
+              style={{ background: "#ff0000", border: "none" }}
+              onClick={handleReferPatientModalShow}
+            >
+              Refer Patient to another doctor
+            </Button>
+          </div>
+        )}
+
+        {/* <ReferPatientModal
+          modalState={referToAnotherDoctor}
+          setModalState={setReferToAnotherDoctor}
+          patientId={formData.appointmentInfo.patientId}
+          doctorId={formData.appointmentInfo.doctorId}
+        /> */}
 
         <Modal
           visible={CreatePrescriptionModalVisible}
@@ -212,16 +223,18 @@ const PrescriptionForm = () => {
           <DisplayMedicine formData={formData} medicines={medicines} />
         </Modal>
 
-        <GeneratePdf
-          printContainerRef={printContainerRef}
-          data={[
-            {
-              ...formData,
-              medicines: medicines,
-              date: dayjs().format("MMMM DD YYYY HH:mm A"),
-            },
-          ]}
-        />
+        {formData.appointmentInfo && (
+          <GeneratePdf
+            printContainerRef={printContainerRef}
+            data={[
+              {
+                ...formData,
+                medicines: medicines,
+                date: dayjs().format("MMMM DD YYYY HH:mm A"),
+              },
+            ]}
+          />
+        )}
       </div>
     </React.Fragment>
   );
