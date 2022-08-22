@@ -1,5 +1,3 @@
-import React, { useCallback, useEffect, useState } from "react";
-import moment from "moment";
 import {
   Form,
   Button,
@@ -9,35 +7,35 @@ import {
   Typography,
   Row,
   Col,
-  Collapse,
   Modal,
 } from "antd";
+import dayjs from "dayjs";
+import React, { useEffect } from "react";
+
 import { socket } from "../../api/socket";
 import Header from "../../components/Header";
+import DisplayMedicine from "./helpers/DisplayMedicine";
 import GeneratePdf from "../../components/generatePdf.jsx";
+import usePrescribeMedicines from "./helpers/prescribeMeds.hook";
 import MedicineInput from "../../components/Doctor/MedicineInput";
 
-import usePrescribeMedicines from "./helpers/prescribeMeds.hook";
-import SingleMedicine from "./helpers/singleMedicine";
-import DisplayMedicine from "./helpers/DisplayMedicine";
-import dayjs from "dayjs";
 const PrescriptionForm = () => {
   const {
     state: {
       loading,
-      print,
       formData,
       medicines,
       doctorData,
       appointmentId,
       // referToAnotherDoctor,
+      printContainerRef,
       navigate,
       form,
       PrintButtonRef,
       CreatePrescriptionModalVisible,
     },
     actions: {
-      setPrint,
+      printPdf,
       setLoading,
       setFormData,
       setMedicines,
@@ -174,12 +172,7 @@ const PrescriptionForm = () => {
               </Form.Item>
             </Form>
           </Col>
-          <Col
-            span={12}
-            style={{
-              padding: "10px",
-            }}
-          >
+          <Col span={12} style={{ padding: "10px" }}>
             <DisplayMedicine formData={formData} medicines={medicines} />
           </Col>
         </Row>
@@ -196,23 +189,16 @@ const PrescriptionForm = () => {
         >
           <Button
             type="primary"
-            onClick={() => setPrint(true)}
-            className="print__button"
-            ref={PrintButtonRef}
-          >
-            Print Prescription
-          </Button>
-
-          <Button
-            type="primary"
             style={{ background: "#ff0000", border: "none" }}
             onClick={handleReferPatientModalShow}
           >
             Refer Patient to another doctor
           </Button>
+          <Button type="primary" className="print__button" onClick={printPdf}>
+            Print Prescription
+          </Button>
         </div>
 
-        {/* Alert on Submit Modal */}
         <Modal
           visible={CreatePrescriptionModalVisible}
           onOk={() => {
@@ -226,20 +212,16 @@ const PrescriptionForm = () => {
           <DisplayMedicine formData={formData} medicines={medicines} />
         </Modal>
 
-        <Collapse bordered={false} style={{ padding: 0, margin: 0 }}>
-          <Collapse.Panel header="Show print preview" key="1">
-            <GeneratePdf
-              print={print}
-              data={[
-                {
-                  ...formData,
-                  medicines: medicines,
-                  date: dayjs().format("MMMM DD YYYY HH:mm A"),
-                },
-              ]}
-            />
-          </Collapse.Panel>
-        </Collapse>
+        <GeneratePdf
+          printContainerRef={printContainerRef}
+          data={[
+            {
+              ...formData,
+              medicines: medicines,
+              date: dayjs().format("MMMM DD YYYY HH:mm A"),
+            },
+          ]}
+        />
       </div>
     </React.Fragment>
   );

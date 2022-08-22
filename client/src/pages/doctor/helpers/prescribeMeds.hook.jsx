@@ -1,11 +1,12 @@
 import dayjs from "dayjs";
 import { Form } from "antd";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { useCallback, useRef, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { doctorState } from "../../../atoms/doctor";
 import { Loadingatom } from "../../../atoms/loading";
+import { useReactToPrint } from "react-to-print";
 
 const usePrescribeMedicines = (socket) => {
   const [form] = Form.useForm();
@@ -17,12 +18,9 @@ const usePrescribeMedicines = (socket) => {
   const doctorData = useRecoilValue(doctorState);
   const [formData, setFormData] = useState({});
   const [medicines, setMedicines] = useState([]);
-  const [print, setPrint] = useState(false);
   const [referToAnotherDoctor, setReferToAnotherDoctor] = useState(false);
-  const PrintButtonRef = useRef(null);
   const [CreatePrescriptionModalVisible, setCreatePrescriptionModalVisible] =
     useState(false);
-  // const [prescription, setPrescription] = useState([]);
 
   const formSubmitHandler = (values) => {
     if (loading?.PrescribeMedicines) return;
@@ -96,6 +94,11 @@ const usePrescribeMedicines = (socket) => {
     setReferToAnotherDoctor(true);
   };
 
+  const printContainerRef = useRef(null);
+  const printPdf = useReactToPrint({
+    content: () => printContainerRef.current,
+  });
+
   return {
     state: {
       loading,
@@ -106,12 +109,11 @@ const usePrescribeMedicines = (socket) => {
       referToAnotherDoctor,
       navigate,
       form,
-      print,
-      PrintButtonRef,
+      printContainerRef,
       CreatePrescriptionModalVisible,
     },
     actions: {
-      setPrint,
+      printPdf,
       setLoading,
       setFormData,
       setMedicines,

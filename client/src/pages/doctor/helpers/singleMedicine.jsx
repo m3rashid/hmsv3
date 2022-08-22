@@ -1,7 +1,5 @@
+import React from "react";
 import { Alert, Space, Typography } from "antd";
-import React, { useEffect } from "react";
-
-import { quantityCalculator } from "../../../components/Doctor/quantityCalculator";
 
 const SingleMedicine = ({ index, medicine }) => {
   return (
