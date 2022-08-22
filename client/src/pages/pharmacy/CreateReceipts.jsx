@@ -1,11 +1,10 @@
-import {
-  Button, Form, InputNumber, message, notification, Select, Space, Spin
-} from "antd";
+import dayjs from "dayjs";
+import { useRecoilValue } from "recoil";
+import { Button, Form, Select, Spin } from "antd";
 import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { useRecoilValue } from "recoil";
+
 import { pharmacyState } from "../../atoms/pharmacy";
-import dayjs from "dayjs";
 import { instance } from "../../api/instance";
 import MedicineTable from "../../components/Pharmacy/MedicineTable";
 import { socket } from "../../api/socket";
@@ -30,39 +29,46 @@ function CreateReceipts() {
 
   const prescriptionId = searchParams.get("prescriptionId");
 
-
-  const handlePrescriptionSelect = useCallback(async (prescription_id) => {
-    prescription_id = parseInt(prescription_id);
-    const prescription = pharmacyData.prescriptions.find(
-      (prescription) => prescription.id === prescription_id
-    );
-    console.log(prescription);
-    if (prescription) {
-      setSelectedPrescriptionData(prev => ({ ...prev, loading: true }))
-      setSelectedPrescription(prescription);
-      form.setFieldValue(
-        "prescription",
-        `${prescription.appointment.patient.name}, ${dayjs(
-          prescription.datePrescribed
-        ).format("DD MMM, hh:mm A")}`
+  const handlePrescriptionSelect = useCallback(
+    async (prescription_id) => {
+      prescription_id = parseInt(prescription_id);
+      const prescription = pharmacyData.prescriptions.find(
+        (prescription) => prescription.id === prescription_id
       );
-      const { data } = await instance.get(`/pharmacy/prescriptions/${prescription.id}`)
-      // console.log(data);
-      setSelectedPrescriptionData(prev => ({ ...prev, loading: false, data: data.prescription }))
-
-    }
-  }, [form, pharmacyData.prescriptions])
-
-
+      console.log(prescription);
+      if (prescription) {
+        setSelectedPrescriptionData((prev) => ({ ...prev, loading: true }));
+        setSelectedPrescription(prescription);
+        form.setFieldValue(
+          "prescription",
+          `${prescription.appointment.patient.name}, ${dayjs(
+            prescription.datePrescribed
+          ).format("DD MMM, hh:mm A")}`
+        );
+        const { data } = await instance.get(
+          `/pharmacy/prescriptions/${prescription.id}`
+        );
+        // console.log(data);
+        setSelectedPrescriptionData((prev) => ({
+          ...prev,
+          loading: false,
+          data: data.prescription,
+        }));
+      }
+    },
+    [form, pharmacyData.prescriptions]
+  );
 
   useEffect(() => {
     console.log(prescriptionId);
     if (prescriptionId !== null && pharmacyData.prescriptions.length > 0) {
-
       handlePrescriptionSelect(prescriptionId);
     }
-  }, [handlePrescriptionSelect, pharmacyData.prescriptions.length, prescriptionId])
-
+  }, [
+    handlePrescriptionSelect,
+    pharmacyData.prescriptions.length,
+    prescriptionId,
+  ]);
 
   const [total, setTotal] = useState({});
   const formSubmitHandler = async (values) => {
@@ -75,18 +81,16 @@ function CreateReceipts() {
     socket.emit("dispense-prescription", {
       prescriptionId: selectedPrescription.id,
       medicines: selectedMedicines,
-    })
+    });
 
     setTotal({});
     setSelectedPrescription(null);
     setSelectedPrescriptionData({ data: [] });
     form.resetFields();
-    navigate('/pharmacy/prescriptions');
+    navigate("/pharmacy/prescriptions");
   };
 
-  function sum(arr) {
-    return arr.reduce((x, y) => x + y, 0);
-  }
+  const sum = (arr) => arr.reduce((x, y) => x + y, 0);
 
   return (
     <div>
@@ -103,36 +107,47 @@ function CreateReceipts() {
           rules={[{ required: true, message: "Please Enter patient name!" }]}
         >
           <Select
-            style={{
-              width: "100%",
-            }}
+            style={{ width: "100%" }}
             placeholder="select an Prescription"
             onSelect={(id) => {
               handlePrescriptionSelect(id);
             }}
             optionLabelProp="Appointment"
           >
-            {pharmacyData.prescriptions?.map((presp) => (
-              <Option key={presp.id} value={presp.id}>
-                <span>
-                  {presp.appointment.patient.name} - {dayjs(presp.datePrescribed).format("DD MMM YY,  HH:mm A")}
-                </span>
-              </Option>
-            ))}
+            {pharmacyData.prescriptions
+              ?.filter((pr) => pr.pending)
+              .map((presp) => {
+                return (
+                  <Option key={presp.id} value={presp.id}>
+                    <span>
+                      {presp.appointment.patient.name} -{" "}
+                      {dayjs(presp.datePrescribed).format(
+                        "DD MMM YY,  HH:mm A"
+                      )}
+                    </span>
+                  </Option>
+                );
+              })}
           </Select>
         </Form.Item>
 
         <Spin spinning={selectedPrescriptionData.loading}>
-          <MedicineTable medicines={selectedPrescriptionData.data?.medicines || []} setSelectedMedicines={setSelectedMedicines} selectedMedicine={selectedMedicines} />
+          <MedicineTable
+            medicines={selectedPrescriptionData.data?.medicines || []}
+            setSelectedMedicines={setSelectedMedicines}
+            selectedMedicine={selectedMedicines}
+          />
           <Form.Item wrapperCol={{ offset: 12 }}>
-            <Button loading={loading} type="primary" htmlType="submit">
-              Save
+            <Button
+              style={{ marginTop: "20px" }}
+              loading={loading}
+              type="primary"
+              htmlType="submit"
+            >
+              Confirm Transaction
             </Button>
           </Form.Item>
         </Spin>
-
-
-
       </Form>
     </div>
   );

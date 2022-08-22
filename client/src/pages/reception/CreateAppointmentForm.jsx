@@ -2,13 +2,10 @@ import React, { useEffect, useState } from "react";
 import {
   Form,
   Button,
-  // Input,
   AutoComplete,
   DatePicker,
   message,
   Typography,
-  // Space,
-  // Grid,
   Row,
   Col,
   Divider,
@@ -64,6 +61,7 @@ const CreateAppointmentForm = () => {
     setLoading(true);
     socket.emit("create-appointment", data);
   };
+
   useEffect(() => {
     instance.get("/reception/doctors").then((res) => {
       console.log(res.data);
@@ -175,11 +173,11 @@ const CreateAppointmentForm = () => {
                 <Row>
                   <Space>
                     <Typography.Text>{doctor.name}</Typography.Text>
-                    <Typography.Text type="danger">
-                      {"("}
-                      {doctor?.profile?.designation}
-                      {")"}
-                    </Typography.Text>
+                    {doctor.profile.designation && (
+                      <Typography.Text type="danger">
+                        {`${"("}${doctor.profile.designation}${")"}`}
+                      </Typography.Text>
+                    )}
                     <Typography.Text>{doctor?.profile?.sex}</Typography.Text>
                   </Space>
                 </Row>
@@ -211,9 +209,7 @@ const CreateAppointmentForm = () => {
             labelAlign="left"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
-            style={{
-              padding: 20,
-            }}
+            style={{ padding: 20 }}
           >
             <Typography.Title
               level={4}
@@ -260,18 +256,14 @@ const CreateAppointmentForm = () => {
                       ...FormSelected,
                       patient: null,
                     });
-                    form.setFieldsValue({
-                      patient: null,
-                    });
+                    form.setFieldsValue({ patient: null });
                     return;
                   } else {
                     setFormSelected({
                       ...FormSelected,
                       patient: patientData,
                     });
-                    form.setFieldsValue({
-                      patient: patientData.value,
-                    });
+                    form.setFieldsValue({ patient: patientData.value });
                   }
                 }}
               />
@@ -357,12 +349,7 @@ const CreateAppointmentForm = () => {
             </Form.Item>
           </Form>
         </Col>
-        <Col
-          span={12}
-          style={{
-            paddingTop: 20,
-          }}
-        >
+        <Col span={12} style={{ paddingTop: 20 }}>
           <Typography.Title
             level={4}
             style={{ marginTop: 10, paddingLeft: 25 }}
@@ -380,9 +367,7 @@ const CreateAppointmentForm = () => {
             <Col span={20}>
               <Typography.Text
                 level={4}
-                style={{
-                  marginLeft: 10,
-                }}
+                style={{ marginLeft: 10 }}
                 type="danger"
               >
                 {form.getFieldValue("datetime")?.format("YYYY-MM-DD HH:mm A") ||
@@ -390,18 +375,8 @@ const CreateAppointmentForm = () => {
               </Typography.Text>
             </Col>
           </Row>
-          <Space
-            direction="vertical"
-            style={{
-              width: "100%",
-            }}
-          >
-            <Card
-              title="Patient Details"
-              style={{
-                background: "transparent",
-              }}
-            >
+          <Space direction="vertical" style={{ width: "100%" }}>
+            <Card title="Patient Details" style={{ background: "transparent" }}>
               {FormSelected.patient ? (
                 <Space direction="vertical">
                   <Typography.Text type="danger">

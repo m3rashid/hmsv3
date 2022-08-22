@@ -20,12 +20,14 @@ const { router: PharmacyRoutes } = require("./routes/pharmacy.routes.js");
 
 const keys = JSON.parse(fs.readFileSync(__dirname + "/utils/keys/keys.json"));
 
-const corsOrigin = [
-  "https://admin.socket.io",
+const corsOrigin =
   process.env.NODE_ENV === "production"
-    ? "https://ansarihms.surge.sh"
-    : "http://localhost:3000",
-];
+    ? ["https://admin.socket.io", "https://ansarihms.surge.sh"]
+    : [
+        "https://admin.socket.io",
+        "http://localhost:3000",
+        "http://192.168.156.113:3000",
+      ];
 
 const app = express();
 const server = http.createServer(app);

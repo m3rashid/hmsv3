@@ -1,4 +1,4 @@
-import { Space, Typography, Col, Card } from "antd";
+import { Space, Typography, Card } from "antd";
 import React from "react";
 import dayjs from "dayjs";
 import SingleMedicine from "./singleMedicine";

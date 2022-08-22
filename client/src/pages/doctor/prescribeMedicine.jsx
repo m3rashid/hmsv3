@@ -102,14 +102,21 @@ const PrescriptionForm = () => {
                   }}
                   optionLabelProp="Appointment"
                 >
-                  {doctorData.appointments.map((appointment) => (
-                    <Select.Option key={appointment.id} value={appointment.id}>
-                      <span>
-                        {appointment.patient?.name} -{" "}
-                        {dayjs(appointment.date).format("MMMM DD YYYY HH:mm A")}
-                      </span>
-                    </Select.Option>
-                  ))}
+                  {doctorData.appointments
+                    .filter((apt) => apt.pending)
+                    .map((appointment) => (
+                      <Select.Option
+                        key={appointment.id}
+                        value={appointment.id}
+                      >
+                        <span>
+                          {appointment.patient?.name} -{" "}
+                          {dayjs(appointment.date).format(
+                            "MMMM DD YYYY HH:mm A"
+                          )}
+                        </span>
+                      </Select.Option>
+                    ))}
                 </Select>
               </Form.Item>
               <Form.Item label="Symptoms" name="symptoms">

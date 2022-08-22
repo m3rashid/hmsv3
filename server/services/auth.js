@@ -19,10 +19,7 @@ const addActions = (role) => {
       allowedActions = [permissions.ADMIN];
       break;
     case "RECEPTIONIST":
-      allowedActions = [
-        permissions.RECEPTION_CREATE_PATIENT,
-        permissions.RECEPTION_ADD_APPOINTMENT,
-      ];
+      allowedActions = [permissions.RECEPTION_ADD_APPOINTMENT];
       break;
     case "PHARMACIST":
       allowedActions = [
@@ -41,6 +38,7 @@ const addActions = (role) => {
         permissions.DOCTOR_APPOINTMENTS,
         permissions.INVENTORY_VIEW,
         permissions.RECEPTION_ADD_APPOINTMENT,
+        permissions.RECEPTION_CREATE_PATIENT,
       ];
       break;
     case "OTHER":

@@ -7,6 +7,7 @@ import { useDebounce } from "use-debounce";
 import styles from "./medicineinput.module.css";
 import { inventoryState } from "../../atoms/inventory";
 import { instance } from "../../api/instance";
+
 function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
   const dosages = [
     { value: "OD", label: "Once a day" },
@@ -17,12 +18,14 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
     { value: "BW", label: "Twice a week" },
     { value: "TW", label: "Three times a week" },
   ];
+
   const medicineDB = useRecoilValue(inventoryState);
   const [medicineInfo, setMedicineInfo] = useState({
     available: true,
     quantityRequired: 0,
     medicine: {},
   });
+
   const [value] = useDebounce(medicine, 500);
 
   const handleChange = useCallback(
@@ -40,7 +43,7 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
   );
 
   const ValidateMedicine = useCallback(async () => {
-    console.log("value", value);
+    // console.log("value", value);
     if (value) {
       const data = {
         dosage: value.dosage.value,
@@ -56,7 +59,7 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
         data
       );
 
-      console.log("availabilityInfo", availabilityInfo);
+      // console.log("availabilityInfo", availabilityInfo);
       setMedicineInfo(availabilityInfo);
       handleChange(
         {
@@ -159,8 +162,7 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
             ))}
           </Select>
         </Space>
-        {
-          medicine?.medicine?.medType === 'SYRUP' &&
+        {medicine?.medicine?.medType === "SYRUP" && (
           <Space
             style={{
               width: "100%",
@@ -176,7 +178,7 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
               addonAfter={"ml"}
             />
           </Space>
-        }
+        )}
 
         <Space style={{ width: "100%" }}>
           <Typography>Duration : </Typography>

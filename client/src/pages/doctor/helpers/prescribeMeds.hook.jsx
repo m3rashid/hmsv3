@@ -23,7 +23,7 @@ const usePrescribeMedicines = (socket) => {
     useState(false);
 
   const formSubmitHandler = (values) => {
-    if (loading?.PrescribeMedicines) return;
+    // if (loading?.PrescribeMedicines) return;
     const data = {
       appointment: formData.appointmentInfo.id,
       symptoms: values.symptoms,
