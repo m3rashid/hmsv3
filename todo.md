@@ -39,8 +39,8 @@
 
 - Admin
 
-  - [ ] Update profile of users
-  - [ ] update password of users
+  - [x] Update profile of users
+  - [x] update password of users
 
 - Admin/Co-Admin
 
@@ -48,8 +48,8 @@
 
 - Inventory
   - [ ] no. of strips/bottles, tablets per strips (TPS)
-  - [ ] manufacturer (optional field)
-  - [ ] category (optional field)
+  - [x] manufacturer (optional field)
+  - [x] category (optional field)
   - [ ] view more
     - [x] Show Expiry date
     - [ ] group medicines by batch no. and expiry

@@ -110,6 +110,7 @@ const signupService = async ({
     category,
     origin,
   };
+
   console.log({
     email,
     password,
@@ -127,7 +128,7 @@ const signupService = async ({
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const profile = await prisma.profile.create({ data: profileData });
+  const profile = await prisma.profile.create({ data: { ...profileData } });
 
   const user = await prisma.Auth.create({
     data: {

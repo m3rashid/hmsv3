@@ -121,6 +121,7 @@ CREATE TABLE "Medicine" (
     "expiryDate" TEXT NOT NULL,
     "category" "Category" NOT NULL,
     "medType" "MedType" NOT NULL,
+    "manufacturer" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

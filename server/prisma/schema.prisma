@@ -164,6 +164,7 @@ model Medicine {
   expiryDate         String
   category           Category
   medType            MedType
+  manufacturer       String?
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @default(now())
   PrescribedMedicine PrescribedMedicine[]
