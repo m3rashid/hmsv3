@@ -6,7 +6,6 @@ import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 const { TabPane } = Tabs;
 
-
 function Prescriptions() {
   const pharmacyData = useRecoilValue(pharmacyState);
   const navigate = useNavigate();
@@ -29,10 +28,8 @@ function Prescriptions() {
       dataIndex: "appointment.patient.name",
       key: "appointment.patient.name",
       render: (text, record) => {
-        return (
-          <span>{record.appointment.patient.name}</span>
-        )
-      }
+        return <span>{record.appointment.patient.name}</span>;
+      },
       // sorter: (a, b) => a.patientname.localeCompare(b.patientname),
     },
     {
@@ -40,10 +37,8 @@ function Prescriptions() {
       dataIndex: "appointment.doctor.name",
       key: "appointment.doctor.name",
       render: (text, record) => {
-        return (
-          <span>{record.appointment.doctor?.Auth[0].name}</span>
-        )
-      }
+        return <span>{record.appointment.doctor?.Auth[0].name}</span>;
+      },
     },
     {
       title: "Date/Time",
@@ -51,9 +46,11 @@ function Prescriptions() {
       key: "datePrescribed",
       render: (text, record) => {
         return (
-          <span>{dayjs(record.datePrescribed).format("DD/MM/YYYY hh:mm a")}</span>
-        )
-      }
+          <span>
+            {dayjs(record.datePrescribed).format("DD/MM/YYYY hh:mm a")}
+          </span>
+        );
+      },
       // sorter: (a, b) =>
       //   new Date(a.date).getTime() - new Date(b.date).getTime(),
     },
@@ -80,21 +77,15 @@ function Prescriptions() {
             onConfirm={() => {
               navigate(`/pharmacy/receipt?prescriptionId=${record.id}`);
             }}
-
             okText="Yes"
             cancelText="Cancel"
           >
-
-            <Button>
-              {" "}
-              Precribe{" "}
-            </Button>
+            <Button> Precribe </Button>
           </Popconfirm>
         </Space>
       ),
     },
   ];
-
 
   const processedColumns = [
     {
@@ -102,10 +93,8 @@ function Prescriptions() {
       dataIndex: "appointment.patient.name",
       key: "appointment.patient.name",
       render: (text, record) => {
-        return (
-          <span>{record.appointment.patient.name}</span>
-        )
-      }
+        return <span>{record.appointment.patient.name}</span>;
+      },
       // sorter: (a, b) => a.patientname.localeCompare(b.patientname),
     },
     {
@@ -113,10 +102,8 @@ function Prescriptions() {
       dataIndex: "appointment.doctor.name",
       key: "appointment.doctor.name",
       render: (text, record) => {
-        return (
-          <span>{record.appointment.doctor?.Auth[0].name}</span>
-        )
-      }
+        return <span>{record.appointment.doctor?.Auth[0].name}</span>;
+      },
     },
     {
       title: "Date/Time",
@@ -124,9 +111,11 @@ function Prescriptions() {
       key: "datePrescribed",
       render: (text, record) => {
         return (
-          <span>{dayjs(record.datePrescribed).format("DD/MM/YYYY hh:mm a")}</span>
-        )
-      }
+          <span>
+            {dayjs(record.datePrescribed).format("DD/MM/YYYY hh:mm a")}
+          </span>
+        );
+      },
       // sorter: (a, b) =>
       //   new Date(a.date).getTime() - new Date(b.date).getTime(),
     },
@@ -147,32 +136,35 @@ function Prescriptions() {
           >
             View Prescription
           </Button>
-          <Button>
-            Show Receipt
-          </Button>
-
+          <Button>Show Receipt</Button>
         </Space>
       ),
     },
   ];
 
-
-
-
   return (
     <React.Fragment>
-
       <Tabs defaultActiveKey="1" centered>
         <TabPane tab="Pending" key="1">
-          <Table dataSource={pharmacyData.prescriptions.filter(prsp => prsp.pending)} columns={pendingColumns} />
+          <Table
+            dataSource={pharmacyData.prescriptions.filter(
+              (prsp) => prsp.pending
+            )}
+            columns={pendingColumns}
+          />
         </TabPane>
         <TabPane tab="Processed" key="2">
-          <Table dataSource={pharmacyData.prescriptions.filter(prsp => !prsp.pending)} columns={processedColumns} />
+          <Table
+            dataSource={pharmacyData.prescriptions.filter(
+              (prsp) => !prsp.pending
+            )}
+            columns={processedColumns}
+          />
         </TabPane>
       </Tabs>
 
       <Modal
-        visible={ModalVisible.visible}
+        visible={ModalVisible?.visible}
         onOk={ToggleModal}
         onCancel={ToggleModal}
         footer={[
@@ -184,7 +176,7 @@ function Prescriptions() {
         <div>
           <p>
             <strong>Date and Time: </strong>
-            {ModalVisible.data?.date}
+            {ModalVisible?.data?.date}
           </p>
           <div>
             <h4>
@@ -193,19 +185,19 @@ function Prescriptions() {
             <Space direction="vertical" size={3} style={{ padding: "10px" }}>
               <div>
                 <strong>Patient Name: </strong>
-                {ModalVisible.data?.patientname}
+                {ModalVisible?.data?.patientname}
               </div>
               <div>
                 <strong>Doctor Name: </strong>
-                {ModalVisible.data?.doctorname}
+                {ModalVisible?.data?.doctorname}
               </div>
               <div>
                 <strong>Medicines: </strong>
-                {ModalVisible.data?.medicine?.join(", ")}
+                {ModalVisible?.data?.medicine?.join(", ")}
               </div>
               <div>
                 <strong>Custom Medicines: </strong>
-                {ModalVisible.data?.CustomMedicines?.join(", ")}
+                {ModalVisible?.data?.CustomMedicines?.join(", ")}
               </div>
             </Space>
           </div>
