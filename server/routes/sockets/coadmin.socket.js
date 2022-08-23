@@ -6,42 +6,28 @@ const {
 const createPatient =
   (io, socket) =>
   async ({ name, age, sex, contact, address, email, jamiaId }) => {
-    try {
-      console.log(socket.user);
-      const { patient } = await createPatientService(
-        {
-          name,
-          age,
-          sex,
-          contact,
-          email,
-          address,
-          jamiaId,
-        },
-        socket?.user?.permissions
-      );
-      console.log(patient, "New patient created");
-      io.emit("new-patient-created", { data: patient });
-    } catch (err) {
-      console.log(err);
-      io.emit("error", {
-        message: err.message || "An error occured",
-      });
-    }
+    console.log(socket.user);
+    const { patient } = await createPatientService(
+      {
+        name,
+        age,
+        sex,
+        contact,
+        email,
+        address,
+        jamiaId,
+      },
+      socket?.user?.permissions
+    );
+    console.log(patient, "New patient created");
+    io.emit("new-patient-created", { data: patient });
   };
 
 const deletePatient =
   (io, socket) =>
   async ({ patientId }) => {
-    try {
-      await deletePatientService(patientId);
-      io.emit("patient-delete-success", { patientId });
-    } catch (err) {
-      console.log(err);
-      io.emit("error", {
-        message: err.message || "An error occured",
-      });
-    }
+    await deletePatientService(patientId);
+    io.emit("patient-delete-success", { patientId });
   };
 
 module.exports = {

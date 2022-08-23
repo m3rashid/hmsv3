@@ -139,28 +139,23 @@ const checkMedAvailabilityService = async ({
   dosage,
   duration,
 }) => {
-  try {
-    const medicine = await prisma.medicine.findFirst({
-      where: { id: medicineId },
-    });
-    const quantityRequired = quantityCalculator(duration, dosage);
+  const medicine = await prisma.medicine.findFirst({
+    where: { id: medicineId },
+  });
+  const quantityRequired = quantityCalculator(duration, dosage);
 
-    if (medicine.quantity >= quantityRequired) {
-      return {
-        available: true,
-        medicine,
-        quantityRequired,
-      };
-    } else {
-      return {
-        available: false,
-        medicine,
-        quantityRequired,
-      };
-    }
-  } catch (err) {
-    console.log(err);
-    throw new Error(err);
+  if (medicine.quantity >= quantityRequired) {
+    return {
+      available: true,
+      medicine,
+      quantityRequired,
+    };
+  } else {
+    return {
+      available: false,
+      medicine,
+      quantityRequired,
+    };
   }
 };
 
