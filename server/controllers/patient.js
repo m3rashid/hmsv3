@@ -3,7 +3,7 @@ const {
   deletePatientService,
   getPatientByIdService,
   searchPatientsService,
-} = require("../services/patient.js");
+} = require("../services");
 
 const createPatient = async (req, res) => {
   const { newPatient } = await createPatientService(...req.body);

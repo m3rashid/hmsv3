@@ -1,7 +1,7 @@
 const { faker } = require("@faker-js/faker");
+const { Category, MedType } = require("@prisma/client");
 
 const prisma = require("../utils/prisma");
-const { Category, MedType } = require("@prisma/client");
 const { InventoryTypes } = require("../utils/constants");
 
 const dummymedicines = [
@@ -68,7 +68,6 @@ const dummymedicines = [
   "Sublocade",
   "Tramadol",
   "Trazodone",
-  "Viagra",
   "Wellbutrin",
   "Xanax",
   "Zubsolv",
@@ -257,7 +256,6 @@ const dummyotherassets = [
   "Swivel chair",
   "Desk",
   "Wastebasket",
-  "RAHUL BHABHAR\nJUNE 18, 2022 AT 8:10 PM\n\nHI..\nMUJHE SABHI TARAH KI ITEMS LENA HAI ??",
 ];
 
 const addMedicineService = async (type, data) => {

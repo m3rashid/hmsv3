@@ -4,7 +4,7 @@ const {
   createAppointment,
   getAppointmentById,
   createPatient,
-} = require("../controllers/reception.js");
+} = require("../controllers");
 const { useRoute } = require("../utils/errors.js");
 const { checkAuth } = require("../middlewares/auth.js");
 

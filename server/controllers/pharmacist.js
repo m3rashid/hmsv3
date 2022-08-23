@@ -2,7 +2,7 @@ const {
   dispensePrescriptionService,
   getAllPrescriptionsService,
   getPrescriptionByIdService,
-} = require("../services/pharmacist");
+} = require("../services");
 
 const getAllPrescriptions = async (req, res) => {
   const { prescriptions } = await getAllPrescriptionsService(req.query);

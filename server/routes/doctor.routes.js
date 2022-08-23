@@ -9,7 +9,7 @@ const {
   getDoctorAppointments,
   createPrescriptionByDoctor,
   checkMedAvailability,
-} = require("../controllers/doctor.js");
+} = require("../controllers");
 const { useRoute } = require("../utils/errors.js");
 const { checkAuth } = require("../middlewares/auth.js");
 

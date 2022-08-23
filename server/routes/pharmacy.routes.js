@@ -4,7 +4,7 @@ const {
   dispensePrescription,
   getAllPrescriptions,
   getPrescriptionById,
-} = require("../controllers/pharmacist");
+} = require("../controllers");
 const { useRoute } = require("../utils/errors");
 const { checkAuth } = require("../middlewares/auth");
 

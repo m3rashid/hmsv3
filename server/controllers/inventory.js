@@ -4,7 +4,7 @@ const {
   addMedicineService,
   editMedicineService,
   DeleteInventoryService,
-} = require("../services/inventory");
+} = require("../services");
 
 const CreateDummyInventory = async (req, res) => {
   const count = req.body.count;

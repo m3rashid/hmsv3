@@ -37,9 +37,39 @@ const dosages = {
   TW: 3 / 7,
 };
 
+const socketConstants = {
+  receptionistLeft: "receptionist-left",
+  doctorLeft: "doctor-left",
+  pharmacistLeft: "pharmacist-left",
+  createUser: "create-user",
+  getDoctorAppointments: "get-doctor-appointments",
+  getDoctorPatients: "get-doctor-patients",
+  createPatient: "create-patient",
+  deletePatient: "delete-patient",
+  getPatientById: "get-patient-by-id",
+  searchPatients: "search-patients",
+  createReceptionist: "create-receptionist",
+  createAppointment: "create-appointment",
+  createPrescriptionByDoctor: "create-prescription-by-doctor",
+  dispensePrescription: "dispense-prescription",
+
+  // not handled
+  foundDoctorAppointments: "found-doctor-appointments",
+  foundDoctorPatients: "found-doctor-patients",
+  newPatientCreated: "new-patient-created",
+  patientDeleteSuccess: "patient-delete-success",
+  patientFound: "patient-found",
+
+  // left
+  receptionistLeft: "receptionist-left",
+  doctorLeft: "doctor-left",
+  pharmacistLeft: "pharmacist-left",
+};
+
 module.exports = {
   permissions,
   supportedUserRoles,
   InventoryTypes,
   dosages,
+  socketConstants,
 };

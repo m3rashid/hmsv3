@@ -1,37 +1,29 @@
 require("dotenv").config();
-const fs = require("fs");
 const cors = require("cors");
 const http = require("http");
+const morgan = require("morgan");
 const express = require("express");
-const JWT = require("jsonwebtoken");
 const { Server } = require("socket.io");
 const { instrument } = require("@socket.io/admin-ui");
-const morgan = require("morgan");
 
 const prisma = require("./utils/prisma.js");
+const { checkSocketAuth } = require("./middlewares/socket.js");
+const { isProduction, corsOrigin } = require("./utils/config.js");
+const { globalErrorHandlerMiddleware } = require("./middlewares/error.js");
+
 const { router: AdminRoutes } = require("./routes/admin.routes");
 const { router: AuthRoutes } = require("./routes/auth.routes.js");
 const { router: DoctorRoutes } = require("./routes/doctor.routes.js");
-const { router: socketHandler } = require("./routes/sockets/index.js");
 const { router: PatientRoutes } = require("./routes/patient.routes.js");
 const { router: InventoryRoutes } = require("./routes/inventory.routes");
 const { router: ReceptionRoutes } = require("./routes/reception.routes.js");
 const { router: PharmacyRoutes } = require("./routes/pharmacy.routes.js");
-const { isProduction } = require("./utils/config.js");
 
-const keys = JSON.parse(fs.readFileSync(__dirname + "/utils/keys/keys.json"));
-
-const corsOrigin = isProduction
-  ? ["https://admin.socket.io", "https://ansarihms.surge.sh"]
-  : // [
-    // "https://admin.socket.io",
-    // "http://localhost:3000",
-    // "http://10.31.5.172:3000",
-    "*";
-// ];
+const { router: socketHandler } = require("./routes/sockets/index.js");
 
 const app = express();
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
     origin: corsOrigin,
@@ -40,26 +32,18 @@ const io = new Server(server, {
   },
 });
 
-io.use((socket, next) => {
-  try {
-    const token = socket.handshake.auth.token;
-    if (!token) throw new Error("Auth error");
-    const payload = JWT.verify(token, keys.ACCESS_SECRET);
-
-    socket.user = payload.sub;
-
-    return next();
-  } catch (err) {
-    console.log({ socketErr: err });
-    next(err);
-  }
-});
+io.use(checkSocketAuth);
 
 io.on("connection", (socket) => {
-  console.log("socket connected : ", socket.id, socket.user.id);
-  socket.on("connect", () => {
-    console.log("connected : ", socket.id, socket.user.id);
-  });
+  const data = {
+    socket_status: "connected",
+    socketId: socket.id,
+    userId: socket.user.id,
+  };
+
+  console.log(data);
+
+  socket.on("connect", () => console.log(data));
   return socketHandler(io, socket);
 });
 
@@ -67,7 +51,10 @@ app.use(cors({ origin: corsOrigin, optionsSuccessStatus: 200 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-app.get("/", (req, res) => res.send("Hello World"));
+
+app.get("/", (req, res) => {
+  return res.send("Hello World");
+});
 
 app.use("/api/auth", AuthRoutes);
 app.use("/api/admin", AdminRoutes);
@@ -76,6 +63,23 @@ app.use("/api/patient", PatientRoutes);
 app.use("/api/reception", ReceptionRoutes);
 app.use("/api/inventory", InventoryRoutes);
 app.use("/api/pharmacy", PharmacyRoutes);
+
+app.get("/health", (req, res) => {
+  const healthcheck = {
+    uptime: process.uptime(),
+    responseTime: process.hrtime(),
+    message: "OK",
+    timestamp: Date.now(),
+  };
+  try {
+    return res.status(200).send(healthcheck);
+  } catch (error) {
+    healthcheck.message = error;
+    return res.status(503).send(healthcheck);
+  }
+});
+
+app.use(globalErrorHandlerMiddleware);
 
 const PORT = process.env.PORT || 5000;
 

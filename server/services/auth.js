@@ -2,7 +2,6 @@ const bcrypt = require("bcrypt");
 const { faker } = require("@faker-js/faker");
 
 const prisma = require("../utils/prisma");
-
 const { issueJWT, revalidateJWT } = require("../utils/jwt.js");
 const { supportedUserRoles, permissions } = require("../utils/constants");
 

@@ -1,73 +1,70 @@
-const socketConstants = {
-  receptionistLeft: "receptionist-left",
-  doctorLeft: "doctor-left",
-  pharmacistLeft: "pharmacist-left",
-  createUser: "create-user",
-  getDoctorAppointments: "get-doctor-appointments",
-  getDoctorPatients: "get-doctor-patients",
-  createPatient: "create-patient",
-  deletePatient: "delete-patient",
-  getPatientById: "get-patient-by-id",
-  searchPatients: "search-patients",
-  createReceptionist: "create-receptionist",
-  createAppointment: "create-appointment",
-  createPrescriptionByDoctor: "create-prescription-by-doctor",
-  dispensePrescription: "dispense-prescription",
-
-  // not handled
-  foundDoctorAppointments: "found-doctor-appointments",
-  foundDoctorPatients: "found-doctor-patients",
-  newPatientCreated: "new-patient-created",
-  patientDeleteSuccess: "patient-delete-success",
-  patientFound: "patient-found",
-
-  // left
-  receptionistLeft: "receptionist-left",
-  doctorLeft: "doctor-left",
-  pharmacistLeft: "pharmacist-left",
-};
-
 const {
+  receptionistLeft,
   createAppointment,
-  createPatient,
-  createReceptionist,
-  createUser,
-  deletePatient,
+  searchPatients,
+} = require("./reception.socket.js");
+const {
   doctorLeft,
+  createPrescriptionByDoctor,
   getDoctorAppointments,
   getDoctorPatients,
   getPatientById,
-  pharmacistLeft,
-  receptionistLeft,
-  searchPatients,
-  createPrescriptionByDoctor,
-  dispensePrescription
-} = require("./handlers.js");
+} = require("./doctor.socket");
+const { createUser } = require("./admin.socket");
+const { safeSocket } = require("../../middlewares/socket");
+const { socketConstants } = require("../../utils/constants.js");
+const { pharmacistLeft, dispensePrescription } = require("./pharmacy.socket");
+const { createPatient, deletePatient } = require("./coadmin.socket");
 
 const router = (io, socket) => {
-  socket.on(socketConstants.receptionistLeft, receptionistLeft(io, socket));
-  socket.on(socketConstants.doctorLeft, doctorLeft(io, socket));
-  socket.on(socketConstants.pharmacistLeft, pharmacistLeft(io, socket));
-  socket.on(socketConstants.createUser, createUser(io, socket));
+  socket.on(
+    socketConstants.receptionistLeft,
+    safeSocket(receptionistLeft)(io, socket)
+  );
+  socket.on(socketConstants.doctorLeft, safeSocket(doctorLeft)(io, socket));
+  socket.on(
+    socketConstants.pharmacistLeft,
+    safeSocket(pharmacistLeft)(io, socket)
+  );
+  socket.on(socketConstants.createUser, safeSocket(createUser)(io, socket));
   socket.on(
     socketConstants.getDoctorAppointments,
-    getDoctorAppointments(io, socket)
+    safeSocket(getDoctorAppointments)(io, socket)
   );
-  socket.on(socketConstants.getDoctorPatients, getDoctorPatients(io, socket));
-  socket.on(socketConstants.createPatient, createPatient(io, socket));
-  socket.on(socketConstants.deletePatient, deletePatient(io, socket));
-  socket.on(socketConstants.getPatientById, getPatientById(io, socket));
-  socket.on(socketConstants.searchPatients, searchPatients(io, socket));
-  socket.on(socketConstants.createReceptionist, createReceptionist(io, socket));
-  socket.on(socketConstants.createAppointment, createAppointment(io, socket));
+  socket.on(
+    socketConstants.getDoctorPatients,
+    safeSocket(getDoctorPatients)(io, socket)
+  );
+  socket.on(
+    socketConstants.createPatient,
+    safeSocket(createPatient)(io, socket)
+  );
+  socket.on(
+    socketConstants.deletePatient,
+    safeSocket(deletePatient)(io, socket)
+  );
+  socket.on(
+    socketConstants.getPatientById,
+    safeSocket(getPatientById)(io, socket)
+  );
+  socket.on(
+    socketConstants.searchPatients,
+    safeSocket(searchPatients)(io, socket)
+  );
+  socket.on(
+    socketConstants.createAppointment,
+    safeSocket(createAppointment)(io, socket)
+  );
   socket.on(
     socketConstants.createPrescriptionByDoctor,
-    createPrescriptionByDoctor(io, socket)
+    safeSocket(createPrescriptionByDoctor)(io, socket)
   );
-  socket.on(socketConstants.dispensePrescription, dispensePrescription(io, socket));
+  socket.on(
+    socketConstants.dispensePrescription,
+    safeSocket(dispensePrescription)(io, socket)
+  );
 };
 
 module.exports = {
   router,
-  socketConstants,
 };

@@ -1,8 +1,9 @@
 const prisma = require("../utils/prisma");
 
 const addTest = async ({ name, description, prescriptionId, testType }) => {
-  if (!name || !prescriptionId || !testType)
+  if (!name || !prescriptionId || !testType) {
     throw new Error("Insufficient data");
+  }
 
   const newTest = await prisma.test.create({
     data: {

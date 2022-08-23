@@ -6,7 +6,7 @@ const {
   SearchMedicines,
   EditInventory,
   DeleteInventory,
-} = require("../controllers/inventory");
+} = require("../controllers");
 const { useRoute } = require("../utils/errors");
 const { checkAuth } = require("../middlewares/auth");
 

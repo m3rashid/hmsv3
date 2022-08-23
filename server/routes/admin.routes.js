@@ -2,7 +2,7 @@ const express = require("express");
 
 const { useRoute } = require("../utils/errors");
 const { checkAuth } = require("../middlewares/auth");
-const { getAllUsers, editPermissions } = require("../controllers/admin");
+const { getAllUsers, editPermissions } = require("../controllers");
 
 const router = express.Router();
 

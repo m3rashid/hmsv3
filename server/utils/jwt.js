@@ -1,5 +1,5 @@
-const JWT = require("jsonwebtoken");
 const fs = require("fs");
+const JWT = require("jsonwebtoken");
 
 const keys = JSON.parse(fs.readFileSync(__dirname + "/keys/keys.json"));
 // console.log(keys);

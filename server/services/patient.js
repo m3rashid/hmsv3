@@ -6,8 +6,9 @@ const createPatientService = async (
   { name, age, sex, contact, address, email, jamiaId },
   UserPermissions
 ) => {
-  if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions))
+  if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions)) {
     throw new Error("Forbidden");
+  }
 
   const data = { name, age, sex, contact, address, email, jamiaId };
   console.log(data);

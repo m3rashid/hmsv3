@@ -6,7 +6,7 @@ const {
   revalidate,
   signup,
   createDummy,
-} = require("../controllers/auth.js");
+} = require("../controllers");
 const { useRoute } = require("../utils/errors.js");
 
 const router = express.Router();

@@ -3,7 +3,7 @@ const {
   revalidateService,
   signupService,
   createDummyPatientService,
-} = require("../services/auth.js");
+} = require("../services");
 
 const login = async (req, res) => {
   const { user, token, refreshToken, expires, userDetails } =

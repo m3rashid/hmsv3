@@ -1,7 +1,4 @@
-const {
-  getAllUsersService,
-  editPermissionsService,
-} = require("../services/admin");
+const { getAllUsersService, editPermissionsService } = require("../services");
 
 const getAllUsers = async (req, res) => {
   const users = await getAllUsersService(req.body.userRole);

@@ -5,7 +5,7 @@ const {
   deletePatient,
   getPatientById,
   searchPatients,
-} = require("../controllers/patient.js");
+} = require("../controllers");
 const { useRoute } = require("../utils/errors.js");
 const { checkAuth } = require("../middlewares/auth.js");
 

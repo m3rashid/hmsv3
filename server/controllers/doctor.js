@@ -7,9 +7,9 @@ const {
   createPrescriptionByDoctorService,
   referAnotherDoctorAppointmentService,
   checkMedAvailabilityService,
-} = require("../services/doctor.js");
+  getAppointmentByIdService,
+} = require("../services");
 const prisma = require("../utils/prisma");
-const { getAppointmentByIdService } = require("../services/reception.js");
 
 const getDoctorAppointments = async (req, res) => {
   if (!req.user || !req.user.id) throw new Error("Unauthorized");
