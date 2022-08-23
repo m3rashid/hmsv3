@@ -1,6 +1,6 @@
 // const {} = require("../../services");
 
-// const createUser = async ({ email, password, role, name }) => {
+// const createUser = (io, socket) => async ({ email, password, role, name }) => {
 //   try {
 //     const { user } = await createUserService(email, password, role, name);
 //     console.log(user);

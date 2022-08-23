@@ -26,8 +26,10 @@ const safeSocket =
   (handler) =>
   (io, socket) =>
   (...args) => {
-    console.log({ io });
-    Promise.resolve(handler(args)).catch((err) => {
+    console.log("========== Socket Args ==========");
+    console.log(...args);
+    Promise.resolve(handler(...args)).catch((err) => {
+      console.log("========== Socket Err ==========");
       console.log(err);
       io.emit("error", {
         message: !isProduction
