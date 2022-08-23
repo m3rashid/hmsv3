@@ -174,7 +174,7 @@ model NonMedicine {
   name        String
   quantity    Int
   batchNumber String
-  expiry_date String
+  expiryDate  String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
 }

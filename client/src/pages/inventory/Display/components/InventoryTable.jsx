@@ -81,8 +81,8 @@ function InventoryTable(prop) {
     },
     {
       title: "Expiry Date",
-      dataIndex: "expiry_date",
-      key: "expiry_date",
+      dataIndex: "expiryDate",
+      key: "expiryDate",
       render: (text, record) => dayjs(text).format("DD-MM-YYYY"),
     },
     {
@@ -191,7 +191,7 @@ function InventoryTable(prop) {
                   </Typography.Text>
                   <Typography.Text>
                     Expiry Date :{" "}
-                    {dayjs(isModalVisible.data.expiry_date).format(
+                    {dayjs(isModalVisible.data.expiryDate).format(
                       "DD MMM YYYY"
                     )}
                   </Typography.Text>

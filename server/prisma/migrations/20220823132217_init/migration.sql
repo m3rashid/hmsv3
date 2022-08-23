@@ -133,7 +133,7 @@ CREATE TABLE "NonMedicine" (
     "name" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "batchNumber" TEXT NOT NULL,
-    "expiry_date" TEXT NOT NULL,
+    "expiryDate" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 

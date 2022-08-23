@@ -96,22 +96,26 @@ const signupService = async ({
   category,
   origin,
 }) => {
-  console.log({
-    email,
-    password,
-    name,
-    role,
+  const profileData = {
     designation,
     contact,
     address,
     bio,
     sex,
     availability,
+    role,
     availableDays,
     roomNumber,
     authorityName,
     category,
     origin,
+  };
+  console.log({
+    email,
+    password,
+    name,
+    role,
+    ...profileData,
   });
 
   if (!email || !password || !name || !role || !sex) {
@@ -123,22 +127,7 @@ const signupService = async ({
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const profile = await prisma.profile.create({
-    data: {
-      designation,
-      contact,
-      address,
-      bio,
-      sex,
-      availability,
-      role: role,
-      available_days: availableDays,
-      room_number: roomNumber,
-      authority_name: authorityName,
-      category,
-      origin,
-    },
-  });
+  const profile = await prisma.profile.create({ data: profileData });
 
   const user = await prisma.Auth.create({
     data: {
@@ -148,9 +137,7 @@ const signupService = async ({
       password: hashedPassword,
       permissions: allowedActions,
     },
-    include: {
-      profile: true,
-    },
+    include: { profile: true },
   });
 
   console.log({ user, profile });

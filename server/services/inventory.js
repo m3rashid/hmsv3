@@ -338,7 +338,7 @@ const addDummy = async () => {
         name: faker.helpers.arrayElement(dummymedicines),
         batchNumber: faker.datatype.uuid(),
         category: faker.helpers.arrayElement(Object.values(Category)),
-        expiry_date: faker.date.future(),
+        expiryDate: faker.date.future(),
         medType: faker.helpers.arrayElement(Object.values(MedType)),
         quantity: faker.datatype.number({ min: 1, max: 100 }),
       },
@@ -348,7 +348,7 @@ const addDummy = async () => {
       data: {
         name: faker.helpers.arrayElement(dummynonmedicines),
         batchNumber: faker.datatype.uuid(),
-        expiry_date: faker.date.future(),
+        expiryDate: faker.date.future(),
         quantity: faker.datatype.number({ min: 1, max: 100 }),
       },
     });

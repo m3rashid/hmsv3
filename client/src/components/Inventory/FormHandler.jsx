@@ -118,17 +118,15 @@ function InventoryFormHandler(props) {
         wrapperCol={{ span: props?.Col?.wrapper || 8 }}
         initialValues={{
           ...props?.defaultValues,
-          expiry_date: props?.defaultValues?.expiry_date
-            ? moment(props?.defaultValues?.expiry_date, "YYYY-MM-DD")
+          expiry_date: props?.defaultValues?.expiryDate
+            ? moment(props?.defaultValues?.expiryDate, "YYYY-MM-DD")
             : undefined,
         }}
       >
         <Form.Item
           label="Inventory Type"
           name="type"
-          style={{
-            display: props?.type ? "none" : "block",
-          }}
+          style={{ display: props?.type ? "none" : "block" }}
         >
           <Select
             placeholder="Select Inventory Type"
@@ -203,7 +201,7 @@ function InventoryFormHandler(props) {
           </Form.Item>
           <Form.Item
             label="Expiry Date"
-            name="expiry_date"
+            name="expiryDate"
             rules={[
               {
                 required:
