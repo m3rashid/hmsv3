@@ -1,12 +1,12 @@
 import React from "react";
+import { useRecoilState } from "recoil";
 import { useNavigate, Link } from "react-router-dom";
 import { Layout, Typography, Col, Menu } from "antd";
 
-import styles from "./layout.module.less";
-import routes, { checkAccess } from "../../routes";
-import { useRecoilState } from "recoil";
-import { authState } from "../../atoms/auth";
 import UserTop from "./userTop";
+import styles from "./layout.module.less";
+import { authState } from "../../atoms/auth";
+import routes, { checkAccess } from "../../routes";
 
 function Index(props) {
   const navigate = useNavigate();
@@ -26,13 +26,12 @@ function Index(props) {
                 src="/images/logo.jpg"
                 alt="null"
                 className={styles.image}
-                onClick={() => {
-                  handleClick();
-                }}
+                onClick={() => handleClick()}
               />
               Dr. M.A Ansari Health Centre
             </Typography.Title>
           </Col>
+
           <Col className={styles.theme}>
             <UserTop {...{ Auth, setAuth }} />
           </Col>

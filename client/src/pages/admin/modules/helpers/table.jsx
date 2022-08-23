@@ -4,6 +4,7 @@ import {
   showGender,
   toSentenceCase,
 } from "../../../../components/utils/strings";
+import CreateUserModal from "./createUserModal";
 import UserDetailsModal from "./userDetailsModal";
 
 export const formatForTable = (users) => {
@@ -12,13 +13,14 @@ export const formatForTable = (users) => {
       ...acc,
       {
         id: user.id,
+        profileId: user.Auth[0].profileId,
         name: user.Auth[0].name,
         email: user.Auth[0].email,
         permissions: user.Auth[0].permissions,
         address: user.address,
-        authorityName: user.authority_name,
+        authorityName: user.authorityName,
         availability: user.availability,
-        availableDays: user.available_days,
+        availableDays: user.availableDays,
         bio: user.bio,
         category: user.category,
         contact: user.contact,
@@ -26,7 +28,7 @@ export const formatForTable = (users) => {
         designation: user.designation,
         origin: user.origin,
         role: toSentenceCase(user.role),
-        roomNumber: user.room_number,
+        roomNumber: user.roomNumber,
         sex: showGender(user.sex),
       },
     ],
@@ -60,8 +62,20 @@ export const columns = [
   },
   {
     title: "Actions",
-    dataIndex: "actions",
-    key: "actions",
-    render: (text, record) => <UserDetailsModal data={record} />,
+    dataIndex: "",
+    key: "details",
+    render: (text, record) => (
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 10,
+        }}
+      >
+        <UserDetailsModal data={record} />
+        <CreateUserModal data={record} isEdit={true} />
+      </div>
+    ),
   },
 ];

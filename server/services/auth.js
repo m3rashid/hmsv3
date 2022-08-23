@@ -67,8 +67,6 @@ const loginService = async (email, password) => {
   });
   const { token, refreshToken, expires } = issueJWT(user);
 
-  console.log({ user, userDetails });
-
   return {
     user: {
       permissions: user.permissions,

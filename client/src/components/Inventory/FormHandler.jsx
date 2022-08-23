@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Form,
   Button,
@@ -7,20 +6,18 @@ import {
   Typography,
   Col,
   Input,
-  Space,
-  Card,
-  Divider,
   Select,
   DatePicker,
 } from "antd";
-import moment from "moment";
-import dayjs from "dayjs";
-import { instance } from "../../api/instance";
 import axios from "axios";
-import { Category, InventoryTypes, MedType } from "../../utils/inventoryTypes";
-import { useRecoilValue } from "recoil";
-import { inventoryState } from "../../atoms/inventory";
+import moment from "moment";
 import PropTypes from "prop-types";
+import { useRecoilValue } from "recoil";
+import React, { useState } from "react";
+
+import { instance } from "../../api/instance";
+import { inventoryState } from "../../atoms/inventory";
+import { Category, InventoryTypes, MedType } from "../../utils/inventoryTypes";
 
 function InventoryFormHandler(props) {
   const [itemlist, setItemlist] = useState({
@@ -78,13 +75,7 @@ function InventoryFormHandler(props) {
             value: item.id,
             data: item,
             label: (
-              <Col
-                direction="vertical"
-                size={"small"}
-                style={{
-                  fontSize: 12,
-                }}
-              >
+              <Col direction="vertical" size={"small"} style={{ fontSize: 12 }}>
                 <Typography.Text>{item.name}</Typography.Text>
               </Col>
             ),

@@ -48,8 +48,9 @@ function App() {
             {routes.map((route, index) => {
               const validated = checkAccess(Auth, route);
               if (!validated) {
-                return <Route path="*" element={<UnAuthPage />} />;
+                return <Route key={index} path="*" element={<UnAuthPage />} />;
               }
+
               return (
                 <Route
                   key={`route ${index} ${route.path}`}

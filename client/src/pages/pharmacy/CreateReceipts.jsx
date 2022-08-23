@@ -90,7 +90,7 @@ function CreateReceipts() {
     navigate("/pharmacy/prescriptions");
   };
 
-  const sum = (arr) => arr.reduce((x, y) => x + y, 0);
+  // const sum = (arr) => arr.reduce((x, y) => x + y, 0);
 
   return (
     <div>

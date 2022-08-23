@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Form,
   Button,
@@ -37,6 +37,7 @@ const CreatePatientForm = () => {
     return () => {
       socket.off("new-patient-created");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -76,8 +77,10 @@ const CreatePatientForm = () => {
           rules={[{ required: true, message: "Please select patient sex!" }]}
         >
           <Radio.Group size="large">
-            {["m", "f", "o"].map((gender) => (
-              <Radio.Button value={gender}>{showGender(gender)}</Radio.Button>
+            {["m", "f", "o"].map((gender, i) => (
+              <Radio.Button key={gender} value={gender}>
+                {showGender(gender)}
+              </Radio.Button>
             ))}
           </Radio.Group>
         </Form.Item>

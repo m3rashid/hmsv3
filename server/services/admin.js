@@ -24,7 +24,68 @@ const editPermissionsService = async (userId, permissions) => {
   return user;
 };
 
+const updateUserProfileService = async (
+  userId,
+  profileId,
+  {
+    name,
+    email,
+    password,
+
+    sex,
+    designation,
+    contact,
+    address,
+    bio,
+    availability,
+    availableDays,
+    roomNumber,
+    authorityName,
+    category,
+    origin,
+  }
+) => {
+  if (!userId || !profileId) throw new Error("Insufficient data");
+
+  let hashedPassword = "";
+  if (password && password.trim() !== "") {
+    hashedPassword = await bcrypt.hash(password, 10);
+  }
+
+  const updatedAuth = await prisma.auth.update({
+    where: { id: userId },
+    data: {
+      ...(email && email.trim() && { email: email }),
+      ...(hashedPassword && { password: hashedPassword }),
+      ...(name && name.trim() && { name: name }),
+    },
+  });
+
+  const updatedProfile = await prisma.profile.update({
+    where: { id: profileId },
+    data: {
+      ...(sex && sex.trim() && { sex }),
+      ...(designation && designation.trim() && { designation }),
+      ...(contact && contact.trim() && { contact }),
+      ...(address && address.trim() && { address }),
+      ...(bio && bio.trim() && { bio }),
+      ...(availability && availability.trim() && { availability }),
+      ...(availableDays && availableDays.trim() && { availableDays }),
+      ...(roomNumber && roomNumber.trim() && { roomNumber }),
+      ...(authorityName && authorityName.trim() && { authorityName }),
+      ...(category && category.trim() && { category }),
+      ...(origin && origin.trim() && { origin }),
+    },
+  });
+
+  return {
+    auth: updatedAuth,
+    profile: updatedProfile,
+  };
+};
+
 module.exports = {
   getAllUsersService,
   editPermissionsService,
+  updateUserProfileService,
 };

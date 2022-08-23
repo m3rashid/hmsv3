@@ -40,9 +40,9 @@ CREATE TABLE "Profile" (
     "bio" TEXT,
     "sex" "Sex" NOT NULL,
     "availability" TEXT[],
-    "available_days" "Days"[],
-    "room_number" INTEGER,
-    "authority_name" TEXT,
+    "availableDays" "Days"[],
+    "roomNumber" INTEGER,
+    "authorityName" TEXT,
     "category" "Category",
     "role" "Role" NOT NULL,
     "origin" TEXT DEFAULT 'JMI',
@@ -73,7 +73,7 @@ CREATE TABLE "Patient" (
 CREATE TABLE "Appointment" (
     "id" SERIAL NOT NULL,
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "refered_by" TEXT,
+    "referedBy" TEXT,
     "patientId" INTEGER NOT NULL,
     "doctorId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -118,7 +118,7 @@ CREATE TABLE "Medicine" (
     "name" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "batchNumber" TEXT NOT NULL,
-    "expiry_date" TEXT NOT NULL,
+    "expiryDate" TEXT NOT NULL,
     "category" "Category" NOT NULL,
     "medType" "MedType" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -163,6 +163,18 @@ CREATE TABLE "Test" (
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Test_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Log" (
+    "id" SERIAL NOT NULL,
+    "action" TEXT NOT NULL,
+    "fromId" INTEGER NOT NULL,
+    "toId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Log_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

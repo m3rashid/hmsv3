@@ -1,5 +1,14 @@
+import {
+  Modal,
+  Button,
+  Input,
+  Form,
+  message,
+  Select,
+  Collapse,
+  Space,
+} from "antd";
 import React from "react";
-import { Modal, Button, Input, Form, message, Select, Collapse } from "antd";
 
 import {
   showGender,
@@ -9,21 +18,28 @@ import { instance } from "../../../../api/instance";
 import { supportedUserRoles } from "../../../../components/utils/constants";
 
 const requiredFormFields = [
-  { key: "name", label: "Name", inputType: "text", otherRules: {} },
-  { key: "email", label: "Email", inputType: "email", otherRules: {} },
-  { key: "password", label: "Password", inputType: "password", otherRules: {} },
+  { key: "name", label: "Name", inputType: "text", otherRules: [{}] },
+  { key: "email", label: "Email", inputType: "email", otherRules: [{}] },
+  {
+    key: "password",
+    label: "Password",
+    inputType: "password",
+    otherRules: [{}],
+  },
   {
     key: "role",
     label: "Role",
     inputType: "select",
-    otherRules: {
-      validator: (_, value) => {
-        if (!supportedUserRoles.includes(value)) {
-          return Promise.reject(new Error("Role not supported!"));
-        }
-        return Promise.resolve();
+    otherRules: [
+      {
+        validator: (_, value) => {
+          if (!supportedUserRoles.includes(value)) {
+            return Promise.reject(new Error("Role not supported!"));
+          }
+          return Promise.resolve();
+        },
       },
-    },
+    ],
     options: supportedUserRoles.map((role) => ({
       key: role,
       label: role
@@ -36,7 +52,7 @@ const requiredFormFields = [
     key: "sex",
     label: "Gender",
     inputType: "select",
-    otherRules: {},
+    otherRules: [{}],
     options: ["m", "f", "o"].map((gender) => ({
       key: gender,
       label: showGender(gender),
@@ -75,27 +91,29 @@ const RenderFormFields = ({ formFields, required }) => {
     <React.Fragment>
       {formFields.map((f) => (
         <Form.Item
+          key={f.key}
+          name={f.key}
+          label={f.label}
           {...(required
             ? {
                 rules: [
                   {
                     required: true,
                     message: `Please ${
-                      f.inputType === "select" ? "select" : "enter"
+                      f.inputType === "select" ? "Select" : "Enter"
                     } a ${f.label}`,
                   },
-                  f.otherRules,
+                  ...f.otherRules,
                 ],
               }
             : {})}
-          key={f.key}
-          name={f.key}
-          label={f.label}
         >
           {f.inputType === "select" ? (
             <Select placeholder={`Select ${f.label}`}>
               {f.options.map((o) => (
-                <Select.Option value={o.key}>{o.label}</Select.Option>
+                <Select.Option key={o.key} value={o.key}>
+                  {o.label}
+                </Select.Option>
               ))}
             </Select>
           ) : f.inputType === "textarea" ? (
@@ -109,18 +127,32 @@ const RenderFormFields = ({ formFields, required }) => {
   );
 };
 
-function CreateUserModal(props) {
+const CreateUserModal = ({ isEdit, data }) => {
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
+
+  const handleOk = () => setIsModalVisible(true);
+  const handleCancel = () => setIsModalVisible(false);
+
   const onFinish = async (values) => {
     try {
       message.loading({ content: "Loading...", key: "auth/createUser" });
-
-      const res = await instance.post("/auth/signup", { ...values });
-      console.log({ userCreated: res.data });
+      let res;
+      if (isEdit) {
+        res = await instance.post("/admin/update-user", {
+          userId: data.id,
+          profileId: data.profileId,
+          ...values,
+        });
+        console.log({ userEdited: res.data });
+      } else {
+        res = await instance.post("/auth/signup", { ...values });
+        console.log({ userCreated: res.data });
+      }
       message.success({
         content: "User created Successfully",
         key: "auth/createUser",
       });
-      props.handleCancel();
+      handleCancel();
     } catch (error) {
       message.error({
         content: "User creation Failed",
@@ -139,11 +171,17 @@ function CreateUserModal(props) {
 
   return (
     <React.Fragment>
+      <Space>
+        <Button onClick={() => setIsModalVisible(true)}>
+          {isEdit ? "Edit User" : "Register New User"}
+        </Button>
+      </Space>
+
       <Modal
         title="Create"
-        visible={props.isModalVisible}
-        onOk={props.handleOk}
-        onCancel={props.handleCancel}
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
         footer={null}
       >
         <Form
@@ -151,12 +189,21 @@ function CreateUserModal(props) {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
-          <RenderFormFields formFields={requiredFormFields} required={true} />
+          <RenderFormFields
+            isEdit={isEdit}
+            formFields={requiredFormFields}
+            required={!isEdit}
+            data={data}
+          />
 
-          {/* other user details */}
           <Collapse bordered={false} style={{ padding: 0, margin: 0 }}>
             <Collapse.Panel header="Other Details" key="1">
-              <RenderFormFields formFields={otherFormFields} required={false} />
+              <RenderFormFields
+                isEdit={isEdit}
+                formFields={otherFormFields}
+                required={false}
+                data={data}
+              />
             </Collapse.Panel>
           </Collapse>
 
@@ -169,20 +216,17 @@ function CreateUserModal(props) {
               padding: "10px 24px 0 24px",
             }}
           >
-            <Button
-              style={{ marginRight: "10px" }}
-              onClick={props.handleCancel}
-            >
+            <Button style={{ marginRight: "10px" }} onClick={handleCancel}>
               Cancel
             </Button>
             <Button type="primary" htmlType="submit">
-              Create User
+              {isEdit ? "Update User" : "Create User"}
             </Button>
           </div>
         </Form>
       </Modal>
     </React.Fragment>
   );
-}
+};
 
 export default CreateUserModal;

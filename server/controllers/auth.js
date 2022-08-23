@@ -21,8 +21,6 @@ const login = async (req, res) => {
   });
 };
 
-const logout = (req, res) => {};
-
 const signup = async (req, res) => {
   const user = await signupService({
     email: req.body.email,
@@ -48,8 +46,6 @@ const signup = async (req, res) => {
     user,
   });
 };
-
-const updateProfile = async (req, res) => {};
 
 const revalidate = async (req, res) => {
   const refreshToken = req.headers["authorization"];
@@ -79,8 +75,6 @@ const createDummy = async (req, res) => {
 module.exports = {
   login,
   signup,
-  logout,
   revalidate,
   createDummy,
-  updateProfile,
 };

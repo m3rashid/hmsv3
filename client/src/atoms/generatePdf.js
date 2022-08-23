@@ -222,23 +222,22 @@ const GeneratePdf = (props) => {
                 >
                   Medicines :
                   {parchiData?.medicines !== undefined ? (
-                    parchiData?.medicines.map((medicine) => (
-                      <>
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "30px",
-                            marginLeft: "20px",
-                            fontSize: "16px",
-                            marginTop: "5px",
-                          }}
-                        >
-                          <span>Name : {medicine.name}</span>
-                          <span>Dosage : {medicine.dosage}</span>
-                          <span>Quantity : {medicine.quantity}</span>
-                          <span>Description : {medicine.description}</span>
-                        </div>
-                      </>
+                    parchiData?.medicines.map((medicine, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          display: "flex",
+                          gap: "30px",
+                          marginLeft: "20px",
+                          fontSize: "16px",
+                          marginTop: "5px",
+                        }}
+                      >
+                        <span>Name : {medicine.name}</span>
+                        <span>Dosage : {medicine.dosage}</span>
+                        <span>Quantity : {medicine.quantity}</span>
+                        <span>Description : {medicine.description}</span>
+                      </div>
                     ))
                   ) : (
                     <></>

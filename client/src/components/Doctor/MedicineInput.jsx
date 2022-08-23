@@ -120,7 +120,7 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
                 .filter((m) => m.medType === "TABLET")
                 .map((medicine) => {
                   return (
-                    <Select.Option value={medicine.id}>
+                    <Select.Option key={medicine.id} value={medicine.id}>
                       {medicine.name}
                     </Select.Option>
                   );
@@ -132,7 +132,7 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
                 .filter((m) => m.medType === "SYRUP")
                 .map((medicine) => {
                   return (
-                    <Select.Option value={medicine.id}>
+                    <Select.Option key={medicine.id} value={medicine.id}>
                       {medicine.name}
                     </Select.Option>
                   );
@@ -158,7 +158,9 @@ function MedicineInput({ index, medicine, deleteMedicine, setMedicines }) {
             }}
           >
             {dosages.map((dosage) => (
-              <Select.Option value={dosage.value}>{dosage.label}</Select.Option>
+              <Select.Option key={dosage.value} value={dosage.value}>
+                {dosage.label}
+              </Select.Option>
             ))}
           </Select>
         </Space>
