@@ -1,0 +1,11 @@
+-- CreateTable
+CREATE TABLE "Log" (
+    "id" SERIAL NOT NULL,
+    "action" TEXT NOT NULL,
+    "from_id" INTEGER NOT NULL,
+    "to_id" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "Log_pkey" PRIMARY KEY ("id")
+);

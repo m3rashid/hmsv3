@@ -51,5 +51,5 @@
   - [ ] manufacturer (optional field)
   - [ ] category (optional field)
   - [ ] view more
-    - [ ] Show Expiry date
+    - [x] Show Expiry date
     - [ ] group medicines by batch no. and expiry

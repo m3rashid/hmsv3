@@ -164,7 +164,7 @@ function InventoryTable(prop) {
 
       {isModalVisible.open && (
         <Modal
-          title={isModalVisible.isEdit ? "Edit Medicine" : "View Medicine"}
+          title={isModalVisible.isEdit ? "Edit Medicine" : "Medicine Details"}
           visible={isModalVisible.open}
           onOk={() => setIsModalVisible({ open: false, data: {} })}
           onCancel={() => setIsModalVisible({ open: false, data: {} })}
@@ -172,10 +172,8 @@ function InventoryTable(prop) {
           {!isModalVisible.isEdit ? (
             <Space direction="vertical">
               <div>
+                {console.log(isModalVisible.data)}
                 <Space direction="vertical">
-                  <Typography.Text>
-                    ID : {isModalVisible.data.id}
-                  </Typography.Text>
                   <Typography.Title level={4}>
                     {isModalVisible?.data?.name}
                   </Typography.Title>
@@ -184,6 +182,18 @@ function InventoryTable(prop) {
                   </Typography.Text>
                   <Typography.Text type="danger">
                     {isModalVisible?.data?.quantity} Left
+                  </Typography.Text>
+                  <Typography.Text>
+                    Added on:{" "}
+                    {dayjs(isModalVisible?.data?.createdAt).format(
+                      "DD MMM YYYY hh:mm A"
+                    )}
+                  </Typography.Text>
+                  <Typography.Text>
+                    Expiry Date :{" "}
+                    {dayjs(isModalVisible.data.expiry_date).format(
+                      "DD MMM YYYY"
+                    )}
                   </Typography.Text>
                   {modalData.map((item) => {
                     if (!isModalVisible?.data?.[item.key]) return null;
@@ -211,9 +221,9 @@ function InventoryTable(prop) {
                 </Button>
                 <Button
                   danger
-                  onClick={() =>
-                    setIsModalVisible({ ...isModalVisible, isDeleting: true })
-                  }
+                  onClick={() => {
+                    setIsModalVisible({ ...isModalVisible, isDeleting: true });
+                  }}
                 >
                   Delete
                 </Button>
