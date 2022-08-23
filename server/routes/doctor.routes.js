@@ -10,25 +10,30 @@ const {
   createPrescriptionByDoctor,
   checkMedAvailability,
 } = require("../controllers/doctor.js");
+const { useRoute } = require("../utils/errors.js");
 const { checkAuth } = require("../middlewares/auth.js");
 
 const router = express.Router();
 
-router.get("/get-appointments", checkAuth, getDoctorAppointments);
+router.get("/get-appointments", checkAuth, useRoute(getDoctorAppointments));
 
-router.get("/getappointmentbyId", checkAuth, getAppointmentById);
+router.get("/getappointmentbyId", checkAuth, useRoute(getAppointmentById));
 
-router.get("/search", checkAuth, searchDoctors);
+router.get("/search", checkAuth, useRoute(searchDoctors));
 
 router.post("/dummy", FillDummy);
 
-router.post("/create-prescription", checkAuth, createPrescriptionByDoctor);
+router.post(
+  "/create-prescription",
+  checkAuth,
+  useRoute(createPrescriptionByDoctor)
+);
 
-router.get("/get-patients", checkAuth, getDoctorPatients);
+router.get("/get-patients", checkAuth, useRoute(getDoctorPatients));
 
-router.post("/refer", checkAuth, referAnotherDoctor);
+router.post("/refer", checkAuth, useRoute(referAnotherDoctor));
 
-router.post("/med/check-availability", checkMedAvailability);
+router.post("/med/check-availability", useRoute(checkMedAvailability));
 
 module.exports = {
   router,

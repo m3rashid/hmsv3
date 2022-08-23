@@ -17,17 +17,17 @@ const { router: PatientRoutes } = require("./routes/patient.routes.js");
 const { router: InventoryRoutes } = require("./routes/inventory.routes");
 const { router: ReceptionRoutes } = require("./routes/reception.routes.js");
 const { router: PharmacyRoutes } = require("./routes/pharmacy.routes.js");
+const { isProduction } = require("./utils/config.js");
 
 const keys = JSON.parse(fs.readFileSync(__dirname + "/utils/keys/keys.json"));
 
-const corsOrigin =
-  process.env.NODE_ENV === "production"
-    ? ["https://admin.socket.io", "https://ansarihms.surge.sh"]
-    : // [
-      // "https://admin.socket.io",
-      // "http://localhost:3000",
-      // "http://10.31.5.172:3000",
-      "*";
+const corsOrigin = isProduction
+  ? ["https://admin.socket.io", "https://ansarihms.surge.sh"]
+  : // [
+    // "https://admin.socket.io",
+    // "http://localhost:3000",
+    // "http://10.31.5.172:3000",
+    "*";
 // ];
 
 const app = express();
@@ -82,7 +82,7 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   try {
     instrument(io, { auth: false });
-    if (process.env.NODE_ENV === "production") console.log = () => {};
+    if (isProduction) console.log = () => {};
 
     await prisma.$connect();
     console.log("Connection established successfully");

@@ -5,15 +5,16 @@ const {
   getAppointmentById,
   createPatient,
 } = require("../controllers/reception.js");
+const { useRoute } = require("../utils/errors.js");
 const { checkAuth } = require("../middlewares/auth.js");
 
 const router = express.Router();
 
-router.post("/create-appointment", checkAuth, createAppointment);
+router.post("/create-appointment", checkAuth, useRoute(createAppointment));
 
-router.post("/create-patient", checkAuth, createPatient);
+router.post("/create-patient", checkAuth, useRoute(createPatient));
 
-router.get("/appointment", checkAuth, getAppointmentById);
+router.get("/appointment", checkAuth, useRoute(getAppointmentById));
 
 module.exports = {
   router,

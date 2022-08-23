@@ -6,17 +6,18 @@ const {
   getPatientById,
   searchPatients,
 } = require("../controllers/patient.js");
+const { useRoute } = require("../utils/errors.js");
 const { checkAuth } = require("../middlewares/auth.js");
 
 const router = express.Router();
 
-router.post("/create", checkAuth, createPatient);
+router.post("/create", checkAuth, useRoute(createPatient));
 
-router.get("/search", checkAuth, searchPatients);
+router.get("/search", checkAuth, useRoute(searchPatients));
 
-router.get("/:id", checkAuth, getPatientById);
+router.get("/:id", checkAuth, useRoute(getPatientById));
 
-router.delete("/:id", checkAuth, deletePatient);
+router.delete("/:id", checkAuth, useRoute(deletePatient));
 
 module.exports = {
   router,

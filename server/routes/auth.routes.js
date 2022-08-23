@@ -7,18 +7,19 @@ const {
   signup,
   createDummy,
 } = require("../controllers/auth.js");
+const { useRoute } = require("../utils/errors.js");
 
 const router = express.Router();
 
-router.post("/login", login);
+router.post("/login", useRoute(login));
 
-router.post("/signup", signup);
+router.post("/signup", useRoute(signup));
 
-router.post("/logout", logout);
+router.post("/logout", useRoute(logout));
 
-router.post("/revalidate", revalidate);
+router.post("/revalidate", useRoute(revalidate));
 
-router.post("/dummy", createDummy);
+router.post("/dummy", useRoute(createDummy));
 
 module.exports = {
   router,
