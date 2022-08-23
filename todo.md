@@ -21,13 +21,13 @@
 
 - Reception
 
-  - [ ] patient => name-empId/st.Id.
-  - [ ] doctor => name-designation
+  - [x] patient => name-empId/st.Id.
+  - [x] doctor => name-designation
   - [ ] date => constrains -> not before now, default now
 
 - Doctor
 
-  - [ ] - on mandatory fields
+  - [ ] \* on mandatory fields
   - [ ] create prescription notifications
   - [ ] pending -> past (bug: now happens on refresh, should be done via sockets)
   - [ ] custom medicine => duration/dosage

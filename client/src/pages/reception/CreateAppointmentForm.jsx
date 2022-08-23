@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   Form,
   Button,
@@ -12,10 +11,13 @@ import {
   Space,
   Card,
 } from "antd";
-import { socket } from "../../api/socket";
-import { instance } from "../../api/instance";
+import dayjs from "dayjs";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+
+import { socket } from "../../api/socket";
 import Header from "../../components/Header";
+import { instance } from "../../api/instance";
 
 const CreateAppointmentForm = () => {
   const [doctors, setDoctors] = useState({
@@ -120,11 +122,11 @@ const CreateAppointmentForm = () => {
               <Col direction="vertical" size={"small"} style={{ fontSize: 12 }}>
                 <Row>
                   <Typography.Text>{patient.name}</Typography.Text>
-                  <Typography.Text type="danger">
-                    {"("}
-                    {patient.age} years old
-                    {")"}
-                  </Typography.Text>
+                  {patient.jamiaId && (
+                    <Typography.Text type="danger">
+                      {`(${patient.jamiaId})`}
+                    </Typography.Text>
+                  )}
                 </Row>
                 <Row>
                   <Typography.Text disabled>{patient.email}</Typography.Text>
@@ -178,7 +180,6 @@ const CreateAppointmentForm = () => {
                         {`${"("}${doctor.profile.designation}${")"}`}
                       </Typography.Text>
                     )}
-                    <Typography.Text>{doctor?.profile?.sex}</Typography.Text>
                   </Space>
                 </Row>
                 <Row>
@@ -242,20 +243,14 @@ const CreateAppointmentForm = () => {
                   });
                 }}
                 onClear={() => {
-                  setFormSelected({
-                    ...FormSelected,
-                    patient: null,
-                  });
+                  setFormSelected({ ...FormSelected, patient: null });
                 }}
                 onChange={(value) => {
                   const patientData = patients.data.find(
                     (patient) => patient.value === value
                   );
                   if (!patientData) {
-                    setFormSelected({
-                      ...FormSelected,
-                      patient: null,
-                    });
+                    setFormSelected({ ...FormSelected, patient: null });
                     form.setFieldsValue({ patient: null });
                     return;
                   } else {
@@ -333,6 +328,7 @@ const CreateAppointmentForm = () => {
               <DatePicker
                 showTime
                 allowClear
+                defaultValue={dayjs("2015-01-01", "YYYY-MM-DD")}
                 onChange={(value) => {
                   form.setFieldsValue({ datetime: value });
                   setFormSelected({
@@ -356,11 +352,7 @@ const CreateAppointmentForm = () => {
           >
             Appointment Details
           </Typography.Title>
-          <Row
-            style={{
-              paddingLeft: 25,
-            }}
-          >
+          <Row style={{ paddingLeft: 25 }}>
             <Col>
               <Typography.Text level={4}>Date : </Typography.Text>
             </Col>
@@ -397,12 +389,7 @@ const CreateAppointmentForm = () => {
               )}{" "}
             </Card>
 
-            <Card
-              title="Doctor Details"
-              style={{
-                background: "transparent",
-              }}
-            >
+            <Card title="Doctor Details" style={{ background: "transparent" }}>
               {FormSelected.doctor ? (
                 <Space direction="vertical">
                   <Typography.Text type="danger">

@@ -10,16 +10,17 @@ import {
   Table,
   Typography,
 } from "antd";
-import React, { useEffect, useMemo, useState } from "react";
-import { useQuery } from "react-query";
-import { instance } from "../../../../api/instance";
 import PropTypes from "prop-types";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { authState } from "../../../../atoms/auth";
-import { permissions } from "../../../../routes";
 import { useNavigate } from "react-router-dom";
-import { inventoryState } from "../../../../atoms/inventory";
+import { useRecoilState, useRecoilValue } from "recoil";
+import React, { useEffect, useMemo, useState } from "react";
+
 import EditMedicine from "./EditMedicine";
+import { permissions } from "../../../../routes";
+import { authState } from "../../../../atoms/auth";
+import { instance } from "../../../../api/instance";
+import { inventoryState } from "../../../../atoms/inventory";
+import dayjs from "dayjs";
 
 function InventoryTable(prop) {
   const auth = useRecoilValue(authState);
@@ -55,18 +56,9 @@ function InventoryTable(prop) {
   const navigate = useNavigate();
 
   const modalData = [
-    {
-      title: "Batch Number",
-      key: "batchNumber",
-    },
-    {
-      title: "Category",
-      key: "category",
-    },
-    {
-      title: "Med Type",
-      key: "medType",
-    },
+    { title: "Batch Number", key: "batchNumber" },
+    { title: "Category", key: "category" },
+    { title: "Med Type", key: "medType" },
   ];
 
   const columns = [
@@ -88,18 +80,19 @@ function InventoryTable(prop) {
       key: "quantity",
     },
     {
+      title: "Expiry Date",
+      dataIndex: "expiry_date",
+      key: "expiry_date",
+      render: (text, record) => dayjs(text).format("DD-MM-YYYY"),
+    },
+    {
       title: "Actions",
       key: "id",
       render: (text, record) => (
         <Space size={"middle"}>
           <Button
             type="dashed"
-            onClick={() => {
-              setIsModalVisible({
-                open: true,
-                data: record,
-              });
-            }}
+            onClick={() => setIsModalVisible({ open: true, data: record })}
           >
             View More
           </Button>
@@ -110,10 +103,7 @@ function InventoryTable(prop) {
 
   const DeleteInventoryItem = async () => {
     try {
-      setIsModalVisible({
-        ...isModalVisible,
-        isDeleteLoading: true,
-      });
+      setIsModalVisible({ ...isModalVisible, isDeleteLoading: true });
       const id = isModalVisible.data.id;
       await instance.post(`/inventory/delete`, {
         type: prop.type,
@@ -144,11 +134,7 @@ function InventoryTable(prop) {
 
   return (
     <div>
-      <Row
-        style={{
-          width: "100%",
-        }}
-      >
+      <Row style={{ width: "100%" }}>
         <Col span={18}>
           <Input.Search
             placeholder="Search in Inventory"
@@ -156,29 +142,18 @@ function InventoryTable(prop) {
             style={{ width: "100%", padding: "10px" }}
             onSearch={(value) => {
               console.log(value);
-              setSearchQuery({
-                ...SearchQuery,
-                [prop.type]: value,
-              });
+              setSearchQuery({ ...SearchQuery, [prop.type]: value });
             }}
           />
         </Col>
-        <Col
-          span={6}
-          style={{
-            paddingLeft: "10px",
-            display: "flex",
-          }}
-        >
+        <Col span={6} style={{ paddingLeft: "10px", display: "flex" }}>
           <Button
             type="primary"
             style={{
               display: hasEditPermission ? "block" : "none",
               alignSelf: "center",
             }}
-            onClick={() => {
-              navigate("/inventory/new");
-            }}
+            onClick={() => navigate("/inventory/new")}
           >
             + Add New
           </Button>
@@ -199,7 +174,6 @@ function InventoryTable(prop) {
               <div>
                 <Space direction="vertical">
                   <Typography.Text>
-                    {" "}
                     ID : {isModalVisible.data.id}
                   </Typography.Text>
                   <Typography.Title level={4}>
@@ -230,10 +204,7 @@ function InventoryTable(prop) {
                 <Button
                   type="ghost"
                   onClick={() => {
-                    setIsModalVisible({
-                      ...isModalVisible,
-                      isEdit: true,
-                    });
+                    setIsModalVisible({ ...isModalVisible, isEdit: true });
                   }}
                 >
                   Edit
@@ -241,10 +212,7 @@ function InventoryTable(prop) {
                 <Button
                   danger
                   onClick={() =>
-                    setIsModalVisible({
-                      ...isModalVisible,
-                      isDeleting: true,
-                    })
+                    setIsModalVisible({ ...isModalVisible, isDeleting: true })
                   }
                 >
                   Delete
@@ -261,10 +229,7 @@ function InventoryTable(prop) {
                 action={
                   <Space
                     direction="horizontal"
-                    style={{
-                      marginTop: 20,
-                      marginBottom: 20,
-                    }}
+                    style={{ marginTop: 20, marginBottom: 20 }}
                   >
                     <Button
                       danger
