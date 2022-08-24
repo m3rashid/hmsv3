@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
 import { Form } from "antd";
+import { useReactToPrint } from "react-to-print";
 import { useCallback, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { doctorState } from "../../../atoms/doctor";
 import { Loadingatom } from "../../../atoms/loading";
-import { useReactToPrint } from "react-to-print";
 
 const usePrescribeMedicines = (socket) => {
   const [form] = Form.useForm();
@@ -17,16 +17,17 @@ const usePrescribeMedicines = (socket) => {
   const [loading, setLoading] = useRecoilState(Loadingatom);
   const doctorData = useRecoilValue(doctorState);
   const [formData, setFormData] = useState({});
-  const [medicines, setMedicines] = useState({
-    medicines: [],
-    extramedicines: [],
-  });
   const [referToAnotherDoctor, setReferToAnotherDoctor] = useState(false);
   const [CreatePrescriptionModalVisible, setCreatePrescriptionModalVisible] =
     useState(false);
 
+  const [medicines, setMedicines] = useState({
+    medicines: [],
+    extramedicines: [],
+  });
+
   const formSubmitHandler = (values) => {
-    // if (loading?.PrescribeMedicines) return;
+    if (loading?.PrescribeMedicines) return;
     const data = {
       appointment: formData.appointmentInfo.id,
       symptoms: values.symptoms,
@@ -47,10 +48,9 @@ const usePrescribeMedicines = (socket) => {
       }),
     };
     if (loading?.PrescribeMedicines) return;
-    setLoading({
-      PrescribeMedicines: true,
-    });
+    setLoading({ PrescribeMedicines: true });
     socket.emit("create-prescription-by-doctor", data);
+    form.resetFields();
   };
 
   const addEmptyMedicine = (type) => {
@@ -66,7 +66,6 @@ const usePrescribeMedicines = (socket) => {
   const deleteMedicine = (index, type) => {
     setMedicines((prevState) => {
       prevState[type].splice(index, 1);
-
       return prevState;
     });
   };

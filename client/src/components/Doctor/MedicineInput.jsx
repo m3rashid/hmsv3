@@ -8,6 +8,16 @@ import styles from "./medicineinput.module.css";
 import { inventoryState } from "../../atoms/inventory";
 import { instance } from "../../api/instance";
 
+const dosages = [
+  { value: "OD", label: "Once a day" },
+  { value: "BD", label: "Twice a day" },
+  { value: "TD", label: "Three times a day" },
+  { value: "QD", label: "Four times a day" },
+  { value: "OW", label: "Once a week" },
+  { value: "BW", label: "Twice a week" },
+  { value: "TW", label: "Three times a week" },
+];
+
 /**
  *
  * Used to Generate Medicine Inputs, Checks Item Availability
@@ -21,16 +31,6 @@ function MedicineInput({
   UpdateMedicine,
   isExtra,
 }) {
-  const dosages = [
-    { value: "OD", label: "Once a day" },
-    { value: "BD", label: "Twice a day" },
-    { value: "TD", label: "Three times a day" },
-    { value: "QD", label: "Four times a day" },
-    { value: "OW", label: "Once a week" },
-    { value: "BW", label: "Twice a week" },
-    { value: "TW", label: "Three times a week" },
-  ];
-
   const medicineDB = useRecoilValue(inventoryState);
   const [MedicineData, setMedicineData] = useState(medicine);
   const [Info, setInfo] = useState({
@@ -77,23 +77,13 @@ function MedicineInput({
   }, [ValidateMedicine]);
 
   useEffect(() => {
-    UpdateMedicine(
-      medicineType,
-      {
-        ...value,
-        ...Info,
-      },
-      index
-    );
+    UpdateMedicine(medicineType, { ...value, ...Info }, index);
   }, [value, Info, UpdateMedicine, medicineType, index]);
 
   return (
     <Space
       direction="vertical"
-      style={{
-        width: "90%",
-        padding: "0 5px 5px 5px",
-      }}
+      style={{ width: "90%", padding: "0 5px 5px 5px" }}
       size="middle"
     >
       <div className={styles.header}>
@@ -132,7 +122,7 @@ function MedicineInput({
           >
             <Select.OptGroup label="Tablets">
               {medicineDB.Medicine?.inventory
-                .filter((m) => m.medType === "TABLET")
+                ?.filter((m) => m.medType === "TABLET")
                 .map((medicine) => {
                   return (
                     <Select.Option key={medicine.id} value={medicine.id}>
@@ -144,7 +134,7 @@ function MedicineInput({
 
             <Select.OptGroup label="Syrups">
               {medicineDB.Medicine?.inventory
-                .filter((m) => m.medType === "SYRUP")
+                ?.filter((m) => m.medType === "SYRUP")
                 .map((medicine) => {
                   return (
                     <Select.Option key={medicine.id} value={medicine.id}>
@@ -182,12 +172,7 @@ function MedicineInput({
           </Select>
         </Space>
         {medicine?.medicine?.medType === "SYRUP" && (
-          <Space
-            style={{
-              width: "100%",
-              display: "flex",
-            }}
-          >
+          <Space style={{ width: "100%", display: "flex" }}>
             <Typography>Dosage Amount :</Typography>
             <Input
               type="number"

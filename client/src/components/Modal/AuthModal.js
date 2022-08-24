@@ -63,6 +63,9 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
         onFinish={onFinish}
         initialValues={{ remember: true }}
         onFinishFailed={onFinishFailed}
+        layout="horizontal"
+        labelCol={{ span: 7 }}
+        wrapperCol={{ span: 14 }}
       >
         <Form.Item
           rules={[{ required: true, message: "Please enter your username!" }]}

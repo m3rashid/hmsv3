@@ -28,17 +28,6 @@ const Notifications = () => {
             <h3>{item.title}</h3>
             <p>{item.message}</p>
             <p>{dayjs(item.tile).format("HH:mm:ss a, DD-MM")}</p>
-
-            {/* <div>
-              <b>Patient : &nbsp; </b> {item.patient}
-            </div>
-            <div>
-              <b>Time : &nbsp; </b> {item.time}
-            </div>
-            <div>
-              <b>Disease : &nbsp; </b>
-              {item.disease}
-            </div> */}
           </div>
         );
       })}
