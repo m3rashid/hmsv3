@@ -13,17 +13,19 @@ import { socket } from "../../api/socket";
 import Header from "../../components/Header";
 import { showGender } from "../../components/utils/strings";
 import { useRecoilState } from "recoil";
-import { Loadingatom } from "../../atoms/loading";
+import { LoadingAtom } from "../../atoms/loading";
 const { TextArea } = Input;
 
 const CreatePatientForm = () => {
-  const [LoadingData, setLoadingData] = useRecoilState(Loadingatom);
+  const [LoadingData, setLoadingData] = useRecoilState(LoadingAtom);
+  const [from] = Form.useForm()
   const formSubmitHandler = (values) => {
     if (LoadingData?.CreatePatientForm) return;
     setLoadingData({
       CreatePatientForm: true,
     });
     socket.emit("create-patient", { ...values });
+    from.resetFields();
   };
 
   useEffect(() => {
@@ -54,6 +56,7 @@ const CreatePatientForm = () => {
       </Typography.Title>
       <Form
         onFinish={formSubmitHandler}
+        form={from}
         labelAlign="left"
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 12 }}

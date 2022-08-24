@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
-export const Loadingatom = atom({
+export const LoadingAtom = atom({
   key: "loading",
   default: false,
 });

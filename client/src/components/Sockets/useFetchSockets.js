@@ -11,7 +11,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { inventoryState } from "../../atoms/inventory";
 import { InventoryTypes } from "../../utils/inventoryTypes";
 import { pharmacyState } from "../../atoms/pharmacy";
-import { Loadingatom } from "../../atoms/loading";
+import { LoadingAtom } from "../../atoms/loading";
 
 // Used for all on socket events
 export default function useFetchSockets() {
@@ -19,7 +19,7 @@ export default function useFetchSockets() {
   const [DoctorData, setDoctorData] = useRecoilState(doctorState);
   const [, setInventoryData] = useRecoilState(inventoryState);
   const [, setPharmacyData] = useRecoilState(pharmacyState);
-  const [, setLoadingData] = useRecoilState(Loadingatom);
+  const [, setLoadingData] = useRecoilState(LoadingAtom);
   const { addNotification } = useNotifications();
 
   useEffect(() => {
