@@ -158,13 +158,13 @@ const CreateUserModal = ({ isEdit, data }) => {
         console.log({ userCreated: res.data });
       }
       message.success({
-        content: "User created Successfully",
+        content: `User ${isEdit ? "edited" : "created"} Successfully`,
         key: "auth/createUser",
       });
       handleCancel();
     } catch (error) {
       message.error({
-        content: "User creation Failed",
+        content: `User ${isEdit ? "updation" : "creation"} failed`,
         key: "auth/createUser",
       });
     }
