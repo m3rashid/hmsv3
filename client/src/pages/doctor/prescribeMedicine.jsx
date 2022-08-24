@@ -146,7 +146,7 @@ const PrescriptionForm = () => {
               </Form.Item>
 
               <Space direction="vertical" style={{ width: "100%" }}>
-                {medicines.medicines.map((medicine, index) => (
+                {medicines.medicines?.map((medicine, index) => (
                   <MedicineInput
                     key={index}
                     index={index}
@@ -170,7 +170,7 @@ const PrescriptionForm = () => {
 
               <Space direction="vertical" style={{ width: "100%" }}>
                 <strong>Custom Medicines</strong>
-                {medicines.extramedicines.map((medicine, index) => (
+                {medicines.extramedicines?.map((medicine, index) => (
                   <MedicineInput
                     key={index}
                     index={index}
@@ -236,12 +236,12 @@ const PrescriptionForm = () => {
           </div>
         )}
 
-        {/* <ReferPatientModal
+        <ReferPatientModal
           modalState={referToAnotherDoctor}
           setModalState={setReferToAnotherDoctor}
-          patientId={formData.appointmentInfo.patientId}
-          doctorId={formData.appointmentInfo.doctorId}
-        /> */}
+          patientId={formData.appointmentInfo?.patientId}
+          doctorId={formData.appointmentInfo?.doctorId}
+        />
 
         <Modal
           visible={CreatePrescriptionModalVisible}

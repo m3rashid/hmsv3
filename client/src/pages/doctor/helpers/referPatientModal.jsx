@@ -45,7 +45,7 @@ const ReferPatientModal = ({
   return (
     <React.Fragment>
       <Modal
-        title="Create"
+        title="Refer Patient"
         visible={modalState}
         onOk={closeModal}
         onCancel={closeModal}
@@ -56,6 +56,9 @@ const ReferPatientModal = ({
           name={"Refer to another Doctor"}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
+          layout="horizontal"
+          labelCol={{ span: 7 }}
+          wrapperCol={{ span: 14 }}
         >
           <Select
             placeholder="Select Doctor"

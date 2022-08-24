@@ -152,11 +152,7 @@ function DoctorAppointments() {
   ];
 
   return (
-    <div
-      style={{
-        marginTop: "20px",
-      }}
-    >
+    <div style={{ marginTop: "20px" }}>
       <Header />
       <Divider />
       <Typography.Title
@@ -202,7 +198,7 @@ function DoctorAppointments() {
         <div>
           <p>
             <strong>Date and Time: </strong>
-            {ModalVisible.data?.date}
+            {dayjs(ModalVisible.data?.date).format("MMMM DD YYYY, h:mm:ss a")}
           </p>
           <div>
             <h4>
@@ -218,7 +214,7 @@ function DoctorAppointments() {
                 {ModalVisible.data?.patient?.age}
               </div>
               <div>
-                <strong>Email:</strong>
+                <strong>Email: </strong>
                 {ModalVisible.data?.patient?.email}
               </div>
             </Space>

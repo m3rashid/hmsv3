@@ -137,6 +137,7 @@ const RenderFormFields = ({ formFields, isEdit, required, data }) => {
 };
 
 const CreateUserModal = ({ isEdit, data }) => {
+  const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = React.useState(false);
 
   const handleOk = () => setIsModalVisible(true);
@@ -162,6 +163,7 @@ const CreateUserModal = ({ isEdit, data }) => {
         key: "auth/createUser",
       });
       handleCancel();
+      form.resetFields();
     } catch (error) {
       message.error({
         content: `User ${isEdit ? "updation" : "creation"} failed`,
@@ -197,6 +199,9 @@ const CreateUserModal = ({ isEdit, data }) => {
           name="Create User"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
+          layout="horizontal"
+          labelCol={{ span: 7 }}
+          wrapperCol={{ span: 14 }}
         >
           <RenderFormFields
             isEdit={isEdit}

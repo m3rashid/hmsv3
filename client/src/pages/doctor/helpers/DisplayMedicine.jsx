@@ -1,6 +1,7 @@
-import { Space, Typography, Card } from "antd";
 import React from "react";
 import dayjs from "dayjs";
+import { Space, Typography, Card } from "antd";
+
 import SingleMedicine from "./singleMedicine";
 
 function DisplayMedicine({ formData, medicines }) {
@@ -39,14 +40,14 @@ function DisplayMedicine({ formData, medicines }) {
 
       <Card title="Medicines" style={{ background: "transparent" }}>
         <Space direction="vertical" size={"large"}>
-          {medicines.medicines.map((medicine, index) => (
+          {medicines.medicines?.map((medicine, index) => (
             <SingleMedicine key={index} index={index} medicine={medicine} />
           ))}
         </Space>
       </Card>
       <Card title="Custom Medicines" style={{ background: "transparent" }}>
         <Space direction="vertical" size={"large"}>
-          {medicines.extramedicines.map((medicine, index) => (
+          {medicines.extramedicines?.map((medicine, index) => (
             <SingleMedicine
               key={index}
               index={index}
