@@ -7,7 +7,6 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { doctorState } from "../../../atoms/doctor";
 import { LoadingAtom } from "../../../atoms/loading";
-import { useReactToPrint } from "react-to-print";
 
 const usePrescribeMedicines = (socket) => {
   const [form] = Form.useForm();
