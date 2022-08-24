@@ -80,12 +80,12 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2022-08-24T10:44:05.379Z",
-    "modified": "2022-08-24T12:31:22.889Z",
+    "modified": "2022-08-24T17:38:02.604Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\": \"coadmin@jmi.ac.in\",\n  \"password\": \"admin123\",\n  \"name\": \"Co Admin\",\n  \"role\": \"CO_ADMIN\",\n  \"sex\": \"f\"\n}",
+      "raw": "{\n  \"email\": \"inventory@jmi.ac.in\",\n  \"password\": \"admin123\",\n  \"name\": \"Inventory Manager\",\n  \"role\": \"INVENTORY_MANAGER\",\n  \"sex\": \"f\"\n}",
       "form": []
     },
     "tests": []
@@ -99,7 +99,7 @@
     "method": "POST",
     "sortNum": 0,
     "created": "2022-08-24T11:12:19.941Z",
-    "modified": "2022-08-24T11:14:04.145Z",
+    "modified": "2022-08-24T17:54:34.703Z",
     "headers": [],
     "params": [],
     "body": {

@@ -65,6 +65,11 @@ const CreateAppointmentForm = () => {
     if (loading) return;
     setLoading(true);
     socket.emit("create-appointment", data);
+    form.resetFields()
+    setFormSelected({
+      doctor: null,
+      patient:null
+    })
   };
 
   useEffect(() => {

@@ -5,7 +5,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { doctorState } from "../../../atoms/doctor";
-import { Loadingatom } from "../../../atoms/loading";
+import { LoadingAtom } from "../../../atoms/loading";
 import { useReactToPrint } from "react-to-print";
 
 const usePrescribeMedicines = (socket) => {
@@ -14,7 +14,7 @@ const usePrescribeMedicines = (socket) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useRecoilState(Loadingatom);
+  const [loading, setLoading] = useRecoilState(LoadingAtom);
   const doctorData = useRecoilValue(doctorState);
   const [formData, setFormData] = useState({});
   const [medicines, setMedicines] = useState({
