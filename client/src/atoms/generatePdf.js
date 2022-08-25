@@ -265,13 +265,3 @@ const GeneratePdf = (props) => {
   );
 };
 export default GeneratePdf;
-// {appointment: 'Aaliya begh-August 26 2022 15:01 PM', symptoms: 'asd', CustomMedicines: 'asd', datetime: '2022-08-20 17:01:47', medicines: Array(1)}
-// CustomMedicines: "asd"
-// appointment: "Aaliya begh-August 26 2022 15:01 PM"
-// datetime: "2022-08-20 17:01:47"
-// medicines: Array(1)
-// 0: {name: '1', dosage: 'Twice a day', quantity: '2', description: 'sdad'}
-// length: 1
-// [[Prototype]]: Array(0)
-// symptoms: "asd"
-// [[Prototype]]: Object

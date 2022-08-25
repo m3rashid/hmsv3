@@ -17,7 +17,8 @@ const lighterFontFlex = {
 };
 
 const GeneratePdf = (props) => {
-  const parchiData = props.data[0];
+  const parchiData = props?.data[0];
+  console.log(parchiData.medicines);
   const { user } = useRecoilValue(authState);
   const [activeKey, setActiveKey] = useState("1");
 
@@ -128,7 +129,7 @@ const GeneratePdf = (props) => {
                     <Space
                       direction="vertical"
                       style={{
-                        marginTop: "50px",
+                        marginTop: "20px",
                         padding: "20px",
                         marginLeft: "50px",
                         fontSize: "15px",
@@ -138,15 +139,16 @@ const GeneratePdf = (props) => {
                       <Row>
                         <Col span={8}>By</Col>
                         <Col span={16}>
-                          <strong>{user.name}</strong>
+                          <strong>
+                            {parchiData?.appointment?.doctor?.Auth[0].name}
+                          </strong>
                         </Col>
                       </Row>
                       <Row>
                         <Col span={8}>Patient Name</Col>
                         <Col span={16}>
                           <strong>
-                            {parchiData?.appointment &&
-                              parchiData.appointment.split("-")[0]}
+                            {parchiData?.appointment?.patient?.name}
                           </strong>
                         </Col>
                       </Row>
@@ -160,10 +162,27 @@ const GeneratePdf = (props) => {
                         </Col>
                       </Row>
                     </Space>
+                    <Space
+                      direction="vertical"
+                      style={{
+                        marginTop: "5px",
+                        padding: "20px",
+                        marginLeft: "30px",
+                        fontSize: "20px",
+                        width: "90%",
+                      }}
+                    >
+                      <Row>
+                        <Col span={8}>
+                          <strong>Available Medicines</strong>
+                        </Col>
+                      </Row>
+                    </Space>
                     <div
                       style={{
-                        marginTop: "20px",
+                        marginTop: "5px",
                         marginLeft: "50px",
+                        marginRight: "30px",
                         fontSize: "20px",
                       }}
                     >
@@ -171,54 +190,86 @@ const GeneratePdf = (props) => {
                         columns={[
                           {
                             title: "Medicine",
-                            dataIndex: "medicine",
+                            dataIndex: "Medicine",
                             render: (text) => <span>{text?.name}</span>,
                           },
                           {
                             title: "Dosage",
                             dataIndex: "dosage",
-                            render: (text, record) => (
-                              <span>{text?.value}</span>
-                            ),
+                            render: (text, record) => <span>{text}</span>,
                           },
                           {
                             title: "Quantity",
-                            dataIndex: "quantity",
+                            dataIndex: "quantityPerDose",
                             render: (text, record) => (
                               <span>
                                 {quantityCalculator(
                                   record?.duration,
-                                  record?.dosage?.value
+                                  record?.dosage
                                 )}
                               </span>
                             ),
                           },
                           { title: "Description", dataIndex: "description" },
                         ]}
-                        dataSource={parchiData?.medicines?.medicines}
+                        dataSource={parchiData?.medicines}
                         pagination={false}
                       />
                     </div>
                     <Space
                       direction="vertical"
                       style={{
-                        marginTop: "20px",
+                        marginTop: "5px",
                         padding: "20px",
-                        marginLeft: "50px",
-                        fontSize: "15px",
+                        marginLeft: "30px",
+                        fontSize: "20px",
                         width: "80%",
                       }}
                     >
                       <Row>
-                        <Col span={8}>CustomMedicines</Col>
-                        <Col span={16}>
-                          <strong>
-                            {parchiData?.CustomMedicines &&
-                              parchiData.CustomMedicines}
-                          </strong>
+                        <Col span={8}>
+                          <strong>Custom Medicines</strong>
                         </Col>
                       </Row>
                     </Space>
+                    <div
+                      style={{
+                        marginTop: "5px",
+                        marginLeft: "50px",
+                        marginRight: "30px",
+                        fontSize: "20px",
+                      }}
+                    >
+                      <Table
+                        columns={[
+                          {
+                            title: "Medicine",
+                            dataIndex: "name",
+                            render: (text) => <span>{text}</span>,
+                          },
+                          {
+                            title: "Dosage",
+                            dataIndex: "dosage",
+                            render: (text, record) => <span>{text}</span>,
+                          },
+                          {
+                            title: "Quantity",
+                            dataIndex: "Medicine.quantity",
+                            render: (text, record) => (
+                              <span>
+                                {quantityCalculator(
+                                  record?.duration,
+                                  record?.dosage
+                                )}
+                              </span>
+                            ),
+                          },
+                          // { title: "Description", dataIndex: "description" },
+                        ]}
+                        dataSource={parchiData?.CustomMedicines}
+                        pagination={false}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

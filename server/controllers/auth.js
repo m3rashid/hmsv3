@@ -2,7 +2,6 @@ const {
   loginService,
   revalidateService,
   signupService,
-  createDummyPatientService,
 } = require("../services");
 
 const login = async (req, res) => {

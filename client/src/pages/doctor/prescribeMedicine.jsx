@@ -16,7 +16,6 @@ import React, { useEffect } from "react";
 import { socket } from "../../api/socket";
 import Header from "../../components/Header";
 import DisplayMedicine from "./helpers/DisplayMedicine";
-import GeneratePdf from "../../components/generatePdf.jsx";
 import usePrescribeMedicines from "./helpers/prescribeMeds.hook";
 import MedicineInput from "../../components/Doctor/MedicineInput";
 import ReferPatientModal from "./helpers/referPatientModal";
@@ -222,10 +221,6 @@ const PrescriptionForm = () => {
               gap: "50px",
             }}
           >
-            <Button type="primary" className="print__button" onClick={printPdf}>
-              Print Prescription
-            </Button>
-
             <Button
               type="primary"
               style={{ background: "#ff0000", border: "none" }}
@@ -255,19 +250,6 @@ const PrescriptionForm = () => {
         >
           <DisplayMedicine formData={formData} medicines={medicines} />
         </Modal>
-
-        {/* {formData.appointmentInfo && (
-          <GeneratePdf
-            printContainerRef={printContainerRef}
-            data={[
-              {
-                ...formData,
-                medicines: medicines,
-                date: dayjs().format("MMMM DD YYYY HH:mm A"),
-              },
-            ]}
-          />
-        )} */}
       </div>
     </React.Fragment>
   );
