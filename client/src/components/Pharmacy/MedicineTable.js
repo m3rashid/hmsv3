@@ -1,17 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Table, Input } from "antd";
+import { getEstimatedMedRequirement } from "../../pages/pharmacy/helpers/functions";
 // const EditableContext = React.createContext(null);
-const DOSAGE_MAP = {
-  OD: 1,
-  BD: 2,
-  TD: 3,
-  QD: 4,
-  OW: 1 / 7,
-  BW: 2 / 7,
-  TW: 3 / 7,
-  QW: 4 / 7,
-};
-
 const MedicineTable = ({
   medicines = [],
   selectedMedicines,
@@ -22,12 +12,9 @@ const MedicineTable = ({
   useEffect(() => {
     setDispensingMedicines(
       medicines.map((med) => {
-        const requiredQuantity = Math.ceil(
-          med.duration * DOSAGE_MAP[med.dosage]
-        );
         return {
           ...med,
-          requiredQuantity,
+          requiredQuantity : getEstimatedMedRequirement({dosage:med.dosage, duration:med.duration}),
           amountDispensed: 0,
           stock: med.Medicine.quantity,
           name: med.Medicine.name,
