@@ -1,13 +1,13 @@
 import { message } from "antd";
-import { socket } from "../../api/socket";
-import useNotifications from "../../Hooks/useNotifications";
-import { checkAccess, permissions } from "../../routes";
-import { authState } from "../../atoms/auth";
-import { doctorState } from "../../atoms/doctor";
-
-import { instance } from "../../api/instance";
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+
+import { socket } from "../../api/socket";
+import { permissions } from "../../routes";
+import { authState } from "../../atoms/auth";
+import { instance } from "../../api/instance";
+import { doctorState } from "../../atoms/doctor";
+import useNotifications from "../../Hooks/useNotifications";
 
 export default function useFetchDoctor() {
   const auth = useRecoilValue(authState);
@@ -15,12 +15,22 @@ export default function useFetchDoctor() {
   const { addNotification } = useNotifications();
 
   const loadDoctorAppointment = useCallback(async () => {
-    const res = await instance.get(`/doctor/get-appointments`);
+    console.log({ token: auth.token });
+    if (!auth.token) {
+      return;
+    }
+
+    const res = await instance.get(`/doctor/get-appointments`, {
+      headers: {
+        authorization: auth.token,
+      },
+    });
     console.log(res.data);
     setDoctorData({
       ...DoctorData,
       appointments: res.data.appointments,
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [DoctorData, setDoctorData]);
 
   useEffect(() => {
@@ -34,7 +44,7 @@ export default function useFetchDoctor() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
-  const loadMedicine = useCallback(async () => { }, []);
+  // const loadMedicine = useCallback(async () => {}, []);
 
   const addAppointment = useCallback(
     async (data) => {
@@ -54,8 +64,9 @@ export default function useFetchDoctor() {
     if (
       !auth.isLoggedIn ||
       !auth.user.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE)
-    )
+    ) {
       return;
+    }
 
     console.log("Connected New Prescription By Doctor");
     socket.on("new-prescription-by-doctor-created", ({ data }) => {
@@ -73,8 +84,9 @@ export default function useFetchDoctor() {
     if (
       !auth.isLoggedIn ||
       !auth.user.permissions.includes(permissions.DOCTOR_APPOINTMENTS)
-    )
+    ) {
       return;
+    }
 
     console.log("Connected New Appointment By Doctor");
     socket.on("new-appointment-created", (data) => {

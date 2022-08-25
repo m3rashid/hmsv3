@@ -23,8 +23,7 @@ function App() {
   const revalidate = useCallback(() => {
     revalidateJWT(setAuth)
       .then((res) => {
-        console.log({ socket });
-        console.log(res);
+        if (!res) return;
         socket.io.opts.auth.token = res.token;
         socket.disconnect().connect();
       })

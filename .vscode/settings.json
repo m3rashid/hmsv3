@@ -8,5 +8,17 @@
   },
   "[dotenv]": {
     "editor.defaultFormatter": "foxundermoon.shell-format"
-  }
+  },
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "database": "hmsv2",
+      "username": "rashid",
+      "password": "rashid",
+      "name": "hmsv2"
+    }
+  ]
 }

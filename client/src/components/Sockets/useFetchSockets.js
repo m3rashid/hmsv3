@@ -1,17 +1,17 @@
 import { message } from "antd";
-import { socket } from "../../api/socket";
-import useNotifications from "../../Hooks/useNotifications";
-import { checkAccess, permissions } from "../../routes";
-import { authState } from "../../atoms/auth";
-import { doctorState } from "../../atoms/doctor";
-
-import { instance } from "../../api/instance";
 import { useCallback, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+
+import { socket } from "../../api/socket";
+import { permissions } from "../../routes";
+import { authState } from "../../atoms/auth";
+import { instance } from "../../api/instance";
+import { doctorState } from "../../atoms/doctor";
+import { LoadingAtom } from "../../atoms/loading";
+import { pharmacyState } from "../../atoms/pharmacy";
 import { inventoryState } from "../../atoms/inventory";
 import { InventoryTypes } from "../../utils/inventoryTypes";
-import { pharmacyState } from "../../atoms/pharmacy";
-import { LoadingAtom } from "../../atoms/loading";
+import useNotifications from "../../Hooks/useNotifications";
 
 // Used for all on socket events
 export default function useFetchSockets() {
@@ -31,6 +31,7 @@ export default function useFetchSockets() {
     return () => {
       socket.off("error");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /** Socket Events for Inventory Roles */
@@ -92,8 +93,9 @@ export default function useFetchSockets() {
     if (
       !auth.isLoggedIn ||
       !auth.user.permissions.includes(permissions.PHARMACY_PRESCRIPTIONS)
-    )
+    ) {
       return;
+    }
     loadPharmacyPrescriptions();
     socket.on("new-prescription-by-doctor-created", ({ data }) => {
       console.log(data);
@@ -191,8 +193,9 @@ export default function useFetchSockets() {
     if (
       !auth.isLoggedIn ||
       !auth.user.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE)
-    )
+    ) {
       return;
+    }
 
     socket.on("new-prescription-by-doctor-created", ({ data }) => {
       setAppointmentPendingStatus(data.prescription.appointment.id, false);
@@ -213,8 +216,9 @@ export default function useFetchSockets() {
     if (
       !auth.isLoggedIn ||
       !auth.user.permissions.includes(permissions.DOCTOR_APPOINTMENTS)
-    )
+    ) {
       return;
+    }
 
     console.log("Connected New Appointment By Doctor");
     socket.on("new-appointment-created", (data) => {

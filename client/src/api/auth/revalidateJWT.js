@@ -26,7 +26,5 @@ export const revalidateJWT = async (setAuth, setSocket) => {
     });
 
     return data;
-  } catch (err) {
-    throw Error(err);
-  }
+  } catch (err) {}
 };
