@@ -53,7 +53,6 @@ const getPrescriptionByIdService = async (prescriptionId) => {
       },
     },
   });
-  console.log(prescription);
 
   return { prescription };
 };
@@ -64,7 +63,6 @@ const dispensePrescriptionService = async ({ prescriptionId, medicines }) => {
     data: { pending: false },
   });
 
-  console.log(updatePrescription);
 
   return { prescription: updatePrescription, receipt: {} };
 };
