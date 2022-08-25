@@ -1,1 +1,1 @@
-web: cd server && npm install && npm run prod
+web: cd server && npm install && npx prisma migrate deploy && npm run prod 
