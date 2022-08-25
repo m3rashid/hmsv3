@@ -3,15 +3,20 @@ import { useRecoilValue } from "recoil";
 import { Button, Form, Select, Spin } from "antd";
 import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-
+import GeneratePdf from "../../components/generatePdf";
 import { pharmacyState } from "../../atoms/pharmacy";
 import { instance } from "../../api/instance";
 import MedicineTable from "../../components/Pharmacy/MedicineTable";
 import { socket } from "../../api/socket";
+import usePrescribeMedicines from "../doctor/helpers/prescribeMeds.hook";
 // const { TextArea } = Input;
 const { Option } = Select;
 
 function CreateReceipts() {
+  const {
+    state: { printContainerRef, PrintButtonRef },
+    actions: { printPdf },
+  } = usePrescribeMedicines(socket);
   const loading = false;
   const navigate = useNavigate();
   const pharmacyData = useRecoilValue(pharmacyState);
@@ -137,18 +142,47 @@ function CreateReceipts() {
             setSelectedMedicines={setSelectedMedicines}
             selectedMedicine={selectedMedicines}
           />
-          <Form.Item wrapperCol={{ offset: 12 }}>
-            <Button
-              style={{ marginTop: "20px" }}
-              loading={loading}
-              type="primary"
-              htmlType="submit"
-            >
-              Confirm Transaction
-            </Button>
+          <Form.Item wrapperCol={{ offset: 10 }}>
+            <div style={{ display: "flex" }}>
+              {selectedPrescriptionData.data &&
+                (console.log(selectedPrescriptionData.data),
+                (
+                  <div>
+                    <Button
+                      style={{ marginTop: "20px", marginRight: "10px" }}
+                      type="primary"
+                      className="print__button"
+                      onClick={printPdf}
+                    >
+                      Print Prescription
+                    </Button>
+                  </div>
+                ))}
+              <div>
+                <Button
+                  style={{ marginTop: "20px", marginLeft: "10px" }}
+                  loading={loading}
+                  type="primary"
+                  htmlType="submit"
+                >
+                  Confirm Transaction
+                </Button>
+              </div>
+            </div>
           </Form.Item>
         </Spin>
       </Form>
+      {selectedPrescriptionData.data && (
+        <GeneratePdf
+          printContainerRef={printContainerRef}
+          data={[
+            {
+              ...selectedPrescriptionData?.data,
+              date: dayjs().format("MMMM DD YYYY HH:mm A"),
+            },
+          ]}
+        />
+      )}
     </div>
   );
 }
