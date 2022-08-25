@@ -18,7 +18,6 @@ const lighterFontFlex = {
 
 const GeneratePdf = (props) => {
   const parchiData = props?.data[0];
-  console.log(parchiData.medicines);
   const { user } = useRecoilValue(authState);
   const [activeKey, setActiveKey] = useState("1");
 
