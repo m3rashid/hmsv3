@@ -3,7 +3,6 @@ const { verifyJWT } = require("../utils/jwt.js");
 const checkAuth = (req, res, next) => {
   try {
     const token = req.headers["authorization"];
-    console.log({ headers: req.headers });
 
     if (!token) throw new Error("No token");
 
