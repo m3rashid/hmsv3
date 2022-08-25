@@ -13,3 +13,4 @@ app.jpg
 ./.prettierignore
 ./.eslintignore
 ./.eslintrc.json
+server/.env
