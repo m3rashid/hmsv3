@@ -144,20 +144,18 @@ function CreateReceipts() {
           />
           <Form.Item wrapperCol={{ offset: 10 }}>
             <div style={{ display: "flex" }}>
-              {selectedPrescriptionData.data &&
-                (console.log(selectedPrescriptionData.data),
-                (
-                  <div>
-                    <Button
-                      style={{ marginTop: "20px", marginRight: "10px" }}
-                      type="primary"
-                      className="print__button"
-                      onClick={printPdf}
-                    >
-                      Print Prescription
-                    </Button>
-                  </div>
-                ))}
+              {selectedPrescriptionData.data && (
+                <div>
+                  <Button
+                    style={{ marginTop: "20px", marginRight: "10px" }}
+                    type="primary"
+                    className="print__button"
+                    onClick={printPdf}
+                  >
+                    Print Prescription
+                  </Button>
+                </div>
+              )}
               <div>
                 <Button
                   style={{ marginTop: "20px", marginLeft: "10px" }}
