@@ -8,7 +8,7 @@ const { instrument } = require("@socket.io/admin-ui");
 
 const prisma = require("./utils/prisma.js");
 const { checkSocketAuth } = require("./middlewares/socket.js");
-const { /* isProduction ,*/ corsOrigin } = require("./utils/config.js");
+const { isProduction, corsOrigin } = require("./utils/config.js");
 const { globalErrorHandlerMiddleware } = require("./middlewares/error.js");
 
 const { router: AdminRoutes } = require("./routes/admin.routes");
