@@ -87,7 +87,7 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   try {
     instrument(io, { auth: false });
-    // if (isProduction) console.log = () => {};
+    if (isProduction) console.log = () => {};
 
     await prisma.$connect();
     console.log("Connection established successfully");
