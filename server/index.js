@@ -8,7 +8,7 @@ const { instrument } = require("@socket.io/admin-ui");
 
 const prisma = require("./utils/prisma.js");
 const { checkSocketAuth } = require("./middlewares/socket.js");
-const { isProduction, corsOrigin } = require("./utils/config.js");
+const { /* isProduction ,*/ corsOrigin } = require("./utils/config.js");
 const { globalErrorHandlerMiddleware } = require("./middlewares/error.js");
 
 const { router: AdminRoutes } = require("./routes/admin.routes");
@@ -87,7 +87,7 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   try {
     instrument(io, { auth: false });
-    if (isProduction) console.log = () => {};
+    // if (isProduction) console.log = () => {};
 
     await prisma.$connect();
     console.log("Connection established successfully");
