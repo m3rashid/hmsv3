@@ -9,10 +9,15 @@ const {
   checkMedAvailabilityService,
   getAppointmentByIdService,
 } = require("../services");
+const { permissions } = require("../utils/constants");
 const prisma = require("../utils/prisma");
 
 const getDoctorAppointments = async (req, res) => {
-  if (!req.user || !req.user.id) throw new Error("Unauthorized");
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.permissions.includes(permissions.DOCTOR_APPOINTMENTS)) {
+    throw new Error("Unauthorized for this resource");
+  }
+
   const { appointments } = await getDoctorAppointmentsService(req.user.id);
 
   return res.status(200).json({
@@ -21,8 +26,9 @@ const getDoctorAppointments = async (req, res) => {
 };
 
 const getAppointmentById = async (req, res) => {
-  if (!req.user || !req.user.id || req.user.role !== "DOCTOR") {
-    throw new Error("Unauthorized");
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.permissions.includes(permissions.DOCTOR_APPOINTMENTS)) {
+    throw new Error("Unauthorized for this resource");
   }
 
   const data = await getAppointmentByIdService(req.query.id);
@@ -31,9 +37,7 @@ const getAppointmentById = async (req, res) => {
 };
 
 const getDoctorPatients = async (req, res) => {
-  if (!req.user || !req.user.id || req.user.role !== "DOCTOR") {
-    throw new Error("Unauthorized");
-  }
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
 
   const { patients } = await getDoctorPatientsService(req.user.id);
   return res.status(200).json({
@@ -76,8 +80,9 @@ const FillDummy = async (req, res) => {
 };
 
 const createPrescriptionByDoctor = async (req, res) => {
-  if (!req.user || !req.user.id || req.user.role !== "DOCTOR") {
-    throw new Error("Unauthorized");
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE)) {
+    throw new Error("Unauthorized for this resource");
   }
 
   const { appointment, symptoms, diagnosis, customMedicines, datetime } =
@@ -98,6 +103,7 @@ const createPrescriptionByDoctor = async (req, res) => {
 };
 
 const referAnotherDoctor = async (req, res) => {
+  // TODO service not implemented yet
   const appointment = await referAnotherDoctorAppointmentService({
     patientId: req.body.patientId,
     prevDoctorId: req.body.prevDoctorId,

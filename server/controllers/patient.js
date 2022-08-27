@@ -4,8 +4,14 @@ const {
   getPatientByIdService,
   searchPatientsService,
 } = require("../services");
+const { permissions } = require("../utils/constants");
 
 const createPatient = async (req, res) => {
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.permissions.includes(permissions.RECEPTION_CREATE_PATIENT)) {
+    throw new Error("Unauthorized for this resource");
+  }
+
   const { newPatient } = await createPatientService(...req.body);
 
   return res.status(200).json({

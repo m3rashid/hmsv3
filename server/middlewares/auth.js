@@ -9,9 +9,11 @@ const checkAuth = (req, res, next) => {
     const { valid, expired, payload } = verifyJWT(token);
     if (!valid || expired) throw new Error("Valid or expired");
 
+    req.user = payload.sub;
     req.isAuthenticated = true;
 
-    req.user = payload.sub;
+    req.userId = payload.sub.id;
+    req.permissions = payload.sub.permissions;
     next();
   } catch (err) {
     console.log(err);

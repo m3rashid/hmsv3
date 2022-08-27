@@ -3,8 +3,14 @@ const {
   getAllPrescriptionsService,
   getPrescriptionByIdService,
 } = require("../services");
+const { permissions } = require("../utils/constants");
 
 const getAllPrescriptions = async (req, res) => {
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.permissions.includes(permissions.PHARMACY_PRESCRIPTIONS)) {
+    throw new Error("Unauthorized for this resource");
+  }
+
   const { prescriptions } = await getAllPrescriptionsService(req.query);
 
   return res.status(200).json({
@@ -13,6 +19,11 @@ const getAllPrescriptions = async (req, res) => {
 };
 
 const getPrescriptionById = async (req, res) => {
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.permissions.includes(permissions.PHARMACY_PRESCRIPTIONS)) {
+    throw new Error("Unauthorized for this resource");
+  }
+
   console.log(req.params.id);
   const { prescription } = await getPrescriptionByIdService(
     parseInt(req.params.id)

@@ -1,7 +1,12 @@
 const { getAllUsersService, editPermissionsService } = require("../services");
 const { updateUserProfileService } = require("../services/admin");
+const { permissions } = require("../utils/constants");
 
 const getAllUsers = async (req, res) => {
+  if (!req.permissions.includes(permissions.GET_ALL_USERS)) {
+    throw new Error("Unauthorized for this resource");
+  }
+
   const users = await getAllUsersService(req.body.userRole);
 
   return res.status(200).json({
@@ -11,6 +16,10 @@ const getAllUsers = async (req, res) => {
 };
 
 const editPermissions = async (req, res) => {
+  if (!req.permissions.includes(permissions.EDIT_USER_PERMISSIONS)) {
+    throw new Error("Unauthorized for this resource");
+  }
+
   const users = await editPermissionsService(
     req.body.userId,
     req.body.permissions
@@ -23,6 +32,10 @@ const editPermissions = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
+  if (!req.permissions.includes(permissions.EDIT_USER_PROFILE)) {
+    throw new Error("Unauthorized for this resource");
+  }
+
   const { auth, profile } = await updateUserProfileService(
     req.body.userId,
     req.body.profileId,

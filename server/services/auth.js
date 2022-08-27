@@ -18,7 +18,10 @@ const addActions = (role) => {
       allowedActions = [permissions.ADMIN];
       break;
     case "RECEPTIONIST":
-      allowedActions = [permissions.RECEPTION_ADD_APPOINTMENT];
+      allowedActions = [
+        permissions.RECEPTION_ADD_APPOINTMENT,
+        permissions.DOCTOR_APPOINTMENTS,
+      ];
       break;
     case "PHARMACIST":
       allowedActions = [

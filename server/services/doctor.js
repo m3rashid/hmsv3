@@ -9,7 +9,8 @@ const getDoctorAppointmentsService = async (
   { limit, offset, pending } = {}
 ) => {
   console.log({ userId });
-  const query = {
+
+  const appointments = await prisma.appointment.findMany({
     where: {
       doctor: { id: userId },
       ...(pending ? { pending: true } : {}),
@@ -18,9 +19,7 @@ const getDoctorAppointmentsService = async (
     orderBy: { date: "desc" },
     skip: offset || 0,
     take: limit || 500,
-  };
-
-  const appointments = await prisma.appointment.findMany(query);
+  });
 
   console.log(appointments);
   return { appointments };
@@ -132,7 +131,9 @@ const updateAppointmentService = async ({
   };
 };
 
-const referAnotherDoctorAppointmentService = async ({}) => {};
+const referAnotherDoctorAppointmentService = async ({}) => {
+  // implement this service
+};
 
 const checkMedAvailabilityService = async ({
   medicineId,

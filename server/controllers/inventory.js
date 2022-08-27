@@ -5,6 +5,7 @@ const {
   editMedicineService,
   DeleteInventoryService,
 } = require("../services");
+const { permissions } = require("../utils/constants");
 
 const CreateDummyInventory = async (req, res) => {
   const count = req.body.count;
@@ -31,6 +32,11 @@ const SearchMedicines = async (req, res) => {
 };
 
 const addMedicine = async (req, res) => {
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.permissions.includes(permissions.INVENTORY_ADD_MEDICINE)) {
+    throw new Error("Unauthorized for this resource");
+  }
+
   const { type, data } = req.body;
   const item = await addMedicineService(type, data);
 
@@ -41,6 +47,7 @@ const addMedicine = async (req, res) => {
 };
 
 const EditInventory = async (req, res) => {
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
   const { type, data, id } = req.body;
 
   const medicine = await editMedicineService(
@@ -55,6 +62,8 @@ const EditInventory = async (req, res) => {
 };
 
 const DeleteInventory = async (req, res) => {
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
+
   const { type, medicineId } = req.body;
 
   const item = DeleteInventoryService(medicineId, type);
