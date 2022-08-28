@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
 
 const prisma = require("../utils/prisma");
-const { supportedUserRoles } = require("../utils/constants");
+const { supportedUserRoles, serverActions } = require("../utils/constants");
+const { addEventLog } = require("../utils/logs");
 
 const getAllUsersService = async (userRole) => {
   if (!userRole) return [];
@@ -17,12 +18,26 @@ const getAllUsersService = async (userRole) => {
   return users;
 };
 
-const editPermissionsService = async (userId, permissions) => {
+const editPermissionsService = async (
+  userId,
+  permissions,
+
+  // TODO unhandled
+  createdBy
+) => {
   if (!userId || !permissions) throw new Error("Invalid data");
   const user = await prisma.auth.update({
     where: { id: userId },
     data: { permissions },
   });
+
+  await addEventLog({
+    action: serverActions.EDIT_PERMISSIONS,
+    fromId: createdBy,
+    actionId: user.id,
+    actionTable: "auth",
+  });
+
   return user;
 };
 
@@ -45,7 +60,10 @@ const updateUserProfileService = async (
     authorityName,
     category,
     origin,
-  }
+  },
+
+  // TODO unhandled
+  createdBy
 ) => {
   if (!userId || !profileId) throw new Error("Insufficient data");
 
@@ -78,6 +96,13 @@ const updateUserProfileService = async (
       ...(category && category.trim() && { category }),
       ...(origin && origin.trim() && { origin }),
     },
+  });
+
+  await addEventLog({
+    action: serverActions.UPDATE_PROFILE,
+    fromId: createdBy,
+    actionId: profileId,
+    actionTable: "profile",
   });
 
   return {
