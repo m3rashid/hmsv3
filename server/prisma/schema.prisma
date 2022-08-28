@@ -202,10 +202,12 @@ model Test {
 }
 
 model Log {
-  id        Int      @id @default(autoincrement())
-  action    String
-  fromId    Int
-  toId      Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  action      String
+  fromId      Int
+  toId        Int
+  actionId    String
+  actionTable String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }
