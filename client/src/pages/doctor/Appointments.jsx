@@ -61,7 +61,7 @@ function DoctorAppointments() {
       title: "Date/Time",
       dataIndex: "date",
       key: "date",
-      sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      sorter: (a, b) => dayjs(a.date).isBefore(dayjs(b.date)),
       render: (item) => dayjs(item).format("MMMM DD YYYY, h:mm:ss a"),
       defaultSortOrder: "ascend",
     },
@@ -73,7 +73,7 @@ function DoctorAppointments() {
         <Space>
           <Button
             onClick={() => {
-              console.log(record);
+
               setModalVisible({
                 visible: true,
                 id: record.id,
@@ -85,6 +85,7 @@ function DoctorAppointments() {
             View Form{" "}
           </Button>
           <Popconfirm
+            disabled={!dayjs(record.date).isBefore(dayjs().add(6, "hours"))}
             title="Create a prescription for this appointment?"
             onConfirm={() => {
               navigate(`/doctor/prescribe-medicine?appointmentId=${record.id}`);
@@ -92,7 +93,7 @@ function DoctorAppointments() {
             okText="Yes"
             cancelText="Cancel"
           >
-            <Button> Precribe </Button>
+            <Button disabled={!dayjs(record.date).isBefore(dayjs().add(6, "hours"))} > Precribe </Button>
           </Popconfirm>
         </Space>
       ),
@@ -104,7 +105,7 @@ function DoctorAppointments() {
       title: "PatientName",
       dataIndex: "patient",
       key: "patient",
-      sorter: (a, b) => a?.patient?.name?.localeCompare(b.patientname),
+      sorter: (a, b) => a?.patient?.name?.localeCompare(b?.patient?.name),
       render: (item) => {
         console.log(item);
         return <Typography.Text>{item?.name}</Typography.Text>;
@@ -114,9 +115,18 @@ function DoctorAppointments() {
       title: "Date/Time",
       dataIndex: "date",
       key: "date",
-      sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-      render: (item) => dayjs(item).format("MMMM DD YYYY, h:mm:ss a"),
+      sorter: (a, b) => dayjs(a.date).isBefore(dayjs(b.date)),
+      render: (item) => dayjs(item).format("DD MMM, h:mm:ss a"),
       defaultSortOrder: "ascend",
+      filters: [
+        {
+          text: 'Today',
+          value: 1,
+        },
+      ],
+      onFilter: (value, record) => {
+        return dayjs(record.date).isSame(dayjs(), 'day');
+      }
     },
     {
       title: "Remarks",
@@ -169,19 +179,24 @@ function DoctorAppointments() {
             dataSource={doctorData.appointments.filter((apt) => apt.pending)}
             columns={columnsPending}
             pagination={{
-              total: doctorData.appointments.length,
-              defaultPageSize: 5,
+              total: doctorData.appointments.reduce((acc, curr) => !curr.pending ? acc : acc + 1, 0),
+              pageSize: 5,
             }}
+            rowKey="id"
+
           />
         </TabPane>
-        <TabPane tab="Past" key="2">
+        <TabPane tab="Processed" key="2">
           <Table
             dataSource={doctorData.appointments.filter((apt) => !apt.pending)}
             columns={columnsPrevious}
-            pagination={{
-              total: doctorData.appointments.length,
-              defaultPageSize: 5,
-            }}
+            // pagination={{
+            //   total: doctorData.appointments.reduce((acc, curr) => curr.pending ? acc : acc + 1, 0),
+            //   defaultPageSize: 5,
+            // }}
+            rowKey="id"
+
+
           />
         </TabPane>
       </Tabs>

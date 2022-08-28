@@ -104,7 +104,7 @@ const PrescriptionForm = () => {
                   optionLabelProp="Appointment"
                 >
                   {doctorData.appointments
-                    .filter((apt) => apt.pending)
+                    .filter((apt) => apt.pending && dayjs(apt.date).isBefore(dayjs().add(6, "hours")))
                     .map((appointment) => (
                       <Select.Option
                         key={appointment.id}
