@@ -259,13 +259,13 @@ const dummyotherassets = [
   "Wastebasket",
 ];
 
-const addMedicineService = async (
+const addMedicineService = async ({
   type,
   data,
 
-  // TODO unhandled
-  createdBy
-) => {
+  // TODO unhandled in sockets
+  createdBy,
+}) => {
   let asset;
   let assetType;
 
@@ -292,13 +292,13 @@ const addMedicineService = async (
   return asset;
 };
 
-const DeleteInventoryService = async (
+const DeleteInventoryService = async ({
   medicineId,
   type,
 
-  // TODO unhandled
-  createdBy
-) => {
+  // TODO unhandled in sockets
+  createdBy,
+}) => {
   if (!medicineId) throw new Error("Invalid medicineId");
   let asset;
   let assetType;
@@ -332,14 +332,14 @@ const DeleteInventoryService = async (
   return asset;
 };
 
-const editMedicineService = async (
+const editMedicineService = async ({
   id,
   data,
   type,
 
-  // TODO unhandled
-  createdBy
-) => {
+  // TODO unhandled in sockets
+  createdBy,
+}) => {
   let asset;
   let assetType;
 

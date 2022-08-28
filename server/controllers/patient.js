@@ -12,7 +12,7 @@ const createPatient = async (req, res) => {
     throw new Error("Unauthorized for this resource");
   }
 
-  const { newPatient } = await createPatientService(...req.body);
+  const { newPatient } = await createPatientService(...req.body, req.userId);
 
   return res.status(200).json({
     message: "Patient creation Successful",
@@ -21,7 +21,10 @@ const createPatient = async (req, res) => {
 };
 
 const deletePatient = async (req, res) => {
-  await deletePatientService(req.params.id);
+  await deletePatientService({
+    patientId: req.params.id,
+    createdBy: req.userId,
+  });
 
   return res.status(200).json({
     message: "Patient deletion Successful",

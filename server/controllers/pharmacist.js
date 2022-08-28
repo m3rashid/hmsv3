@@ -36,7 +36,10 @@ const getPrescriptionById = async (req, res) => {
 const dispensePrescription = async (req, res) => {
   if (!req.user || !req.user.id) throw new Error("Unauthorized");
 
-  const { receipt } = await dispensePrescriptionService(req.body);
+  const { receipt } = await dispensePrescriptionService({
+    ...req.body,
+    createdBy: req.userId,
+  });
   return res.status(200).json({
     receipt,
   });

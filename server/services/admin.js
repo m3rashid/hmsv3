@@ -18,13 +18,13 @@ const getAllUsersService = async (userRole) => {
   return users;
 };
 
-const editPermissionsService = async (
+const editPermissionsService = async ({
   userId,
   permissions,
 
-  // TODO unhandled
-  createdBy
-) => {
+  // TODO unhandled in sockets
+  createdBy,
+}) => {
   if (!userId || !permissions) throw new Error("Invalid data");
   const user = await prisma.auth.update({
     where: { id: userId },
@@ -62,7 +62,7 @@ const updateUserProfileService = async (
     origin,
   },
 
-  // TODO unhandled
+  // TODO unhandled in sockets
   createdBy
 ) => {
   if (!userId || !profileId) throw new Error("Insufficient data");

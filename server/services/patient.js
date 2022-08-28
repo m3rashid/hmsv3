@@ -7,7 +7,7 @@ const createPatientService = async (
   { name, age, sex, contact, address, email, jamiaId },
   UserPermissions,
 
-  // TODO unhandled
+  // TODO unhandled in sockets
   createdBy
 ) => {
   if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions)) {
@@ -43,12 +43,12 @@ const createPatientService = async (
   return { patient: newPatient };
 };
 
-const deletePatientService = async (
+const deletePatientService = async ({
   patientId,
 
-  // TODO unhandled
-  createdBy
-) => {
+  // TODO unhandled in sockets
+  createdBy,
+}) => {
   console.log({ patientId });
   const patient = await prisma.patient.delete({
     where: { id: patientId },

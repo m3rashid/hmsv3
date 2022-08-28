@@ -5,7 +5,6 @@ const { login, revalidate, signup } = require("./auth.js");
 const {
   getDoctorAppointments,
   getDoctorPatients,
-  FillDummy,
   checkMedAvailability,
   createPrescriptionByDoctor,
   getAppointmentById,
@@ -47,7 +46,6 @@ module.exports = {
 
   getDoctorAppointments,
   getDoctorPatients,
-  FillDummy,
   checkMedAvailability,
   createPrescriptionByDoctor,
   getAppointmentById,

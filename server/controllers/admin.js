@@ -20,10 +20,11 @@ const editPermissions = async (req, res) => {
     throw new Error("Unauthorized for this resource");
   }
 
-  const users = await editPermissionsService(
-    req.body.userId,
-    req.body.permissions
-  );
+  const users = await editPermissionsService({
+    userId: req.body.userId,
+    permissions: req.body.permissions,
+    createdBy: req.userId,
+  });
 
   return res.status(200).json({
     message: "Got users",
@@ -55,7 +56,8 @@ const updateUser = async (req, res) => {
       authorityName: req.body.authorityName,
       category: req.body.category,
       origin: req.body.origin,
-    }
+    },
+    req.userId
   );
 
   return res.status(200).json({

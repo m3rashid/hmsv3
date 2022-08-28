@@ -103,7 +103,7 @@ const signupService = async ({
   category,
   origin,
 
-  // TODO unhandled
+  // TODO unhandled in sockets
   createdBy,
 }) => {
   const profileData = {

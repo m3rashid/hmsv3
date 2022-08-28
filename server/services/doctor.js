@@ -61,7 +61,7 @@ const createPrescriptionService = async ({
   datetime,
   medicines,
 
-  // TODO unhandled
+  // TODO unhandled in sockets
   createdBy,
 }) => {
   // hopefully works
@@ -130,7 +130,7 @@ const updateAppointmentService = async ({
   remarks,
   pending,
 
-  // TODO unhandled
+  // TODO unhandled in sockets
   createdBy,
 }) => {
   const updatedAppointment = await prisma.appointment.update({

@@ -38,6 +38,8 @@ const signup = async (req, res) => {
     authorityName: req.body.authorityName,
     category: req.body.category,
     origin: req.body.origin,
+
+    createdBy: req.userId || 1,
   });
 
   return res.status(200).json({

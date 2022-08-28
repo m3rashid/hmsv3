@@ -8,7 +8,7 @@ const addTest = async ({
   prescriptionId,
   testType,
 
-  // TODO unhandled
+  // TODO unhandled in sockets
   createdBy,
 }) => {
   if (!name || !prescriptionId || !testType) {
@@ -37,7 +37,7 @@ const addTest = async ({
 const editTest = async ({
   testId,
 
-  // TODO unhandled
+  // TODO unhandled in sockets
   createdBy,
 
   ...values
@@ -62,7 +62,7 @@ const editTest = async ({
 const deleteTest = async ({
   testId,
 
-  // TODO unhandled
+  // TODO unhandled in sockets
   createdBy,
 }) => {
   if (!testId) throw new Error("Insufficient data");

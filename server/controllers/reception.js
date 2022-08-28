@@ -7,7 +7,10 @@ const createAppointment = async (req, res) => {
     throw new Error("Unauthorized for this resource");
   }
 
-  const { appointment } = await createAppointmentService(req.body);
+  const { appointment } = await createAppointmentService({
+    ...req.body,
+    createdBy: req.userId,
+  });
   return res.status(200).json({ appointment });
 };
 

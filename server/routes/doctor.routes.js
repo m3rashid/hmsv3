@@ -1,7 +1,6 @@
 const express = require("express");
 
 const {
-  FillDummy,
   searchDoctors,
   getDoctorPatients,
   referAnotherDoctor,
@@ -20,8 +19,6 @@ router.get("/get-appointments", checkAuth, useRoute(getDoctorAppointments));
 router.get("/getappointmentbyId", checkAuth, useRoute(getAppointmentById));
 
 router.get("/search", checkAuth, useRoute(searchDoctors));
-
-router.post("/dummy", FillDummy);
 
 router.post(
   "/create-prescription",

@@ -1,16 +1,13 @@
-const { faker } = require("@faker-js/faker");
-
 const {
   getDoctorAppointmentsService,
   getDoctorPatientsService,
   searchDoctorsService,
-  createPrescriptionByDoctorService,
+  createPrescriptionService,
   referAnotherDoctorAppointmentService,
   checkMedAvailabilityService,
   getAppointmentByIdService,
 } = require("../services");
 const { permissions } = require("../utils/constants");
-const prisma = require("../utils/prisma");
 
 const getDoctorAppointments = async (req, res) => {
   if (!req.isAuthenticated) throw new Error("Unauthorized");
@@ -54,48 +51,30 @@ const searchDoctors = async (req, res) => {
   });
 };
 
-const FillDummy = async (req, res) => {
-  const count = req.body.count;
-  const designations = ["MBBS", "MD", "MS", "DNB", "BDS", "BHMS", "BAMS"];
-  for (let i = 0; i < count; i++) {
-    const info = {
-      name: faker.name.findName(),
-      availability: faker.datatype.boolean(),
-      age: faker.datatype.number({ min: 18, max: 60 }),
-      designation:
-        designations[
-          faker.datatype.number({ min: 0, max: designations.length - 1 })
-        ],
-      contact: faker.phone.phoneNumber(),
-      email: faker.internet.email(),
-      address: faker.address.streetAddress(),
-    };
-
-    await prisma.Doctor.create(info);
-  }
-
-  return res.status(200).json({
-    message: `${count} patients created`,
-  });
-};
-
 const createPrescriptionByDoctor = async (req, res) => {
   if (!req.isAuthenticated) throw new Error("Unauthorized");
   if (!req.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE)) {
     throw new Error("Unauthorized for this resource");
   }
 
-  const { appointment, symptoms, diagnosis, customMedicines, datetime } =
-    req.body;
+  const {
+    appointment,
+    symptoms,
+    diagnosis,
+    customMedicines,
+    datetime,
+    medicines,
+  } = req.body;
 
-  const { prescription: newPrescription } =
-    await createPrescriptionByDoctorService({
-      appointment,
-      symptoms,
-      diagnosis,
-      customMedicines,
-      datetime,
-    });
+  const { prescription: newPrescription } = await createPrescriptionService({
+    appointment,
+    symptoms,
+    diagnosis,
+    customMedicines,
+    datetime,
+    medicines,
+    createdBy: req.userId,
+  });
 
   return res.status(200).json({
     newPrescription,
@@ -135,7 +114,6 @@ const checkMedAvailability = async (req, res) => {
 };
 
 module.exports = {
-  FillDummy,
   searchDoctors,
   getDoctorPatients,
   referAnotherDoctor,

@@ -8,7 +8,7 @@ const createAppointmentService = async ({
   date,
   remarks,
 
-  // TODO unhandled
+  // TODO unhandled in sockets
   createdBy,
 }) => {
   const newAppointment = await prisma.appointment.create({
