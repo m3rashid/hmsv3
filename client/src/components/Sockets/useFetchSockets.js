@@ -106,18 +106,8 @@ export default function useFetchSockets() {
       message.info(`New Prescription for ${data.prescription.id}!`);
     });
     socket.on("prescription-dispensed", ({ data }) => {
-      // setPharmacyData((prevData) => ({
-      //   ...prevData,
-      //   prescriptions: prevData.prescriptions.map((prescription) => {
-      //     if (prescription.id === data.prescription.id) {
-      //       return {
-      //         ...prescription,
-      //         status: "dispensed",
-      //       };
-      //     }
-      //     return prescription;
-      //   }),
-      // }));
+  
+      console.log(data);
       loadPharmacyPrescriptions();
       message.success(
         `Prescription ${data.prescription.id} has been dispensed!`
@@ -134,11 +124,13 @@ export default function useFetchSockets() {
 
   /**Load Doctor Appointments */
   const loadDoctorAppointment = useCallback(async () => {
+    setDoctorData(prev=>({...prev, loading:true}));
     const res = await instance.get(`/doctor/get-appointments`);
     console.log(res.data);
     setDoctorData({
       ...DoctorData,
       appointments: res.data.appointments,
+      loading: false,
     });
   }, [DoctorData, setDoctorData]);
 
@@ -198,7 +190,8 @@ export default function useFetchSockets() {
     }
 
     socket.on("new-prescription-by-doctor-created", ({ data }) => {
-      setAppointmentPendingStatus(data.prescription.appointment.id, false);
+      loadDoctorAppointment();
+      
       message.success(
         `New Prescription for ${data.prescription.appointment.patient.name} created successfully!`
       );
@@ -207,7 +200,7 @@ export default function useFetchSockets() {
     return () => {
       socket.off("new-prescription-by-doctor-created");
     };
-  }, [auth, setAppointmentPendingStatus]);
+  }, [auth, loadDoctorAppointment, setAppointmentPendingStatus]);
 
   /**
    * Notify Doctor on New Appointment Created

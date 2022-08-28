@@ -264,7 +264,7 @@ const ViewPrescriptionModal = ({ prescriptionId }) => {
           {
             prescriptionData.medicines && <div>
               <strong>Medicines: </strong>
-              <Table columns={medicineTableColumns} dataSource={prescriptionData.medicines} />
+              <Table size="small" columns={medicineTableColumns} dataSource={prescriptionData.medicines} />
 
             </div>
           }
