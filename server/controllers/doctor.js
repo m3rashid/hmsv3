@@ -103,7 +103,11 @@ const createPrescriptionByDoctor = async (req, res) => {
 };
 
 const referAnotherDoctor = async (req, res) => {
-  // TODO service not implemented yet
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE)) {
+    throw new Error("Unauthorized for this resource");
+  }
+
   const appointment = await referAnotherDoctorAppointmentService({
     patientId: req.body.patientId,
     prevDoctorId: req.body.prevDoctorId,

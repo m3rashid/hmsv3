@@ -1,9 +1,13 @@
 const bcrypt = require("bcrypt");
-const { faker } = require("@faker-js/faker");
 
 const prisma = require("../utils/prisma");
 const { issueJWT, revalidateJWT } = require("../utils/jwt.js");
-const { supportedUserRoles, permissions } = require("../utils/constants");
+const {
+  supportedUserRoles,
+  permissions,
+  serverActions,
+} = require("../utils/constants");
+const { addEventLog } = require("../utils/logs");
 
 const addActions = (role) => {
   let allowedActions = [];
@@ -98,6 +102,9 @@ const signupService = async ({
   authorityName,
   category,
   origin,
+
+  // TODO unhandled
+  createdBy,
 }) => {
   const profileData = {
     designation,
@@ -113,15 +120,6 @@ const signupService = async ({
     category,
     origin,
   };
-
-  console.log({
-    email,
-    password,
-    name,
-    role,
-    ...profileData,
-  });
-
   if (!email || !password || !name || !role || !sex) {
     throw new Error("Insufficient credentials");
   }
@@ -142,6 +140,13 @@ const signupService = async ({
       permissions: allowedActions,
     },
     include: { profile: true },
+  });
+
+  await addEventLog({
+    action: serverActions.SIGNUP,
+    fromId: createdBy,
+    actionId: profile.id,
+    actionTable: "profile",
   });
 
   console.log({ user, profile });
@@ -177,25 +182,9 @@ const revalidateService = async (refreshToken) => {
   };
 };
 
-const createDummyPatientService = async () => {
-  const patient = await prisma.patient.create({
-    data: {
-      name: faker.name.fullName(),
-      age: Math.floor(Math.random() * 100),
-      contact: faker.phone.number(),
-      sex: "m",
-      address: faker.address.city(),
-      email: faker.internet.email(),
-    },
-  });
-
-  return patient;
-};
-
 module.exports = {
   loginService,
   logoutService,
   signupService,
   revalidateService,
-  createDummyPatientService,
 };

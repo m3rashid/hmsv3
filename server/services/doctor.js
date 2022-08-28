@@ -1,8 +1,9 @@
 const dayjs = require("dayjs");
 
 const prisma = require("../utils/prisma");
-const { permissions } = require("../utils/constants");
+const { permissions, serverActions } = require("../utils/constants");
 const { quantityCalculator } = require("../utils/medecine.helpers");
+const { addEventLog } = require("../utils/logs");
 
 const getDoctorAppointmentsService = async (
   userId,
@@ -59,6 +60,9 @@ const createPrescriptionService = async ({
   CustomMedicines,
   datetime,
   medicines,
+
+  // TODO unhandled
+  createdBy,
 }) => {
   // hopefully works
   console.log(medicines);
@@ -102,9 +106,17 @@ const createPrescriptionService = async ({
       },
     },
   });
+
   await prisma.appointment.update({
     where: { id: appointment },
     data: { pending: false },
+  });
+
+  await addEventLog({
+    action: serverActions.CREATE_PRESCRIPTION,
+    fromId: createdBy,
+    actionId: newPrescription.id,
+    actionTable: "prescription",
   });
 
   return {
@@ -117,6 +129,9 @@ const updateAppointmentService = async ({
   date,
   remarks,
   pending,
+
+  // TODO unhandled
+  createdBy,
 }) => {
   const updatedAppointment = await prisma.appointment.update({
     where: { id: appointmentId },
@@ -126,13 +141,45 @@ const updateAppointmentService = async ({
       ...(pending ? { pending } : {}),
     },
   });
+
+  await addEventLog({
+    action: serverActions.UPDATE_APPOINTMENT,
+    fromId: createdBy,
+    actionId: appointmentId,
+    actionTable: "appointment",
+  });
+
   return {
     appointment: updatedAppointment,
   };
 };
 
-const referAnotherDoctorAppointmentService = async ({}) => {
-  // implement this service
+const referAnotherDoctorAppointmentService = async ({
+  patientId,
+  prevDoctorId,
+  nextDoctorId,
+  date,
+  remarks,
+}) => {
+  const appointment = await prisma.appointment.create({
+    data: {
+      date,
+      remarks,
+      patient: { connect: { id: patientId } },
+      doctor: { connect: { id: nextDoctorId } },
+      referedBy: prevDoctorId,
+    },
+    include: { patient: true, doctor: true },
+  });
+
+  await addEventLog({
+    action: serverActions.REFER_TO_ANOTHER_DOCTOR,
+    fromId: prevDoctorId,
+    actionId: appointment.id,
+    actionTable: "appointment",
+  });
+
+  return appointment;
 };
 
 const checkMedAvailabilityService = async ({

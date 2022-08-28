@@ -1,4 +1,6 @@
 const dayjs = require("dayjs");
+const { serverActions } = require("../utils/constants");
+const { addEventLog } = require("../utils/logs");
 
 const prisma = require("../utils/prisma");
 
@@ -57,12 +59,24 @@ const getPrescriptionByIdService = async (prescriptionId) => {
   return { prescription };
 };
 
-const dispensePrescriptionService = async ({ prescriptionId, medicines }) => {
+const dispensePrescriptionService = async ({
+  prescriptionId,
+  medicines,
+
+  // TODO unhandled
+  createdBy,
+}) => {
   const updatePrescription = await prisma.prescription.update({
     where: { id: prescriptionId },
     data: { pending: false },
   });
 
+  await addEventLog({
+    action: serverActions.UPDATE_PRESCRIPTION,
+    fromId: createdBy,
+    actionId: updatePrescription.id,
+    actionTable: "prescription",
+  });
 
   return { prescription: updatePrescription, receipt: {} };
 };

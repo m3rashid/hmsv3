@@ -1,6 +1,6 @@
 const { editPermissions, getAllUsers, updateUser } = require("./admin");
 
-const { login, revalidate, signup, createDummy } = require("./auth.js");
+const { login, revalidate, signup } = require("./auth.js");
 
 const {
   getDoctorAppointments,
@@ -44,7 +44,6 @@ module.exports = {
   login,
   revalidate,
   signup,
-  createDummy,
 
   getDoctorAppointments,
   getDoctorPatients,

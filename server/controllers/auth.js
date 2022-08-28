@@ -60,20 +60,8 @@ const revalidate = async (req, res) => {
   });
 };
 
-const createDummy = async (req, res) => {
-  const { count } = req.body;
-
-  for (let i = 0; i < count; i++) await createDummyPatientService();
-
-  return res.status(200).json({
-    message: "Dummy data created",
-    count: count,
-  });
-};
-
 module.exports = {
   login,
   signup,
   revalidate,
-  createDummy,
 };

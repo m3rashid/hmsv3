@@ -1,10 +1,14 @@
 const prisma = require("../utils/prisma");
-const { permissions } = require("../utils/constants");
+const { permissions, serverActions } = require("../utils/constants");
 const { checkAccess } = require("../utils/auth.helpers");
+const { addEventLog } = require("../utils/logs");
 
 const createPatientService = async (
   { name, age, sex, contact, address, email, jamiaId },
-  UserPermissions
+  UserPermissions,
+
+  // TODO unhandled
+  createdBy
 ) => {
   if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions)) {
     throw new Error("Forbidden");
@@ -27,16 +31,38 @@ const createPatientService = async (
       jamiaId,
     },
   });
+
+  await addEventLog({
+    action: serverActions.CREATE_PATIENT,
+    fromId: createdBy,
+    actionId: newPatient.id,
+    actionTable: "patient",
+  });
+
   console.log("new Patient", newPatient);
   return { patient: newPatient };
 };
 
-const deletePatientService = async (patientId) => {
+const deletePatientService = async (
+  patientId,
+
+  // TODO unhandled
+  createdBy
+) => {
   console.log({ patientId });
-  const patient = await prisma.Patient.delete({
+  const patient = await prisma.patient.delete({
     where: { id: patientId },
   });
+
   if (!patient) throw new Error("Patient not found");
+
+  await addEventLog({
+    action: serverActions.DELETE_PATIENT,
+    fromId: createdBy,
+    actionId: patientId,
+    actionTable: "patient",
+  });
+
   return patient;
 };
 
