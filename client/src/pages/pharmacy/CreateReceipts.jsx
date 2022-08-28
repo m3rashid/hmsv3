@@ -25,7 +25,7 @@ function CreateReceipts() {
   const [selectedPrescription, setSelectedPrescription] = useState(null);
   const [selectedPrescriptionData, setSelectedPrescriptionData] = useState({
     loading: false,
-    data: {},
+    data: null,
   });
 
   const [form] = Form.useForm();
@@ -137,16 +137,22 @@ function CreateReceipts() {
         </Form.Item>
 
         <Spin spinning={selectedPrescriptionData.loading}>
-          <MedicineTable
+        {
+          selectedPrescription && <MedicineTable
             medicines={selectedPrescriptionData.data?.medicines || []}
             setSelectedMedicines={setSelectedMedicines}
             selectedMedicine={selectedMedicines}
           />
+        }
+          
           <Form.Item wrapperCol={{ offset: 10 }}>
             <div style={{ display: "flex" }}>
-              {selectedPrescriptionData.data && (
+              {selectedPrescription && selectedPrescriptionData.data && (
+                <>
+
                 <div>
                   <Button
+                    disabled={selectedPrescriptionData.loading}
                     style={{ marginTop: "20px", marginRight: "10px" }}
                     type="primary"
                     className="print__button"
@@ -154,9 +160,9 @@ function CreateReceipts() {
                   >
                     Print Prescription
                   </Button>
+
                 </div>
-              )}
-              <div>
+                  <div>
                 <Button
                   style={{ marginTop: "20px", marginLeft: "10px" }}
                   loading={loading}
@@ -166,6 +172,9 @@ function CreateReceipts() {
                   Confirm Transaction
                 </Button>
               </div>
+                </>
+              )}
+            
             </div>
           </Form.Item>
         </Spin>

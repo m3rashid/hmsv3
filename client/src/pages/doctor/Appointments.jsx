@@ -165,6 +165,7 @@ function DoctorAppointments() {
       <Tabs defaultActiveKey="1" centered>
         <TabPane tab="Pending" key="1">
           <Table
+            loading={doctorData.loading}
             dataSource={doctorData.appointments.filter((apt) => apt.pending)}
             columns={columnsPending}
             pagination={{
