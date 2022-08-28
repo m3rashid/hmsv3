@@ -29,6 +29,7 @@ const safeSocket =
   (...args) => {
     console.log("========== Socket Args ==========");
     console.log(...args);
+    console.log({ sockeUser: socket.user });
     Promise.resolve(handler(io, socket)(...args)).catch((err) => {
       console.log("========== Socket Err ==========");
       console.log(err);
