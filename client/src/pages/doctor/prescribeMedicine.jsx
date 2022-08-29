@@ -8,7 +8,6 @@ import {
   Row,
   Col,
   Modal,
-  message,
 } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
@@ -53,7 +52,6 @@ const PrescriptionForm = () => {
       setLoading({
         PrescribeMedicines: false,
       });
-      console.log(data);
       navigate("/doctor/appointments");
     });
     return () => {
@@ -67,8 +65,6 @@ const PrescriptionForm = () => {
       handleAppointmentSelect(appointmentId);
     }
   }, [appointmentId, doctorData.appointments.length, handleAppointmentSelect]);
-
-  console.log({ medicines });
 
   return (
     <React.Fragment>
@@ -98,13 +94,16 @@ const PrescriptionForm = () => {
                   placeholder="Select an appointment"
                   allowClear
                   onChange={(value) => {
-                    console.log("changed", value);
                     handleAppointmentSelect(value);
                   }}
                   optionLabelProp="Appointment"
                 >
                   {doctorData.appointments
-                    .filter((apt) => apt.pending && dayjs(apt.date).isBefore(dayjs().add(6, "hours")))
+                    .filter(
+                      (apt) =>
+                        apt.pending &&
+                        dayjs(apt.date).isBefore(dayjs().add(6, "hours"))
+                    )
                     .map((appointment) => (
                       <Select.Option
                         key={appointment.id}

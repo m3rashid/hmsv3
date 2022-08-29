@@ -41,7 +41,6 @@ const getPatientById = async (req, res) => {
 };
 
 const searchPatients = async (req, res) => {
-  console.log(req.query);
   const { count, patients } = await searchPatientsService(req.query);
 
   return res.status(200).json({

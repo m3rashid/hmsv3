@@ -9,8 +9,6 @@ const getDoctorAppointmentsService = async (
   userId,
   { limit, offset, pending } = {}
 ) => {
-  console.log({ userId });
-
   const appointments = await prisma.appointment.findMany({
     where: {
       doctor: { id: userId },
@@ -22,7 +20,6 @@ const getDoctorAppointmentsService = async (
     take: limit || 500,
   });
 
-  console.log(appointments);
   return { appointments };
 };
 
@@ -60,12 +57,8 @@ const createPrescriptionService = async ({
   CustomMedicines,
   datetime,
   medicines,
-
-  // TODO unhandled in sockets
   createdBy,
 }) => {
-  // hopefully works
-  console.log(medicines);
   const newPrescription = await prisma.prescription.create({
     data: {
       appointment: {
@@ -77,7 +70,6 @@ const createPrescriptionService = async ({
       medicines: {
         createMany: {
           data: medicines.map((medicine) => {
-            console.log(medicine);
             return {
               MedicineId: parseInt(medicine.medicine.id),
 

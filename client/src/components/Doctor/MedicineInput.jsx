@@ -18,19 +18,14 @@ const dosages = [
   { value: "TW", label: "Three times a week" },
 ];
 
-/**
- *
- * Used to Generate Medicine Inputs, Checks Item Availability
- * @returns
- */
-function MedicineInput({
+const MedicineInput = ({
   index,
   medicine,
   deleteMedicine,
   type: medicineType,
   UpdateMedicine,
   isExtra,
-}) {
+}) => {
   const medicineDB = useRecoilValue(inventoryState);
   const [MedicineData, setMedicineData] = useState(medicine);
   const [Info, setInfo] = useState({
@@ -66,13 +61,11 @@ function MedicineInput({
         "/doctor/med/check-availability",
         data
       );
-      console.log(availabilityInfo);
       setInfo(availabilityInfo);
     }
   }, [value]);
 
   useEffect(() => {
-    console.log("Validating");
     ValidateMedicine();
   }, [ValidateMedicine]);
 
@@ -216,7 +209,7 @@ function MedicineInput({
       </div>
     </Space>
   );
-}
+};
 
 MedicineInput.propTypes = {
   index: PropTypes.number.isRequired,

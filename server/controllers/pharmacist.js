@@ -24,7 +24,6 @@ const getPrescriptionById = async (req, res) => {
     throw new Error("Unauthorized for this resource");
   }
 
-  console.log(req.params.id);
   const { prescription } = await getPrescriptionByIdService(
     parseInt(req.params.id)
   );

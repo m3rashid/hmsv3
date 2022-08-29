@@ -9,9 +9,9 @@ import {
   Tabs,
 } from "antd";
 import dayjs from "dayjs";
+import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
 
 import { socket } from "../../api/socket";
 import Header from "../../components/Header";
@@ -21,17 +21,14 @@ import { doctorState } from "../../atoms/doctor";
 const { TabPane } = Tabs;
 
 function DoctorAppointments() {
-  // const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { user } = useRecoilValue(authState);
-  const [doctorData, setDoctorData] = useRecoilState(doctorState);
+  const doctorData = useRecoilValue(doctorState);
   const [ModalVisible, setModalVisible] = useState({
     visible: false,
     id: null,
     data: {},
   });
-
-  console.log(doctorData);
 
   const ToggleModal = () => {
     setModalVisible({
@@ -53,7 +50,6 @@ function DoctorAppointments() {
       key: "patient",
       sorter: (a, b) => a?.patient?.name?.localeCompare(b.patientname),
       render: (item) => {
-        console.log(item);
         return <Typography.Text>{item?.name}</Typography.Text>;
       },
     },
@@ -73,7 +69,6 @@ function DoctorAppointments() {
         <Space>
           <Button
             onClick={() => {
-
               setModalVisible({
                 visible: true,
                 id: record.id,
@@ -93,7 +88,12 @@ function DoctorAppointments() {
             okText="Yes"
             cancelText="Cancel"
           >
-            <Button disabled={!dayjs(record.date).isBefore(dayjs().add(6, "hours"))} > Precribe </Button>
+            <Button
+              disabled={!dayjs(record.date).isBefore(dayjs().add(6, "hours"))}
+            >
+              {" "}
+              Precribe{" "}
+            </Button>
           </Popconfirm>
         </Space>
       ),
@@ -107,7 +107,6 @@ function DoctorAppointments() {
       key: "patient",
       sorter: (a, b) => a?.patient?.name?.localeCompare(b?.patient?.name),
       render: (item) => {
-        console.log(item);
         return <Typography.Text>{item?.name}</Typography.Text>;
       },
     },
@@ -120,13 +119,13 @@ function DoctorAppointments() {
       defaultSortOrder: "ascend",
       filters: [
         {
-          text: 'Today',
+          text: "Today",
           value: 1,
         },
       ],
       onFilter: (value, record) => {
-        return dayjs(record.date).isSame(dayjs(), 'day');
-      }
+        return dayjs(record.date).isSame(dayjs(), "day");
+      },
     },
     {
       title: "Remarks",
@@ -144,7 +143,6 @@ function DoctorAppointments() {
         <Space>
           <Button
             onClick={() => {
-              console.log(record);
               setModalVisible({
                 visible: true,
                 id: record.id,
@@ -179,11 +177,13 @@ function DoctorAppointments() {
             dataSource={doctorData.appointments.filter((apt) => apt.pending)}
             columns={columnsPending}
             pagination={{
-              total: doctorData.appointments.reduce((acc, curr) => !curr.pending ? acc : acc + 1, 0),
+              total: doctorData.appointments.reduce(
+                (acc, curr) => (!curr.pending ? acc : acc + 1),
+                0
+              ),
               pageSize: 5,
             }}
             rowKey="id"
-
           />
         </TabPane>
         <TabPane tab="Processed" key="2">
@@ -195,8 +195,6 @@ function DoctorAppointments() {
             //   defaultPageSize: 5,
             // }}
             rowKey="id"
-
-
           />
         </TabPane>
       </Tabs>

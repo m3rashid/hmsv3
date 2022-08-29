@@ -146,17 +146,14 @@ const CreateUserModal = ({ isEdit, data }) => {
   const onFinish = async (values) => {
     try {
       message.loading({ content: "Loading...", key: "auth/createUser" });
-      let res;
       if (isEdit) {
-        res = await instance.post("/admin/update-user", {
+        await instance.post("/admin/update-user", {
           userId: data.id,
           profileId: data.profileId,
           ...values,
         });
-        console.log({ userEdited: res.data });
       } else {
-        res = await instance.post("/auth/signup", { ...values });
-        console.log({ userCreated: res.data });
+        await instance.post("/auth/signup", { ...values });
       }
       message.success({
         content: `User ${isEdit ? "edited" : "created"} Successfully`,
@@ -173,7 +170,6 @@ const CreateUserModal = ({ isEdit, data }) => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
     message.error({
       content: "User creation Failed",
       key: "auth/createUser",

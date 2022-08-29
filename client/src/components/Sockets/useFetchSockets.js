@@ -62,13 +62,10 @@ export default function useFetchSockets() {
         [InventoryTypes.NonMedicine]: NonMedicineInventory.data,
         [InventoryTypes.OtherAssets]: otherAssetsInventory.data,
       });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   }, [setInventoryData]);
 
   useEffect(() => {
-    console.log(auth);
     if (
       auth.isLoggedIn &&
       (auth.user.permissions.includes(permissions.INVENTORY_VIEW) ||
@@ -82,7 +79,6 @@ export default function useFetchSockets() {
   /** Socket events for Pharmacy Roles */
   const loadPharmacyPrescriptions = useCallback(async () => {
     const { data } = await instance.get(`/pharmacy/prescriptions`);
-    console.log(data);
 
     setPharmacyData((prev) => ({
       ...prev,
@@ -98,7 +94,6 @@ export default function useFetchSockets() {
     }
     loadPharmacyPrescriptions();
     socket.on("new-prescription-by-doctor-created", ({ data }) => {
-      console.log(data);
       setPharmacyData((prevData) => ({
         ...prevData,
         prescriptions: [...prevData.prescriptions, data.prescription],
@@ -106,8 +101,6 @@ export default function useFetchSockets() {
       message.info(`New Prescription for ${data.prescription.id}!`);
     });
     socket.on("prescription-dispensed", ({ data }) => {
-  
-      console.log(data);
       loadPharmacyPrescriptions();
       message.success(
         `Prescription ${data.prescription.id} has been dispensed!`
@@ -124,9 +117,8 @@ export default function useFetchSockets() {
 
   /**Load Doctor Appointments */
   const loadDoctorAppointment = useCallback(async () => {
-    setDoctorData(prev=>({...prev, loading:true}));
+    setDoctorData((prev) => ({ ...prev, loading: true }));
     const res = await instance.get(`/doctor/get-appointments`);
-    console.log(res.data);
     setDoctorData({
       ...DoctorData,
       appointments: res.data.appointments,
@@ -181,7 +173,6 @@ export default function useFetchSockets() {
    * On Doctor Create New Prescription
    */
   useEffect(() => {
-    console.log("Checking Access for Doctor Prescriptions");
     if (
       !auth.isLoggedIn ||
       !auth.user.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE)
@@ -191,7 +182,7 @@ export default function useFetchSockets() {
 
     socket.on("new-prescription-by-doctor-created", ({ data }) => {
       loadDoctorAppointment();
-      
+
       message.success(
         `New Prescription for ${data.prescription.appointment.patient.name} created successfully!`
       );
@@ -213,10 +204,7 @@ export default function useFetchSockets() {
       return;
     }
 
-    console.log("Connected New Appointment By Doctor");
     socket.on("new-appointment-created", (data) => {
-      console.log("Some Appointment Created");
-
       message.info(`New appointment created`);
       addNotification({
         type: "success",
@@ -224,9 +212,7 @@ export default function useFetchSockets() {
         message: `${data.patient.name} has a new appointment`,
         action: {
           label: "View",
-          callback: () => {
-            console.log("View Appointment");
-          },
+          callback: () => {},
         },
       });
       addAppointment(data);
@@ -236,6 +222,4 @@ export default function useFetchSockets() {
       socket.off("new-appointment-created");
     };
   }, [addAppointment, addNotification, auth]);
-
-  console.log("Updated Doctor Data", DoctorData);
 }

@@ -7,8 +7,6 @@ const createAppointmentService = async ({
   doctorId,
   date,
   remarks,
-
-  // TODO unhandled in sockets
   createdBy,
 }) => {
   const newAppointment = await prisma.appointment.create({
@@ -36,8 +34,6 @@ const getAppointmentByIdService = async (appointmentId) => {
     where: { id: appointmentId },
     include: { patient: true, doctor: true },
   });
-
-  console.log(appointment);
 
   return {
     Appointment: appointment,

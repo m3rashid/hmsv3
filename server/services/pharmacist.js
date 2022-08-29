@@ -62,8 +62,6 @@ const getPrescriptionByIdService = async (prescriptionId) => {
 const dispensePrescriptionService = async ({
   prescriptionId,
   medicines,
-
-  // TODO unhandled in sockets
   createdBy,
 }) => {
   const updatePrescription = await prisma.prescription.update({

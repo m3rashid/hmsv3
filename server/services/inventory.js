@@ -343,7 +343,6 @@ const editMedicineService = async ({
   let asset;
   let assetType;
 
-  console.log(id, data, type);
   if (type == InventoryTypes.Medicine) {
     asset = await prisma.medicine.update({
       where: { id: id },
@@ -377,11 +376,9 @@ const editMedicineService = async ({
 };
 
 const getMedicine = async (medicineId) => {
-  console.log({ medicineId });
   const gotMedicine = await prisma.inventory.findUnique({
     where: { id: medicineId },
   });
-  console.log({ gotMedicine });
   return gotMedicine;
 };
 
@@ -419,7 +416,6 @@ const addDummy = async () => {
 };
 
 const searchInventoryService = async (type, { quantity, price, name }) => {
-  console.log(name, quantity);
   let inventory = [];
   const queries = [
     { quantity: { gte: quantity } },

@@ -1,10 +1,9 @@
-import { Button, Typography } from "antd";
 import React, { useRef } from "react";
+import { Button, Typography } from "antd";
 import { useReactToPrint } from "react-to-print";
 
 const GeneratePdf = (props) => {
   const parchiData = props.data[0];
-  // console.log(parchiData?.medicines);
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,

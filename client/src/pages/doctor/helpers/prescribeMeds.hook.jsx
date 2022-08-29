@@ -72,7 +72,6 @@ const usePrescribeMedicines = (socket) => {
 
   const UpdateMedicine = useCallback(
     (type, item, index) => {
-      console.log(item);
       setMedicines((prevState) => ({
         ...prevState,
         [type]: prevState[type].map((data, i) => (i === index ? item : data)),

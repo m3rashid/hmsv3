@@ -6,8 +6,6 @@ const { addEventLog } = require("../utils/logs");
 const createPatientService = async (
   { name, age, sex, contact, address, email, jamiaId },
   UserPermissions,
-
-  // TODO unhandled in sockets
   createdBy
 ) => {
   if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions)) {
@@ -15,22 +13,11 @@ const createPatientService = async (
   }
 
   const data = { name, age, sex, contact, address, email, jamiaId };
-  console.log(data);
   if (!name || !age || !sex || !contact || !email) {
     throw new Error("Missing credentials");
   }
 
-  const newPatient = await prisma.patient.create({
-    data: {
-      name,
-      age,
-      contact,
-      sex,
-      address,
-      email,
-      jamiaId,
-    },
-  });
+  const newPatient = await prisma.patient.create({ data });
 
   await addEventLog({
     action: serverActions.CREATE_PATIENT,
@@ -39,17 +26,10 @@ const createPatientService = async (
     actionTable: "patient",
   });
 
-  console.log("new Patient", newPatient);
   return { patient: newPatient };
 };
 
-const deletePatientService = async ({
-  patientId,
-
-  // TODO unhandled in sockets
-  createdBy,
-}) => {
-  console.log({ patientId });
+const deletePatientService = async ({ patientId, createdBy }) => {
   const patient = await prisma.patient.delete({
     where: { id: patientId },
   });

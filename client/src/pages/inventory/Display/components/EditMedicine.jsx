@@ -1,16 +1,16 @@
 import React from "react";
-import PropTypes from "prop-types";
-import InventoryFormHandler from "../../../../components/Inventory/FormHandler";
-import { instance } from "../../../../api/instance";
-import { useRecoilState } from "recoil";
-import { inventoryState } from "../../../../atoms/inventory";
 import { message } from "antd";
+import PropTypes from "prop-types";
+import { useSetRecoilState } from "recoil";
+
+import { instance } from "../../../../api/instance";
+import { inventoryState } from "../../../../atoms/inventory";
+import InventoryFormHandler from "../../../../components/Inventory/FormHandler";
 
 function EditMedicine(props) {
-  const [inventoryData, setInventoryData] = useRecoilState(inventoryState);
+  const setInventoryData = useSetRecoilState(inventoryState);
 
   const UpdateMedicine = async (data) => {
-    console.log(data);
     const { data: MedicineData } = await instance.post("/inventory/edit/", {
       type: props.type,
       data: data.values,
@@ -18,7 +18,6 @@ function EditMedicine(props) {
     });
 
     setInventoryData((prevState) => {
-      console.log(prevState[props.type]);
       return {
         ...prevState,
         [props.type]: {

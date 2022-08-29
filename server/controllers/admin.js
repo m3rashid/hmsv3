@@ -3,7 +3,10 @@ const { updateUserProfileService } = require("../services/admin");
 const { permissions } = require("../utils/constants");
 
 const getAllUsers = async (req, res) => {
-  if (!req.permissions.includes(permissions.GET_ALL_USERS)) {
+  if (
+    !req.permissions.includes(permissions.ADMIN) &&
+    !req.permissions.includes(permissions.GET_ALL_USERS)
+  ) {
     throw new Error("Unauthorized for this resource");
   }
 
@@ -16,7 +19,10 @@ const getAllUsers = async (req, res) => {
 };
 
 const editPermissions = async (req, res) => {
-  if (!req.permissions.includes(permissions.EDIT_USER_PERMISSIONS)) {
+  if (
+    !req.permissions.includes(permissions.ADMIN) &&
+    !req.permissions.includes(permissions.EDIT_USER_PERMISSIONS)
+  ) {
     throw new Error("Unauthorized for this resource");
   }
 
@@ -33,7 +39,10 @@ const editPermissions = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  if (!req.permissions.includes(permissions.EDIT_USER_PROFILE)) {
+  if (
+    !req.permissions.includes(permissions.ADMIN) &&
+    !req.permissions.includes(permissions.EDIT_USER_PROFILE)
+  ) {
     throw new Error("Unauthorized for this resource");
   }
 

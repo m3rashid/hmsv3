@@ -35,11 +35,8 @@ const CreateAppointmentForm = () => {
 
   const [loading, setLoading] = useState(false);
 
-  console.log(doctors);
-
   useEffect(() => {
     socket.on("new-appointment-created", (data) => {
-      console.log(data);
       setLoading(false);
       message.success(
         `Appointment for ${data?.patient?.name} created successfully!`
@@ -61,20 +58,18 @@ const CreateAppointmentForm = () => {
       doctorId: FormSelected?.doctor?.data?.id,
       date: values.datetime,
     };
-    console.log(data, FormSelected);
     if (loading) return;
     setLoading(true);
     socket.emit("create-appointment", data);
-    form.resetFields()
+    form.resetFields();
     setFormSelected({
       doctor: null,
-      patient:null
-    })
+      patient: null,
+    });
   };
 
   useEffect(() => {
     instance.get("/reception/doctors").then((res) => {
-      console.log(res.data);
       setDoctors(
         res.data?.map((doctor) => ({
           value: doctor.email,
@@ -83,7 +78,6 @@ const CreateAppointmentForm = () => {
       );
     });
     socket.on("created-appointment", (data) => {
-      console.log(data);
       message.success(`Appointment ${data.title} created successfully!`);
     });
 
@@ -93,8 +87,6 @@ const CreateAppointmentForm = () => {
   }, []);
 
   const UpdatePatients = async (value) => {
-    console.log(value);
-
     if (patients.cancelToken) {
       patients.cancelToken.cancel();
     }
@@ -118,7 +110,6 @@ const CreateAppointmentForm = () => {
         },
         { cancelToken: CancelToken.token }
       );
-      console.log(data);
 
       setPatients({
         ...patients,
@@ -145,9 +136,7 @@ const CreateAppointmentForm = () => {
         }),
         cancelToken: patients.cancelToken ? patients.cancelToken : CancelToken,
       });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   const UpdateDoctors = async (value) => {
@@ -199,9 +188,7 @@ const CreateAppointmentForm = () => {
         }),
         cancelToken: doctors.cancelToken ? doctors.cancelToken : CancelToken,
       });
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   return (
@@ -242,7 +229,6 @@ const CreateAppointmentForm = () => {
                     (patient) => patient.value === value
                   );
                   if (!patientData) return;
-                  console.log(patientData);
                   setFormSelected({
                     ...FormSelected,
                     patient: patients.data.find(

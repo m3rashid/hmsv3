@@ -16,7 +16,6 @@ const checkAuth = (req, res, next) => {
     req.permissions = payload.sub.permissions;
     next();
   } catch (err) {
-    console.log(err);
     return res.status(401).json({
       message: "Unauthorized",
     });

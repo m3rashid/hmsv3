@@ -59,7 +59,6 @@ const addActions = (role) => {
 };
 
 const loginService = async (email, password) => {
-  console.log({ email, password });
   if (!email || !password) throw new Error("No credentials");
 
   const user = await prisma.auth.findUnique({
@@ -149,7 +148,6 @@ const signupService = async ({
     actionTable: "profile",
   });
 
-  console.log({ user, profile });
   return user;
 };
 

@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
 import { Table, Input } from "antd";
+import React, { useEffect, useState } from "react";
+
 import { getEstimatedMedRequirement } from "../../pages/pharmacy/helpers/functions";
-// const EditableContext = React.createContext(null);
+
 const MedicineTable = ({
   medicines = [],
   selectedMedicines,
@@ -14,7 +15,10 @@ const MedicineTable = ({
       medicines.map((med) => {
         return {
           ...med,
-          requiredQuantity : getEstimatedMedRequirement({dosage:med.dosage, duration:med.duration}),
+          requiredQuantity: getEstimatedMedRequirement({
+            dosage: med.dosage,
+            duration: med.duration,
+          }),
           amountDispensed: 0,
           stock: med.Medicine.quantity,
           name: med.Medicine.name,
@@ -34,7 +38,6 @@ const MedicineTable = ({
       });
     });
   };
-  console.log(medicines);
   const columns = [
     {
       title: "Medicine",
@@ -68,13 +71,6 @@ const MedicineTable = ({
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
-      console.log(selectedRowKeys);
-
-      console.log(
-        `selectedRowKeys: ${selectedRowKeys}`,
-        "selectedRows: ",
-        selectedRows
-      );
       setSelectedMedicines(selectedRows);
       setDispensingMedicines((prevState) => {
         return prevState.map((med, i) => {

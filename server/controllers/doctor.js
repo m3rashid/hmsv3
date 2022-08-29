@@ -29,7 +29,6 @@ const getAppointmentById = async (req, res) => {
   }
 
   const data = await getAppointmentByIdService(req.query.id);
-  console.log(data);
   return res.status(200).json(data);
 };
 
@@ -109,7 +108,6 @@ const checkMedAvailability = async (req, res) => {
     duration,
   });
 
-  console.log(data);
   return res.status(200).json(data);
 };
 

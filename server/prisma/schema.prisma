@@ -205,7 +205,7 @@ model Log {
   id          Int      @id @default(autoincrement())
   action      String
   fromId      Int
-  actionId    String
+  actionId    Int
   actionTable String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
