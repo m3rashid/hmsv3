@@ -111,8 +111,51 @@ const updateUserProfileService = async (
   };
 };
 
+const generateReportsService = async ({ startDay, endDay, action }) => {
+  if (action && !Object.values(serverActions).includes(action)) {
+    throw new Error("Unknown action");
+  }
+
+  const reports = await prisma.log.findMany({
+    where: {
+      AND: [
+        {
+          ...((startDay || endDay) && {
+            createdAt: {
+              ...(startDay && { gte: startDay }),
+              ...(endDay && { lte: endDay }),
+            },
+          }),
+        },
+        { ...(action && { action }) },
+      ],
+    },
+  });
+
+  let reportAggr;
+
+  if (!action) {
+    reportAggr = {};
+
+    for (let i = 0; i < reports.length; i++) {
+      if (!(reports[i].actionTable in reportAggr)) {
+        reportAggr[reports[i].actionTable] = [];
+      }
+      reportAggr[reports[i].actionTable].push({ ...reports[i], details: {} });
+    }
+  } else {
+    reportAggr = reports;
+  }
+
+  // const keys = Object.keys(reportAggr);
+  // for (let i = 0; i < keys.length; i++) {}
+
+  return reportAggr;
+};
+
 module.exports = {
   getAllUsersService,
   editPermissionsService,
   updateUserProfileService,
+  generateReportsService,
 };

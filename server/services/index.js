@@ -1,4 +1,9 @@
-const { editPermissionsService, getAllUsersService } = require("./admin");
+const {
+  editPermissionsService,
+  getAllUsersService,
+  generateReportsService,
+  updateUserProfileService,
+} = require("./admin");
 
 const {
   loginService,
@@ -56,6 +61,8 @@ const {
 module.exports = {
   editPermissionsService,
   getAllUsersService,
+  generateReportsService,
+  updateUserProfileService,
 
   loginService,
   logoutService,

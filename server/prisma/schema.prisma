@@ -208,5 +208,4 @@ model Log {
   actionId    Int
   actionTable String
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
 }

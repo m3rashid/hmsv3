@@ -1,4 +1,9 @@
-const { editPermissions, getAllUsers, updateUser } = require("./admin");
+const {
+  editPermissions,
+  getAllUsers,
+  updateUser,
+  generateHmsReports,
+} = require("./admin");
 
 const { login, revalidate, signup } = require("./auth.js");
 
@@ -39,6 +44,7 @@ module.exports = {
   editPermissions,
   getAllUsers,
   updateUser,
+  generateHmsReports,
 
   login,
   revalidate,

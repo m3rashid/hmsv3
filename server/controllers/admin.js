@@ -1,5 +1,9 @@
-const { getAllUsersService, editPermissionsService } = require("../services");
-const { updateUserProfileService } = require("../services/admin");
+const {
+  getAllUsersService,
+  editPermissionsService,
+  generateReportsService,
+  updateUserProfileService,
+} = require("../services");
 const { permissions } = require("../utils/constants");
 
 const getAllUsers = async (req, res) => {
@@ -75,8 +79,23 @@ const updateUser = async (req, res) => {
   });
 };
 
+const generateHmsReports = async (req, res) => {
+  // if (!req.permissions.includes(permissions.ADMIN)) {
+  //   throw new Error("Unauthorized for this resource");
+  // }
+
+  const reports = await generateReportsService({
+    startDay: req.body.startDay,
+    endDay: req.body.endDay,
+    action: req.body.action,
+  });
+
+  return res.status(200).json(reports);
+};
+
 module.exports = {
   getAllUsers,
   editPermissions,
   updateUser,
+  generateHmsReports,
 };
