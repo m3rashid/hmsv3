@@ -101,8 +101,6 @@ const signupService = async ({
   authorityName,
   category,
   origin,
-
-  // TODO unhandled in sockets
   createdBy,
 }) => {
   const profileData = {
@@ -119,7 +117,7 @@ const signupService = async ({
     category,
     origin,
   };
-  if (!email || !password || !name || !role || !sex) {
+  if (!email || !password || !name || !role || !sex || !roomNumber) {
     throw new Error("Insufficient credentials");
   }
 

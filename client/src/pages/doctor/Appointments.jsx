@@ -76,8 +76,7 @@ function DoctorAppointments() {
               });
             }}
           >
-            {" "}
-            View Form{" "}
+            Patient Details
           </Button>
           <Popconfirm
             disabled={!dayjs(record.date).isBefore(dayjs().add(6, "hours"))}
@@ -91,8 +90,7 @@ function DoctorAppointments() {
             <Button
               disabled={!dayjs(record.date).isBefore(dayjs().add(6, "hours"))}
             >
-              {" "}
-              Precribe{" "}
+              Prescribe
             </Button>
           </Popconfirm>
         </Space>
@@ -143,15 +141,10 @@ function DoctorAppointments() {
         <Space>
           <Button
             onClick={() => {
-              setModalVisible({
-                visible: true,
-                id: record.id,
-                data: record,
-              });
+              setModalVisible({ visible: true, id: record.id, data: record });
             }}
           >
-            {" "}
-            View Form{" "}
+            Patient Details
           </Button>
           <Button> View Prescription </Button>
         </Space>
@@ -171,7 +164,7 @@ function DoctorAppointments() {
       </Typography.Title>
 
       <Tabs defaultActiveKey="1" centered>
-        <TabPane tab="Pending" key="1">
+        <TabPane tab="Active" key="1">
           <Table
             loading={doctorData.loading}
             dataSource={doctorData.appointments.filter((apt) => apt.pending)}
@@ -186,7 +179,7 @@ function DoctorAppointments() {
             rowKey="id"
           />
         </TabPane>
-        <TabPane tab="Processed" key="2">
+        <TabPane tab="Completed" key="2">
           <Table
             dataSource={doctorData.appointments.filter((apt) => !apt.pending)}
             columns={columnsPrevious}

@@ -74,7 +74,7 @@ const routes = [
   {
     path: "/reception/add-appointment",
     component: CreateAppointmentForm,
-    text: "Reception",
+    text: "Create Appointment",
     role: [permissions.RECEPTION_ADD_APPOINTMENT],
   },
   {

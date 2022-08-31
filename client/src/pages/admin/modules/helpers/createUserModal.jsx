@@ -27,9 +27,16 @@ const requiredFormFields = [
     otherRules: [{}],
   },
   {
+    key: "roomNumber",
+    label: "Room Number",
+    inputType: "number",
+    otherRules: [{}],
+  },
+  {
     key: "role",
     label: "Role",
     inputType: "select",
+    multiple: false,
     otherRules: [
       {
         validator: (_, value) => {
@@ -52,6 +59,7 @@ const requiredFormFields = [
     key: "sex",
     label: "Gender",
     inputType: "select",
+    multiple: false,
     otherRules: [{}],
     options: ["m", "f", "o"].map((gender) => ({
       key: gender,
@@ -66,6 +74,7 @@ const otherFormFields = [
     key: "availableDays",
     label: "Available Days",
     inputType: "select",
+    multiple: true,
     options: [
       { key: "MON", label: "Monday" },
       { key: "TUE", label: "Tuesday" },
@@ -80,7 +89,6 @@ const otherFormFields = [
   { key: "contact", label: "Contact", inputType: "number" },
   { key: "address", label: "Address", inputType: "text" },
   { key: "availability", label: "Availability", inputType: "text" },
-  { key: "roomNumber", label: "Room Number", inputType: "number" },
   { key: "authorityName", label: "Authority Name", inputType: "text" },
   { key: "category", label: "Category", inputType: "text" },
   { key: "origin", label: "Origin", inputType: "text" },
@@ -109,6 +117,7 @@ const RenderFormFields = ({ formFields, isEdit, required, data }) => {
           {f.inputType === "select" ? (
             <Select
               {...(isEdit && { defaultValue: data[f.key] })}
+              {...(f.multiple && { mode: "multiple" })}
               placeholder={`Select ${f.label}`}
             >
               {f.options.map((o) => (

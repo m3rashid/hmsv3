@@ -82,7 +82,7 @@ const Pharmacy = () => {
                   offset={[5, -5]}
                 >
                   Notifications
-                </Badge>{" "}
+                </Badge>
               </div>
             }
             key="2"

@@ -1,8 +1,9 @@
-import { Button, Modal, Space, Table, Tabs, Popconfirm, Spin } from "antd";
-import React, { useContext, useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { pharmacyState } from "../../atoms/pharmacy";
 import dayjs from "dayjs";
+import { useRecoilValue } from "recoil";
+import React, { useEffect, useState } from "react";
+import { Button, Modal, Space, Table, Tabs, Popconfirm, Spin } from "antd";
+
+import { pharmacyState } from "../../atoms/pharmacy";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { instance } from "../../api/instance";
@@ -33,7 +34,6 @@ function Prescriptions() {
       render: (text, record) => {
         return <span>{record.appointment.patient.name}</span>;
       },
-      // sorter: (a, b) => a.patientname.localeCompare(b.patientname),
     },
     {
       title: "DoctorName",
@@ -54,8 +54,6 @@ function Prescriptions() {
           </span>
         );
       },
-      // sorter: (a, b) =>
-      //   new Date(a.date).getTime() - new Date(b.date).getTime(),
     },
     {
       title: "Actions",
@@ -72,18 +70,24 @@ function Prescriptions() {
               });
             }}
           >
-            View Prescriptions{" "}
+            View Prescriptions
           </Button>
-          <Popconfirm
+          {/* <Popconfirm
             title="Create a prescription for this appointment?"
             onConfirm={() => {
               navigate(`/pharmacy/receipt?prescriptionId=${record.id}`);
             }}
             okText="Yes"
             cancelText="Cancel"
+          > */}
+          <Button
+            onClick={() => {
+              navigate(`/pharmacy/receipt?prescriptionId=${record.id}`);
+            }}
           >
-            <Button> Precribe </Button>
-          </Popconfirm>
+            Dispense
+          </Button>
+          {/* </Popconfirm> */}
         </Space>
       ),
     },
@@ -97,7 +101,6 @@ function Prescriptions() {
       render: (text, record) => {
         return <span>{record.appointment.patient.name}</span>;
       },
-      // sorter: (a, b) => a.patientname.localeCompare(b.patientname),
     },
     {
       title: "DoctorName",
@@ -118,8 +121,6 @@ function Prescriptions() {
           </span>
         );
       },
-      // sorter: (a, b) =>
-      //   new Date(a.date).getTime() - new Date(b.date).getTime(),
     },
     {
       title: "Actions",
@@ -147,7 +148,7 @@ function Prescriptions() {
   return (
     <React.Fragment>
       <Tabs defaultActiveKey="1" centered>
-        <TabPane tab="Pending" key="1">
+        <TabPane tab="Active" key="1">
           <Table
             dataSource={pharmacyData.prescriptions.filter(
               (prsp) => prsp.pending
@@ -155,7 +156,7 @@ function Prescriptions() {
             columns={pendingColumns}
           />
         </TabPane>
-        <TabPane tab="Processed" key="2">
+        <TabPane tab="Completed" key="2">
           <Table
             dataSource={pharmacyData.prescriptions.filter(
               (prsp) => !prsp.pending

@@ -85,10 +85,10 @@ model Profile {
   contact       String?
   address       String?
   bio           String?
+  roomNumber    String
   sex           Sex
   availability  String[] // time range
   availableDays Days[]
-  roomNumber    Int?
   authorityName String?
   category      Category?
   role          Role

@@ -38,10 +38,10 @@ CREATE TABLE "Profile" (
     "contact" TEXT,
     "address" TEXT,
     "bio" TEXT,
+    "roomNumber" TEXT NOT NULL,
     "sex" "Sex" NOT NULL,
     "availability" TEXT[],
     "availableDays" "Days"[],
-    "roomNumber" INTEGER,
     "authorityName" TEXT,
     "category" "Category",
     "role" "Role" NOT NULL,
@@ -172,10 +172,9 @@ CREATE TABLE "Log" (
     "id" SERIAL NOT NULL,
     "action" TEXT NOT NULL,
     "fromId" INTEGER NOT NULL,
-    "actionId" TEXT NOT NULL,
+    "actionId" INTEGER NOT NULL,
     "actionTable" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Log_pkey" PRIMARY KEY ("id")
 );

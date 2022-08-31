@@ -1,7 +1,8 @@
 const isProduction = process.env.NODE_ENV === "production";
 
 const corsOrigin = isProduction
-  ? ["https://admin.socket.io", "https://ansarihms.surge.sh"]
+  ? // ? ["https://admin.socket.io", "https://ansarihms.surge.sh"]
+    "*"
   : // [
     // "https://admin.socket.io",
     // "http://localhost:3000",
