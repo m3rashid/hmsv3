@@ -1,8 +1,8 @@
 const bcrypt = require("bcrypt");
 
 const prisma = require("../utils/prisma");
-const { supportedUserRoles, serverActions } = require("../utils/constants");
 const { addEventLog } = require("../utils/logs");
+const { supportedUserRoles, serverActions } = require("../utils/constants");
 
 const getAllUsersService = async (userRole) => {
   if (!userRole) return [];
@@ -133,7 +133,6 @@ const generateReportsService = async ({ startDay, endDay, action }) => {
   });
 
   let reportAggr;
-
   if (!action) {
     reportAggr = {};
 
@@ -141,14 +140,26 @@ const generateReportsService = async ({ startDay, endDay, action }) => {
       if (!(reports[i].actionTable in reportAggr)) {
         reportAggr[reports[i].actionTable] = [];
       }
+
       reportAggr[reports[i].actionTable].push({ ...reports[i], details: {} });
     }
   } else {
     reportAggr = reports;
   }
 
-  // const keys = Object.keys(reportAggr);
-  // for (let i = 0; i < keys.length; i++) {}
+  const keys = Object.keys(reportAggr);
+  for (let i = 0; i < keys.length; i++) {
+    console.log({
+      [keys[i]]: reportAggr[keys[i]],
+    });
+
+    const details = await prisma[keys[i]].findMany({
+      where: {
+        id: details.reduce((acc, curr) => [...acc, curr.id], []),
+      },
+    });
+    for (let j = 0; j < details.length; j++) {}
+  }
 
   return reportAggr;
 };
