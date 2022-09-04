@@ -9,29 +9,30 @@ import {
   Tabs,
 } from "antd";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { socket } from "../../api/socket";
 import Header from "../../components/Header";
 import { authState } from "../../atoms/auth";
 import { doctorState } from "../../atoms/doctor";
+import { functionState } from "../../atoms/functions";
+import { LoadingAtom } from "../../atoms/loading";
 
 const { TabPane } = Tabs;
 
 function DoctorAppointments() {
-  // const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const { user } = useRecoilValue(authState);
-  const [doctorData, setDoctorData] = useRecoilState(doctorState);
+  const doctorData = useRecoilValue(doctorState);
+  const functionData = useRecoilValue(functionState);
   const [ModalVisible, setModalVisible] = useState({
     visible: false,
     id: null,
     data: {},
   });
-
-  console.log(doctorData);
+  const [loadingData, setLoadingData] = useRecoilState(LoadingAtom);
 
   const ToggleModal = () => {
     setModalVisible({
@@ -53,7 +54,6 @@ function DoctorAppointments() {
       key: "patient",
       sorter: (a, b) => a?.patient?.name?.localeCompare(b.patientname),
       render: (item) => {
-        console.log(item);
         return <Typography.Text>{item?.name}</Typography.Text>;
       },
     },
@@ -61,7 +61,7 @@ function DoctorAppointments() {
       title: "Date/Time",
       dataIndex: "date",
       key: "date",
-      sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      sorter: (a, b) => dayjs(a.date).isBefore(dayjs(b.date)),
       render: (item) => dayjs(item).format("MMMM DD YYYY, h:mm:ss a"),
       defaultSortOrder: "ascend",
     },
@@ -73,7 +73,6 @@ function DoctorAppointments() {
         <Space>
           <Button
             onClick={() => {
-              console.log(record);
               setModalVisible({
                 visible: true,
                 id: record.id,
@@ -81,10 +80,10 @@ function DoctorAppointments() {
               });
             }}
           >
-            {" "}
-            View Form{" "}
+            View Form
           </Button>
           <Popconfirm
+            disabled={!dayjs(record.date).isBefore(dayjs().add(6, "hours"))}
             title="Create a prescription for this appointment?"
             onConfirm={() => {
               navigate(`/doctor/prescribe-medicine?appointmentId=${record.id}`);
@@ -94,6 +93,10 @@ function DoctorAppointments() {
           >
             <Button> Precribe </Button>
           </Popconfirm>
+
+          <Button onClick={() => navigate(`/patient/${record.patient.id}`)}>
+            View Patient
+          </Button>
         </Space>
       ),
     },
@@ -104,9 +107,8 @@ function DoctorAppointments() {
       title: "PatientName",
       dataIndex: "patient",
       key: "patient",
-      sorter: (a, b) => a?.patient?.name?.localeCompare(b.patientname),
+      sorter: (a, b) => a?.patient?.name?.localeCompare(b?.patient?.name),
       render: (item) => {
-        console.log(item);
         return <Typography.Text>{item?.name}</Typography.Text>;
       },
     },
@@ -114,9 +116,18 @@ function DoctorAppointments() {
       title: "Date/Time",
       dataIndex: "date",
       key: "date",
-      sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-      render: (item) => dayjs(item).format("MMMM DD YYYY, h:mm:ss a"),
+      sorter: (a, b) => dayjs(a.date).isBefore(dayjs(b.date)),
+      render: (item) => dayjs(item).format("DD MMM, h:mm:ss a"),
       defaultSortOrder: "ascend",
+      filters: [
+        {
+          text: "Today",
+          value: 1,
+        },
+      ],
+      onFilter: (value, record) => {
+        return dayjs(record.date).isSame(dayjs(), "day");
+      },
     },
     {
       title: "Remarks",
@@ -134,22 +145,36 @@ function DoctorAppointments() {
         <Space>
           <Button
             onClick={() => {
-              console.log(record);
-              setModalVisible({
-                visible: true,
-                id: record.id,
-                data: record,
-              });
+              setModalVisible({ visible: true, id: record.id, data: record });
             }}
           >
-            {" "}
-            View Form{" "}
+            View Form
           </Button>
           <Button> View Prescription </Button>
+          <Button
+            onClick={() => {
+              navigate(`/patient/${record.patient.id}`);
+            }}
+          >
+            View Patient
+          </Button>
         </Space>
       ),
     },
   ];
+
+  const refreshAppointments = useCallback(() => {
+    setLoadingData({
+      ...loadingData,
+      refetchAppointments: true,
+    });
+    functionData.loadDoctorAppointment().then(() => {
+      setLoadingData({
+        ...loadingData,
+        refetchAppointments: false,
+      });
+    });
+  }, [functionData]);
 
   return (
     <div style={{ marginTop: "20px" }}>
@@ -161,26 +186,52 @@ function DoctorAppointments() {
       >
         Appointments
       </Typography.Title>
+      <Button
+        style={{
+          zIndex: 100,
+          marginTop: 10,
+        }}
+        onClick={refreshAppointments}
+        loading={loadingData.refetchAppointments}
+      >
+        <Typography.Text>
+          {loadingData.refetchAppointments
+            ? "Refreshing Appointments"
+            : "Refresh Appointments"}
+        </Typography.Text>
+      </Button>
 
-      <Tabs defaultActiveKey="1" centered>
-        <TabPane tab="Pending" key="1">
+      <Tabs
+        defaultActiveKey="1"
+        centered
+        style={{
+          marginTop: -5,
+        }}
+      >
+        <TabPane tab="Active" key="1">
           <Table
+            loading={doctorData.loading}
             dataSource={doctorData.appointments.filter((apt) => apt.pending)}
             columns={columnsPending}
             pagination={{
-              total: doctorData.appointments.length,
-              defaultPageSize: 5,
+              total: doctorData.appointments.reduce(
+                (acc, curr) => (!curr.pending ? acc : acc + 1),
+                0
+              ),
+              pageSize: 5,
             }}
+            rowKey="id"
           />
         </TabPane>
-        <TabPane tab="Past" key="2">
+        <TabPane tab="Completed" key="2">
           <Table
             dataSource={doctorData.appointments.filter((apt) => !apt.pending)}
             columns={columnsPrevious}
-            pagination={{
-              total: doctorData.appointments.length,
-              defaultPageSize: 5,
-            }}
+            // pagination={{
+            //   total: doctorData.appointments.reduce((acc, curr) => curr.pending ? acc : acc + 1, 0),
+            //   defaultPageSize: 5,
+            // }}
+            rowKey="id"
           />
         </TabPane>
       </Tabs>

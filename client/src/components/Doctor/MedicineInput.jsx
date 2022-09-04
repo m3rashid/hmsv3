@@ -7,31 +7,18 @@ import { useDebounce } from "use-debounce";
 import styles from "./medicineinput.module.css";
 import { inventoryState } from "../../atoms/inventory";
 import { instance } from "../../api/instance";
+import { dosages } from "../../utils/constants";
 
-const dosages = [
-  { value: "OD", label: "Once a day" },
-  { value: "BD", label: "Twice a day" },
-  { value: "TD", label: "Three times a day" },
-  { value: "QD", label: "Four times a day" },
-  { value: "OW", label: "Once a week" },
-  { value: "BW", label: "Twice a week" },
-  { value: "TW", label: "Three times a week" },
-];
-
-/**
- *
- * Used to Generate Medicine Inputs, Checks Item Availability
- * @returns
- */
-function MedicineInput({
+const MedicineInput = ({
   index,
   medicine,
   deleteMedicine,
   type: medicineType,
   UpdateMedicine,
   isExtra,
-}) {
+}) => {
   const medicineDB = useRecoilValue(inventoryState);
+  console.log(medicineDB);
   const [MedicineData, setMedicineData] = useState(medicine);
   const [Info, setInfo] = useState({
     available: true,
@@ -54,8 +41,8 @@ function MedicineInput({
   const ValidateMedicine = useCallback(async () => {
     if (value) {
       const data = {
-        dosage: value.dosage.value,
-        medicineId: value?.medicine?.id,
+        dosage: value.dosage,
+        medicineId: value?.Medicine?.id,
         duration: parseInt(value.duration),
       };
 
@@ -66,13 +53,11 @@ function MedicineInput({
         "/doctor/med/check-availability",
         data
       );
-      console.log(availabilityInfo);
       setInfo(availabilityInfo);
     }
   }, [value]);
 
   useEffect(() => {
-    console.log("Validating");
     ValidateMedicine();
   }, [ValidateMedicine]);
 
@@ -117,7 +102,7 @@ function MedicineInput({
               const Item = medicineDB?.Medicine?.inventory.find(
                 (item) => item.id === value
               );
-              handleChange(Item, "medicine");
+              handleChange(Item, "Medicine");
             }}
           >
             <Select.OptGroup label="Tablets">
@@ -160,8 +145,7 @@ function MedicineInput({
             defaultValue={medicine.dosage}
             className={styles.select}
             onChange={(value) => {
-              const Item = dosages.find((item) => item.value === value);
-              handleChange(Item, "dosage");
+              handleChange(value, "dosage");
             }}
           >
             {dosages.map((dosage) => (
@@ -216,7 +200,7 @@ function MedicineInput({
       </div>
     </Space>
   );
-}
+};
 
 MedicineInput.propTypes = {
   index: PropTypes.number.isRequired,

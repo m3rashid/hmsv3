@@ -2,9 +2,9 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import { Modal, Button, Input, Form, message } from "antd";
 
+import { socket } from "../../api/socket";
 import { authState } from "../../atoms/auth";
 import { instance } from "../../api/instance";
-import { socket } from "../../api/socket";
 
 function AuthModal({ handleCancel, isModalVisible, handleOk }) {
   const [, setAuth] = useRecoilState(authState);
@@ -16,15 +16,16 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
       });
       const { data } = await instance.post("/auth/login", values);
 
+      instance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${data.token}`;
+
       setAuth({
         isLoggedIn: true,
         user: data.user,
         token: data.token,
       });
 
-      instance.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${data.token}`;
       localStorage.setItem("refresh_token", data.refreshToken);
       socket.io.opts.auth.token = data.token;
       socket.disconnect().connect();
@@ -43,7 +44,6 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
     message.error({
       content: "Login Failed",
       key: "auth/login",

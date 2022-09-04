@@ -10,6 +10,7 @@ import {
   Table,
   Typography,
 } from "antd";
+import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -20,12 +21,10 @@ import { permissions } from "../../../../routes";
 import { authState } from "../../../../atoms/auth";
 import { instance } from "../../../../api/instance";
 import { inventoryState } from "../../../../atoms/inventory";
-import dayjs from "dayjs";
 
 function InventoryTable(prop) {
   const auth = useRecoilValue(authState);
   const [inventory, setinventoryData] = useRecoilState(inventoryState);
-  console.log(inventory);
   const [SearchQuery, setSearchQuery] = React.useState({});
   const [isModalVisible, setIsModalVisible] = useState({
     open: false,
@@ -178,7 +177,6 @@ function InventoryTable(prop) {
             allowClear
             style={{ width: "100%", padding: "10px" }}
             onSearch={(value) => {
-              console.log(value);
               setSearchQuery({ ...SearchQuery, [prop.type]: value });
             }}
           />
@@ -209,7 +207,6 @@ function InventoryTable(prop) {
           {!isModalVisible.isEdit ? (
             <Space direction="vertical">
               <div>
-                {console.log(isModalVisible.data)}
                 <Space direction="vertical">
                   <Typography.Title level={4}>
                     {isModalVisible?.data?.name}

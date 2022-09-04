@@ -15,12 +15,10 @@ const UserDetailsModal = ({ data }) => {
   const onFinish = async (values) => {
     try {
       message.loading({ content: "Loading...", key: "edit-permissions" });
-      const res = await instance.post("/admin/edit-permissions", {
+      await instance.post("/admin/edit-permissions", {
         permissions: values.permissions,
         userId: data.id,
       });
-
-      console.log({ permissionsEdited: res.data });
 
       message.success({
         content: "Permissions edited Successfully",
@@ -37,7 +35,6 @@ const UserDetailsModal = ({ data }) => {
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
     message.error({
       content: "Permissions editing Failed",
       key: "edit-permissions",

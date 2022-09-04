@@ -41,8 +41,6 @@ io.on("connection", (socket) => {
     userId: socket.user.id,
   };
 
-  console.log(data);
-
   socket.on("connect", () => console.log(data));
   return socketHandler(io, socket);
 });
@@ -55,7 +53,9 @@ app.use(morgan("dev"));
 app.get("/", (req, res) => {
   return res.send("Hello World");
 });
-app.use((req,res,next)=>{setTimeout(next,300)});
+app.use((req, res, next) => {
+  setTimeout(next, 300);
+});
 
 app.use("/api/auth", AuthRoutes);
 app.use("/api/admin", AdminRoutes);

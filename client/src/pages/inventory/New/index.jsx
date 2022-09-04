@@ -1,13 +1,14 @@
 import React from "react";
 import { Divider, message } from "antd";
+import { useSetRecoilState } from "recoil";
+
 import Header from "../../../components/Header";
-import InventoryFormHandler from "../../../components/Inventory/FormHandler";
 import { instance } from "../../../api/instance";
-import { useRecoilState } from "recoil";
 import { inventoryState } from "../../../atoms/inventory";
+import InventoryFormHandler from "../../../components/Inventory/FormHandler";
 
 const AddNewInventory = () => {
-  const [inventoryData, setInventoryData] = useRecoilState(inventoryState);
+  const setInventoryData = useSetRecoilState(inventoryState);
 
   const formSubmitHandler = async (data) => {
     try {
@@ -21,7 +22,6 @@ const AddNewInventory = () => {
         },
       });
 
-      console.log(res);
       message.success("New Inventory Added");
 
       setInventoryData((prevState) => {

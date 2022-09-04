@@ -43,15 +43,15 @@ const receptionistLeft =
 
 const createAppointment =
   (io, socket) =>
-  async ({ patientId, doctorId, date, patient, doctor }) => {
-    console.log("New Appointment : ", patientId, doctorId, date);
+  async ({ patientId, doctorId, date, remarks }) => {
     const data = await createAppointmentService({
       patientId,
-      patient,
-      doctor,
       doctorId,
       date,
+      remarks,
+      createdBy: socket.user.id,
     });
+
     io.emit("new-appointment-created", data);
   };
 

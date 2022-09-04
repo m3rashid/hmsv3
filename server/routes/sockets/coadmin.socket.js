@@ -6,7 +6,6 @@ const {
 const createPatient =
   (io, socket) =>
   async ({ name, age, sex, contact, address, email, jamiaId }) => {
-    console.log(socket.user);
     const { patient } = await createPatientService(
       {
         name,
@@ -17,16 +16,19 @@ const createPatient =
         address,
         jamiaId,
       },
-      socket?.user?.permissions
+      socket.user.permissions,
+      socket.user.id
     );
-    console.log(patient, "New patient created");
     io.emit("new-patient-created", { data: patient });
   };
 
 const deletePatient =
   (io, socket) =>
   async ({ patientId }) => {
-    await deletePatientService(patientId);
+    await deletePatientService({
+      patientId,
+      createdBy: socket.user.id,
+    });
     io.emit("patient-delete-success", { patientId });
   };
 

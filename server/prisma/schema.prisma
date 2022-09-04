@@ -85,10 +85,10 @@ model Profile {
   contact       String?
   address       String?
   bio           String?
+  roomNumber    String
   sex           Sex
   availability  String[] // time range
   availableDays Days[]
-  roomNumber    Int?
   authorityName String?
   category      Category?
   role          Role
@@ -202,10 +202,10 @@ model Test {
 }
 
 model Log {
-  id        Int      @id @default(autoincrement())
-  action    String
-  fromId    Int
-  toId      Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id          Int      @id @default(autoincrement())
+  action      String
+  fromId      Int
+  actionId    Int
+  actionTable String
+  createdAt   DateTime @default(now())
 }

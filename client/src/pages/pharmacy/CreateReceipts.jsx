@@ -3,14 +3,13 @@ import { useRecoilValue } from "recoil";
 import { Button, Form, Select, Spin } from "antd";
 import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import GeneratePdf from "../../components/generatePdf";
-import { pharmacyState } from "../../atoms/pharmacy";
-import { instance } from "../../api/instance";
-import MedicineTable from "../../components/Pharmacy/MedicineTable";
+
 import { socket } from "../../api/socket";
+import { instance } from "../../api/instance";
+import { pharmacyState } from "../../atoms/pharmacy";
+import GeneratePdf from "../../components/generatePdf";
+import MedicineTable from "../../components/Pharmacy/MedicineTable";
 import usePrescribeMedicines from "../doctor/helpers/prescribeMeds.hook";
-// const { TextArea } = Input;
-const { Option } = Select;
 
 function CreateReceipts() {
   const {
@@ -25,7 +24,7 @@ function CreateReceipts() {
   const [selectedPrescription, setSelectedPrescription] = useState(null);
   const [selectedPrescriptionData, setSelectedPrescriptionData] = useState({
     loading: false,
-    data: {},
+    data: null,
   });
 
   const [form] = Form.useForm();
@@ -40,7 +39,6 @@ function CreateReceipts() {
       const prescription = pharmacyData.prescriptions.find(
         (prescription) => prescription.id === prescription_id
       );
-      console.log(prescription);
       if (prescription) {
         setSelectedPrescriptionData((prev) => ({ ...prev, loading: true }));
         setSelectedPrescription(prescription);
@@ -53,7 +51,6 @@ function CreateReceipts() {
         const { data } = await instance.get(
           `/pharmacy/prescriptions/${prescription.id}`
         );
-        // console.log(data);
         setSelectedPrescriptionData((prev) => ({
           ...prev,
           loading: false,
@@ -65,7 +62,6 @@ function CreateReceipts() {
   );
 
   useEffect(() => {
-    console.log(prescriptionId);
     if (prescriptionId !== null && pharmacyData.prescriptions.length > 0) {
       handlePrescriptionSelect(prescriptionId);
     }
@@ -78,7 +74,6 @@ function CreateReceipts() {
   const [total, setTotal] = useState({});
   const formSubmitHandler = async (values) => {
     if (loading) return;
-    console.log(selectedPrescription, selectedMedicines);
     // const resp = await instance.post(`/pharmacy/dispense`, {
     //   prescriptionId: selectedPrescription.id,
     //   medicines: selectedMedicines,
@@ -123,49 +118,55 @@ function CreateReceipts() {
               ?.filter((pr) => pr.pending)
               .map((presp) => {
                 return (
-                  <Option key={presp.id} value={presp.id}>
+                  <Select.Option key={presp.id} value={presp.id}>
                     <span>
                       {presp.appointment.patient.name} -{" "}
                       {dayjs(presp.datePrescribed).format(
                         "DD MMM YY,  HH:mm A"
                       )}
                     </span>
-                  </Option>
+                  </Select.Option>
                 );
               })}
           </Select>
         </Form.Item>
 
         <Spin spinning={selectedPrescriptionData.loading}>
-          <MedicineTable
-            medicines={selectedPrescriptionData.data?.medicines || []}
-            setSelectedMedicines={setSelectedMedicines}
-            selectedMedicine={selectedMedicines}
-          />
+          {selectedPrescription && (
+            <MedicineTable
+              medicines={selectedPrescriptionData.data?.medicines || []}
+              setSelectedMedicines={setSelectedMedicines}
+              selectedMedicine={selectedMedicines}
+            />
+          )}
+
           <Form.Item wrapperCol={{ offset: 10 }}>
             <div style={{ display: "flex" }}>
-              {selectedPrescriptionData.data && (
-                <div>
-                  <Button
-                    style={{ marginTop: "20px", marginRight: "10px" }}
-                    type="primary"
-                    className="print__button"
-                    onClick={printPdf}
-                  >
-                    Print Prescription
-                  </Button>
-                </div>
+              {selectedPrescription && selectedPrescriptionData.data && (
+                <>
+                  <div>
+                    <Button
+                      disabled={selectedPrescriptionData.loading}
+                      style={{ marginTop: "20px", marginRight: "10px" }}
+                      type="primary"
+                      className="print__button"
+                      onClick={printPdf}
+                    >
+                      Print Prescription
+                    </Button>
+                  </div>
+                  <div>
+                    <Button
+                      style={{ marginTop: "20px", marginLeft: "10px" }}
+                      loading={loading}
+                      type="primary"
+                      htmlType="submit"
+                    >
+                      Confirm Transaction
+                    </Button>
+                  </div>
+                </>
               )}
-              <div>
-                <Button
-                  style={{ marginTop: "20px", marginLeft: "10px" }}
-                  loading={loading}
-                  type="primary"
-                  htmlType="submit"
-                >
-                  Confirm Transaction
-                </Button>
-              </div>
             </div>
           </Form.Item>
         </Spin>

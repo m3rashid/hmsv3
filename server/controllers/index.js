@@ -1,11 +1,15 @@
-const { editPermissions, getAllUsers, updateUser } = require("./admin");
+const {
+  editPermissions,
+  getAllUsers,
+  updateUser,
+  generateHmsReports,
+} = require("./admin");
 
-const { login, revalidate, signup, createDummy } = require("./auth.js");
+const { login, revalidate, signup } = require("./auth.js");
 
 const {
   getDoctorAppointments,
   getDoctorPatients,
-  FillDummy,
   checkMedAvailability,
   createPrescriptionByDoctor,
   getAppointmentById,
@@ -40,15 +44,14 @@ module.exports = {
   editPermissions,
   getAllUsers,
   updateUser,
+  generateHmsReports,
 
   login,
   revalidate,
   signup,
-  createDummy,
 
   getDoctorAppointments,
   getDoctorPatients,
-  FillDummy,
   checkMedAvailability,
   createPrescriptionByDoctor,
   getAppointmentById,

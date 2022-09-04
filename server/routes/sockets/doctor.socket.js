@@ -51,21 +51,31 @@ const createPrescriptionByDoctor =
     datetime,
     medicines,
   }) => {
-    console.log(socket.user);
-    const data = await createPrescriptionService(
-      {
-        appointment,
-        symptoms,
-        diagnosis,
-        CustomMedicines,
-        datetime,
-        medicines,
-      },
-      socket?.user?.permissions
-    );
+    const data = await createPrescriptionService({
+      appointment,
+      symptoms,
+      diagnosis,
+      CustomMedicines,
+      datetime,
+      medicines,
+      createdBy: socket.user.id,
+    });
 
-    console.log(data);
     io.emit("new-prescription-by-doctor-created", { data });
+  };
+
+const referAnotherDoctor =
+  (io, socket) =>
+  async ({ patientId, prevDoctorId, nextDoctorId, date, remarks }) => {
+    const appointment = await referAnotherDoctorAppointmentService({
+      patientId,
+      prevDoctorId,
+      nextDoctorId,
+      date,
+      remarks,
+    });
+
+    io.emit("refer-another-doctor", { appointment });
   };
 
 module.exports = {
@@ -74,4 +84,5 @@ module.exports = {
   getPatientById,
   doctorLeft,
   createPrescriptionByDoctor,
+  referAnotherDoctor,
 };

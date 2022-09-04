@@ -23,7 +23,7 @@ const usePrescribeMedicines = (socket) => {
 
   const [medicines, setMedicines] = useState({
     medicines: [],
-    extramedicines: [],
+    extraMedicines: [],
   });
 
   const formSubmitHandler = (values) => {
@@ -32,10 +32,10 @@ const usePrescribeMedicines = (socket) => {
       appointment: formData.appointmentInfo.id,
       symptoms: values.symptoms,
       diagnosis: values.diagnosis,
-      CustomMedicines: medicines.extramedicines.map((item) => ({
-        name: item.medicine.name,
+      CustomMedicines: medicines.extraMedicines.map((item) => ({
+        Medicine: item.Medicine,
         quantity: item.medicine.quantityRequired,
-        dosage: item.dosage.value,
+        dosage: item.dosage,
         duration: item.duration,
       })),
       datetime: new Date(),
@@ -43,7 +43,6 @@ const usePrescribeMedicines = (socket) => {
         return {
           ...item,
           MedicineId: item.id,
-          dosage: item.dosage.value,
         };
       }),
     };
@@ -66,13 +65,12 @@ const usePrescribeMedicines = (socket) => {
   const deleteMedicine = (index, type) => {
     setMedicines((prevState) => {
       prevState[type].splice(index, 1);
-      return prevState;
+      return { ...prevState };
     });
   };
 
   const UpdateMedicine = useCallback(
     (type, item, index) => {
-      console.log(item);
       setMedicines((prevState) => ({
         ...prevState,
         [type]: prevState[type].map((data, i) => (i === index ? item : data)),

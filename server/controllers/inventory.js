@@ -38,7 +38,7 @@ const addMedicine = async (req, res) => {
   }
 
   const { type, data } = req.body;
-  const item = await addMedicineService(type, data);
+  const item = await addMedicineService({ type, data, createdBy: req.userId });
 
   return res.status(200).json({
     message: "Medicine added",
@@ -50,23 +50,31 @@ const EditInventory = async (req, res) => {
   if (!req.isAuthenticated) throw new Error("Unauthorized");
   const { type, data, id } = req.body;
 
-  const medicine = await editMedicineService(
+  const medicine = await editMedicineService({
     id,
-    {
+    data: {
       ...data,
       quantity: data.quantity ? parseInt(data.quantity) : undefined,
     },
-    type
-  );
+    type,
+    createdBy: req.userId,
+  });
   return res.status(200).json({ message: "Medicine updated", medicine });
 };
 
 const DeleteInventory = async (req, res) => {
   if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.permissions.includes(permissions.INVENTORY_ADD_MEDICINE)) {
+    throw new Error("Unauthorized for this resource");
+  }
 
   const { type, medicineId } = req.body;
 
-  const item = DeleteInventoryService(medicineId, type);
+  const item = DeleteInventoryService({
+    medicineId,
+    type,
+    createdBy: req.userId,
+  });
 
   return res.status(200).json({
     message: "Medicine deleted",

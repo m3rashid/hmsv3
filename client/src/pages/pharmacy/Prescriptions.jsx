@@ -1,11 +1,12 @@
-import { Button, Modal, Space, Table, Tabs, Popconfirm, Spin } from "antd";
-import React, { useContext, useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { pharmacyState } from "../../atoms/pharmacy";
 import dayjs from "dayjs";
+import { useRecoilValue } from "recoil";
+import React, { useEffect, useState } from "react";
+import { Button, Modal, Space, Table, Tabs, Popconfirm, Spin } from "antd";
+
+import { pharmacyState } from "../../atoms/pharmacy";
 import { useNavigate } from "react-router-dom";
-import { message } from 'antd'
-import { instance } from "../../api/instance"
+import { message } from "antd";
+import { instance } from "../../api/instance";
 import { getEstimatedMedRequirement } from "./helpers/functions";
 const { TabPane } = Tabs;
 
@@ -33,7 +34,6 @@ function Prescriptions() {
       render: (text, record) => {
         return <span>{record.appointment.patient.name}</span>;
       },
-      // sorter: (a, b) => a.patientname.localeCompare(b.patientname),
     },
     {
       title: "DoctorName",
@@ -54,8 +54,6 @@ function Prescriptions() {
           </span>
         );
       },
-      // sorter: (a, b) =>
-      //   new Date(a.date).getTime() - new Date(b.date).getTime(),
     },
     {
       title: "Actions",
@@ -72,18 +70,24 @@ function Prescriptions() {
               });
             }}
           >
-            View Prescriptions{" "}
+            View Prescriptions
           </Button>
-          <Popconfirm
+          {/* <Popconfirm
             title="Create a prescription for this appointment?"
             onConfirm={() => {
               navigate(`/pharmacy/receipt?prescriptionId=${record.id}`);
             }}
             okText="Yes"
             cancelText="Cancel"
+          > */}
+          <Button
+            onClick={() => {
+              navigate(`/pharmacy/receipt?prescriptionId=${record.id}`);
+            }}
           >
-            <Button> Precribe </Button>
-          </Popconfirm>
+            Dispense
+          </Button>
+          {/* </Popconfirm> */}
         </Space>
       ),
     },
@@ -97,7 +101,6 @@ function Prescriptions() {
       render: (text, record) => {
         return <span>{record.appointment.patient.name}</span>;
       },
-      // sorter: (a, b) => a.patientname.localeCompare(b.patientname),
     },
     {
       title: "DoctorName",
@@ -118,8 +121,6 @@ function Prescriptions() {
           </span>
         );
       },
-      // sorter: (a, b) =>
-      //   new Date(a.date).getTime() - new Date(b.date).getTime(),
     },
     {
       title: "Actions",
@@ -147,7 +148,7 @@ function Prescriptions() {
   return (
     <React.Fragment>
       <Tabs defaultActiveKey="1" centered>
-        <TabPane tab="Pending" key="1">
+        <TabPane tab="Active" key="1">
           <Table
             dataSource={pharmacyData.prescriptions.filter(
               (prsp) => prsp.pending
@@ -155,7 +156,7 @@ function Prescriptions() {
             columns={pendingColumns}
           />
         </TabPane>
-        <TabPane tab="Processed" key="2">
+        <TabPane tab="Completed" key="2">
           <Table
             dataSource={pharmacyData.prescriptions.filter(
               (prsp) => !prsp.pending
@@ -172,7 +173,7 @@ function Prescriptions() {
         footer={[
           <Button key="back" onClick={ToggleModal}>
             Close
-          </Button>
+          </Button>,
         ]}
       >
         <ViewPrescriptionModal prescriptionId={ModalVisible.id} />
@@ -181,101 +182,109 @@ function Prescriptions() {
   );
 }
 
-
-
-
 const ViewPrescriptionModal = ({ prescriptionId }) => {
-  const [prescriptionData, setPrescriptionData] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [prescriptionData, setPrescriptionData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const asyncFetch = async () => {
       try {
-        setLoading(true)
-        const resp = await instance.get(`/pharmacy/prescriptions/${prescriptionId}`);
-        setPrescriptionData(resp.data?.prescription)
-        console.log(resp.data)
+        setLoading(true);
+        const resp = await instance.get(
+          `/pharmacy/prescriptions/${prescriptionId}`
+        );
+        setPrescriptionData(resp.data?.prescription);
       } catch (error) {
-        message.error("Unknown error, check console.")
-        console.log(error)
+        message.error("Unknown error, check console.");
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
-    if (prescriptionId)
-      asyncFetch();
-  }, [prescriptionId])
-
+    };
+    if (prescriptionId) asyncFetch();
+  }, [prescriptionId]);
 
   const medicineTableColumns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
       render: (text, record) => <span>{record.Medicine.name}</span>,
     },
     {
-      title: 'Dosage',
-      dataIndex: 'dosage',
-      key: 'dosage',
+      title: "Dosage",
+      dataIndex: "dosage",
+      key: "dosage",
       render: (text) => <span>{text}</span>,
     },
     {
-      title: 'Duration',
-      dataIndex: 'duration',
-      key: 'duration',
+      title: "Duration",
+      dataIndex: "duration",
+      key: "duration",
       render: (text) => <span>{text} days</span>,
     },
     {
-      title: 'Estimated Requirement',
-      dataIndex: 'required',
-      key: 'required',
-      render: (text, record) => <span>{getEstimatedMedRequirement({ duration: record.duration, dosage: record.dosage })}</span>,
+      title: "Estimated Requirement",
+      dataIndex: "required",
+      key: "required",
+      render: (text, record) => (
+        <span>
+          {getEstimatedMedRequirement({
+            duration: record.duration,
+            dosage: record.dosage,
+          })}
+        </span>
+      ),
     },
-  ]
+  ];
 
-  return <Spin spinning={loading}>
-
-    {prescriptionData && <div>
-      {
-
-        prescriptionData?.datePrescribed
-        && <p>
-          <strong>Date and Time: </strong>
-          {dayjs(prescriptionData?.datePrescribed).format('DD/MM/YYYY, HH:MM a')}
-        </p>
-      }
-
-      <div>
-        <h4>
-          <strong>Prescription Info </strong>
-        </h4>
-        <Space direction="vertical" size={3} style={{ padding: "10px" }}>
-
-          {prescriptionData.appointment?.patient?.name && <div>
-            <strong>Patient Name: </strong>
-            {prescriptionData.appointment?.patient?.name}
-          </div>}
+  return (
+    <Spin spinning={loading}>
+      {prescriptionData && (
+        <div>
+          {prescriptionData?.datePrescribed && (
+            <p>
+              <strong>Date and Time: </strong>
+              {dayjs(prescriptionData?.datePrescribed).format(
+                "DD/MM/YYYY, HH:MM a"
+              )}
+            </p>
+          )}
 
           <div>
-            <strong>Doctor Name: </strong>
-            {prescriptionData.appointment?.doctor?.Auth[0]?.name}
+            <h4>
+              <strong>Prescription Info </strong>
+            </h4>
+            <Space direction="vertical" size={3} style={{ padding: "10px" }}>
+              {prescriptionData.appointment?.patient?.name && (
+                <div>
+                  <strong>Patient Name: </strong>
+                  {prescriptionData.appointment?.patient?.name}
+                </div>
+              )}
+
+              <div>
+                <strong>Doctor Name: </strong>
+                {prescriptionData.appointment?.doctor?.Auth[0]?.name}
+              </div>
+              {prescriptionData.medicines && (
+                <div>
+                  <strong>Medicines: </strong>
+                  <Table
+                    size="small"
+                    columns={medicineTableColumns}
+                    dataSource={prescriptionData.medicines}
+                  />
+                </div>
+              )}
+
+              <div>
+                <strong>Custom Medicines: </strong>
+              </div>
+            </Space>
           </div>
-          {
-            prescriptionData.medicines && <div>
-              <strong>Medicines: </strong>
-              <Table columns={medicineTableColumns} dataSource={prescriptionData.medicines} />
-
-            </div>
-          }
-
-          <div>
-            <strong>Custom Medicines: </strong>
-          </div>
-        </Space>
-      </div>
-    </div>}
-  </Spin>
-
-}
+        </div>
+      )}
+    </Spin>
+  );
+};
 export default Prescriptions;

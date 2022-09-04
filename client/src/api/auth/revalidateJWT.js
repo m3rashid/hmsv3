@@ -9,16 +9,11 @@ export const revalidateJWT = async (setAuth, setSocket) => {
     const { data } = await instance.post(
       "/auth/revalidate",
       {},
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      { headers: { Authorization: `Bearer ${token}` } }
     );
 
     instance.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
 
-    console.log(data);
     setAuth({
       isLoggedIn: true,
       user: data.user,

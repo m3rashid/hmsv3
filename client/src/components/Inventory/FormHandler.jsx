@@ -3,28 +3,28 @@ import {
   Button,
   AutoComplete,
   message,
-  Typography,
-  Col,
+  // Typography,
+  // Col,
   Input,
   Select,
   DatePicker,
 } from "antd";
-import axios from "axios";
+// import axios from "axios";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
 import React, { useState } from "react";
 
-import { instance } from "../../api/instance";
+// import { instance } from "../../api/instance";
 import { inventoryState } from "../../atoms/inventory";
-import { Category, InventoryTypes, MedType } from "../../utils/inventoryTypes";
 import StatefullFormRenderer from "../common/StatefullFormRenderer";
+import { Category, InventoryTypes, MedType } from "../../utils/constants";
 
 function InventoryFormHandler(props) {
-  const [itemlist, setItemlist] = useState({
-    data: [],
-    cancelToken: undefined,
-  });
+  // const [itemlist, setItemlist] = useState({
+  //   data: [],
+  //   cancelToken: undefined,
+  // });
   const inventory = useRecoilValue(inventoryState);
   const [Search, setSearch] = useState({
     name: [],
@@ -36,7 +36,6 @@ function InventoryFormHandler(props) {
   const [form] = Form.useForm();
 
   const formSubmitHandler = async (values) => {
-    console.log("formSubmitHandler", values);
     try {
       props.formSubmit({ values, FormSelected, form });
     } catch (err) {
@@ -45,52 +44,7 @@ function InventoryFormHandler(props) {
     }
   };
 
-  const UpdateMedicine = async (value) => {
-    if (itemlist.cancelToken) {
-      itemlist.cancelToken.cancel();
-    }
-
-    try {
-      const CancelToken = axios.CancelToken.source();
-
-      setItemlist({
-        data: [
-          {
-            value: "",
-            label: "Loading..",
-          },
-        ],
-        cancelToken: CancelToken,
-      });
-
-      const { data } = await instance.get("/inventory/search", {
-        params: {
-          name: value,
-        },
-      });
-
-      setItemlist({
-        ...itemlist,
-        data: data.inventory.map((item) => {
-          return {
-            value: item.id,
-            data: item,
-            label: (
-              <Col direction="vertical" size={"small"} style={{ fontSize: 12 }}>
-                <Typography.Text>{item.name}</Typography.Text>
-              </Col>
-            ),
-          };
-        }),
-        cancelToken: itemlist.cancelToken || CancelToken,
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const onSearchMedicineName = (value) => {
-    console.log(inventory, FormSelected.type);
     const searchData = inventory[`${FormSelected.type}`].inventory
       .filter((item) => {
         return item.name.toLowerCase().includes(value.toLowerCase());
@@ -101,13 +55,8 @@ function InventoryFormHandler(props) {
         label: item.name,
       }));
 
-    setSearch({
-      ...Search,
-      name: searchData,
-    });
+    setSearch({ ...Search, name: searchData });
   };
-
-  console.log(props.defaultValues);
 
   return (
     <React.Fragment>

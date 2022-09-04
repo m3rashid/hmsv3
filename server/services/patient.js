@@ -1,48 +1,73 @@
 const prisma = require("../utils/prisma");
-const { permissions } = require("../utils/constants");
+const { permissions, serverActions } = require("../utils/constants");
 const { checkAccess } = require("../utils/auth.helpers");
+const { addEventLog } = require("../utils/logs");
 
 const createPatientService = async (
   { name, age, sex, contact, address, email, jamiaId },
-  UserPermissions
+  UserPermissions,
+  createdBy
 ) => {
   if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions)) {
     throw new Error("Forbidden");
   }
 
   const data = { name, age, sex, contact, address, email, jamiaId };
-  console.log(data);
   if (!name || !age || !sex || !contact || !email) {
     throw new Error("Missing credentials");
   }
 
-  const newPatient = await prisma.patient.create({
-    data: {
-      name,
-      age,
-      contact,
-      sex,
-      address,
-      email,
-      jamiaId,
-    },
+  const newPatient = await prisma.patient.create({ data });
+
+  await addEventLog({
+    action: serverActions.CREATE_PATIENT,
+    fromId: createdBy,
+    actionId: newPatient.id,
+    actionTable: "patient",
   });
-  console.log("new Patient", newPatient);
+
   return { patient: newPatient };
 };
 
-const deletePatientService = async (patientId) => {
-  console.log({ patientId });
-  const patient = await prisma.Patient.delete({
+const deletePatientService = async ({ patientId, createdBy }) => {
+  const patient = await prisma.patient.delete({
     where: { id: patientId },
   });
+
   if (!patient) throw new Error("Patient not found");
+
+  await addEventLog({
+    action: serverActions.DELETE_PATIENT,
+    fromId: createdBy,
+    actionId: patientId,
+    actionTable: "patient",
+  });
+
   return patient;
 };
 
 const getPatientByIdService = async (patientId) => {
-  const patient = await prisma.Patient.findUnique({
-    where: { id: patientId },
+  const patient = await prisma.patient.findUnique({
+    where: {
+      id: parseInt(patientId),
+    },
+    include: {
+      Appointment: {
+        include: {
+          doctor: true,
+          Prescription: {
+            include: {
+              medicines: {
+                include: {
+                  Medicine: true,
+                },
+              },
+              Test: true,
+            },
+          },
+        },
+      },
+    },
   });
   if (!patient) throw new Error("Patient not found");
 

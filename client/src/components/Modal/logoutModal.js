@@ -25,7 +25,7 @@ const LogoutModal = ({ isModalVisible, setIsModalVisible, setAuth }) => {
       onOk={handleLogout}
       onCancel={handleCancel}
     >
-      Are you sure, you wnat to log out ?
+      Are you sure, you want to log out ?
     </Modal>
   );
 };

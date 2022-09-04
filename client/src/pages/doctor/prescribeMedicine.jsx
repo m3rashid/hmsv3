@@ -8,14 +8,13 @@ import {
   Row,
   Col,
   Modal,
-  message,
 } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
 
 import { socket } from "../../api/socket";
 import Header from "../../components/Header";
-import DisplayMedicine from "./helpers/DisplayMedicine";
+import DisplayMedicine from "../../components/Doctor/DisplayMedicine";
 import usePrescribeMedicines from "./helpers/prescribeMeds.hook";
 import MedicineInput from "../../components/Doctor/MedicineInput";
 import ReferPatientModal from "./helpers/referPatientModal";
@@ -48,12 +47,13 @@ const PrescriptionForm = () => {
     },
   } = usePrescribeMedicines(socket);
 
+  console.log(doctorData);
+
   useEffect(() => {
     socket.on("new-prescription-by-doctor-created", (data) => {
       setLoading({
         PrescribeMedicines: false,
       });
-      console.log(data);
       navigate("/doctor/appointments");
     });
     return () => {
@@ -68,7 +68,7 @@ const PrescriptionForm = () => {
     }
   }, [appointmentId, doctorData.appointments.length, handleAppointmentSelect]);
 
-  console.log({ medicines });
+  console.log(formData);
 
   return (
     <React.Fragment>
@@ -98,13 +98,18 @@ const PrescriptionForm = () => {
                   placeholder="Select an appointment"
                   allowClear
                   onChange={(value) => {
-                    console.log("changed", value);
                     handleAppointmentSelect(value);
                   }}
                   optionLabelProp="Appointment"
                 >
                   {doctorData.appointments
-                    .filter((apt) => apt.pending)
+                    .filter(
+                      (apt) =>
+                        apt.pending &&
+                        {
+                          /* dayjs(apt.date).isBefore(dayjs().add(6, "hours")) */
+                        }
+                    )
                     .map((appointment) => (
                       <Select.Option
                         key={appointment.id}
@@ -166,12 +171,12 @@ const PrescriptionForm = () => {
 
               <Space direction="vertical" style={{ width: "100%" }}>
                 <strong>Custom Medicines</strong>
-                {medicines.extramedicines?.map((medicine, index) => (
+                {medicines.extraMedicines?.map((medicine, index) => (
                   <MedicineInput
                     key={index}
                     index={index}
                     isExtra={true}
-                    type="extramedicines"
+                    type="extraMedicines"
                     medicine={medicine}
                     deleteMedicine={deleteMedicine}
                     setMedicines={setMedicines}
@@ -181,7 +186,7 @@ const PrescriptionForm = () => {
                 <Button
                   type="primary"
                   htmlType="button"
-                  onClick={() => addEmptyMedicine("extramedicines")}
+                  onClick={() => addEmptyMedicine("extraMedicines")}
                   style={{ marginTop: 10, marginBottom: 10 }}
                 >
                   + Add New Extra Medicine
@@ -203,7 +208,14 @@ const PrescriptionForm = () => {
             </Form>
           </Col>
           <Col span={12} style={{ padding: "10px" }}>
-            <DisplayMedicine formData={formData} medicines={medicines} />
+            <DisplayMedicine
+              id={formData?.appointmentInfo?.id}
+              symptoms={formData?.symptoms}
+              date={formData?.appointmentInfo?.date}
+              patient={formData?.appointmentInfo?.patient}
+              Medicines={medicines.medicines}
+              ExtraMedicines={medicines.extraMedicines}
+            />
           </Col>
         </Row>
 
@@ -245,7 +257,14 @@ const PrescriptionForm = () => {
           okText="Yes"
           cancelText="No"
         >
-          <DisplayMedicine formData={formData} medicines={medicines} />
+          <DisplayMedicine
+            id={formData?.appointmentInfo?.id}
+            symptoms={formData?.symptoms}
+            date={formData?.appointmentInfo?.date}
+            patient={formData?.appointmentInfo?.patient}
+            Medicines={medicines.medicines}
+            ExtraMedicines={medicines.extraMedicines}
+          />
         </Modal>
       </div>
     </React.Fragment>

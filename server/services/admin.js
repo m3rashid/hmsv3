@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
 
 const prisma = require("../utils/prisma");
-const { supportedUserRoles } = require("../utils/constants");
+const { supportedUserRoles, serverActions } = require("../utils/constants");
+const { addEventLog } = require("../utils/logs");
 
 const getAllUsersService = async (userRole) => {
   if (!userRole) return [];
@@ -17,12 +18,26 @@ const getAllUsersService = async (userRole) => {
   return users;
 };
 
-const editPermissionsService = async (userId, permissions) => {
+const editPermissionsService = async ({
+  userId,
+  permissions,
+
+  // TODO unhandled in sockets
+  createdBy,
+}) => {
   if (!userId || !permissions) throw new Error("Invalid data");
   const user = await prisma.auth.update({
     where: { id: userId },
     data: { permissions },
   });
+
+  await addEventLog({
+    action: serverActions.EDIT_PERMISSIONS,
+    fromId: createdBy,
+    actionId: user.id,
+    actionTable: "auth",
+  });
+
   return user;
 };
 
@@ -45,7 +60,10 @@ const updateUserProfileService = async (
     authorityName,
     category,
     origin,
-  }
+  },
+
+  // TODO unhandled in sockets
+  createdBy
 ) => {
   if (!userId || !profileId) throw new Error("Insufficient data");
 
@@ -80,14 +98,64 @@ const updateUserProfileService = async (
     },
   });
 
+  await addEventLog({
+    action: serverActions.UPDATE_PROFILE,
+    fromId: createdBy,
+    actionId: profileId,
+    actionTable: "profile",
+  });
+
   return {
     auth: updatedAuth,
     profile: updatedProfile,
   };
 };
 
+const generateReportsService = async ({ startDay, endDay, action }) => {
+  if (action && !Object.values(serverActions).includes(action)) {
+    throw new Error("Unknown action");
+  }
+
+  const reports = await prisma.log.findMany({
+    where: {
+      AND: [
+        {
+          ...((startDay || endDay) && {
+            createdAt: {
+              ...(startDay && { gte: startDay }),
+              ...(endDay && { lte: endDay }),
+            },
+          }),
+        },
+        { ...(action && { action }) },
+      ],
+    },
+  });
+
+  let reportAggr;
+
+  if (!action) {
+    reportAggr = {};
+
+    for (let i = 0; i < reports.length; i++) {
+      if (!(reports[i].actionTable in reportAggr)) {
+        reportAggr[reports[i].actionTable] = [];
+      }
+      reportAggr[reports[i].actionTable].push({ ...reports[i], details: {} });
+    }
+  } else {
+    reportAggr = reports;
+  }
+
+  // const keys = Object.keys(reportAggr);
+  // for (let i = 0; i < keys.length; i++) {}
+
+  return reportAggr;
+};
+
 module.exports = {
   getAllUsersService,
   editPermissionsService,
   updateUserProfileService,
+  generateReportsService,
 };

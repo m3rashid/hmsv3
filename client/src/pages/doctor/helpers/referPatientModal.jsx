@@ -1,5 +1,6 @@
-import { Button, Form, message, Modal, Select } from "antd";
 import React from "react";
+import { Button, Form, message, Modal, Select } from "antd";
+
 import { instance } from "../../../api/instance";
 
 const ReferPatientModal = ({
@@ -15,12 +16,11 @@ const ReferPatientModal = ({
     try {
       message.loading({ content: "Loading...", key: "refer-patient" });
 
-      const res = await instance.post("/doctor/refer", {
+      await instance.post("/doctor/refer", {
         ...values,
         patientId,
         prevDoctorId: doctorId,
       });
-      console.log({ userCreated: res.data });
       message.success({
         content: "Refer Patient Success",
         key: "refer-patient",
@@ -35,7 +35,6 @@ const ReferPatientModal = ({
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
     message.error({
       content: "Refer Patient Failed",
       key: "refer-patient",

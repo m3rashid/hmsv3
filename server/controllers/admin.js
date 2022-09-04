@@ -1,9 +1,16 @@
-const { getAllUsersService, editPermissionsService } = require("../services");
-const { updateUserProfileService } = require("../services/admin");
+const {
+  getAllUsersService,
+  editPermissionsService,
+  generateReportsService,
+  updateUserProfileService,
+} = require("../services");
 const { permissions } = require("../utils/constants");
 
 const getAllUsers = async (req, res) => {
-  if (!req.permissions.includes(permissions.GET_ALL_USERS)) {
+  if (
+    !req.permissions.includes(permissions.ADMIN) &&
+    !req.permissions.includes(permissions.GET_ALL_USERS)
+  ) {
     throw new Error("Unauthorized for this resource");
   }
 
@@ -16,14 +23,18 @@ const getAllUsers = async (req, res) => {
 };
 
 const editPermissions = async (req, res) => {
-  if (!req.permissions.includes(permissions.EDIT_USER_PERMISSIONS)) {
+  if (
+    !req.permissions.includes(permissions.ADMIN) &&
+    !req.permissions.includes(permissions.EDIT_USER_PERMISSIONS)
+  ) {
     throw new Error("Unauthorized for this resource");
   }
 
-  const users = await editPermissionsService(
-    req.body.userId,
-    req.body.permissions
-  );
+  const users = await editPermissionsService({
+    userId: req.body.userId,
+    permissions: req.body.permissions,
+    createdBy: req.userId,
+  });
 
   return res.status(200).json({
     message: "Got users",
@@ -32,9 +43,14 @@ const editPermissions = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  if (!req.permissions.includes(permissions.EDIT_USER_PROFILE)) {
+  if (
+    !req.permissions.includes(permissions.ADMIN) &&
+    !req.permissions.includes(permissions.EDIT_USER_PROFILE)
+  ) {
     throw new Error("Unauthorized for this resource");
   }
+
+  console.log(req.body);
 
   const { auth, profile } = await updateUserProfileService(
     req.body.userId,
@@ -55,7 +71,8 @@ const updateUser = async (req, res) => {
       authorityName: req.body.authorityName,
       category: req.body.category,
       origin: req.body.origin,
-    }
+    },
+    req.userId
   );
 
   return res.status(200).json({
@@ -64,8 +81,23 @@ const updateUser = async (req, res) => {
   });
 };
 
+const generateHmsReports = async (req, res) => {
+  // if (!req.permissions.includes(permissions.ADMIN)) {
+  //   throw new Error("Unauthorized for this resource");
+  // }
+
+  const reports = await generateReportsService({
+    startDay: req.body.startDay,
+    endDay: req.body.endDay,
+    action: req.body.action,
+  });
+
+  return res.status(200).json(reports);
+};
+
 module.exports = {
   getAllUsers,
   editPermissions,
   updateUser,
+  generateHmsReports,
 };

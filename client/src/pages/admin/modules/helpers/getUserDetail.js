@@ -15,9 +15,7 @@ const useGetUserDetail = ({ userType, userRole }) => {
 
       const users = formatForTable(res.data.users);
       setAdminData((prev) => ({ ...prev, [userType]: users }));
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   };
 
   return {

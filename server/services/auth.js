@@ -1,9 +1,13 @@
 const bcrypt = require("bcrypt");
-const { faker } = require("@faker-js/faker");
 
 const prisma = require("../utils/prisma");
 const { issueJWT, revalidateJWT } = require("../utils/jwt.js");
-const { supportedUserRoles, permissions } = require("../utils/constants");
+const {
+  supportedUserRoles,
+  permissions,
+  serverActions,
+} = require("../utils/constants");
+const { addEventLog } = require("../utils/logs");
 
 const addActions = (role) => {
   let allowedActions = [];
@@ -55,7 +59,6 @@ const addActions = (role) => {
 };
 
 const loginService = async (email, password) => {
-  console.log({ email, password });
   if (!email || !password) throw new Error("No credentials");
 
   const user = await prisma.auth.findUnique({
@@ -98,6 +101,7 @@ const signupService = async ({
   authorityName,
   category,
   origin,
+  createdBy,
 }) => {
   const profileData = {
     designation,
@@ -113,16 +117,7 @@ const signupService = async ({
     category,
     origin,
   };
-
-  console.log({
-    email,
-    password,
-    name,
-    role,
-    ...profileData,
-  });
-
-  if (!email || !password || !name || !role || !sex) {
+  if (!email || !password || !name || !role || !sex || !roomNumber) {
     throw new Error("Insufficient credentials");
   }
 
@@ -144,7 +139,13 @@ const signupService = async ({
     include: { profile: true },
   });
 
-  console.log({ user, profile });
+  await addEventLog({
+    action: serverActions.SIGNUP,
+    fromId: createdBy,
+    actionId: profile.id,
+    actionTable: "profile",
+  });
+
   return user;
 };
 
@@ -177,25 +178,9 @@ const revalidateService = async (refreshToken) => {
   };
 };
 
-const createDummyPatientService = async () => {
-  const patient = await prisma.patient.create({
-    data: {
-      name: faker.name.fullName(),
-      age: Math.floor(Math.random() * 100),
-      contact: faker.phone.number(),
-      sex: "m",
-      address: faker.address.city(),
-      email: faker.internet.email(),
-    },
-  });
-
-  return patient;
-};
-
 module.exports = {
   loginService,
   logoutService,
   signupService,
   revalidateService,
-  createDummyPatientService,
 };

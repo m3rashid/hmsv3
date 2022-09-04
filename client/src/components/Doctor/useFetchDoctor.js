@@ -15,7 +15,6 @@ export default function useFetchDoctor() {
   const { addNotification } = useNotifications();
 
   const loadDoctorAppointment = useCallback(async () => {
-    console.log({ token: auth.token });
     if (!auth.token) {
       return;
     }
@@ -25,7 +24,6 @@ export default function useFetchDoctor() {
         authorization: auth.token,
       },
     });
-    console.log(res.data);
     setDoctorData({
       ...DoctorData,
       appointments: res.data.appointments,
@@ -48,7 +46,6 @@ export default function useFetchDoctor() {
 
   const addAppointment = useCallback(
     async (data) => {
-      console.log(DoctorData, data);
       setDoctorData((prev) => {
         return {
           ...prev,
@@ -56,11 +53,11 @@ export default function useFetchDoctor() {
         };
       });
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [DoctorData, setDoctorData]
   );
 
   useEffect(() => {
-    console.log("Checking Access for Doctor Prescriptions");
     if (
       !auth.isLoggedIn ||
       !auth.user.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE)
@@ -68,7 +65,6 @@ export default function useFetchDoctor() {
       return;
     }
 
-    console.log("Connected New Prescription By Doctor");
     socket.on("new-prescription-by-doctor-created", ({ data }) => {
       message.success(
         `New Prescription for ${data.prescription.id} created successfully!`
@@ -88,10 +84,7 @@ export default function useFetchDoctor() {
       return;
     }
 
-    console.log("Connected New Appointment By Doctor");
     socket.on("new-appointment-created", (data) => {
-      console.log("Some Appointment Created");
-
       message.info(`New appointment created`);
       addNotification({
         type: "success",
@@ -99,9 +92,7 @@ export default function useFetchDoctor() {
         message: `${data.patient.name} has a new appointment`,
         action: {
           label: "View",
-          callback: () => {
-            console.log("View Appointment");
-          },
+          callback: () => {},
         },
       });
       addAppointment(data);
@@ -110,6 +101,4 @@ export default function useFetchDoctor() {
       socket.off("new-appointment-created");
     };
   }, [addAppointment, addNotification, auth]);
-
-  console.log("Updated Doctor Data", DoctorData);
 }

@@ -9,10 +9,10 @@ const pharmacistLeft =
 const dispensePrescription =
   (io, socket) =>
   async ({ prescriptionId, medicines }) => {
-    console.log(prescriptionId, medicines);
     const data = await dispensePrescriptionService({
       prescriptionId,
       medicines,
+      createdBy: socket.user.id,
     });
     io.emit("prescription-dispensed", { data });
   };

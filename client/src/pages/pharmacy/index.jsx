@@ -22,7 +22,6 @@ const Pharmacy = () => {
 
   React.useEffect(() => {
     socket.on("new-prescription-by-doctor-created", ({ data }) => {
-      console.log({ newPrescription: data });
       message.success(
         `New Prescription for ${data.prescription.id} created successfully!`
       );
@@ -83,7 +82,7 @@ const Pharmacy = () => {
                   offset={[5, -5]}
                 >
                   Notifications
-                </Badge>{" "}
+                </Badge>
               </div>
             }
             key="2"
