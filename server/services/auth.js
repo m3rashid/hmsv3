@@ -117,6 +117,7 @@ const signupService = async ({
     category,
     origin,
   };
+
   if (!email || !password || !name || !role || !sex || !roomNumber) {
     throw new Error("Insufficient credentials");
   }
@@ -141,7 +142,7 @@ const signupService = async ({
 
   await addEventLog({
     action: serverActions.SIGNUP,
-    fromId: doneBy.id,
+    fromId: doneBy.id ?? "DEV",
     actionId: profile.id,
     actionTable: "profile",
     message: `${doneBy.name} <(${doneBy.email})> created user ${user.name} <(${user.email})> as ${role}`,
