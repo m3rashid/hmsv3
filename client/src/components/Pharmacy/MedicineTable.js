@@ -100,6 +100,7 @@ const MedicineTable = ({
         type: "checkbox",
         ...rowSelection,
       }}
+      rowClassName={ (record, index) => record?'available':'unavailable' }
       columns={columns}
       dataSource={dispensingMedicines}
     />

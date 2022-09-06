@@ -84,7 +84,7 @@ const CreateAppointmentForm = () => {
     return () => {
       socket.off("created-appointment");
     };
-  }, []);
+  }, [form]);
 
   const UpdatePatients = async (value) => {
     if (patients.cancelToken) {

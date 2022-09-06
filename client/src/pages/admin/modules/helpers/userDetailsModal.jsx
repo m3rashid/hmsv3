@@ -92,18 +92,18 @@ const UserDetailsModal = ({ data }) => {
         {data.authorityName && (
           <ShowEntry label="Authority Name" value={data.authorityName} />
         )}
-        {data.availability.length > 0 && (
+        {/* {data.availability?.length > 0 && (
           <ShowEntry
             label="Availability"
             value={data.availability.join(" - ")}
           />
         )}
-        {data.availableDays.length > 0 && (
+        {data.availableDays?.length > 0 && (
           <ShowEntry
             label="Available Days"
             value={data.availableDays.join(" - ")}
           />
-        )}
+        )} */}
         {data.category && <ShowEntry label="Category" value={data.category} />}
         {data.contact && <ShowEntry label="Contact" value={data.contact} />}
         {data.joined && <ShowEntry label="Joined" value={data.joined} />}

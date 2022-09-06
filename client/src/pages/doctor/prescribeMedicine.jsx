@@ -8,6 +8,7 @@ import {
   Row,
   Col,
   Modal,
+  Divider,
 } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
@@ -18,6 +19,8 @@ import DisplayMedicine from "../../components/Doctor/DisplayMedicine";
 import usePrescribeMedicines from "./helpers/prescribeMeds.hook";
 import MedicineInput from "../../components/Doctor/MedicineInput";
 import ReferPatientModal from "./helpers/referPatientModal";
+import styles from './prescribeMedicine.module.css'
+
 
 const PrescriptionForm = () => {
   const {
@@ -68,7 +71,8 @@ const PrescriptionForm = () => {
     }
   }, [appointmentId, doctorData.appointments.length, handleAppointmentSelect]);
 
-  console.log(formData);
+  // console.log(formData);
+
 
   return (
     <React.Fragment>
@@ -76,138 +80,158 @@ const PrescriptionForm = () => {
         <Header />
       </div>
       <div style={{ padding: 10 }}>
-        <Row>
-          <Col span={12}>
-            <Typography.Title level={4}>Create Prescription</Typography.Title>
-            <Form
-              form={form}
-              onFinish={formSubmitHandler}
-              labelAlign="left"
-              labelCol={{ span: 8 }}
-              wrapperCol={{ span: 16 }}
+        {/* <Row>
+          <Col span={12}> */}
+        <Typography.Title level={4}>Create Prescription</Typography.Title>
+        <Form
+          form={form}
+          onFinish={formSubmitHandler}
+          labelAlign="left"
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 16 }}
+        >
+          <Form.Item
+            label="Choose Appointment"
+            name="appointment"
+            rules={[
+              { required: true, message: "Please Enter patient name!" },
+            ]}
+          >
+            <Select
+              style={{ width: "100%" }}
+              placeholder="Select an appointment"
+              allowClear
+              onChange={(value) => {
+                handleAppointmentSelect(value);
+              }}
+              optionLabelProp="Appointment"
             >
-              <Form.Item
-                label="Choose Appointment"
-                name="appointment"
-                rules={[
-                  { required: true, message: "Please Enter patient name!" },
-                ]}
-              >
-                <Select
-                  style={{ width: "100%" }}
-                  placeholder="Select an appointment"
-                  allowClear
-                  onChange={(value) => {
-                    handleAppointmentSelect(value);
-                  }}
-                  optionLabelProp="Appointment"
-                >
-                  {doctorData.appointments
-                    .filter(
-                      (apt) =>
-                        apt.pending &&
-                        {
-                          /* dayjs(apt.date).isBefore(dayjs().add(6, "hours")) */
-                        }
-                    )
-                    .map((appointment) => (
-                      <Select.Option
-                        key={appointment.id}
-                        value={appointment.id}
-                      >
-                        <span>
-                          {appointment.patient?.name} -{" "}
-                          {dayjs(appointment.date).format(
-                            "MMMM DD YYYY HH:mm A"
-                          )}
-                        </span>
-                      </Select.Option>
-                    ))}
-                </Select>
-              </Form.Item>
-              <Form.Item
-                label="Symptoms"
-                name="symptoms"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please Enter Symptoms!",
-                  },
-                ]}
-              >
-                <Input.TextArea
-                  required
-                  type="text"
-                  placeholder="Enter symptoms"
-                  allowClear
-                  onChange={(e) => {
-                    setFormData({ ...formData, symptoms: e.target.value });
-                  }}
-                />
-              </Form.Item>
-
-              <Space direction="vertical" style={{ width: "100%" }}>
-                {medicines.medicines?.map((medicine, index) => (
-                  <MedicineInput
-                    key={index}
-                    index={index}
-                    type="medicines"
-                    medicine={medicine}
-                    deleteMedicine={deleteMedicine}
-                    setMedicines={setMedicines}
-                    UpdateMedicine={UpdateMedicine}
-                  />
+              {doctorData.appointments
+                .filter(
+                  (apt) =>
+                    apt.pending &&
+                    {
+                      /* dayjs(apt.date).isBefore(dayjs().add(6, "hours")) */
+                    }
+                )
+                .map((appointment) => (
+                  <Select.Option
+                    key={appointment.id}
+                    value={appointment.id}
+                  >
+                    <span>
+                      {appointment.patient?.name} -{" "}
+                      {dayjs(appointment.date).format(
+                        "MMMM DD YYYY HH:mm A"
+                      )}
+                    </span>
+                  </Select.Option>
                 ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            label="Symptoms"
+            name="symptoms"
+            rules={[
+              {
+                required: true,
+                message: "Please Enter Symptoms!",
+              },
+            ]}
+          >
+            <Input.TextArea
+              required
+              type="text"
+              placeholder="Enter symptoms"
+              allowClear
+              onChange={(e) => {
+                setFormData({ ...formData, symptoms: e.target.value });
+              }}
+            />
+          </Form.Item>
+          <Divider />
+<Row className={styles.prescribeTableHeader}>
+              <Col className={styles.prescribeColHeader} span={6}>Medicine</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Dosage</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Duration</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Availability</Col>
+              <Col className={styles.prescribeColHeader} span={6}>Description</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Action</Col>
+            </Row>
+          
 
-                <Button
-                  type="primary"
-                  htmlType="button"
-                  onClick={() => addEmptyMedicine("medicines")}
-                  style={{ marginTop: 10, marginBottom: 10 }}
-                >
-                  + Add New Medicines
-                </Button>
-              </Space>
 
-              <Space direction="vertical" style={{ width: "100%" }}>
-                <strong>Custom Medicines</strong>
-                {medicines.extraMedicines?.map((medicine, index) => (
-                  <MedicineInput
-                    key={index}
-                    index={index}
-                    isExtra={true}
-                    type="extraMedicines"
-                    medicine={medicine}
-                    deleteMedicine={deleteMedicine}
-                    setMedicines={setMedicines}
-                    UpdateMedicine={UpdateMedicine}
-                  />
-                ))}
-                <Button
-                  type="primary"
-                  htmlType="button"
-                  onClick={() => addEmptyMedicine("extraMedicines")}
-                  style={{ marginTop: 10, marginBottom: 10 }}
-                >
-                  + Add New Extra Medicine
-                </Button>
-              </Space>
+          <Space direction="vertical" style={{ width: "100%" }}>
+            {medicines.medicines?.map((medicine, index) => (
+              <MedicineInput
+                key={index}
+                index={index}
+                type="medicines"
+                medicine={medicine}
+                deleteMedicine={deleteMedicine}
+                setMedicines={setMedicines}
+                UpdateMedicine={UpdateMedicine}
+              />
+            ))}
 
-              <Form.Item
-                style={{ display: "flex", justifyContent: "flex-end" }}
-              >
-                <Button
-                  loading={loading.PrescribeMedicines}
-                  type="primary"
-                  htmlType="button"
-                  onClick={() => setCreatePrescriptionModalVisible(true)}
-                >
-                  Confirm Create Prescription
-                </Button>
-              </Form.Item>
-            </Form>
-          </Col>
-          <Col span={12} style={{ padding: "10px" }}>
+            <Button
+              type="primary"
+              htmlType="button"
+              onClick={() => addEmptyMedicine("medicines")}
+              style={{ marginTop: 10, marginBottom: 10 }}
+            >
+              + Add New Medicines
+            </Button>
+          </Space>
+
+          <Space direction="vertical" style={{ width: "100%" }}>
+            <strong>Custom Medicines</strong>
+
+            <Row className={styles.prescribeTableHeader}>
+              <Col className={styles.prescribeColHeader} span={6}>Medicine</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Dosage</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Duration</Col>
+              <Col className={styles.prescribeColHeader} span={6}>Description</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Action</Col>
+            </Row>
+
+            {medicines.extraMedicines?.map((medicine, index) => (
+              <MedicineInput
+                key={index}
+                index={index}
+                isExtra={true}
+                type="extraMedicines"
+                medicine={medicine}
+                deleteMedicine={deleteMedicine}
+                setMedicines={setMedicines}
+                UpdateMedicine={UpdateMedicine}
+              />
+            ))}
+            <Button
+              type="primary"
+              htmlType="button"
+              onClick={() => addEmptyMedicine("extraMedicines")}
+              style={{ marginTop: 10, marginBottom: 10 }}
+            >
+              + Add New Extra Medicine
+            </Button>
+          </Space>
+
+          <Form.Item
+            style={{ display: "flex", justifyContent: "flex-end" }}
+          >
+            <Button
+              loading={loading.PrescribeMedicines}
+              type="primary"
+              htmlType="button"
+              onClick={() => setCreatePrescriptionModalVisible(true)}
+            >
+              Confirm Create Prescription
+            </Button>
+          </Form.Item>
+        </Form>
+        {/* </Col> */}
+        {/* <Col span={12} style={{ padding: "10px" }}>
             <DisplayMedicine
               id={formData?.appointmentInfo?.id}
               symptoms={formData?.symptoms}
@@ -216,8 +240,8 @@ const PrescriptionForm = () => {
               Medicines={medicines.medicines}
               ExtraMedicines={medicines.extraMedicines}
             />
-          </Col>
-        </Row>
+          </Col> */}
+        {/* </Row> */}
 
         {formData.appointmentInfo && (
           <div
@@ -239,6 +263,15 @@ const PrescriptionForm = () => {
             </Button>
           </div>
         )}
+
+        <DisplayMedicine
+          id={formData?.appointmentInfo?.id}
+          symptoms={formData?.symptoms}
+          date={formData?.appointmentInfo?.date}
+          patient={formData?.appointmentInfo?.patient}
+          Medicines={medicines.medicines}
+          ExtraMedicines={medicines.extraMedicines}
+        />
 
         <ReferPatientModal
           modalState={referToAnotherDoctor}
@@ -266,6 +299,7 @@ const PrescriptionForm = () => {
             ExtraMedicines={medicines.extraMedicines}
           />
         </Modal>
+
       </div>
     </React.Fragment>
   );
