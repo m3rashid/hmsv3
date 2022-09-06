@@ -72,7 +72,7 @@ const createPrescriptionByDoctor = async (req, res) => {
     customMedicines,
     datetime,
     medicines,
-    createdBy: req.userId,
+    doneBy: req.user,
   });
 
   return res.status(200).json({
@@ -92,6 +92,7 @@ const referAnotherDoctor = async (req, res) => {
     nextDoctorId: req.body.nextDoctorId,
     date: req.body.date,
     remarks: req.body.remarks,
+    doneBy: req.user,
   });
 
   return res.status(200).json({

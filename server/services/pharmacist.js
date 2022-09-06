@@ -62,18 +62,31 @@ const getPrescriptionByIdService = async (prescriptionId) => {
 const dispensePrescriptionService = async ({
   prescriptionId,
   medicines,
-  createdBy,
+  doneBy,
 }) => {
   const updatePrescription = await prisma.prescription.update({
     where: { id: prescriptionId },
     data: { pending: false },
   });
 
+  const getFullprescription = await prisma.prescription.findFirst({
+    where: { id: prescriptionId },
+    include: {
+      appointment: {
+        select: {
+          doctor: true,
+          patient: true,
+        },
+      },
+    },
+  });
+
   await addEventLog({
     action: serverActions.UPDATE_PRESCRIPTION,
-    fromId: createdBy,
+    fromId: doneBy.id,
     actionId: updatePrescription.id,
     actionTable: "prescription",
+    message: `${doneBy.name} <(${doneBy.email})> updated prescription ${getFullprescription.id} for patient ${getFullprescription.appointment.patient.name} with doctor ${getFullprescription.appointment.doctor.name}`,
   });
 
   return { prescription: updatePrescription, receipt: {} };

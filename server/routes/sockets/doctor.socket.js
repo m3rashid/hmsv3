@@ -58,7 +58,7 @@ const createPrescriptionByDoctor =
       CustomMedicines,
       datetime,
       medicines,
-      createdBy: socket.user.id,
+      doneBy: socket.user,
     });
 
     io.emit("new-prescription-by-doctor-created", { data });
@@ -73,6 +73,7 @@ const referAnotherDoctor =
       nextDoctorId,
       date,
       remarks,
+      doneBy: socket.user,
     });
 
     io.emit("refer-another-doctor", { appointment });

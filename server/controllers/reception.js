@@ -9,7 +9,7 @@ const createAppointment = async (req, res) => {
 
   const { appointment } = await createAppointmentService({
     ...req.body,
-    createdBy: req.userId,
+    doneBy: req.user,
   });
   return res.status(200).json({ appointment });
 };

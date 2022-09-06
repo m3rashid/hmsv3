@@ -6,7 +6,12 @@ const keys = JSON.parse(fs.readFileSync(__dirname + "/keys/keys.json"));
 const issueJWT = (user) => {
   const expiresIn = "1d";
   const payload = {
-    sub: { id: user.id, permissions: user.permissions },
+    sub: {
+      id: user.id,
+      permissions: user.permissions,
+      name: user.name,
+      email: user.email,
+    },
     iat: Date.now(),
   };
   const signedToken = JWT.sign(payload, keys.ACCESS_SECRET, {

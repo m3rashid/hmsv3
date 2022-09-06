@@ -1,8 +1,8 @@
 const bcrypt = require("bcrypt");
 
 const prisma = require("../utils/prisma");
-const { supportedUserRoles, serverActions } = require("../utils/constants");
 const { addEventLog } = require("../utils/logs");
+const { supportedUserRoles, serverActions } = require("../utils/constants");
 
 const getAllUsersService = async (userRole) => {
   if (!userRole) return [];
@@ -23,7 +23,7 @@ const editPermissionsService = async ({
   permissions,
 
   // TODO unhandled in sockets
-  createdBy,
+  doneBy,
 }) => {
   if (!userId || !permissions) throw new Error("Invalid data");
   const user = await prisma.auth.update({
@@ -33,9 +33,12 @@ const editPermissionsService = async ({
 
   await addEventLog({
     action: serverActions.EDIT_PERMISSIONS,
-    fromId: createdBy,
+    fromId: doneBy.id,
     actionId: user.id,
     actionTable: "auth",
+    message: `${doneBy.name} <(${
+      doneBy.email
+    })> changed permissions to ${permissions.join(" + ")}`,
   });
 
   return user;
@@ -63,7 +66,7 @@ const updateUserProfileService = async (
   },
 
   // TODO unhandled in sockets
-  createdBy
+  doneBy
 ) => {
   if (!userId || !profileId) throw new Error("Insufficient data");
 
@@ -100,9 +103,10 @@ const updateUserProfileService = async (
 
   await addEventLog({
     action: serverActions.UPDATE_PROFILE,
-    fromId: createdBy,
+    fromId: doneBy.id,
     actionId: profileId,
     actionTable: "profile",
+    message: `${doneBy.name} <(${doneBy.email})> updated profile of ${updatedAuth.name}`,
   });
 
   return {
@@ -133,7 +137,6 @@ const generateReportsService = async ({ startDay, endDay, action }) => {
   });
 
   let reportAggr;
-
   if (!action) {
     reportAggr = {};
 
@@ -141,21 +144,42 @@ const generateReportsService = async ({ startDay, endDay, action }) => {
       if (!(reports[i].actionTable in reportAggr)) {
         reportAggr[reports[i].actionTable] = [];
       }
+
       reportAggr[reports[i].actionTable].push({ ...reports[i], details: {} });
     }
   } else {
     reportAggr = reports;
   }
 
-  // const keys = Object.keys(reportAggr);
-  // for (let i = 0; i < keys.length; i++) {}
+  // const tableName = Object.keys(reportAggr);
+  // for (let i = 0; i < tableName.length; i++) {
+  //   console.log(reportAggr[tableName[i]]);
+
+  //   const ids = Object.values(reportAggr[tableName[i]]).reduce(
+  //     (acc, curr) => [...acc, curr.id],
+  //     []
+  //   );
+
+  //   const details = await prisma[tableName[i]].findMany({
+  //     where: {
+  //       id: { in: ids },
+  //     },
+  //   });
+  //   for (let j = 0; j < details.length; j++) {
+  //     // reportAggr.details[details[j].id] = details[j];
+  //     reportAggr[tableName[i]][j].details = details[j];
+  //   }
+  // }
 
   return reportAggr;
 };
+
+const viewMoreDataLogsService = async () => {};
 
 module.exports = {
   getAllUsersService,
   editPermissionsService,
   updateUserProfileService,
   generateReportsService,
+  viewMoreDataLogsService,
 };
