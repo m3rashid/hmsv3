@@ -7,9 +7,7 @@ const addTest = async ({
   description,
   prescriptionId,
   testType,
-
-  // TODO unhandled in sockets
-  createdBy,
+  doneBy,
 }) => {
   if (!name || !prescriptionId || !testType) {
     throw new Error("Insufficient data");
@@ -24,24 +22,33 @@ const addTest = async ({
     },
   });
 
+  const getNewTest = await prisma.test.findFirst({
+    where: { id: newTest.id },
+    include: {
+      prescription: {
+        select: {
+          appointment: {
+            select: {
+              patient: { select: { name: true, contact: true } },
+            },
+          },
+        },
+      },
+    },
+  });
+
   await addEventLog({
     action: serverActions.CREATE_TEST,
-    fromId: createdBy,
+    fromId: doneBy.id,
     actionId: newTest.id,
     actionTable: "test",
+    message: `${doneBy.name} <(${doneBy.email})> added new test ${getNewTest.name} for patient ${getNewTest.prescription.appointment.patient.name}`,
   });
 
   return newTest;
 };
 
-const editTest = async ({
-  testId,
-
-  // TODO unhandled in sockets
-  createdBy,
-
-  ...values
-}) => {
+const editTest = async ({ testId, doneBy, ...values }) => {
   if (!testId) throw new Error("Insufficient data");
 
   const test = await prisma.test.update({
@@ -49,33 +56,58 @@ const editTest = async ({
     data: values,
   });
 
+  const getNewTest = await prisma.test.findFirst({
+    where: { id: testId },
+    include: {
+      prescription: {
+        select: {
+          appointment: {
+            select: {
+              patient: { select: { name: true, contact: true } },
+            },
+          },
+        },
+      },
+    },
+  });
+
   await addEventLog({
     action: serverActions.EDIT_TEST,
-    fromId: createdBy,
+    fromId: doneBy.id,
     actionId: test.id,
     actionTable: "test",
+    message: `${doneBy.name} <(${doneBy.email})> edited test ${getNewTest.name} for patient ${getNewTest.prescription.appointment.patient.name}`,
   });
 
   return test;
 };
 
-const deleteTest = async ({
-  testId,
-
-  // TODO unhandled in sockets
-  createdBy,
-}) => {
+const deleteTest = async ({ testId, doneBy }) => {
   if (!testId) throw new Error("Insufficient data");
 
-  const test = await prisma.test.delete({
+  const getNewTest = await prisma.test.findFirst({
     where: { id: testId },
+    include: {
+      prescription: {
+        select: {
+          appointment: {
+            select: {
+              patient: { select: { name: true, contact: true } },
+            },
+          },
+        },
+      },
+    },
   });
+
+  const test = await prisma.test.delete({ where: { id: testId } });
 
   await addEventLog({
     action: serverActions.DELETE_TEST,
-    fromId: createdBy,
+    fromId: doneBy.id,
     actionId: testId,
     actionTable: "test",
+    message: `${doneBy.name} <(${doneBy.email})> deleted test ${getNewTest.name} for patient ${getNewTest.prescription.appointment.patient.name}`,
   });
 
   return test;

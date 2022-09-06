@@ -13,6 +13,8 @@ const checkAuth = (req, res, next) => {
     req.isAuthenticated = true;
 
     req.userId = payload.sub.id;
+    req.name = payload.sub.name;
+    req.email = payload.sub.email;
     req.permissions = payload.sub.permissions;
     next();
   } catch (err) {

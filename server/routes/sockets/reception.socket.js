@@ -49,7 +49,7 @@ const createAppointment =
       doctorId,
       date,
       remarks,
-      createdBy: socket.user.id,
+      doneBy: socket.user,
     });
 
     io.emit("new-appointment-created", data);

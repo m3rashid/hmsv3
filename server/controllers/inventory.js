@@ -38,7 +38,7 @@ const addMedicine = async (req, res) => {
   }
 
   const { type, data } = req.body;
-  const item = await addMedicineService({ type, data, createdBy: req.userId });
+  const item = await addMedicineService({ type, data, doneBy: req.user });
 
   return res.status(200).json({
     message: "Medicine added",
@@ -57,7 +57,7 @@ const EditInventory = async (req, res) => {
       quantity: data.quantity ? parseInt(data.quantity) : undefined,
     },
     type,
-    createdBy: req.userId,
+    doneBy: req.user,
   });
   return res.status(200).json({ message: "Medicine updated", medicine });
 };
@@ -70,10 +70,10 @@ const DeleteInventory = async (req, res) => {
 
   const { type, medicineId } = req.body;
 
-  const item = DeleteInventoryService({
+  const item = await DeleteInventoryService({
     medicineId,
     type,
-    createdBy: req.userId,
+    doneBy: req.user,
   });
 
   return res.status(200).json({

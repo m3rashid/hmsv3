@@ -17,7 +17,7 @@ const createPatient =
         jamiaId,
       },
       socket.user.permissions,
-      socket.user.id
+      socket.user
     );
     io.emit("new-patient-created", { data: patient });
   };
@@ -27,7 +27,7 @@ const deletePatient =
   async ({ patientId }) => {
     await deletePatientService({
       patientId,
-      createdBy: socket.user.id,
+      doneBy: socket.user,
     });
     io.emit("patient-delete-success", { patientId });
   };
