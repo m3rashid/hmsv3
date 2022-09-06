@@ -68,21 +68,21 @@ const requiredFormFields = [
 
 const otherFormFields = [
   { key: "bio", label: "Introduction", inputType: "textarea" },
-  {
-    key: "availableDays",
-    label: "Available Days",
-    inputType: "select",
-    multiple: true,
-    options: [
-      { key: "MON", label: "Monday" },
-      { key: "TUE", label: "Tuesday" },
-      { key: "WED", label: "Wednesday" },
-      { key: "THU", label: "Thursday" },
-      { key: "FRI", label: "Friday" },
-      { key: "SAT", label: "Saturday" },
-      { key: "SUN", label: "Sunday" },
-    ],
-  },
+  // {
+  //   key: "availableDays",
+  //   label: "Available Days",
+  //   inputType: "select",
+  //   multiple: true,
+  //   options: [
+  //     { key: "MON", label: "Monday" },
+  //     { key: "TUE", label: "Tuesday" },
+  //     { key: "WED", label: "Wednesday" },
+  //     { key: "THU", label: "Thursday" },
+  //     { key: "FRI", label: "Friday" },
+  //     { key: "SAT", label: "Saturday" },
+  //     { key: "SUN", label: "Sunday" },
+  //   ],
+  // },
   { key: "designation", label: "Designation", inputType: "text" },
   { key: "contact", label: "Contact", inputType: "number" },
   { key: "address", label: "Address", inputType: "text" },
