@@ -23,8 +23,8 @@ const MedicineInput = ({
   const [availabilityInfo, setAvailabilityInfo] = useState({
     available: true,
     quantityRequired: 0,
-    medicine: {},
-    loading: true
+    medicine: null,
+    loading: false
   });
 
   const [value] = useDebounce(MedicineData, 500);
@@ -40,9 +40,10 @@ const MedicineInput = ({
   );
 
   const ValidateMedicine = useCallback(async () => {
-    setAvailabilityInfo(prev=>({...prev,loading:true}))
 
     if (value) {
+    setAvailabilityInfo(prev => ({ ...prev, loading: true }))
+
       const data = {
         dosage: value.dosage,
         medicineId: value?.Medicine?.id,
@@ -59,7 +60,7 @@ const MedicineInput = ({
       setAvailabilityInfo({
         ...availabilityInfoData,
         loading: false,
-        
+
       });
     }
   }, [value]);
@@ -87,7 +88,7 @@ const MedicineInput = ({
         <Col style={{
           borderRight: "1px solid #ddd",
           display: 'flex',
-          alignItems: 'center',
+          flexDirection: 'column',
           justifyContent: 'center',
           margin: 'auto',
           padding: '0 10px'
@@ -139,7 +140,8 @@ const MedicineInput = ({
             </Select.OptGroup>
           </Select>
 
-          {!isExtra && (
+
+          {!isExtra && medicine?.medicine?.quantity &&  (
             <Typography.Text type="danger">
               {medicine?.medicine?.quantity} left!
             </Typography.Text>
@@ -208,30 +210,34 @@ const MedicineInput = ({
         </Col>
         <Col span={3} style={{
           borderRight: "1px solid #ddd",
-          display: 'flex',
+          // display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           margin: 'auto',
-          padding: '0 10px'
+          padding: '0 10px',
+          display: isExtra ? 'none' : 'flex'
         }}>
 
-        <Spin spinning={availabilityInfo.loading}>
-          <Space >
-            {availabilityInfo?.available ? (
-              <>
+          <Spin spinning={availabilityInfo.loading && medicine.medicine}>
+            {
+              availabilityInfo.medicine && <Space >
+                {availabilityInfo?.available ? (
+                  <>
 
-                <Typography.Text type="success">
-                   Available
-                </Typography.Text>
+                    <Typography.Text type="success">
+                      Available
+                    </Typography.Text>
 
-              </>
+                  </>
 
-            ) : (
-              <Typography.Text type="warning">
-                Unavailable
-              </Typography.Text>)}
+                ) : (
+                  <Typography.Text type="warning">
+                    Unavailable
+                  </Typography.Text>)}
 
-          </Space>
+              </Space>
+            }
+
           </Spin>
 
         </Col>

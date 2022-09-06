@@ -150,14 +150,16 @@ const PrescriptionForm = () => {
             />
           </Form.Item>
           <Divider />
-          <Row className={styles.prescribeTableHeader}>
-            <Col  className={styles.prescribeColHeader} span={6}>Medicine</Col>
-            <Col  className={styles.prescribeColHeader} span={3}>Dosage</Col>
-            <Col  className={styles.prescribeColHeader} span={3}>Duration</Col>
-            <Col  className={styles.prescribeColHeader} span={3}>Availability</Col>
-            <Col  className={styles.prescribeColHeader} span={6}>Description</Col>
-            <Col  className={styles.prescribeColHeader} span={3}>Action</Col>
-          </Row>
+<Row className={styles.prescribeTableHeader}>
+              <Col className={styles.prescribeColHeader} span={6}>Medicine</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Dosage</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Duration</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Availability</Col>
+              <Col className={styles.prescribeColHeader} span={6}>Description</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Action</Col>
+            </Row>
+          
+
 
           <Space direction="vertical" style={{ width: "100%" }}>
             {medicines.medicines?.map((medicine, index) => (
@@ -184,6 +186,15 @@ const PrescriptionForm = () => {
 
           <Space direction="vertical" style={{ width: "100%" }}>
             <strong>Custom Medicines</strong>
+
+            <Row className={styles.prescribeTableHeader}>
+              <Col className={styles.prescribeColHeader} span={6}>Medicine</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Dosage</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Duration</Col>
+              <Col className={styles.prescribeColHeader} span={6}>Description</Col>
+              <Col className={styles.prescribeColHeader} span={3}>Action</Col>
+            </Row>
+
             {medicines.extraMedicines?.map((medicine, index) => (
               <MedicineInput
                 key={index}
@@ -254,13 +265,13 @@ const PrescriptionForm = () => {
         )}
 
         <DisplayMedicine
-              id={formData?.appointmentInfo?.id}
-              symptoms={formData?.symptoms}
-              date={formData?.appointmentInfo?.date}
-              patient={formData?.appointmentInfo?.patient}
-              Medicines={medicines.medicines}
-              ExtraMedicines={medicines.extraMedicines}
-            />
+          id={formData?.appointmentInfo?.id}
+          symptoms={formData?.symptoms}
+          date={formData?.appointmentInfo?.date}
+          patient={formData?.appointmentInfo?.patient}
+          Medicines={medicines.medicines}
+          ExtraMedicines={medicines.extraMedicines}
+        />
 
         <ReferPatientModal
           modalState={referToAnotherDoctor}
