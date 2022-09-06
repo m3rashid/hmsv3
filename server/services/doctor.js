@@ -119,7 +119,7 @@ const createPrescriptionService = async ({
               designation: true,
             },
           },
-          appointment,
+          // appointment,
         },
       },
     },
@@ -130,18 +130,18 @@ const createPrescriptionService = async ({
     data: { pending: false },
   });
 
-  const prescription = await prisma.appointment.findFirst({
-    where: { id: newPrescription.id },
-    include: { doctor: true, patient: true },
-  });
+  // const prescription = await prisma.appointment.findFirst({
+  //   where: { id: newPrescription.id },
+  //   include: { doctor: true, patient: true },
+  // });
 
-  await addEventLog({
-    action: serverActions.CREATE_PRESCRIPTION,
-    fromId: doneBy.id,
-    actionId: newPrescription.id,
-    actionTable: "prescription",
-    message: `${doneBy.name} <(${doneBy.email})> created prescription for ${prescription.patient.name} as doctor ${prescription.doctor.name}`,
-  });
+  // await addEventLog({
+  //   action: serverActions.CREATE_PRESCRIPTION,
+  //   fromId: doneBy.id,
+  //   actionId: newPrescription.id,
+  //   actionTable: "prescription",
+  //   message: `${doneBy.name} <(${doneBy.email})> created prescription for ${prescription.patient.name} as doctor ${prescription.doctor.name}`,
+  // });
 
   return {
     prescription: newPrescription,

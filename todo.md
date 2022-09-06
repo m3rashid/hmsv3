@@ -1,36 +1,23 @@
-## High Priority
+## Deployment Procedure
 
-- [ ] the past(already attended) appoimtments are still available in the list to be handled
-- [ ] doctor can refer to other doctors/departments [rashid]
-- [ ] Update Pharmacist [husain]
-  - [ ] allotted if medicine is present in store or not [husain]
+<br />
 
-## Bugs
+### Hardware and Infra
 
-- [ ] same patient register creates issues in doctor tab
+1. Install linux server on the hardware
+2. Configure the hardware for usage
+3. Check Database Access
+4. Setup network/Lan-proxy access
 
-## Known Bugs
+<br />
 
-- [ ] doctor can only see the appointments on refresh
+### code
 
-## New Requirements (Date: 22/aug/22)
+1. CORS setup
+2. client installation
 
-- Analytics
+<br />
 
-  - [ ] maintain logs (from/by/task)
+### Next Steps
 
-- Reception
-
-- Doctor
-
-  - [ ] \* on mandatory fields
-  - [ ] pending -> past (bug: now happens on refresh, should be done via sockets)
-
-- Admin/Co-Admin
-
-  - [ ] Generate reports
-
-- Inventory
-  - [ ] no. of strips/bottles, tablets per strips (TPS)
-  - [ ] view more
-    - [ ] group medicines by batch no. and expiry
+1. If desktop app would be better ?

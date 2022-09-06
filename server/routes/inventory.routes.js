@@ -12,7 +12,7 @@ const { checkAuth } = require("../middlewares/auth");
 
 const router = express.Router();
 
-router.post("/dummy", checkAuth, useRoute(CreateDummyInventory));
+router.post("/dummy", useRoute(CreateDummyInventory));
 
 router.get("/search", checkAuth, useRoute(SearchMedicines));
 
