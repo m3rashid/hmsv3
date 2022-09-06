@@ -12,7 +12,7 @@ const dispensePrescription =
     const data = await dispensePrescriptionService({
       prescriptionId,
       medicines,
-      createdBy: socket.user.id,
+      doneBy: socket.user,
     });
     io.emit("prescription-dispensed", { data });
   };

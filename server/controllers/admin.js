@@ -33,7 +33,7 @@ const editPermissions = async (req, res) => {
   const users = await editPermissionsService({
     userId: req.body.userId,
     permissions: req.body.permissions,
-    createdBy: req.userId,
+    doneBy: req.user,
   });
 
   return res.status(200).json({
@@ -72,7 +72,7 @@ const updateUser = async (req, res) => {
       category: req.body.category,
       origin: req.body.origin,
     },
-    req.userId
+    req.user
   );
 
   return res.status(200).json({

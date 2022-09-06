@@ -8,7 +8,7 @@ CREATE TYPE "MedType" AS ENUM ('TABLET', 'SYRUP');
 CREATE TYPE "Sex" AS ENUM ('m', 'f', 'o');
 
 -- CreateEnum
-CREATE TYPE "Days" AS ENUM ('MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN');
+CREATE TYPE "Days" AS ENUM ('SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT');
 
 -- CreateEnum
 CREATE TYPE "Category" AS ENUM ('GENERAL_MEDICINE', 'CARDIOLOGY', 'DERMATOLOGY', 'INTERNAL_MEDICINE', 'OPHTHALMOLOGY', 'ENT', 'GYNAECOLOGY');
@@ -40,7 +40,7 @@ CREATE TABLE "Profile" (
     "bio" TEXT,
     "roomNumber" TEXT NOT NULL,
     "sex" "Sex" NOT NULL,
-    "availability" TEXT[],
+    "availability" JSONB,
     "availableDays" "Days"[],
     "authorityName" TEXT,
     "category" "Category",
@@ -174,6 +174,7 @@ CREATE TABLE "Log" (
     "fromId" INTEGER NOT NULL,
     "actionId" INTEGER NOT NULL,
     "actionTable" TEXT NOT NULL,
+    "message" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Log_pkey" PRIMARY KEY ("id")

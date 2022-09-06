@@ -264,7 +264,7 @@ const addMedicineService = async ({
   data,
 
   // TODO unhandled in sockets
-  createdBy,
+  doneBy,
 }) => {
   let asset;
   let assetType;
@@ -284,9 +284,10 @@ const addMedicineService = async ({
 
   await addEventLog({
     action: serverActions.ADD_INVENTORY,
-    fromId: createdBy,
+    fromId: doneBy.id,
     actionId: asset.id,
     actionTable: assetType,
+    message: `${doneBy.name} <(${doneBy.email})> added item ${asset.name} (${asset.quantity}) to the inventory`,
   });
 
   return asset;
@@ -297,7 +298,7 @@ const DeleteInventoryService = async ({
   type,
 
   // TODO unhandled in sockets
-  createdBy,
+  doneBy,
 }) => {
   if (!medicineId) throw new Error("Invalid medicineId");
   let asset;
@@ -324,9 +325,10 @@ const DeleteInventoryService = async ({
 
   await addEventLog({
     action: serverActions.DELETE_INVENTORY,
-    fromId: createdBy,
+    fromId: doneBy.id,
     actionId: medicineId,
     actionTable: assetType,
+    message: `${doneBy.name} <(${doneBy.email})> deleted item ${asset.name} having (${asset.quantity}) count from the inventory`,
   });
 
   return asset;
@@ -338,7 +340,7 @@ const editMedicineService = async ({
   type,
 
   // TODO unhandled in sockets
-  createdBy,
+  doneBy,
 }) => {
   let asset;
   let assetType;
@@ -367,9 +369,10 @@ const editMedicineService = async ({
 
   await addEventLog({
     action: serverActions.EDIT_INVENTORY,
-    fromId: createdBy,
+    fromId: doneBy.id,
     actionId: asset.id,
     actionTable: assetType,
+    message: `${doneBy.name} <(${doneBy.email})> edited item ${asset.name} having (${asset.quantity}) count in the inventory`,
   });
 
   return asset;

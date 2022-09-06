@@ -10,12 +10,10 @@ import {
 } from "antd";
 import React from "react";
 
-import {
-  showGender,
-  toSentenceCase,
-} from "../../../../components/utils/strings";
+import { showGender, toSentenceCase } from "../../../../utils/strings";
 import { instance } from "../../../../api/instance";
-import { supportedUserRoles } from "../../../../components/utils/constants";
+import { supportedUserRoles } from "../../../../utils/constants";
+import Availability from "./InputTypes/Availablity";
 
 const requiredFormFields = [
   { key: "name", label: "Name", inputType: "text", otherRules: [{}] },
@@ -70,31 +68,36 @@ const requiredFormFields = [
 
 const otherFormFields = [
   { key: "bio", label: "Introduction", inputType: "textarea" },
-  {
-    key: "availableDays",
-    label: "Available Days",
-    inputType: "select",
-    multiple: true,
-    options: [
-      { key: "MON", label: "Monday" },
-      { key: "TUE", label: "Tuesday" },
-      { key: "WED", label: "Wednesday" },
-      { key: "THU", label: "Thursday" },
-      { key: "FRI", label: "Friday" },
-      { key: "SAT", label: "Saturday" },
-      { key: "SUN", label: "Sunday" },
-    ],
-  },
+  // {
+  //   key: "availableDays",
+  //   label: "Available Days",
+  //   inputType: "select",
+  //   multiple: true,
+  //   options: [
+  //     { key: "MON", label: "Monday" },
+  //     { key: "TUE", label: "Tuesday" },
+  //     { key: "WED", label: "Wednesday" },
+  //     { key: "THU", label: "Thursday" },
+  //     { key: "FRI", label: "Friday" },
+  //     { key: "SAT", label: "Saturday" },
+  //     { key: "SUN", label: "Sunday" },
+  //   ],
+  // },
   { key: "designation", label: "Designation", inputType: "text" },
   { key: "contact", label: "Contact", inputType: "number" },
   { key: "address", label: "Address", inputType: "text" },
-  { key: "availability", label: "Availability", inputType: "text" },
+  {
+    key: "availability",
+    label: "Availability",
+    inputType: "custom",
+    component: Availability,
+  },
   { key: "authorityName", label: "Authority Name", inputType: "text" },
   { key: "category", label: "Category", inputType: "text" },
   { key: "origin", label: "Origin", inputType: "text" },
 ];
 
-const RenderFormFields = ({ formFields, isEdit, required, data }) => {
+const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
   return (
     <React.Fragment>
       {formFields.map((f) => (
@@ -132,6 +135,13 @@ const RenderFormFields = ({ formFields, isEdit, required, data }) => {
               placeholder={f.label}
               rows={3}
             />
+          ) : f.inputType === "custom" ? (
+            <React.Fragment>
+              <f.component
+                {...(isEdit && { defaultValue: data[f.key] })}
+                form={form}
+              />
+            </React.Fragment>
           ) : (
             <Input
               {...(isEdit && { defaultValue: data[f.key] })}
@@ -207,6 +217,7 @@ const CreateUserModal = ({ isEdit, data }) => {
           layout="horizontal"
           labelCol={{ span: 7 }}
           wrapperCol={{ span: 14 }}
+          form={form}
         >
           <RenderFormFields
             isEdit={isEdit}
@@ -222,6 +233,7 @@ const CreateUserModal = ({ isEdit, data }) => {
                 formFields={otherFormFields}
                 required={false}
                 data={data}
+                form={form}
               />
             </Collapse.Panel>
           </Collapse>

@@ -37,7 +37,7 @@ const dispensePrescription = async (req, res) => {
 
   const { receipt } = await dispensePrescriptionService({
     ...req.body,
-    createdBy: req.userId,
+    doneBy: req.user,
   });
   return res.status(200).json({
     receipt,

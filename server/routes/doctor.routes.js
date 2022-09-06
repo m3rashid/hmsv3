@@ -30,7 +30,11 @@ router.get("/get-patients", checkAuth, useRoute(getDoctorPatients));
 
 router.post("/refer", checkAuth, useRoute(referAnotherDoctor));
 
-router.post("/med/check-availability", useRoute(checkMedAvailability));
+router.post(
+  "/med/check-availability",
+  checkAuth,
+  useRoute(checkMedAvailability)
+);
 
 module.exports = {
   router,

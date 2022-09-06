@@ -71,6 +71,17 @@ function DoctorAppointments() {
       key: "actions",
       render: (text, record) => (
         <Space>
+        <Popconfirm
+            disabled={!dayjs(record.date).isBefore(dayjs().add(6, "hours"))}
+            title="Create a prescription for this appointment?"
+            onConfirm={() => {
+              navigate(`/doctor/prescribe-medicine?appointmentId=${record.id}`);
+            }}
+            okText="Yes"
+            cancelText="Cancel"
+          >
+            <Button type='primary'> Precribe </Button>
+          </Popconfirm>
           <Button
             onClick={() => {
               setModalVisible({
@@ -80,22 +91,10 @@ function DoctorAppointments() {
               });
             }}
           >
-            View Form
+            View
           </Button>
-          <Popconfirm
-            disabled={!dayjs(record.date).isBefore(dayjs().add(6, "hours"))}
-            title="Create a prescription for this appointment?"
-            onConfirm={() => {
-              navigate(`/doctor/prescribe-medicine?appointmentId=${record.id}`);
-            }}
-            okText="Yes"
-            cancelText="Cancel"
-          >
-            <Button> Precribe </Button>
-          </Popconfirm>
-
           <Button onClick={() => navigate(`/patient/${record.patient.id}`)}>
-            View Patient
+            Patient Details
           </Button>
         </Space>
       ),

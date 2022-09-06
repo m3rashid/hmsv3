@@ -101,7 +101,7 @@ const signupService = async ({
   authorityName,
   category,
   origin,
-  createdBy,
+  doneBy,
 }) => {
   const profileData = {
     designation,
@@ -117,6 +117,7 @@ const signupService = async ({
     category,
     origin,
   };
+
   if (!email || !password || !name || !role || !sex || !roomNumber) {
     throw new Error("Insufficient credentials");
   }
@@ -128,7 +129,7 @@ const signupService = async ({
 
   const profile = await prisma.profile.create({ data: { ...profileData } });
 
-  const user = await prisma.Auth.create({
+  const user = await prisma.auth.create({
     data: {
       email,
       name,
@@ -141,9 +142,10 @@ const signupService = async ({
 
   await addEventLog({
     action: serverActions.SIGNUP,
-    fromId: createdBy,
+    fromId: doneBy.id ?? "DEV",
     actionId: profile.id,
     actionTable: "profile",
+    message: `${doneBy.name} <(${doneBy.email})> created user ${user.name} <(${user.email})> as ${role}`,
   });
 
   return user;

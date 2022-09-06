@@ -6,7 +6,7 @@ const { addEventLog } = require("../utils/logs");
 const createPatientService = async (
   { name, age, sex, contact, address, email, jamiaId },
   UserPermissions,
-  createdBy
+  doneBy
 ) => {
   if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions)) {
     throw new Error("Forbidden");
@@ -21,15 +21,20 @@ const createPatientService = async (
 
   await addEventLog({
     action: serverActions.CREATE_PATIENT,
-    fromId: createdBy,
+    fromId: doneBy.id,
     actionId: newPatient.id,
     actionTable: "patient",
+    message: `${doneBy.name} <(${doneBy.email})> created patient  ${name}  <(${email})>`,
   });
 
   return { patient: newPatient };
 };
 
-const deletePatientService = async ({ patientId, createdBy }) => {
+const deletePatientService = async ({ patientId, doneBy }) => {
+  const pastPatient = await prisma.patient.findFirst({
+    where: { id: patientId },
+  });
+
   const patient = await prisma.patient.delete({
     where: { id: patientId },
   });
@@ -38,9 +43,10 @@ const deletePatientService = async ({ patientId, createdBy }) => {
 
   await addEventLog({
     action: serverActions.DELETE_PATIENT,
-    fromId: createdBy,
+    fromId: doneBy.id,
     actionId: patientId,
     actionTable: "patient",
+    message: `${doneBy.name} <(${doneBy.email})> deleted patient  ${pastPatient.name}  <(${pastPatient.email})>`,
   });
 
   return patient;

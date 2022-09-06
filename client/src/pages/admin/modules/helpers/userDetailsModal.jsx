@@ -2,8 +2,22 @@ import React from "react";
 import { Modal, Button, Space, Form, Select, message } from "antd";
 
 import { instance } from "../../../../api/instance";
-import { permissions } from "../../../../components/utils/constants";
-import { toSentenceCase } from "../../../../components/utils/strings";
+import { permissions } from "../../../../utils/constants";
+import { toSentenceCase } from "../../../../utils/strings";
+
+const ShowEntry = ({ label, value }) => (
+  <div
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "flex-start",
+      gap: "1rem",
+    }}
+  >
+    <p style={{ fontWeight: 800, padding: 0, margin: 0 }}>{label}: </p>
+    <p style={{ padding: 0, margin: 0 }}>{value}</p>
+  </div>
+);
 
 const UserDetailsModal = ({ data }) => {
   const [editPermissions, setEditPermissions] = React.useState(false);
@@ -40,20 +54,6 @@ const UserDetailsModal = ({ data }) => {
       key: "edit-permissions",
     });
   };
-
-  const ShowEntry = ({ label, value }) => (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "flex-start",
-        gap: "1rem",
-      }}
-    >
-      <p style={{ fontWeight: 800, padding: 0, margin: 0 }}>{label}: </p>
-      <p style={{ padding: 0, margin: 0 }}>{value}</p>
-    </div>
-  );
 
   return (
     <React.Fragment>
@@ -92,18 +92,18 @@ const UserDetailsModal = ({ data }) => {
         {data.authorityName && (
           <ShowEntry label="Authority Name" value={data.authorityName} />
         )}
-        {data.availability.length > 0 && (
+        {/* {data.availability?.length > 0 && (
           <ShowEntry
             label="Availability"
             value={data.availability.join(" - ")}
           />
         )}
-        {data.availableDays.length > 0 && (
+        {data.availableDays?.length > 0 && (
           <ShowEntry
             label="Available Days"
             value={data.availableDays.join(" - ")}
           />
-        )}
+        )} */}
         {data.category && <ShowEntry label="Category" value={data.category} />}
         {data.contact && <ShowEntry label="Contact" value={data.contact} />}
         {data.joined && <ShowEntry label="Joined" value={data.joined} />}
