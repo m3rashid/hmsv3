@@ -41,6 +41,7 @@ const signup = async (req, res) => {
 
     doneBy: req.user,
   });
+
   return res.status(200).json({
     message: "Signup Successful",
     user,

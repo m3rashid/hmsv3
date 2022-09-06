@@ -10,6 +10,7 @@ import Pharmacists from "./modules/pharmacists";
 import InventoryManagers from "./modules/inventoryManager";
 import CoAdmins from "./modules/coAdmin";
 import Others from "./modules/others";
+import LogReports from "./modules/logReports";
 
 const Admin = () => {
   const [online, setOnline] = React.useState(true);
@@ -49,6 +50,9 @@ const Admin = () => {
 
         <Tabs.TabPane tab="Patients" key="8">
           <Patients />
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Logs" key="9">
+          <LogReports />
         </Tabs.TabPane>
       </Tabs>
     </div>
