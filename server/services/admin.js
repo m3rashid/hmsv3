@@ -149,16 +149,23 @@ const generateReportsService = async ({ startDay, endDay, action }) => {
 
   const keys = Object.keys(reportAggr);
   for (let i = 0; i < keys.length; i++) {
-    console.log({
-      [keys[i]]: reportAggr[keys[i]],
-    });
+    // console.log({
+    //   [keys[i]]: reportAggr[keys[i]],
+    // });
+
+    const ids = Object.values(reportAggr[keys[i]]).reduce(
+      (acc, curr) => [...acc, curr.id],
+      []
+    );
 
     const details = await prisma[keys[i]].findMany({
       where: {
-        id: details.reduce((acc, curr) => [...acc, curr.id], []),
+        id: ids,
       },
     });
-    for (let j = 0; j < details.length; j++) {}
+    for (let j = 0; j < details.length; j++) {
+      reportAggr.details[details[j].id] = details[j];
+    }
   }
 
   return reportAggr;
