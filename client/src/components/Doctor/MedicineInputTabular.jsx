@@ -39,7 +39,7 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
             medicine: {},
             dosage: "",
             duration: 0,
-            key: prev.length || 0,
+            key: prev.medicines.length || 0,
           },
         ],
       }));

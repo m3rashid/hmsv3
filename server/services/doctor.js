@@ -103,7 +103,7 @@ const createPrescriptionService = async ({
               ...(medicine.type === "SYRUP"
                 ? { quantityPerDose: parseInt(medicine.quantityPerDose) }
                 : {}),
-              description: medicine.description,
+              description: medicine.description || "",
             };
           }),
         },

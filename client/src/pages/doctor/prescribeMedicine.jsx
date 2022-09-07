@@ -156,7 +156,7 @@ const PrescriptionForm = () => {
           <Divider />
           <Space direction="vertical" style={{ width: "100%" }}>
             <Typography.Text strong>Medicines</Typography.Text>
-            {medicines.medicines.length > 0 && (
+            {/* {medicines.medicines.length > 0 && (
               <Row className={styles.prescribeTableHeader}>
                 <Col className={styles.prescribeColHeader} span={6}>
                   Medicine
@@ -177,9 +177,9 @@ const PrescriptionForm = () => {
                   Action
                 </Col>
               </Row>
-            )}
+            )} */}
 
-            {medicines.medicines?.map((medicine, index) => (
+            {/* {medicines.medicines?.map((medicine, index) => (
               <MedicineInput
                 key={index}
                 index={index}
@@ -189,7 +189,7 @@ const PrescriptionForm = () => {
                 setMedicines={setMedicines}
                 UpdateMedicine={UpdateMedicine}
               />
-            ))}
+            ))} */}
             <MedicineInputTable
               medicines={medicines.medicines}
               setMedicines={setMedicines}
@@ -214,16 +214,16 @@ const PrescriptionForm = () => {
                 <Col className={styles.prescribeColHeader} span={6}>
                   Medicine
                 </Col>
-                <Col className={styles.prescribeColHeader} span={3}>
+                <Col className={styles.prescribeColHeader} span={4}>
                   Dosage
                 </Col>
-                <Col className={styles.prescribeColHeader} span={3}>
+                <Col className={styles.prescribeColHeader} span={5}>
                   Duration
                 </Col>
-                <Col className={styles.prescribeColHeader} span={6}>
+                <Col className={styles.prescribeColHeader} span={5}>
                   Description
                 </Col>
-                <Col className={styles.prescribeColHeader} span={3}>
+                <Col className={styles.prescribeColHeader} span={4}>
                   Action
                 </Col>
               </Row>
