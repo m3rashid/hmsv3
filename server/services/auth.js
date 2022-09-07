@@ -63,10 +63,10 @@ const loginService = async (email, password) => {
   if (!email || !password) throw new Error("No credentials");
 
   const user = await prisma.auth.findUnique({
-    where: { email },
+    where: { email: email.trim() },
   });
   if (!user) throw new Error("User not found");
-  const matched = await bcrypt.compare(password, user.password);
+  const matched = await bcrypt.compare(password, user.password.trim());
   if (!matched) throw new Error("Wrong Credentials");
 
   const userDetails = await prisma.profile.findUnique({
@@ -126,14 +126,14 @@ const signupService = async ({
   if (!supportedUserRoles.includes(role)) throw new Error("Invalid role");
   const allowedActions = addActions(role);
 
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = await bcrypt.hash(password.trim(), 10);
 
   const profile = await prisma.profile.create({ data: { ...profileData } });
 
   const user = await prisma.auth.create({
     data: {
-      email,
-      name,
+      email: email.trim(),
+      name: name.trim(),
       profileId: profile.id,
       password: hashedPassword,
       permissions: allowedActions,

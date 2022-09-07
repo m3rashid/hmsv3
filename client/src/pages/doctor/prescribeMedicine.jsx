@@ -15,7 +15,6 @@ import dayjs from "dayjs";
 import React, { useEffect } from "react";
 
 import { socket } from "../../api/socket";
-import Header from "../../components/Header";
 import DisplayMedicine from "../../components/Doctor/DisplayMedicine";
 import usePrescribeMedicines from "./helpers/prescribeMeds.hook";
 import MedicineInput from "../../components/Doctor/MedicineInput";
@@ -66,9 +65,6 @@ const PrescriptionForm = () => {
 
   return (
     <React.Fragment>
-      <div>
-        <Header />
-      </div>
       <div style={{ padding: 10 }}>
         <Typography.Title level={4}>Create Prescription</Typography.Title>
         <Form
