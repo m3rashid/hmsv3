@@ -63,8 +63,8 @@ const searchDoctorsService = async ({
     if (!availableDay) return false;
 
     const availableTime = availableDay.range.some((range) => {
-      const start = parseFloat(`${range.from.hour}.${range.from.minute}`);
-      const end = parseFloat(`${range.to.hour}.${range.to.minute}`);
+      const start = parseFloat(`${range?.from?.hour}.${range?.from?.minute}`);
+      const end = parseFloat(`${range?.to?.hour}.${range?.to?.minute}`);
       console.log(start, end);
       return curr >= start && curr <= end;
     });

@@ -5,6 +5,7 @@ import { Button, Modal, Table } from "antd";
 import AdminWrapper from "../adminWrapper";
 import useLogReports from "./helpers/useLogReports";
 import { toSentenceCase } from "../../../utils/strings";
+import ShowEntry from "./helpers/showEntry";
 
 const LogReports = () => {
   const {
@@ -15,6 +16,7 @@ const LogReports = () => {
     handleOk,
     isModalVisible,
     details,
+    refreshLogs,
   } = useLogReports();
 
   React.useEffect(() => {
@@ -23,11 +25,6 @@ const LogReports = () => {
   }, []);
 
   const columns = [
-    {
-      title: "Sl. No.",
-      dataIndex: "id",
-      key: "id",
-    },
     {
       title: "Action",
       dataIndex: "action",
@@ -65,6 +62,9 @@ const LogReports = () => {
 
   return (
     <AdminWrapper>
+      <Button onClick={refreshLogs} style={{ marginBottom: "10px" }}>
+        Refresh Logs
+      </Button>
       <Table
         dataSource={allLogs}
         columns={columns}
@@ -80,7 +80,29 @@ const LogReports = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        {JSON.stringify(details, null, 2)}
+        {Object.keys(details.action).length > 0 &&
+        Object.keys(details.doneBy).length > 0 ? (
+          <div style={{ maxHeight: "60vh", overflowY: "auto" }}>
+            <h3>Done By</h3>
+            <ShowEntry label="Name" value={details.doneBy["Auth"][0].name} />
+            <ShowEntry label="Email" value={details.doneBy["Auth"][0].email} />
+            <ShowEntry
+              label="Time"
+              value={dayjs(details.action.updatedAt).format(
+                "DD-MM-YYYY hh:mm A"
+              )}
+            />
+            <ShowEntry label="Role" value={details.doneBy.role} />
+
+            <br />
+
+            <h3>Action Details</h3>
+            <pre>{JSON.stringify(details.actionToShow, null, 2)}</pre>
+          </div>
+        ) : (
+          <div>Details Loading</div>
+        )}
+
         <div
           style={{
             display: "flex",
@@ -94,7 +116,7 @@ const LogReports = () => {
             Cancel
           </Button>
           <Button type="primary" htmlType="submit">
-            Login
+            OK
           </Button>
         </div>
       </Modal>

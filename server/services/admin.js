@@ -134,6 +134,9 @@ const generateReportsService = async ({ startDay, endDay, action }) => {
         { ...(action && { action }) },
       ],
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
   return reports;
