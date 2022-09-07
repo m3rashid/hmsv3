@@ -7,6 +7,7 @@ import {
   Typography,
   Popconfirm,
   Tabs,
+  Tooltip,
 } from "antd";
 import dayjs from "dayjs";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -69,35 +70,52 @@ function DoctorAppointments() {
       title: "Actions",
       dataIndex: "actions",
       key: "actions",
-      render: (text, record) => (
-        <Space>
-        <Popconfirm
-            disabled={!dayjs(record.date).isBefore(dayjs().add(6, "hours"))}
-            title="Create a prescription for this appointment?"
-            onConfirm={() => {
-              navigate(`/doctor/prescribe-medicine?appointmentId=${record.id}`);
-            }}
-            okText="Yes"
-            cancelText="Cancel"
-          >
-            <Button type='primary'> Precribe </Button>
-          </Popconfirm>
-          <Button
-            onClick={() => {
-              setModalVisible({
-                visible: true,
-                id: record.id,
-                data: record,
-              });
-            }}
-          >
-            View
-          </Button>
-          <Button onClick={() => navigate(`/patient/${record.patient.id}`)}>
-            Patient Details
-          </Button>
-        </Space>
-      ),
+      render: (text, record) => {
+        const disabled = !dayjs(record.date).isBefore(dayjs().add(6, "hours"));
+        return (
+          <Space>
+            <Popconfirm
+              disabled={disabled}
+              title="Create a prescription for this appointment?"
+              onConfirm={() => {
+                navigate(
+                  `/doctor/prescribe-medicine?appointmentId=${record.id}`
+                );
+              }}
+              okText="Yes"
+              cancelText="Cancel"
+            >
+              <Tooltip
+                placement="left"
+                title={
+                  disabled
+                    ? "Cant prescribe at current time"
+                    : "Create a prescription"
+                }
+              >
+                <Button disabled={disabled} type="primary">
+                  {" "}
+                  Precribe{" "}
+                </Button>
+              </Tooltip>
+            </Popconfirm>
+            <Button
+              onClick={() => {
+                setModalVisible({
+                  visible: true,
+                  id: record.id,
+                  data: record,
+                });
+              }}
+            >
+              View
+            </Button>
+            <Button onClick={() => navigate(`/patient/${record.patient.id}`)}>
+              Patient Details
+            </Button>
+          </Space>
+        );
+      },
     },
   ];
 

@@ -22,6 +22,7 @@ import { instance } from "../../api/instance";
 import { dosages } from "../../utils/constants";
 import { MdDelete } from "react-icons/md";
 import { BsDash } from "react-icons/bs";
+import { GrAdd } from "react-icons/gr";
 import usePrescribeMedicines from "../../pages/doctor/helpers/prescribeMeds.hook";
 
 const MedicineInputTable = ({ medicines, setMedicines }) => {
@@ -189,8 +190,12 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
   return (
     <>
       <Table columns={medicineInputTableColumns} dataSource={medicines || []} />
-      <Button type="primary" onClick={addEmptyMedicine}>
-        +
+      <Button
+        type="dashed"
+        onClick={addEmptyMedicine}
+        style={{ margin: "auto", display: "flex", marginTop: "1rem" }}
+      >
+        + Add Medicine
       </Button>
     </>
   );
