@@ -14,6 +14,9 @@ import { showGender, toSentenceCase } from "../../../../utils/strings";
 import { instance } from "../../../../api/instance";
 import { supportedUserRoles } from "../../../../utils/constants";
 import Availability from "./InputTypes/Availablity";
+import { useRecoilState } from "recoil";
+import { UserSlotManagerAtom } from "../../../../atoms/UserSlotManager";
+import useGetUserDetail from "./getUserDetail";
 
 const requiredFormFields = [
   { key: "name", label: "Name", inputType: "text", otherRules: [{}] },
@@ -158,9 +161,17 @@ const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
 const CreateUserModal = ({ isEdit, data }) => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [UserAtom, setUserAtom] = useRecoilState(UserSlotManagerAtom);
+  const { getUsers } = useGetUserDetail({
+    userType: "doctors",
+    userRole: "DOCTOR",
+  });
 
   const handleOk = () => setIsModalVisible(true);
-  const handleCancel = () => setIsModalVisible(false);
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setUserAtom(null);
+  };
 
   const onFinish = async (values) => {
     try {
@@ -178,13 +189,14 @@ const CreateUserModal = ({ isEdit, data }) => {
         content: `User ${isEdit ? "edited" : "created"} Successfully`,
         key: "auth/createUser",
       });
-      handleCancel();
-      form.resetFields();
     } catch (error) {
       message.error({
         content: `User ${isEdit ? "updation" : "creation"} failed`,
         key: "auth/createUser",
       });
+    } finally {
+      await getUsers();
+      handleCancel();
     }
   };
 
@@ -198,7 +210,11 @@ const CreateUserModal = ({ isEdit, data }) => {
   return (
     <React.Fragment>
       <Space>
-        <Button onClick={() => setIsModalVisible(true)}>
+        <Button
+          onClick={() => {
+            setIsModalVisible(true);
+          }}
+        >
           {isEdit ? "Edit User" : "Register New User"}
         </Button>
       </Space>
@@ -209,7 +225,7 @@ const CreateUserModal = ({ isEdit, data }) => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
-        style={{ maxHeight: "70vh", overflowY: "auto" }}
+        style={{ maxHeight: "70vh", overflowY: "auto", paddingBottom: 0 }}
       >
         <Form
           name="Create User"
@@ -251,7 +267,14 @@ const CreateUserModal = ({ isEdit, data }) => {
             <Button style={{ marginRight: "10px" }} onClick={handleCancel}>
               Cancel
             </Button>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              onClick={(e) => {
+                e.preventDefault();
+                form.submit();
+              }}
+            >
               {isEdit ? "Update User" : "Create User"}
             </Button>
           </div>

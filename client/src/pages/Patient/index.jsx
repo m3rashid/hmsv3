@@ -219,6 +219,7 @@ const PatientInfo = (props) => {
       <Table columns={AppointmentSchema} dataSource={data.Appointment} />
       <Drawer
         visible={PrescriptionModal.visible}
+        width={"40%"}
         onClose={() => setPrescriptionModal({ visible: false })}
       >
         <DisplayMedicine

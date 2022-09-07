@@ -211,7 +211,7 @@ const ViewPrescriptionModal = ({ prescriptionId }) => {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (text, record) => <span>{record.Medicine.name}</span>,
+      render: (text, record) => <span>{record.medicine.name}</span>,
     },
     {
       title: "Dosage",

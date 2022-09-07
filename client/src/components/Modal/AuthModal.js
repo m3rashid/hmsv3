@@ -10,11 +10,12 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
   const [, setAuth] = useRecoilState(authState);
   const onFinish = async (values) => {
     try {
-      message.loading({
-        content: "Loading...",
-        key: "auth/login",
+      console.log("Received values of form: ", values);
+      message.loading({ content: "Loading...", key: "auth/login" });
+      const { data } = await instance.post("/auth/login", {
+        email: values.email.trim(),
+        password: values.password.trim(),
       });
-      const { data } = await instance.post("/auth/login", values);
 
       instance.defaults.headers.common[
         "Authorization"
@@ -30,16 +31,10 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
       socket.io.opts.auth.token = data.token;
       socket.disconnect().connect();
 
-      message.success({
-        content: "Login Successful",
-        key: "auth/login",
-      });
+      message.success({ content: "Login Successful", key: "auth/login" });
       handleCancel();
     } catch (error) {
-      message.error({
-        content: "Login Failed",
-        key: "auth/login",
-      });
+      message.error({ content: "Login Failed", key: "auth/login" });
     }
   };
 

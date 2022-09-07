@@ -61,10 +61,13 @@ const LogReports = () => {
   }
 
   return (
-    <AdminWrapper>
-      <Button onClick={refreshLogs} style={{ marginBottom: "10px" }}>
-        Refresh Logs
-      </Button>
+    <AdminWrapper
+      aside={
+        <Button onClick={refreshLogs} style={{ marginBottom: "10px" }}>
+          Refresh Log Reports
+        </Button>
+      }
+    >
       <Table
         dataSource={allLogs}
         columns={columns}
