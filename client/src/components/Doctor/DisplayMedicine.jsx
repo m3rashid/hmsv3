@@ -40,7 +40,7 @@ function DisplayMedicine({
         <Typography.Text>{symptoms}</Typography.Text>
       </Space>
 
-      <ViewPrescriptionModal prescriptionData={Medicines} />
+      <ViewPrescriptionTable prescriptionData={Medicines} />
 
       <Card title="Custom Medicines" style={{ background: "transparent" }}>
         <Space direction="vertical" size={"large"}>
@@ -69,35 +69,44 @@ DisplayMedicine.propTypes = {
 
 export default DisplayMedicine;
 
-const ViewPrescriptionModal = ({ prescriptionData }) => {
+const ViewPrescriptionTable = ({ prescriptionData }) => {
+  console.log(prescriptionData);
   const medicineTableColumns = [
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
-      render: (text, record) => <span>{record?.medicine?.name}</span>,
+      fixed: "left",
+      width: 100,
+
+      render: (text, record) => <span>{record?.Medicine?.name}</span>,
     },
     {
       title: "Dosage",
       dataIndex: "dosage",
       key: "dosage",
+      width: "8ch",
       render: (text) => <span>{text}</span>,
     },
     {
       title: "Duration",
       dataIndex: "duration",
       key: "duration",
+      width: "10ch",
+
       render: (text) => <span>{text} days</span>,
     },
     {
       title: "Requirement",
       dataIndex: "required",
+      width: "13ch",
       key: "required",
       render: (text, record) => <span>{record.quantityRequired} Tablets</span>,
     },
     {
       title: "Availability",
       dataIndex: "availability",
+      width: "12ch",
       key: "availability",
       render: (text, record) => {
         const availability =
@@ -125,8 +134,10 @@ const ViewPrescriptionModal = ({ prescriptionData }) => {
       {prescriptionData && (
         <Table
           size="small"
+          pagination={false}
           columns={medicineTableColumns}
           dataSource={prescriptionData}
+          scroll={{ x: 400 }}
         />
       )}
     </Space>
