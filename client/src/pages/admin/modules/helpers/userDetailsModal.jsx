@@ -4,20 +4,7 @@ import { Modal, Button, Space, Form, Select, message } from "antd";
 import { instance } from "../../../../api/instance";
 import { permissions } from "../../../../utils/constants";
 import { toSentenceCase } from "../../../../utils/strings";
-
-const ShowEntry = ({ label, value }) => (
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "flex-start",
-      gap: "1rem",
-    }}
-  >
-    <p style={{ fontWeight: 800, padding: 0, margin: 0 }}>{label}: </p>
-    <p style={{ padding: 0, margin: 0 }}>{value}</p>
-  </div>
-);
+import ShowEntry from "./showEntry";
 
 const UserDetailsModal = ({ data }) => {
   const [editPermissions, setEditPermissions] = React.useState(false);

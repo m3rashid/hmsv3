@@ -1,12 +1,13 @@
 import React from "react";
+import AdminWrapper from "../adminWrapper";
 
 import CreateUserModal from "./helpers/createUserModal";
 
 const Home = () => {
   return (
-    <div style={{ marginTop: "10px", marginLeft: "0px" }}>
+    <AdminWrapper>
       <CreateUserModal isEdit={false} />
-    </div>
+    </AdminWrapper>
   );
 };
 

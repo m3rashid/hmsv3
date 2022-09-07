@@ -134,44 +134,42 @@ const generateReportsService = async ({ startDay, endDay, action }) => {
         { ...(action && { action }) },
       ],
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
 
-  let reportAggr;
-  if (!action) {
-    reportAggr = {};
+  return reports;
+};
 
-    for (let i = 0; i < reports.length; i++) {
-      if (!(reports[i].actionTable in reportAggr)) {
-        reportAggr[reports[i].actionTable] = [];
-      }
+const getReportDetailsService = async (log) => {
+  const {
+    // id, action,
+    fromId,
+    actionId,
+    actionTable,
+  } = log;
 
-      reportAggr[reports[i].actionTable].push({ ...reports[i], details: {} });
-    }
-  } else {
-    reportAggr = reports;
-  }
+  const actionDetail = await prisma[actionTable].findFirst({
+    where: { id: actionId },
+  });
 
-  // const tableName = Object.keys(reportAggr);
-  // for (let i = 0; i < tableName.length; i++) {
-  //   console.log(reportAggr[tableName[i]]);
+  const doneBy = await prisma.profile.findFirst({
+    where: { id: fromId },
+    include: {
+      Auth: {
+        select: {
+          email: true,
+          name: true,
+        },
+      },
+    },
+  });
 
-  //   const ids = Object.values(reportAggr[tableName[i]]).reduce(
-  //     (acc, curr) => [...acc, curr.id],
-  //     []
-  //   );
-
-  //   const details = await prisma[tableName[i]].findMany({
-  //     where: {
-  //       id: { in: ids },
-  //     },
-  //   });
-  //   for (let j = 0; j < details.length; j++) {
-  //     // reportAggr.details[details[j].id] = details[j];
-  //     reportAggr[tableName[i]][j].details = details[j];
-  //   }
-  // }
-
-  return reportAggr;
+  return {
+    action: actionDetail,
+    doneBy,
+  };
 };
 
 const viewMoreDataLogsService = async () => {};
@@ -182,4 +180,5 @@ module.exports = {
   updateUserProfileService,
   generateReportsService,
   viewMoreDataLogsService,
+  getReportDetailsService,
 };
