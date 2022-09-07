@@ -22,7 +22,6 @@ import { instance } from "../../api/instance";
 import { dosages } from "../../utils/constants";
 import { MdDelete } from "react-icons/md";
 import { BsDash } from "react-icons/bs";
-import { GrAdd } from "react-icons/gr";
 import usePrescribeMedicines from "../../pages/doctor/helpers/prescribeMeds.hook";
 
 const MedicineInputTable = ({ medicines, setMedicines }) => {
