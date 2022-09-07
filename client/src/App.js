@@ -4,15 +4,17 @@ import { Routes, Route } from "react-router-dom";
 import React, { useCallback, useEffect, useState } from "react";
 
 import Home from "./pages/home";
+import About from "./pages/about";
+import UnAuthPage from "./pages/unAuthenticated";
+
 import { socket } from "./api/socket";
 import { authState } from "./atoms/auth";
+import { instance } from "./api/instance";
 import routes, { checkAccess } from "./routes";
-import UnAuthPage from "./pages/unAuthenticated";
 import Loading from "./components/Loading/Loading";
 import AppLayout from "./components/Layout/AppLayout";
 import { revalidateJWT } from "./api/auth/revalidateJWT";
 import useFetchSockets from "./components/Sockets/useFetchSockets";
-import { instance } from "./api/instance";
 
 export const SocketContext = React.createContext();
 
@@ -68,7 +70,8 @@ function App() {
                 />
               );
             })}
-            <Route path="" element={<Home />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </div>
       </div>

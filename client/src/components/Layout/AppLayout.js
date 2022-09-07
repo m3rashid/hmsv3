@@ -26,7 +26,7 @@ function Index(props) {
                 src="/images/logo.jpg"
                 alt="null"
                 className={styles.image}
-                onClick={() => handleClick()}
+                onClick={handleClick}
               />
               Dr. M.A Ansari Health Centre
             </Typography.Title>
@@ -52,12 +52,25 @@ function Index(props) {
                 </Menu.Item>
               );
             })}
+
+            <Menu.Item style={{ position: "absolute", bottom: 0 }}>
+              <Link to="/about">About</Link>
+            </Menu.Item>
           </Menu>
         </Layout.Sider>
         <Layout.Content className={styles.content}>
           {props.children}
         </Layout.Content>
       </Layout>
+      <Layout.Footer className={styles.footer}>
+        <p style={{ textAlign: "center" }}>
+          Project Designed and Developed in-house under Dept. of Computer
+          Science, Faculty of Engineering and Technology, Jamia Millia Islamia
+          <Link style={{ marginLeft: "10px" }} to="/about">
+            Know More . . .
+          </Link>
+        </p>
+      </Layout.Footer>
     </Layout>
   );
 }

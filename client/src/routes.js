@@ -1,6 +1,17 @@
 import Patient from "./pages/Patient";
-// import Appointments from "./pages/appointments";
-import Admin from "./pages/admin";
+
+import {
+  Home as AdminHome,
+  Receptionists,
+  Doctors,
+  Patients,
+  Pharmacists,
+  InventoryManagers,
+  CoAdmins,
+  Others,
+  LogReports,
+} from "./pages/admin";
+
 import DoctorAppointments from "./pages/doctor/Appointments";
 import PrescriptionForm from "./pages/doctor/prescribeMedicine";
 import Prescriptions from "./pages/pharmacy/Prescriptions";
@@ -24,11 +35,60 @@ export const checkAccess = (Auth, route) => {
 
 const routes = [
   {
-    path: "/admin",
-    component: Admin,
-    text: "Admin",
+    path: "/admin/home",
+    component: AdminHome,
+    text: "Admin Home",
     role: ["ADMIN"],
   },
+  {
+    path: "/admin/receptionists",
+    component: Receptionists,
+    text: "Receptionists",
+    role: ["ADMIN"],
+  },
+  {
+    path: "/admin/doctors",
+    component: Doctors,
+    text: "Doctors",
+    role: ["ADMIN"],
+  },
+  {
+    path: "/admin/pharmacists",
+    component: Pharmacists,
+    text: "Pharmacists",
+    role: ["ADMIN"],
+  },
+  {
+    path: "/admin/inventory-managers",
+    component: InventoryManagers,
+    text: "Inventory-Managers",
+    role: ["ADMIN"],
+  },
+  {
+    path: "/admin/co-admins",
+    component: CoAdmins,
+    text: "Co-Admins",
+    role: ["ADMIN"],
+  },
+  {
+    path: "/admin/others",
+    component: Others,
+    text: "Others",
+    role: ["ADMIN"],
+  },
+  {
+    path: "/admin/patients",
+    component: Patients,
+    text: "Patients",
+    role: ["ADMIN"],
+  },
+  {
+    path: "/admin/logs",
+    component: LogReports,
+    text: "Logs",
+    role: ["ADMIN"],
+  },
+
   {
     path: "/doctor/appointments",
     component: DoctorAppointments,
@@ -41,6 +101,7 @@ const routes = [
     text: "Prescribe Medicine",
     role: [permissions.DOCTOR_PRESCRIBE_MEDICINE],
   },
+
   {
     path: "/patient",
     component: Patient,
