@@ -6,7 +6,7 @@ import useGetUserDetail from "./helpers/getUserDetail";
 import AdminWrapper from "../adminWrapper";
 
 const InventoryManagers = () => {
-  const { getAllUsers, users } = useGetUserDetail({
+  const { getAllUsers, users, RefreshUserButton } = useGetUserDetail({
     userType: "inventoryManagers",
     userRole: "INVENTORY_MANAGER",
   });
@@ -17,7 +17,7 @@ const InventoryManagers = () => {
   }, []);
 
   return (
-    <AdminWrapper>
+    <AdminWrapper aside={<RefreshUserButton />}>
       <Table
         dataSource={users}
         columns={columns}

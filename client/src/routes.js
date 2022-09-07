@@ -89,9 +89,9 @@ const routes = [
     role: ["ADMIN"],
   },
   {
-    path: "/admin/logs",
+    path: "/admin/log-reports",
     component: LogReports,
-    text: "Logs",
+    text: "Log Reports",
     role: ["ADMIN"],
   },
 

@@ -6,7 +6,7 @@ import useGetUserDetail from "./helpers/getUserDetail";
 import AdminWrapper from "../adminWrapper";
 
 const Receptionists = () => {
-  const { getAllUsers, users } = useGetUserDetail({
+  const { getAllUsers, users, RefreshUserButton } = useGetUserDetail({
     userType: "receptionists",
     userRole: "RECEPTIONIST",
   });
@@ -17,7 +17,7 @@ const Receptionists = () => {
   }, []);
 
   return (
-    <AdminWrapper>
+    <AdminWrapper aside={<RefreshUserButton />}>
       <Table
         dataSource={users}
         columns={columns}

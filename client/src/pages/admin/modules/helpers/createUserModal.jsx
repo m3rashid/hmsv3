@@ -209,7 +209,7 @@ const CreateUserModal = ({ isEdit, data }) => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
-        style={{ maxHeight: "70vh", overflowY: "auto" }}
+        style={{ maxHeight: "70vh", overflowY: "auto", paddingBottom: 0 }}
       >
         <Form
           name="Create User"
