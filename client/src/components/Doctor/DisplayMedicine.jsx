@@ -13,6 +13,7 @@ function DisplayMedicine({
   symptoms,
   Medicines,
   ExtraMedicines,
+  showAvailability,
 }) {
   return (
     <React.Fragment>
@@ -40,7 +41,10 @@ function DisplayMedicine({
         <Typography.Text>{symptoms}</Typography.Text>
       </Space>
 
-      <ViewPrescriptionTable prescriptionData={Medicines} />
+      <ViewPrescriptionTable
+        prescriptionData={Medicines}
+        showAvailability={showAvailability}
+      />
 
       <Card title="Custom Medicines" style={{ background: "transparent" }}>
         <Space direction="vertical" size={"large"}>
@@ -65,11 +69,12 @@ DisplayMedicine.propTypes = {
   symptoms: PropTypes.string,
   Medicines: PropTypes.array,
   ExtraMedicines: PropTypes.array,
+  showAvailability: PropTypes.bool,
 };
 
 export default DisplayMedicine;
 
-const ViewPrescriptionTable = ({ prescriptionData }) => {
+const ViewPrescriptionTable = ({ prescriptionData, showAvailability }) => {
   console.log(prescriptionData);
   const medicineTableColumns = [
     {
@@ -85,48 +90,56 @@ const ViewPrescriptionTable = ({ prescriptionData }) => {
       title: "Dosage",
       dataIndex: "dosage",
       key: "dosage",
-      width: "8ch",
+      width: 100,
       render: (text) => <span>{text}</span>,
     },
     {
       title: "Duration",
       dataIndex: "duration",
       key: "duration",
-      width: "10ch",
+      width: 100,
 
       render: (text) => <span>{text} days</span>,
     },
     {
       title: "Requirement",
       dataIndex: "required",
-      width: "13ch",
+      width: 100,
       key: "required",
       render: (text, record) => <span>{record.quantityRequired} Tablets</span>,
     },
-    {
-      title: "Availability",
-      dataIndex: "availability",
-      width: "12ch",
-      key: "availability",
-      render: (text, record) => {
-        const availability =
-          record?.medicine?.quantity >= record.quantityRequired;
+    ...(showAvailability
+      ? [
+          {
+            title: "Availability",
+            dataIndex: "availability",
+            width: 100,
+            key: "availability",
+            render: (text, record) => {
+              const availability =
+                record?.medicine?.quantity >= record.quantityRequired;
 
-        return (
-          <Typography style={{ textAlign: "center" }}>
-            {availability ? (
-              <Tooltip title="Available" color="green" placement="right">
-                <AiOutlineCheck style={{ color: "green" }} />
-              </Tooltip>
-            ) : (
-              <Tooltip title="Not Available" color="orange" placement="right">
-                <AiOutlineWarning style={{ color: "orange" }} />
-              </Tooltip>
-            )}
-          </Typography>
-        );
-      },
-    },
+              return (
+                <Typography style={{ textAlign: "center" }}>
+                  {availability ? (
+                    <Tooltip title="Available" color="green" placement="right">
+                      <AiOutlineCheck style={{ color: "green" }} />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip
+                      title="Not Available"
+                      color="orange"
+                      placement="right"
+                    >
+                      <AiOutlineWarning style={{ color: "orange" }} />
+                    </Tooltip>
+                  )}
+                </Typography>
+              );
+            },
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -137,7 +150,8 @@ const ViewPrescriptionTable = ({ prescriptionData }) => {
           pagination={false}
           columns={medicineTableColumns}
           dataSource={prescriptionData}
-          scroll={{ x: 400 }}
+          scroll={{ x: 500 }}
+          wi
         />
       )}
     </Space>

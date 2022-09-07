@@ -283,6 +283,7 @@ const PrescriptionForm = () => {
           patient={formData?.appointmentInfo?.patient}
           Medicines={medicines.medicines}
           ExtraMedicines={medicines.extraMedicines}
+          showAvailability={true}
         />
 
         <ReferPatientModal
@@ -325,6 +326,7 @@ const PrescriptionForm = () => {
             patient={formData?.appointmentInfo?.patient}
             Medicines={medicines.medicines}
             ExtraMedicines={medicines.extraMedicines}
+            showAvailability={true}
           />
         </Modal>
       </div>
