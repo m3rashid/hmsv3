@@ -3,6 +3,7 @@ import { Table } from "antd";
 
 import { columns } from "./helpers/table";
 import useGetUserDetail from "./helpers/getUserDetail";
+import AdminWrapper from "../adminWrapper";
 
 const Doctors = () => {
   const { getAllUsers, users } = useGetUserDetail({
@@ -16,7 +17,7 @@ const Doctors = () => {
   }, []);
 
   return (
-    <div style={{ marginTop: "10px", marginLeft: "0px" }}>
+    <AdminWrapper>
       <Table
         dataSource={users}
         columns={columns}
@@ -25,7 +26,7 @@ const Doctors = () => {
           defaultPageSize: 5,
         }}
       />
-    </div>
+    </AdminWrapper>
   );
 };
 

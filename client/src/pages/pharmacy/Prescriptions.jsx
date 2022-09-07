@@ -1,16 +1,18 @@
 import dayjs from "dayjs";
 import { useRecoilValue } from "recoil";
 import React, { useEffect, useState } from "react";
-import { Button, Modal, Space, Table, Tabs, Popconfirm, Spin } from "antd";
+import { Button, Modal, Space, Table, Tabs, Spin } from "antd";
 
 import { pharmacyState } from "../../atoms/pharmacy";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { instance } from "../../api/instance";
 import { getEstimatedMedRequirement } from "./helpers/functions";
+import Header from "../../components/Header";
 const { TabPane } = Tabs;
 
 function Prescriptions() {
+  const [online, setOnline] = React.useState(true);
   const pharmacyData = useRecoilValue(pharmacyState);
   const navigate = useNavigate();
   const [ModalVisible, setModalVisible] = React.useState({
@@ -147,6 +149,7 @@ function Prescriptions() {
 
   return (
     <React.Fragment>
+      <Header online={online} setOnline={setOnline} />
       <Tabs defaultActiveKey="1" centered>
         <TabPane tab="Active" key="1">
           <Table

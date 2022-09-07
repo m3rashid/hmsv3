@@ -9,6 +9,7 @@ import {
   Col,
   Modal,
   Divider,
+  Drawer,
 } from "antd";
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
@@ -20,6 +21,7 @@ import usePrescribeMedicines from "./helpers/prescribeMeds.hook";
 import MedicineInput from "../../components/Doctor/MedicineInput";
 import ReferPatientModal from "./helpers/referPatientModal";
 import styles from "./prescribeMedicine.module.css";
+import PatientInfo from "../Patient";
 
 import MedicineInputTable from "../../components/Doctor/MedicineInputTabular";
 
@@ -35,6 +37,7 @@ const PrescriptionForm = () => {
       navigate,
       form,
       CreatePrescriptionModalVisible,
+      PatientData,
     },
     actions: {
       setLoading,
@@ -48,23 +51,9 @@ const PrescriptionForm = () => {
       handleAppointmentSelect,
       setCreatePrescriptionModalVisible,
       UpdateMedicine,
+      setPatientData,
     },
   } = usePrescribeMedicines(socket);
-
-  console.log(doctorData);
-
-  useEffect(() => {
-    socket.on("new-prescription-by-doctor-created", (data) => {
-      setLoading({
-        PrescribeMedicines: false,
-      });
-      navigate("/doctor/appointments");
-    });
-    return () => {
-      socket.off("new-prescription-by-doctor-created");
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [navigate]);
 
   useEffect(() => {
     if (appointmentId !== null && doctorData.appointments.length > 0) {
@@ -80,8 +69,6 @@ const PrescriptionForm = () => {
         <Header />
       </div>
       <div style={{ padding: 10 }}>
-        {/* <Row>
-          <Col span={12}> */}
         <Typography.Title level={4}>Create Prescription</Typography.Title>
         <Form
           form={form}
@@ -93,34 +80,58 @@ const PrescriptionForm = () => {
           <Form.Item
             label="Choose Appointment"
             name="appointment"
-            rules={[{ required: true, message: "Please Enter patient name!" }]}
+            rules={[{ required: true, message: "Please Enter Appointment!" }]}
           >
-            <Select
-              style={{ width: "100%" }}
-              placeholder="Select an appointment"
-              allowClear
-              onChange={(value) => {
-                handleAppointmentSelect(value);
-              }}
-              optionLabelProp="Appointment"
-            >
-              {doctorData.appointments
-                .filter(
-                  (apt) =>
-                    apt.pending &&
-                    {
-                      /* dayjs(apt.date).isBefore(dayjs().add(6, "hours")) */
-                    }
-                )
-                .map((appointment) => (
-                  <Select.Option key={appointment.id} value={appointment.id}>
-                    <span>
-                      {appointment.patient?.name} -{" "}
-                      {dayjs(appointment.date).format("MMMM DD YYYY HH:mm A")}
-                    </span>
-                  </Select.Option>
-                ))}
-            </Select>
+            <Row gutter={10}>
+              <Col span={18}>
+                <Select
+                  placeholder="Select an appointment"
+                  style={{
+                    width: "100%",
+                  }}
+                  allowClear
+                  onChange={(value) => {
+                    handleAppointmentSelect(value);
+                  }}
+                  optionLabelProp="Appointment"
+                >
+                  {doctorData.appointments
+                    .filter(
+                      (apt) =>
+                        apt.pending &&
+                        {
+                          /* dayjs(apt.date).isBefore(dayjs().add(6, "hours")) */
+                        }
+                    )
+                    .map((appointment) => (
+                      <Select.Option
+                        key={appointment.id}
+                        value={appointment.id}
+                      >
+                        <span>
+                          {appointment.patient?.name} -{" "}
+                          {dayjs(appointment.date).format(
+                            "MMMM DD YYYY HH:mm A"
+                          )}
+                        </span>
+                      </Select.Option>
+                    ))}
+                </Select>
+              </Col>
+              <Col>
+                <Button
+                  disabled={formData.appointment ? false : true}
+                  onClick={() => {
+                    setPatientData({
+                      open: true,
+                      data: formData.appointmentInfo,
+                    });
+                  }}
+                >
+                  View Patient's History
+                </Button>
+              </Col>
+            </Row>
           </Form.Item>
           <Form.Item
             label="Symptoms"
@@ -143,28 +154,31 @@ const PrescriptionForm = () => {
             />
           </Form.Item>
           <Divider />
-          <Row className={styles.prescribeTableHeader}>
-            <Col className={styles.prescribeColHeader} span={6}>
-              Medicine
-            </Col>
-            <Col className={styles.prescribeColHeader} span={3}>
-              Dosage
-            </Col>
-            <Col className={styles.prescribeColHeader} span={3}>
-              Duration
-            </Col>
-            <Col className={styles.prescribeColHeader} span={3}>
-              Availability
-            </Col>
-            <Col className={styles.prescribeColHeader} span={6}>
-              Description
-            </Col>
-            <Col className={styles.prescribeColHeader} span={3}>
-              Action
-            </Col>
-          </Row>
-
           <Space direction="vertical" style={{ width: "100%" }}>
+            <Typography.Text strong>Medicines</Typography.Text>
+            {medicines.medicines.length > 0 && (
+              <Row className={styles.prescribeTableHeader}>
+                <Col className={styles.prescribeColHeader} span={6}>
+                  Medicine
+                </Col>
+                <Col className={styles.prescribeColHeader} span={3}>
+                  Dosage
+                </Col>
+                <Col className={styles.prescribeColHeader} span={3}>
+                  Duration
+                </Col>
+                <Col className={styles.prescribeColHeader} span={3}>
+                  Availability
+                </Col>
+                <Col className={styles.prescribeColHeader} span={6}>
+                  Description
+                </Col>
+                <Col className={styles.prescribeColHeader} span={3}>
+                  Action
+                </Col>
+              </Row>
+            )}
+
             {medicines.medicines?.map((medicine, index) => (
               <MedicineInput
                 key={index}
@@ -190,27 +204,30 @@ const PrescriptionForm = () => {
               + Add New Medicines
             </Button>
           </Space>
+          <Divider />
 
           <Space direction="vertical" style={{ width: "100%" }}>
             <strong>Custom Medicines</strong>
 
-            <Row className={styles.prescribeTableHeader}>
-              <Col className={styles.prescribeColHeader} span={6}>
-                Medicine
-              </Col>
-              <Col className={styles.prescribeColHeader} span={3}>
-                Dosage
-              </Col>
-              <Col className={styles.prescribeColHeader} span={3}>
-                Duration
-              </Col>
-              <Col className={styles.prescribeColHeader} span={6}>
-                Description
-              </Col>
-              <Col className={styles.prescribeColHeader} span={3}>
-                Action
-              </Col>
-            </Row>
+            {medicines.extraMedicines.length > 0 && (
+              <Row className={styles.prescribeTableHeader}>
+                <Col className={styles.prescribeColHeader} span={6}>
+                  Medicine
+                </Col>
+                <Col className={styles.prescribeColHeader} span={3}>
+                  Dosage
+                </Col>
+                <Col className={styles.prescribeColHeader} span={3}>
+                  Duration
+                </Col>
+                <Col className={styles.prescribeColHeader} span={6}>
+                  Description
+                </Col>
+                <Col className={styles.prescribeColHeader} span={3}>
+                  Action
+                </Col>
+              </Row>
+            )}
 
             {medicines.extraMedicines?.map((medicine, index) => (
               <MedicineInput
@@ -235,49 +252,28 @@ const PrescriptionForm = () => {
           </Space>
 
           <Form.Item style={{ display: "flex", justifyContent: "flex-end" }}>
-            <Button
-              loading={loading.PrescribeMedicines}
-              type="primary"
-              htmlType="button"
-              onClick={() => setCreatePrescriptionModalVisible(true)}
-            >
-              Confirm Create Prescription
-            </Button>
+            <Space>
+              {formData.appointmentInfo && (
+                <Button
+                  htmlType="button"
+                  type="link"
+                  danger
+                  onClick={handleReferPatientModalShow}
+                >
+                  Refer Patient to another doctor
+                </Button>
+              )}
+              <Button
+                loading={loading.PrescribeMedicines}
+                type="primary"
+                htmlType="button"
+                onClick={() => setCreatePrescriptionModalVisible(true)}
+              >
+                Confirm Create Prescription
+              </Button>
+            </Space>
           </Form.Item>
         </Form>
-        {/* </Col> */}
-        {/* <Col span={12} style={{ padding: "10px" }}>
-            <DisplayMedicine
-              id={formData?.appointmentInfo?.id}
-              symptoms={formData?.symptoms}
-              date={formData?.appointmentInfo?.date}
-              patient={formData?.appointmentInfo?.patient}
-              Medicines={medicines.medicines}
-              ExtraMedicines={medicines.extraMedicines}
-            />
-          </Col> */}
-        {/* </Row> */}
-
-        {formData.appointmentInfo && (
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              marginBottom: "30px",
-              justifyContent: "center",
-              gap: "50px",
-            }}
-          >
-            <Button
-              type="primary"
-              style={{ background: "#ff0000", border: "none" }}
-              onClick={handleReferPatientModalShow}
-            >
-              Refer Patient to another doctor
-            </Button>
-          </div>
-        )}
 
         <DisplayMedicine
           id={formData?.appointmentInfo?.id}
@@ -295,6 +291,22 @@ const PrescriptionForm = () => {
           doctorId={formData.appointmentInfo?.doctorId}
         />
 
+        <Drawer
+          visible={PatientData.open}
+          width={"60%"}
+          onClose={() => {
+            setPatientData({
+              open: false,
+              data: null,
+            });
+          }}
+        >
+          {PatientData.data && (
+            <PatientInfo id={PatientData?.data?.patient?.id} />
+          )}
+        </Drawer>
+
+        {/* Prescription Info Modal*/}
         <Modal
           visible={CreatePrescriptionModalVisible}
           onOk={() => {

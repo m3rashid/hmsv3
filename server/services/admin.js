@@ -145,7 +145,7 @@ const generateReportsService = async ({ startDay, endDay, action }) => {
         reportAggr[reports[i].actionTable] = [];
       }
 
-      reportAggr[reports[i].actionTable].push({ ...reports[i], details: {} });
+      reportAggr[reports[i].actionTable].push(reports[i]);
     }
   } else {
     reportAggr = reports;

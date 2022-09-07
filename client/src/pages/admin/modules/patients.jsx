@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Space, Table } from "antd";
+import AdminWrapper from "../adminWrapper";
 
 const Patients = () => {
   const columns = [
@@ -40,7 +41,7 @@ const Patients = () => {
   const data = [];
 
   return (
-    <div style={{ marginTop: "20px" }}>
+    <AdminWrapper>
       <Table
         dataSource={data}
         columns={columns}
@@ -49,7 +50,7 @@ const Patients = () => {
           defaultPageSize: 5,
         }}
       />
-    </div>
+    </AdminWrapper>
   );
 };
 
