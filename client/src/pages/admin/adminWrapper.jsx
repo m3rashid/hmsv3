@@ -1,13 +1,10 @@
 import React from "react";
-import { Divider } from "antd";
 import { useLocation } from "react-router-dom";
 
-import Header from "../../components/Header";
 import { toSentenceCase } from "../../utils/strings";
 
 const AdminWrapper = ({ aside, children }) => {
   const { pathname } = useLocation();
-  const [online, setOnline] = React.useState(true);
 
   const heading = pathname
     .split("/")[2]
@@ -17,9 +14,7 @@ const AdminWrapper = ({ aside, children }) => {
 
   return (
     <>
-      <div style={{ padding: "20px" }}>
-        <Header online={online} setOnline={setOnline} />
-        <Divider />
+      <div style={{ padding: "20px", paddingTop: "5px" }}>
         <div
           style={{
             display: "flex",

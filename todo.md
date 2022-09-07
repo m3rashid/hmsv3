@@ -14,7 +14,8 @@
 ### code
 
 1. CORS setup
-2. client installation
+2. client installation (APIs)
+3. PM2 setup
 
 <br />
 
