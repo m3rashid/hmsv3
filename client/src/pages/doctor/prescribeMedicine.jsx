@@ -56,6 +56,7 @@ const PrescriptionForm = () => {
   } = usePrescribeMedicines(socket);
 
   useEffect(() => {
+    console.log("appointment id", appointmentId);
     if (appointmentId !== null && doctorData.appointments.length > 0) {
       handleAppointmentSelect(appointmentId);
     }
@@ -194,7 +195,7 @@ const PrescriptionForm = () => {
               medicines={medicines.medicines}
               setMedicines={setMedicines}
             />
-
+            {/* 
             <Button
               type="primary"
               htmlType="button"
@@ -202,7 +203,7 @@ const PrescriptionForm = () => {
               style={{ marginTop: 10, marginBottom: 10 }}
             >
               + Add New Medicines
-            </Button>
+            </Button> */}
           </Space>
           <Divider />
 

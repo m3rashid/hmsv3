@@ -189,8 +189,12 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
   return (
     <>
       <Table columns={medicineInputTableColumns} dataSource={medicines || []} />
-      <Button type="primary" onClick={addEmptyMedicine}>
-        +
+      <Button
+        type="dashed"
+        onClick={addEmptyMedicine}
+        style={{ margin: "auto", display: "flex", marginTop: "1rem" }}
+      >
+        + Add Medicine
       </Button>
     </>
   );

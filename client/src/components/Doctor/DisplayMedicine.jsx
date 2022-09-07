@@ -1,8 +1,10 @@
 import React from "react";
 import dayjs from "dayjs";
-import { Space, Typography, Card } from "antd";
+import { Space, Typography, Card, Table, Tooltip } from "antd";
 import PropTypes from "prop-types";
 import SingleMedicine from "../../pages/doctor/helpers/singleMedicine";
+import { getEstimatedMedRequirement } from "../../pages/pharmacy/helpers/functions";
+import { AiOutlineCheck, AiOutlineWarning } from "react-icons/ai";
 
 function DisplayMedicine({
   patient,
@@ -38,13 +40,8 @@ function DisplayMedicine({
         <Typography.Text>{symptoms}</Typography.Text>
       </Space>
 
-      <Card title="Medicines" style={{ background: "transparent" }}>
-        <Space direction="vertical" size={"large"}>
-          {Medicines?.map((medicine, index) => (
-            <SingleMedicine key={index} index={index} medicine={medicine} />
-          ))}
-        </Space>
-      </Card>
+      <ViewPrescriptionModal prescriptionData={Medicines} />
+
       <Card title="Custom Medicines" style={{ background: "transparent" }}>
         <Space direction="vertical" size={"large"}>
           {ExtraMedicines?.map((medicine, index) => (
@@ -71,3 +68,67 @@ DisplayMedicine.propTypes = {
 };
 
 export default DisplayMedicine;
+
+const ViewPrescriptionModal = ({ prescriptionData }) => {
+  const medicineTableColumns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text, record) => <span>{record?.medicine?.name}</span>,
+    },
+    {
+      title: "Dosage",
+      dataIndex: "dosage",
+      key: "dosage",
+      render: (text) => <span>{text}</span>,
+    },
+    {
+      title: "Duration",
+      dataIndex: "duration",
+      key: "duration",
+      render: (text) => <span>{text} days</span>,
+    },
+    {
+      title: "Requirement",
+      dataIndex: "required",
+      key: "required",
+      render: (text, record) => <span>{record.quantityRequired} Tablets</span>,
+    },
+    {
+      title: "Availability",
+      dataIndex: "availability",
+      key: "availability",
+      render: (text, record) => {
+        const availability =
+          record?.medicine?.quantity >= record.quantityRequired;
+
+        return (
+          <Typography style={{ textAlign: "center" }}>
+            {availability ? (
+              <Tooltip title="Available" color="green" placement="right">
+                <AiOutlineCheck style={{ color: "green" }} />
+              </Tooltip>
+            ) : (
+              <Tooltip title="Not Available" color="orange" placement="right">
+                <AiOutlineWarning style={{ color: "orange" }} />
+              </Tooltip>
+            )}
+          </Typography>
+        );
+      },
+    },
+  ];
+
+  return (
+    <Space direction="vertical" size={3} style={{ padding: "10px" }}>
+      {prescriptionData && (
+        <Table
+          size="small"
+          columns={medicineTableColumns}
+          dataSource={prescriptionData}
+        />
+      )}
+    </Space>
+  );
+};
