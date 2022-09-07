@@ -10,10 +10,15 @@ import { pharmacyState } from "../../atoms/pharmacy";
 import GeneratePdf from "../../components/generatePdf";
 import MedicineTable from "../../components/Pharmacy/MedicineTable";
 import usePrescribeMedicines from "../doctor/helpers/prescribeMeds.hook";
+import Header from "../../components/Header";
 
 function CreateReceipts() {
+  const [online, setOnline] = React.useState(true);
   const {
-    state: { printContainerRef, PrintButtonRef },
+    state: {
+      printContainerRef,
+      // PrintButtonRef
+    },
     actions: { printPdf },
   } = usePrescribeMedicines(socket);
   const loading = false;
@@ -74,10 +79,7 @@ function CreateReceipts() {
   const [total, setTotal] = useState({});
   const formSubmitHandler = async (values) => {
     if (loading) return;
-    // const resp = await instance.post(`/pharmacy/dispense`, {
-    //   prescriptionId: selectedPrescription.id,
-    //   medicines: selectedMedicines,
-    // })
+
     socket.emit("dispense-prescription", {
       prescriptionId: selectedPrescription.id,
       medicines: selectedMedicines,
@@ -94,6 +96,7 @@ function CreateReceipts() {
 
   return (
     <div>
+      <Header online={online} setOnline={setOnline} />
       <Form
         form={form}
         onFinish={formSubmitHandler}
