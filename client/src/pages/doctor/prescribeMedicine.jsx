@@ -19,8 +19,9 @@ import DisplayMedicine from "../../components/Doctor/DisplayMedicine";
 import usePrescribeMedicines from "./helpers/prescribeMeds.hook";
 import MedicineInput from "../../components/Doctor/MedicineInput";
 import ReferPatientModal from "./helpers/referPatientModal";
-import styles from './prescribeMedicine.module.css'
+import styles from "./prescribeMedicine.module.css";
 
+import MedicineInputTable from "../../components/Doctor/MedicineInputTabular";
 
 const PrescriptionForm = () => {
   const {
@@ -73,7 +74,6 @@ const PrescriptionForm = () => {
 
   // console.log(formData);
 
-
   return (
     <React.Fragment>
       <div>
@@ -93,9 +93,7 @@ const PrescriptionForm = () => {
           <Form.Item
             label="Choose Appointment"
             name="appointment"
-            rules={[
-              { required: true, message: "Please Enter patient name!" },
-            ]}
+            rules={[{ required: true, message: "Please Enter patient name!" }]}
           >
             <Select
               style={{ width: "100%" }}
@@ -115,15 +113,10 @@ const PrescriptionForm = () => {
                     }
                 )
                 .map((appointment) => (
-                  <Select.Option
-                    key={appointment.id}
-                    value={appointment.id}
-                  >
+                  <Select.Option key={appointment.id} value={appointment.id}>
                     <span>
                       {appointment.patient?.name} -{" "}
-                      {dayjs(appointment.date).format(
-                        "MMMM DD YYYY HH:mm A"
-                      )}
+                      {dayjs(appointment.date).format("MMMM DD YYYY HH:mm A")}
                     </span>
                   </Select.Option>
                 ))}
@@ -150,16 +143,26 @@ const PrescriptionForm = () => {
             />
           </Form.Item>
           <Divider />
-<Row className={styles.prescribeTableHeader}>
-              <Col className={styles.prescribeColHeader} span={6}>Medicine</Col>
-              <Col className={styles.prescribeColHeader} span={3}>Dosage</Col>
-              <Col className={styles.prescribeColHeader} span={3}>Duration</Col>
-              <Col className={styles.prescribeColHeader} span={3}>Availability</Col>
-              <Col className={styles.prescribeColHeader} span={6}>Description</Col>
-              <Col className={styles.prescribeColHeader} span={3}>Action</Col>
-            </Row>
-          
-
+          <Row className={styles.prescribeTableHeader}>
+            <Col className={styles.prescribeColHeader} span={6}>
+              Medicine
+            </Col>
+            <Col className={styles.prescribeColHeader} span={3}>
+              Dosage
+            </Col>
+            <Col className={styles.prescribeColHeader} span={3}>
+              Duration
+            </Col>
+            <Col className={styles.prescribeColHeader} span={3}>
+              Availability
+            </Col>
+            <Col className={styles.prescribeColHeader} span={6}>
+              Description
+            </Col>
+            <Col className={styles.prescribeColHeader} span={3}>
+              Action
+            </Col>
+          </Row>
 
           <Space direction="vertical" style={{ width: "100%" }}>
             {medicines.medicines?.map((medicine, index) => (
@@ -173,6 +176,10 @@ const PrescriptionForm = () => {
                 UpdateMedicine={UpdateMedicine}
               />
             ))}
+            <MedicineInputTable
+              medicines={medicines.medicines}
+              setMedicines={setMedicines}
+            />
 
             <Button
               type="primary"
@@ -188,11 +195,21 @@ const PrescriptionForm = () => {
             <strong>Custom Medicines</strong>
 
             <Row className={styles.prescribeTableHeader}>
-              <Col className={styles.prescribeColHeader} span={6}>Medicine</Col>
-              <Col className={styles.prescribeColHeader} span={3}>Dosage</Col>
-              <Col className={styles.prescribeColHeader} span={3}>Duration</Col>
-              <Col className={styles.prescribeColHeader} span={6}>Description</Col>
-              <Col className={styles.prescribeColHeader} span={3}>Action</Col>
+              <Col className={styles.prescribeColHeader} span={6}>
+                Medicine
+              </Col>
+              <Col className={styles.prescribeColHeader} span={3}>
+                Dosage
+              </Col>
+              <Col className={styles.prescribeColHeader} span={3}>
+                Duration
+              </Col>
+              <Col className={styles.prescribeColHeader} span={6}>
+                Description
+              </Col>
+              <Col className={styles.prescribeColHeader} span={3}>
+                Action
+              </Col>
             </Row>
 
             {medicines.extraMedicines?.map((medicine, index) => (
@@ -217,9 +234,7 @@ const PrescriptionForm = () => {
             </Button>
           </Space>
 
-          <Form.Item
-            style={{ display: "flex", justifyContent: "flex-end" }}
-          >
+          <Form.Item style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button
               loading={loading.PrescribeMedicines}
               type="primary"
@@ -299,7 +314,6 @@ const PrescriptionForm = () => {
             ExtraMedicines={medicines.extraMedicines}
           />
         </Modal>
-
       </div>
     </React.Fragment>
   );
