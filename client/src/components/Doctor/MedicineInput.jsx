@@ -89,7 +89,7 @@ const MedicineInput = ({
         span={6}
       >
         <Select
-          style={{ width: 250 }}
+          style={{ width: 220 }}
           // style={{flexGrow: 1 }}
 
           showSearch
@@ -140,7 +140,7 @@ const MedicineInput = ({
         )}
       </Col>
       <Col
-        span={3}
+        span={4}
         style={{
           borderRight: "1px solid #ddd",
           display: "flex",
@@ -180,7 +180,7 @@ const MedicineInput = ({
         )}
       </Col>
       <Col
-        span={3}
+        span={5}
         style={{
           borderRight: "1px solid #ddd",
           display: "flex",
@@ -202,7 +202,7 @@ const MedicineInput = ({
         />
         {/* </Space> */}
       </Col>
-      <Col
+      {/* <Col
         span={3}
         style={{
           borderRight: "1px solid #ddd",
@@ -227,9 +227,9 @@ const MedicineInput = ({
             </Space>
           )}
         </Spin>
-      </Col>
+      </Col> */}
       <Col
-        span={6}
+        span={5}
         style={{
           borderRight: "1px solid #ddd",
           padding: "0 10px",
@@ -242,7 +242,7 @@ const MedicineInput = ({
         />
       </Col>
       <Col
-        span={3}
+        span={4}
         style={{
           borderRight: "1px solid #ddd",
           display: "flex",

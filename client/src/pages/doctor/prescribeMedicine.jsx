@@ -23,6 +23,8 @@ import ReferPatientModal from "./helpers/referPatientModal";
 import styles from "./prescribeMedicine.module.css";
 import PatientInfo from "../Patient";
 
+import MedicineInputTable from "../../components/Doctor/MedicineInputTabular";
+
 const PrescriptionForm = () => {
   const {
     state: {
@@ -59,7 +61,7 @@ const PrescriptionForm = () => {
     }
   }, [appointmentId, doctorData.appointments.length, handleAppointmentSelect]);
 
-  console.log(formData);
+  // console.log(formData);
 
   return (
     <React.Fragment>
@@ -154,7 +156,7 @@ const PrescriptionForm = () => {
           <Divider />
           <Space direction="vertical" style={{ width: "100%" }}>
             <Typography.Text strong>Medicines</Typography.Text>
-            {medicines.medicines.length > 0 && (
+            {/* {medicines.medicines.length > 0 && (
               <Row className={styles.prescribeTableHeader}>
                 <Col className={styles.prescribeColHeader} span={6}>
                   Medicine
@@ -175,9 +177,9 @@ const PrescriptionForm = () => {
                   Action
                 </Col>
               </Row>
-            )}
+            )} */}
 
-            {medicines.medicines?.map((medicine, index) => (
+            {/* {medicines.medicines?.map((medicine, index) => (
               <MedicineInput
                 key={index}
                 index={index}
@@ -187,7 +189,11 @@ const PrescriptionForm = () => {
                 setMedicines={setMedicines}
                 UpdateMedicine={UpdateMedicine}
               />
-            ))}
+            ))} */}
+            <MedicineInputTable
+              medicines={medicines.medicines}
+              setMedicines={setMedicines}
+            />
 
             <Button
               type="primary"
@@ -208,16 +214,16 @@ const PrescriptionForm = () => {
                 <Col className={styles.prescribeColHeader} span={6}>
                   Medicine
                 </Col>
-                <Col className={styles.prescribeColHeader} span={3}>
+                <Col className={styles.prescribeColHeader} span={4}>
                   Dosage
                 </Col>
-                <Col className={styles.prescribeColHeader} span={3}>
+                <Col className={styles.prescribeColHeader} span={5}>
                   Duration
                 </Col>
-                <Col className={styles.prescribeColHeader} span={6}>
+                <Col className={styles.prescribeColHeader} span={5}>
                   Description
                 </Col>
-                <Col className={styles.prescribeColHeader} span={3}>
+                <Col className={styles.prescribeColHeader} span={4}>
                   Action
                 </Col>
               </Row>
