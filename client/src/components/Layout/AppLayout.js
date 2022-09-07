@@ -40,20 +40,23 @@ function Index(props) {
       <Layout>
         <Layout.Sider>
           <Menu theme="dark" mode="inline">
-            <Menu.Item>
+            <Menu.Item key="/index/home/">
               <Link to="/">Home</Link>
             </Menu.Item>
             {routes.map((route, index) => {
               if (!checkAccess(Auth, route)) return null;
               if (route?.showInNav === false) return null;
               return (
-                <Menu.Item key={`${index} ${route.path}`}>
+                <Menu.Item key={`${index}-=-${route.path}-=-${route.text}`}>
                   <Link to={route.path}>{route.text}</Link>
                 </Menu.Item>
               );
             })}
 
-            <Menu.Item style={{ position: "absolute", bottom: 0 }}>
+            <Menu.Item
+              key="/index/about"
+              style={{ position: "absolute", bottom: 0 }}
+            >
               <Link to="/about">About</Link>
             </Menu.Item>
           </Menu>

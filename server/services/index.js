@@ -3,6 +3,7 @@ const {
   getAllUsersService,
   generateReportsService,
   updateUserProfileService,
+  getReportDetailsService,
 } = require("./admin");
 
 const {
@@ -63,6 +64,7 @@ module.exports = {
   getAllUsersService,
   generateReportsService,
   updateUserProfileService,
+  getReportDetailsService,
 
   loginService,
   logoutService,

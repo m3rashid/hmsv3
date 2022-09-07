@@ -7,6 +7,7 @@ const {
   editPermissions,
   updateUser,
   generateHmsReports,
+  reportDetails,
 } = require("../controllers");
 
 const router = express.Router();
@@ -21,6 +22,12 @@ router.post(
   "/gen-report",
   // checkAuth,
   useRoute(generateHmsReports)
+);
+
+router.post(
+  "/report-details",
+  // checkAuth,
+  useRoute(reportDetails)
 );
 
 module.exports = {

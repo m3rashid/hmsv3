@@ -3,6 +3,7 @@ const {
   getAllUsers,
   updateUser,
   generateHmsReports,
+  reportDetails,
 } = require("./admin");
 
 const { login, revalidate, signup } = require("./auth.js");
@@ -45,6 +46,7 @@ module.exports = {
   getAllUsers,
   updateUser,
   generateHmsReports,
+  reportDetails,
 
   login,
   revalidate,

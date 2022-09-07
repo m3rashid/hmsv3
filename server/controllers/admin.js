@@ -3,6 +3,7 @@ const {
   editPermissionsService,
   generateReportsService,
   updateUserProfileService,
+  getReportDetailsService,
 } = require("../services");
 const { permissions } = require("../utils/constants");
 
@@ -95,9 +96,17 @@ const generateHmsReports = async (req, res) => {
   return res.status(200).json(reports);
 };
 
+const reportDetails = async (req, res) => {
+  // if (!req.isAuthenticated) throw new Error("Unatuthorized");
+  const { log } = req.body;
+  const details = await getReportDetailsService(log);
+  return res.status(200).json(details);
+};
+
 module.exports = {
   getAllUsers,
   editPermissions,
   updateUser,
   generateHmsReports,
+  reportDetails,
 };
