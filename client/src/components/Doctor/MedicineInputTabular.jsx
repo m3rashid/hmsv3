@@ -115,6 +115,7 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
     },
     [setMedicines]
   );
+
   const medicineInputTableColumns = [
     {
       title: "Medicine",
@@ -291,6 +292,7 @@ const DurationCol = ({ durationChangeHandler, index, duration }) => {
     />
   );
 };
+
 const AvailabilityCol = ({ medicine, index, quantityRequiredHandler }) => {
   const [availabilityInfo, setAvailabilityInfo] = useState({
     available: true,
@@ -306,7 +308,7 @@ const AvailabilityCol = ({ medicine, index, quantityRequiredHandler }) => {
 
       const data = {
         dosage: value.dosage,
-        medicineId: value?.medicine?.id,
+        medicineId: value?.Medicine?.id,
         duration: parseInt(value.duration),
       };
 
@@ -333,7 +335,7 @@ const AvailabilityCol = ({ medicine, index, quantityRequiredHandler }) => {
 
   return (
     <>
-      {value?.medicine?.id && value.dosage && value.duration ? (
+      {value?.Medicine?.id && value.dosage && value.duration ? (
         <Spin spinning={availabilityInfo.loading}>
           <Typography.Text
             type={availabilityInfo.available ? "success" : "warning"}

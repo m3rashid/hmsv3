@@ -119,7 +119,7 @@ const ViewPrescriptionTable = ({ prescriptionData, showAvailability }) => {
             key: "availability",
             render: (text, record) => {
               const availability =
-                record?.medicine?.quantity >= record.quantityRequired;
+                record?.Medicine?.quantity >= record.quantityRequired;
 
               return (
                 <Typography style={{ textAlign: "center" }}>

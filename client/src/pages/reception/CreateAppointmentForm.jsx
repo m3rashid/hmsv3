@@ -55,7 +55,7 @@ const CreateAppointmentForm = () => {
       patientId: FormSelected?.patient?.data?.id,
       patient: FormSelected?.patient,
       doctor: FormSelected?.doctor,
-      doctorId: FormSelected?.doctor?.data?.id,
+      doctorId: FormSelected?.doctor?.id,
       date: values.datetime,
     };
     if (loading) return;
