@@ -11,6 +11,7 @@ const {
 } = require("../controllers");
 const { useRoute } = require("../utils/errors.js");
 const { checkAuth } = require("../middlewares/auth.js");
+const { GetPrescriptionByAppointmentID } = require("../controllers/doctor");
 
 const router = express.Router();
 
@@ -35,6 +36,8 @@ router.post(
   checkAuth,
   useRoute(checkMedAvailability)
 );
+
+router.get("/appointment-prescription/:id", GetPrescriptionByAppointmentID);
 
 module.exports = {
   router,

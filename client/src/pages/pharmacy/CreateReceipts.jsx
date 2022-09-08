@@ -10,10 +10,9 @@ import { pharmacyState } from "../../atoms/pharmacy";
 import GeneratePdf from "../../components/generatePdf";
 import MedicineTable from "../../components/Pharmacy/MedicineTable";
 import usePrescribeMedicines from "../doctor/helpers/prescribeMeds.hook";
-import Header from "../../components/Header";
+import ShowReceipt from "./ShowReciept";
 
 function CreateReceipts() {
-  const [online, setOnline] = React.useState(true);
   const {
     state: {
       printContainerRef,
@@ -92,11 +91,8 @@ function CreateReceipts() {
     navigate("/pharmacy/prescriptions");
   };
 
-  // const sum = (arr) => arr.reduce((x, y) => x + y, 0);
-
   return (
     <div>
-      <Header online={online} setOnline={setOnline} />
       <Form
         form={form}
         onFinish={formSubmitHandler}
@@ -175,7 +171,7 @@ function CreateReceipts() {
         </Spin>
       </Form>
       {selectedPrescriptionData.data && (
-        <GeneratePdf
+        <ShowReceipt
           printContainerRef={printContainerRef}
           data={[
             {

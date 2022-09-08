@@ -95,7 +95,7 @@ const createPrescriptionService = async ({
         createMany: {
           data: medicines.map((medicine) => {
             return {
-              MedicineId: parseInt(medicine.medicine.id),
+              MedicineId: parseInt(medicine.Medicine.id),
 
               duration: parseInt(medicine.duration),
               dosage: medicine.dosage,
@@ -251,6 +251,29 @@ const checkMedAvailabilityService = async ({
   }
 };
 
+const getPrescriptionByAppointmentService = async ({ id }) => {
+  const data = await prisma.prescription.findFirst({
+    where: {
+      appointmentId: id,
+    },
+    include: {
+      medicines: {
+        include: {
+          Medicine: true,
+        },
+      },
+      appointment: {
+        include: {
+          doctor: true,
+          patient: true,
+        },
+      },
+    },
+  });
+
+  return data;
+};
+
 module.exports = {
   searchDoctorsService,
   getDoctorPatientsService,
@@ -259,4 +282,5 @@ module.exports = {
   getDoctorAppointmentsService,
   referAnotherDoctorAppointmentService,
   checkMedAvailabilityService,
+  getPrescriptionByAppointmentService,
 };

@@ -7,6 +7,7 @@ const {
   checkMedAvailabilityService,
   getAppointmentByIdService,
 } = require("../services");
+const { getPrescriptionByAppointmentService } = require("../services/doctor");
 const { permissions } = require("../utils/constants");
 
 const getDoctorAppointments = async (req, res) => {
@@ -112,6 +113,18 @@ const checkMedAvailability = async (req, res) => {
   return res.status(200).json(data);
 };
 
+const GetPrescriptionByAppointmentID = async (req, res) => {
+  const { id } = req.query;
+
+  console.log(req.query);
+
+  const data = await getPrescriptionByAppointmentService({
+    id,
+  });
+
+  return res.status(200).json(data);
+};
+
 module.exports = {
   searchDoctors,
   getDoctorPatients,
@@ -120,4 +133,5 @@ module.exports = {
   getDoctorAppointments,
   createPrescriptionByDoctor,
   checkMedAvailability,
+  GetPrescriptionByAppointmentID,
 };

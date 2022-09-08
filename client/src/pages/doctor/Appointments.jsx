@@ -8,6 +8,7 @@ import {
   Popconfirm,
   Tabs,
   Tooltip,
+  Drawer,
 } from "antd";
 import dayjs from "dayjs";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -20,6 +21,9 @@ import { authState } from "../../atoms/auth";
 import { doctorState } from "../../atoms/doctor";
 import { functionState } from "../../atoms/functions";
 import { LoadingAtom } from "../../atoms/loading";
+import ShowPrescriptionByID from "../../components/Prescription/ShowPrescrptionByID";
+import { instance } from "../../api/instance";
+import DisplayMedicine from "../../components/Doctor/DisplayMedicine";
 
 const { TabPane } = Tabs;
 
@@ -33,6 +37,12 @@ function DoctorAppointments() {
     id: null,
     data: {},
   });
+  const [PrescriptionDrawer, setPrescriptionDrawer] = useState({
+    visible: false,
+    id: null,
+    data: {},
+    type: "",
+  });
   const [loadingData, setLoadingData] = useRecoilState(LoadingAtom);
 
   const ToggleModal = () => {
@@ -41,6 +51,19 @@ function DoctorAppointments() {
       visible: !ModalVisible.visible,
     });
   };
+
+  const GetPrescriptionByAppointmentID = useCallback(async (record) => {
+    const { data } = await instance.get(
+      `/doctor/appointment-prescription/${record.id}`
+    );
+
+    console.log(data);
+    setPrescriptionDrawer({
+      visible: true,
+      id: record.id,
+      data: data,
+    });
+  }, []);
 
   useEffect(() => {
     socket.emit("get-doctor-appointments", {
@@ -167,7 +190,13 @@ function DoctorAppointments() {
           >
             View Form
           </Button>
-          <Button> View Prescription </Button>
+          <Button
+            onClick={() => {
+              GetPrescriptionByAppointmentID(record);
+            }}
+          >
+            View Prescription
+          </Button>
           <Button
             onClick={() => {
               navigate(`/patient/${record.patient.id}`);
@@ -192,6 +221,8 @@ function DoctorAppointments() {
       });
     });
   }, [functionData]);
+
+  console.log(doctorData);
 
   return (
     <div style={{ marginTop: "20px" }}>
@@ -252,6 +283,25 @@ function DoctorAppointments() {
           />
         </TabPane>
       </Tabs>
+
+      <Drawer
+        visible={PrescriptionDrawer.visible}
+        width={1000}
+        onClose={() => {
+          setPrescriptionDrawer({
+            visible: false,
+          });
+        }}
+      >
+        <DisplayMedicine
+          id={PrescriptionDrawer?.data?.appointmentId}
+          ExtraMedicines={PrescriptionDrawer?.data?.CustomMedicines}
+          Medicines={PrescriptionDrawer?.data?.medicines}
+          date={PrescriptionDrawer?.data?.createdAt}
+          patient={PrescriptionDrawer?.data?.appointment?.patient}
+          symptoms={PrescriptionDrawer?.data?.symptoms}
+        />
+      </Drawer>
 
       <Modal
         visible={ModalVisible.visible}

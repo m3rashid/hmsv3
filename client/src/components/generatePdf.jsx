@@ -22,7 +22,7 @@ const GeneratePdf = (props) => {
   const [activeKey, setActiveKey] = useState("1");
 
   useEffect(() => {
-    if (!props.printContainerRef.current) {
+    if (!props?.printContainerRef?.current) {
       setActiveKey("1");
       return;
     }
@@ -252,8 +252,8 @@ const GeneratePdf = (props) => {
                         columns={[
                           {
                             title: "Medicine",
-                            dataIndex: "name",
-                            render: (text) => <span>{text}</span>,
+                            dataIndex: "Medicine",
+                            render: (text) => <span>{text.name}</span>,
                           },
                           {
                             title: "Dosage",

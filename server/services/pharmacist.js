@@ -28,6 +28,7 @@ const getAllPrescriptionsService = async ({ limit, from, to, offset }) => {
           },
         },
       },
+      medicines: true,
     },
   });
   return { prescriptions };
