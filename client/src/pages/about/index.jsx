@@ -38,7 +38,7 @@ const centerAll = {
 const About = () => {
   return (
     <>
-      <h3 align="center">Project under the guidance of</h3>
+      <h2 align="center">Project under the guidance of</h2>
       <br />
       <div style={centerAll}>
         {professors.map((prof) => (
@@ -50,7 +50,7 @@ const About = () => {
       <br />
       <br />
 
-      <h3 align="center">Developers in the project</h3>
+      <h2 align="center">Developers in the project</h2>
       <br />
       <div style={centerAll}>
         {developers.map((dev) => (
