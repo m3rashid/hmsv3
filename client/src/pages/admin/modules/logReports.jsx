@@ -5,7 +5,7 @@ import { Button, Modal, Table } from "antd";
 import AdminWrapper from "../adminWrapper";
 import useLogReports from "./helpers/useLogReports";
 import { toSentenceCase } from "../../../utils/strings";
-import ShowEntry from "./helpers/showEntry";
+import ShowEntry from "../../../components/common/showEntry";
 
 const LogReports = () => {
   const {
