@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { instance } from "../../api/instance";
 import PropTypes from "prop-types";
 
-function DoctorSelector({ onChange }) {
+function DoctorSelector({ onChange, style }) {
   const { data: DoctorData } = useQuery("Doctor's List", async () => {
     const { data } = await instance.get("/doctor/search", {
       params: {
@@ -25,6 +25,7 @@ function DoctorSelector({ onChange }) {
 
         onChange(selectedDoctor);
       }}
+      style={style}
     >
       {DoctorData &&
         DoctorData?.map((doctor) => {
@@ -54,6 +55,7 @@ function DoctorSelector({ onChange }) {
 
 DoctorSelector.propTypes = {
   onChange: PropTypes.func.isRequired,
+  style: PropTypes.string.isRequired,
 };
 
 export default DoctorSelector;

@@ -56,7 +56,7 @@ function DoctorDisplay({ doctor, DisabledItems }) {
         }}
       >
         {DoctorInfo.map((_info, index) => {
-          if (!doctor[_info.dataIndex]) return null;
+          if (!doctor || !doctor[_info.dataIndex]) return null;
           if (DisabledItems && DisabledItems.includes(_info.dataIndex))
             return null;
 

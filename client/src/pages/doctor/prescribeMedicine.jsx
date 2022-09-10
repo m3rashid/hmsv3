@@ -153,53 +153,10 @@ const PrescriptionForm = () => {
           <Divider />
           <Space direction="vertical" style={{ width: "100%" }}>
             <Typography.Text strong>Medicines</Typography.Text>
-            {/* {medicines.medicines.length > 0 && (
-              <Row className={styles.prescribeTableHeader}>
-                <Col className={styles.prescribeColHeader} span={6}>
-                  Medicine
-                </Col>
-                <Col className={styles.prescribeColHeader} span={3}>
-                  Dosage
-                </Col>
-                <Col className={styles.prescribeColHeader} span={3}>
-                  Duration
-                </Col>
-                <Col className={styles.prescribeColHeader} span={3}>
-                  Availability
-                </Col>
-                <Col className={styles.prescribeColHeader} span={6}>
-                  Description
-                </Col>
-                <Col className={styles.prescribeColHeader} span={3}>
-                  Action
-                </Col>
-              </Row>
-            )} */}
-
-            {/* {medicines.medicines?.map((medicine, index) => (
-              <MedicineInput
-                key={index}
-                index={index}
-                type="medicines"
-                medicine={medicine}
-                deleteMedicine={deleteMedicine}
-                setMedicines={setMedicines}
-                UpdateMedicine={UpdateMedicine}
-              />
-            ))} */}
             <MedicineInputTable
               medicines={medicines.medicines}
               setMedicines={setMedicines}
             />
-            {/* 
-            <Button
-              type="primary"
-              htmlType="button"
-              onClick={() => addEmptyMedicine("medicines")}
-              style={{ marginTop: 10, marginBottom: 10 }}
-            >
-              + Add New Medicines
-            </Button> */}
           </Space>
           <Divider />
 

@@ -4,7 +4,7 @@ import { DatePicker } from "antd";
 import { Days } from "../../utils/constants";
 import moment from "moment";
 
-function DoctorTimeSelector({ doctor, onChange }) {
+function DoctorTimeSelector({ doctor, onChange, style }) {
   const createRange = useCallback((list = [], last) => {
     const result = [];
 
@@ -70,26 +70,26 @@ function DoctorTimeSelector({ doctor, onChange }) {
   );
 
   return (
-    <React.Fragment>
-      <DatePicker
-        showTime={{
-          format: "HH:mm",
-        }}
-        allowClear
-        disabled={!doctor}
-        disabledDate={(current) => isAllowedDate(current, true)}
-        disabledTime={(current) => {
-          return isAllowedDate(moment(current), false);
-        }}
-        onChange={onChange}
-      />
-    </React.Fragment>
+    <DatePicker
+      showTime={{
+        format: "HH:mm",
+      }}
+      allowClear
+      disabled={!doctor}
+      disabledDate={(current) => isAllowedDate(current, true)}
+      disabledTime={(current) => {
+        return isAllowedDate(moment(current), false);
+      }}
+      onChange={onChange}
+      style={style}
+    />
   );
 }
 
 DoctorTimeSelector.propTypes = {
   doctor: PropTypes.object,
   onChange: PropTypes.func.isRequired,
+  style: PropTypes.string.isRequired,
 };
 
 export default DoctorTimeSelector;
