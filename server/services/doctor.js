@@ -208,9 +208,15 @@ const referAnotherDoctorAppointmentService = async ({
     data: {
       date,
       remarks,
-      patient: { connect: { id: patientId } },
-      doctor: { connect: { id: nextDoctorId } },
-      referedBy: prevDoctorId,
+      patient: {
+        connect: { id: patientId },
+      },
+      doctor: {
+        connect: { id: nextDoctorId },
+      },
+      referredDoc: {
+        connect: { id: prevDoctorId },
+      },
     },
     include: { patient: true, doctor: true },
   });
