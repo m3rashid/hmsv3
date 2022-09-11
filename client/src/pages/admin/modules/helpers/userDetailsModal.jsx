@@ -2,9 +2,9 @@ import React from "react";
 import { Modal, Button, Space, Form, Select, message } from "antd";
 
 import { instance } from "../../../../api/instance";
-import { allPermissions } from "../../../../utils/constants";
 import { toSentenceCase } from "../../../../utils/strings";
 import ShowEntry from "../../../../components/common/showEntry";
+import { allPermissions, backToRealDays } from "../../../../utils/constants";
 
 const UserDetailsModal = ({ data }) => {
   const [editPermissions, setEditPermissions] = React.useState(false);
@@ -81,18 +81,25 @@ const UserDetailsModal = ({ data }) => {
         {data.authorityName && (
           <ShowEntry label="Authority Name" value={data.authorityName} />
         )}
-        {/* {data.availability?.length > 0 && (
-          <ShowEntry
-            label="Availability"
-            value={data.availability.join(" - ")}
-          />
-        )}
-        {data.availableDays?.length > 0 && (
-          <ShowEntry
-            label="Available Days"
-            value={data.availableDays.join(" - ")}
-          />
-        )} */}
+        {data.availability?.length > 0 &&
+          data.availability.map((av) => (
+            <div key={av.id} style={{ marginBottom: "10px" }}>
+              <strong style={{ marginBottom: 0 }}>
+                {backToRealDays[av.day]}
+              </strong>
+              {av.range &&
+                av.range.map((r) => {
+                  if (!r.from || !r.to) return null;
+                  return (
+                    <p key={r.id} style={{ marginBottom: 0 }}>
+                      {`${r.from?.hour}:${r.from?.minute}`} to &nbsp;
+                      {`${r.to?.hour}:${r.to?.minute}`}
+                    </p>
+                  );
+                })}
+            </div>
+          ))}
+
         {data.category && <ShowEntry label="Category" value={data.category} />}
         {data.contact && <ShowEntry label="Contact" value={data.contact} />}
         {data.joined && <ShowEntry label="Joined" value={data.joined} />}
@@ -118,9 +125,9 @@ const UserDetailsModal = ({ data }) => {
                   style={{ width: "100%" }}
                   defaultValue={data.permissions}
                 >
-                  {allPermissions.map((p, i) => (
-                    <Select.Option key={`${p}-${i}`} value={p}>
-                      {p
+                  {Object.entries(allPermissions).map(([key, value], i) => (
+                    <Select.Option key={`${key}-${i}`} value={value}>
+                      {value
                         .split("_")
                         .map((s) => toSentenceCase(s))
                         .join(" ")}

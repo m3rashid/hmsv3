@@ -63,3 +63,13 @@ export const Days = {
   FRI: "FRI",
   SAT: "SAT",
 };
+
+export const backToRealDays = {
+  SUN: "SUNDAY",
+  MON: "MONDAY",
+  TUE: "TUESDAY",
+  WED: "WEDNESDAY",
+  THU: "THURSDAY",
+  FRI: "FRIDAY",
+  SAT: "SATURDAY",
+};
