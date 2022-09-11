@@ -12,7 +12,7 @@ import { pharmacyState } from "../../atoms/pharmacy";
 import { functionState } from "../../atoms/functions";
 import { inventoryState } from "../../atoms/inventory";
 import useNotifications from "../../Hooks/useNotifications";
-import { InventoryTypes, permissions } from "../../utils/constants";
+import { InventoryTypes, allPermissions } from "../../utils/constants";
 
 // Used for all on socket events
 export default function useFetchSockets() {
@@ -70,9 +70,11 @@ export default function useFetchSockets() {
   useEffect(() => {
     if (
       auth.isLoggedIn &&
-      (auth.user.permissions.includes(permissions.INVENTORY_VIEW) ||
-        auth.user.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE) ||
-        auth.user.permissions.includes(permissions.INVENTORY_ADD_MEDICINE))
+      (auth.user.permissions.includes(allPermissions.INVENTORY_VIEW) ||
+        auth.user.permissions.includes(
+          allPermissions.DOCTOR_PRESCRIBE_MEDICINE
+        ) ||
+        auth.user.permissions.includes(allPermissions.INVENTORY_ADD_MEDICINE))
     ) {
       loadInventoryItems();
     }
@@ -90,7 +92,7 @@ export default function useFetchSockets() {
   useEffect(() => {
     if (
       !auth.isLoggedIn ||
-      !auth.user.permissions.includes(permissions.PHARMACY_PRESCRIPTIONS)
+      !auth.user.permissions.includes(allPermissions.PHARMACY_PRESCRIPTIONS)
     ) {
       return;
     }
@@ -140,7 +142,7 @@ export default function useFetchSockets() {
   useEffect(() => {
     if (
       auth.isLoggedIn &&
-      auth.user.permissions.includes(permissions.DOCTOR_APPOINTMENTS)
+      auth.user.permissions.includes(allPermissions.DOCTOR_APPOINTMENTS)
     ) {
       loadDoctorAppointment();
       loadMedicine();
@@ -183,7 +185,7 @@ export default function useFetchSockets() {
   useEffect(() => {
     if (
       !auth.isLoggedIn ||
-      !auth.user.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE)
+      !auth.user.permissions.includes(allPermissions.DOCTOR_PRESCRIBE_MEDICINE)
     ) {
       return;
     }
@@ -215,7 +217,7 @@ export default function useFetchSockets() {
   useEffect(() => {
     if (
       !auth.isLoggedIn ||
-      !auth.user.permissions.includes(permissions.DOCTOR_APPOINTMENTS)
+      !auth.user.permissions.includes(allPermissions.DOCTOR_APPOINTMENTS)
     ) {
       return;
     }

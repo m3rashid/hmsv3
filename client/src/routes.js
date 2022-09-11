@@ -24,7 +24,7 @@ import PrescriptionForm from "./pages/doctor/prescribeMedicine";
 import CreatePatientForm from "./pages/reception/CreatePatientForm";
 import CreateAppointmentForm from "./pages/reception/CreateAppointmentForm";
 
-import { permissions } from "./utils/constants";
+import { allPermissions } from "./utils/constants";
 import ProfilePage from "./pages/profile";
 
 export const checkAccess = (Auth, route) => {
@@ -98,19 +98,19 @@ const routes = [
     path: "/reception/add-appointment",
     component: CreateAppointmentForm,
     text: "Create Appointment",
-    role: [permissions.RECEPTION_ADD_APPOINTMENT],
+    role: [allPermissions.RECEPTION_ADD_APPOINTMENT],
   },
   {
     path: "/doctor/appointments",
     component: DoctorAppointments,
     text: "Doctor Appointents",
-    role: [permissions.DOCTOR_APPOINTMENTS],
+    role: [allPermissions.DOCTOR_APPOINTMENTS],
   },
   {
     path: "/doctor/prescribe-medicine",
     component: PrescriptionForm,
     text: "Prescribe Medicine",
-    role: [permissions.DOCTOR_PRESCRIBE_MEDICINE],
+    role: [allPermissions.DOCTOR_PRESCRIBE_MEDICINE],
   },
   {
     path: "/patient",
@@ -122,49 +122,49 @@ const routes = [
     path: "/pharmacy/prescriptions",
     component: Prescriptions,
     text: "Pharmacy",
-    role: [permissions.PHARMACY_PRESCRIPTIONS],
+    role: [allPermissions.PHARMACY_PRESCRIPTIONS],
   },
   {
     path: "/pharmacy/receipt",
     component: CreateReceipts,
     text: "Create receipts",
-    role: [permissions.PHARMACY_RECEIPT],
+    role: [allPermissions.PHARMACY_RECEIPT],
   },
   {
     path: "/appointment/create-patient",
     component: CreatePatientForm,
     text: "Create Patient",
-    role: [permissions.RECEPTION_CREATE_PATIENT],
+    role: [allPermissions.RECEPTION_CREATE_PATIENT],
   },
   {
     path: "/inventory/new",
     component: AddNewInventory,
     text: "Add to Inventory",
-    role: [permissions.INVENTORY_ADD_MEDICINE],
+    role: [allPermissions.INVENTORY_ADD_MEDICINE],
   },
   {
     path: "/inventory/medicines",
     component: Medicines,
     text: "View Medicines",
-    role: [permissions.INVENTORY_VIEW],
+    role: [allPermissions.INVENTORY_VIEW],
   },
   {
     path: "/inventory/non-medicines",
     component: NonMedicines,
     text: "View Non Medicines",
-    role: [permissions.INVENTORY_VIEW],
+    role: [allPermissions.INVENTORY_VIEW],
   },
   {
     path: "/inventory/other-assets",
     component: OtherAssets,
     text: "View Other Assets",
-    role: [permissions.INVENTORY_VIEW],
+    role: [allPermissions.INVENTORY_VIEW],
   },
   {
     path: "/patient/:id",
     component: Patient,
     text: "Patient",
-    role: [permissions.DOCTOR_APPOINTMENTS],
+    role: [allPermissions.DOCTOR_APPOINTMENTS],
     showInNav: false,
   },
   {

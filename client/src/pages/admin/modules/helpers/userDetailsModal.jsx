@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Button, Space, Form, Select, message } from "antd";
 
 import { instance } from "../../../../api/instance";
-import { permissions } from "../../../../utils/constants";
+import { allPermissions } from "../../../../utils/constants";
 import { toSentenceCase } from "../../../../utils/strings";
 import ShowEntry from "../../../../components/common/showEntry";
 
@@ -42,7 +42,7 @@ const UserDetailsModal = ({ data }) => {
     });
   };
 
-  // console.log({ data });
+  console.log({ data });
 
   return (
     <React.Fragment>
@@ -118,7 +118,7 @@ const UserDetailsModal = ({ data }) => {
                   style={{ width: "100%" }}
                   defaultValue={data.permissions}
                 >
-                  {permissions.map((p, i) => (
+                  {allPermissions.map((p, i) => (
                     <Select.Option key={`${p}-${i}`} value={p}>
                       {p
                         .split("_")

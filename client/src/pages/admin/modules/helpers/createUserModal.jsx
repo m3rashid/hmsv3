@@ -9,14 +9,14 @@ import {
   Space,
 } from "antd";
 import React from "react";
+import { useSetRecoilState } from "recoil";
 
-import { showGender, toSentenceCase } from "../../../../utils/strings";
-import { instance } from "../../../../api/instance";
-import { supportedUserRoles } from "../../../../utils/constants";
-import Availability from "./InputTypes/Availablity";
-import { useRecoilState } from "recoil";
-import { UserSlotManagerAtom } from "../../../../atoms/UserSlotManager";
 import useGetUserDetail from "./getUserDetail";
+import { instance } from "../../../../api/instance";
+import Availability from "./InputTypes/Availablity";
+import { showGender, toSentenceCase } from "../../../../utils/strings";
+import { UserSlotManagerAtom } from "../../../../atoms/UserSlotManager";
+import { supportedUserRoles, Category } from "../../../../utils/constants";
 
 const requiredFormFields = [
   { key: "name", label: "Name", inputType: "text", otherRules: [{}] },
@@ -71,21 +71,6 @@ const requiredFormFields = [
 
 const otherFormFields = [
   { key: "bio", label: "Introduction", inputType: "textarea" },
-  // {
-  //   key: "availableDays",
-  //   label: "Available Days",
-  //   inputType: "select",
-  //   multiple: true,
-  //   options: [
-  //     { key: "MON", label: "Monday" },
-  //     { key: "TUE", label: "Tuesday" },
-  //     { key: "WED", label: "Wednesday" },
-  //     { key: "THU", label: "Thursday" },
-  //     { key: "FRI", label: "Friday" },
-  //     { key: "SAT", label: "Saturday" },
-  //     { key: "SUN", label: "Sunday" },
-  //   ],
-  // },
   { key: "designation", label: "Designation", inputType: "text" },
   { key: "contact", label: "Contact", inputType: "number" },
   { key: "address", label: "Address", inputType: "text" },
@@ -96,7 +81,16 @@ const otherFormFields = [
     component: Availability,
   },
   { key: "authorityName", label: "Authority Name", inputType: "text" },
-  { key: "category", label: "Category", inputType: "text" },
+  {
+    key: "category",
+    label: "Category",
+    inputType: "select",
+    multiple: "true",
+    options: Object.entries(Category).map(([key, value]) => ({
+      key: key,
+      label: value,
+    })),
+  },
   { key: "origin", label: "Origin", inputType: "text" },
 ];
 
@@ -161,7 +155,7 @@ const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
 const CreateUserModal = ({ isEdit, data }) => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = React.useState(false);
-  const [UserAtom, setUserAtom] = useRecoilState(UserSlotManagerAtom);
+  const setUserAtom = useSetRecoilState(UserSlotManagerAtom);
   const { getUsers } = useGetUserDetail({
     userType: "doctors",
     userRole: "DOCTOR",

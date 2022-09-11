@@ -39,8 +39,7 @@ export const supportedUserRoles = [
   "OTHER",
 ];
 
-export const permissions = {
-  // all access to this special role admin
+export const allPermissions = {
   ADMIN: "ADMIN",
   DOCTOR_APPOINTMENTS: "DOCTOR_APPOINTMENTS",
   DOCTOR_PRESCRIBE_MEDICINE: "DOCTOR_PRESCRIBE_MEDICINE",
@@ -50,6 +49,9 @@ export const permissions = {
   RECEPTION_CREATE_PATIENT: "RECEPTION_CREATE_PATIENT",
   INVENTORY_VIEW: "INVENTORY_VIEW",
   INVENTORY_ADD_MEDICINE: "INVENTORY_ADD_MEDICINE",
+  EDIT_USER_PROFILE: "EDIT_USER_PROFILE",
+  EDIT_USER_PERMISSIONS: "EDIT_USER_PERMISSIONS",
+  GET_ALL_USERS: "GET_ALL_USERS",
 };
 
 export const Days = {

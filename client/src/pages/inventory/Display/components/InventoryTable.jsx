@@ -21,7 +21,7 @@ import EditMedicine from "./EditMedicine";
 import { authState } from "../../../../atoms/auth";
 import { instance } from "../../../../api/instance";
 import { inventoryState } from "../../../../atoms/inventory";
-import { permissions } from "../../../../utils/constants";
+import { allPermissions } from "../../../../utils/constants";
 
 function InventoryTable(prop) {
   const auth = useRecoilValue(authState);
@@ -47,7 +47,7 @@ function InventoryTable(prop) {
   }, [inventory, SearchQuery, prop.type]);
 
   const hasEditPermission = useMemo(() => {
-    if (auth.user.permissions.includes(permissions.INVENTORY_ADD_MEDICINE)) {
+    if (auth.user.permissions.includes(allPermissions.INVENTORY_ADD_MEDICINE)) {
       return true;
     }
     return false;
