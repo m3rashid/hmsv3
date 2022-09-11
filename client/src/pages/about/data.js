@@ -28,12 +28,12 @@ export const developers = [
   },
   {
     name: "Anzal Husain Abidi",
-    image: "",
+    image: "images/anzal.png",
     department: "Dept. of CSE, FET-JMI",
     batch: "2020-2024",
     github: "https://github.com/anzal1",
-    linkedin: "",
-    portfolio: "",
+    linkedin: "https://www.linkedin.com/in/anzal-husain-abidi-740a40204",
+    portfolio: "https://anzalabidi.netlify.app",
   },
 ];
 
