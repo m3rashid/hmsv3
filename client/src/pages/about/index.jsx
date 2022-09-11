@@ -9,7 +9,16 @@ const Profile = ({ data }) => {
     <Card
       hoverable
       style={{ width: 300 }}
-      cover={<img alt={data.name} src={data.image} />}
+      cover={
+        <img
+          alt={data.name}
+          src={data.image}
+          style={{
+            height: 300,
+            objectFit: "cover",
+          }}
+        />
+      }
     >
       <Card.Meta title={data.name} description={data.department} />
       {data.batch && <ShowEntry label="Batch" value={data.batch} />}
@@ -19,6 +28,7 @@ const Profile = ({ data }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-around",
+          marginTop: 10,
         }}
       >
         {data.github && <a href={data.github}>Github</a>}
