@@ -1,8 +1,7 @@
 import React from "react";
-import { Divider, message } from "antd";
+import { message } from "antd";
 import { useSetRecoilState } from "recoil";
 
-import Header from "../../../components/Header";
 import { instance } from "../../../api/instance";
 import { inventoryState } from "../../../atoms/inventory";
 import InventoryFormHandler from "../../../components/Inventory/FormHandler";
@@ -41,13 +40,7 @@ const AddNewInventory = () => {
   };
 
   return (
-    <div
-      style={{
-        padding: 20,
-      }}
-    >
-      <Header />
-      <Divider />
+    <div style={{ padding: 20 }}>
       <InventoryFormHandler formSubmit={formSubmitHandler} />
     </div>
   );

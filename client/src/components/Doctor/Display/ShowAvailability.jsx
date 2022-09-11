@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { List, Space, Tag, Typography } from "antd";
 
 function ShowAvailability({ availability }) {
-  console.log(availability);
+  // console.log(availability);
 
   return (
     <div>
@@ -13,15 +13,10 @@ function ShowAvailability({ availability }) {
             <React.Fragment>
               <Typography.Text strong>{item.day}</Typography.Text>
               <List
-                // bordered
                 dataSource={item.range}
                 renderItem={(range) => {
                   return (
-                    <List.Item
-                      style={{
-                        padding: 10,
-                      }}
-                    >
+                    <List.Item style={{ padding: 10 }}>
                       <Space>
                         <Tag>
                           {range?.from?.hour} : {range?.from?.minute}

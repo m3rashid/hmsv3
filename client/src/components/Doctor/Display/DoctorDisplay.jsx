@@ -6,30 +6,12 @@ import ShowAvailability from "./ShowAvailability";
 function DoctorDisplay({ doctor, DisabledItems }) {
   const DoctorInfo = useMemo(
     () => [
-      {
-        title: "ID No.",
-        dataIndex: "id",
-      },
-      {
-        title: "Authority Name",
-        dataIndex: "authorityName",
-      },
-      {
-        title: "Designation",
-        dataIndex: "designation",
-      },
-      {
-        title: "Sex",
-        dataIndex: "sex",
-      },
-      {
-        title: "Bio",
-        dataIndex: "bio",
-      },
-      {
-        title: "Contact",
-        dataIndex: "contact",
-      },
+      { title: "ID No.", dataIndex: "id" },
+      { title: "Authority Name", dataIndex: "authorityName" },
+      { title: "Designation", dataIndex: "designation" },
+      { title: "Sex", dataIndex: "sex" },
+      { title: "Bio", dataIndex: "bio" },
+      { title: "Contact", dataIndex: "contact" },
       {
         title: "Availability",
         dataIndex: "availability",
@@ -45,16 +27,11 @@ function DoctorDisplay({ doctor, DisabledItems }) {
     []
   );
 
-  console.log(doctor);
+  // console.log(doctor);
 
   return (
     <React.Fragment>
-      <Space
-        direction="vertical"
-        style={{
-          width: "100%",
-        }}
-      >
+      <Space direction="vertical" style={{ width: "100%" }}>
         {DoctorInfo.map((_info, index) => {
           if (!doctor || !doctor[_info.dataIndex]) return null;
           if (DisabledItems && DisabledItems.includes(_info.dataIndex))

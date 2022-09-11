@@ -5,9 +5,8 @@ import CreateUserModal from "./createUserModal";
 import UserDetailsModal from "./userDetailsModal";
 
 export const formatForTable = (users) => {
-  console.log({ users });
+  // console.log({ users });
   const data = users.reduce((acc, user) => {
-    console.log({ acc, user });
     try {
       return [
         ...acc,
@@ -33,11 +32,11 @@ export const formatForTable = (users) => {
         },
       ];
     } catch (err) {
-      console.log({ err });
+      // console.log({ err });
       return [...acc];
     }
   }, []);
-  console.log({ data });
+  // console.log({ data });
   return data;
 };
 

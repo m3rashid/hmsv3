@@ -1,9 +1,9 @@
+import { Modal } from "antd";
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal } from "antd";
 
-import { authDefaultState } from "../../atoms/auth";
 import { socket } from "../../api/socket";
+import { authDefaultState } from "../../atoms/auth";
 
 const LogoutModal = ({ isModalVisible, setIsModalVisible, setAuth }) => {
   const navigate = useNavigate();

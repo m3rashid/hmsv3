@@ -1,23 +1,13 @@
-import {
-  Row,
-  Col,
-  Typography,
-  Divider,
-  Collapse,
-  Space,
-  Button,
-  Modal,
-  Table,
-  Drawer,
-} from "antd";
-import React, { useCallback, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
-import styles from "./styles.module.css";
-import { useQuery } from "react-query";
-import { instance } from "../../api/instance";
 import dayjs from "dayjs";
-import DisplayMedicine from "../../components/Doctor/DisplayMedicine";
+import { useQuery } from "react-query";
+import { useParams } from "react-router-dom";
+import React, { useCallback, useMemo, useState } from "react";
+import { Row, Col, Typography, Divider, Button, Table, Drawer } from "antd";
+
+import styles from "./styles.module.css";
+import { instance } from "../../api/instance";
 import Loading from "../../components/Loading/Loading";
+import DisplayMedicine from "../../components/Doctor/DisplayMedicine";
 import DoctorDisplay from "../../components/Doctor/Display/DoctorDisplay";
 
 /**
@@ -52,64 +42,28 @@ const PatientInfo = (props) => {
   // Data Schema for Patient Info
   const InfoSchema = useMemo(
     () => [
-      {
-        title: "ID No.",
-        dataIndex: "id",
-      },
-      {
-        title: "Name",
-        dataIndex: "name",
-      },
-      {
-        title: "Age",
-        dataIndex: "age",
-      },
-      {
-        title: "Address",
-        dataIndex: "address",
-      },
-      {
-        title: "Contact",
-        dataIndex: "contact",
-      },
-      {
-        title: "Email",
-        dataIndex: "email",
-      },
-      {
-        title: "Sex",
-        dataIndex: "sex",
-      },
+      { title: "ID No.", dataIndex: "id" },
+      { title: "Name", dataIndex: "name" },
+      { title: "Age", dataIndex: "age" },
+      { title: "Address", dataIndex: "address" },
+      { title: "Contact", dataIndex: "contact" },
+      { title: "Email", dataIndex: "email" },
+      { title: "Sex", dataIndex: "sex" },
     ],
     []
   );
 
   // Data Schema for Doctor Info
-  const DoctorInfo = useMemo(
-    () => [
-      {
-        title: "ID No.",
-        dataIndex: "id",
-      },
-      {
-        title: "Authority Name",
-        dataIndex: "authorityName",
-      },
-      {
-        title: "Designation",
-        dataIndex: "designation",
-      },
-      {
-        title: "Sex",
-        dataIndex: "sex",
-      },
-      {
-        title: "Bio",
-        dataIndex: "bio",
-      },
-    ],
-    []
-  );
+  // const DoctorInfo = useMemo(
+  //   () => [
+  //     { title: "ID No.", dataIndex: "id" },
+  //     { title: "Authority Name", dataIndex: "authorityName" },
+  //     { title: "Designation", dataIndex: "designation" },
+  //     { title: "Sex", dataIndex: "sex" },
+  //     { title: "Bio", dataIndex: "bio" },
+  //   ],
+  //   []
+  // );
 
   // Handle Modal
   const PrescriptionModalHandler = useCallback(
@@ -235,9 +189,7 @@ const PatientInfo = (props) => {
       <Drawer
         visible={DoctorModal.visible}
         okButtonProps={{
-          style: {
-            display: "none",
-          },
+          style: { display: "none" },
         }}
         onClose={() => setDoctorModal({ visible: false, data: {} })}
         title="Doctor's Info"

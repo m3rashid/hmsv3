@@ -42,6 +42,8 @@ const UserDetailsModal = ({ data }) => {
     });
   };
 
+  // console.log({ data });
+
   return (
     <React.Fragment>
       <Space>

@@ -1,18 +1,11 @@
-/* .prescribeTableHeader {
-
-
-} */
-
-.prescribeTableHeader{
-    background-color: #eee;
-    border-bottom: 1px solid #ddd;
+.prescribeTableHeader {
+  background-color: #eee;
+  border-bottom: 1px solid #ddd;
 }
-.prescribeColHeader:first-child{
-    border-left: 1px solid #ccc;
- 
+.prescribeColHeader:first-child {
+  border-left: 1px solid #ccc;
 }
-.prescribeColHeader{
-    border-right: 1px solid #ccc;
-    padding: 10px;
-    
+.prescribeColHeader {
+  border-right: 1px solid #ccc;
+  padding: 10px;
 }

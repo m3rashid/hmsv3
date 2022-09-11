@@ -1,5 +1,5 @@
-import { Button, Space, Table } from "antd";
 import React from "react";
+import { Button, Space, Table } from "antd";
 
 const Completed = () => {
   const columns = [

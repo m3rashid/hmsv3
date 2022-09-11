@@ -43,7 +43,7 @@ function Availability({ isEdit, defaultValue, form }) {
     [Data, setData]
   );
   useEffect(() => {
-    console.log("Availability Data Render");
+    // console.log("Availability Data Render");
   }, []);
 
   useEffect(() => {
@@ -55,7 +55,7 @@ function Availability({ isEdit, defaultValue, form }) {
   }, [form, Data, defaultValue]);
 
   const UpdateSlotTimingHandler = (value, rangeItem, item) => {
-    console.log(value, rangeItem, item);
+    // console.log(value, rangeItem, item);
 
     const newItem = {
       ...item,
@@ -79,7 +79,7 @@ function Availability({ isEdit, defaultValue, form }) {
     DATA_UPDATE(newItem);
   };
 
-  console.log(Data);
+  // console.log(Data);
 
   return (
     <div>
@@ -103,7 +103,7 @@ function Availability({ isEdit, defaultValue, form }) {
                 { label: "Sunday", value: "SUN" },
               ]}
               onChange={(value) => {
-                console.log("Update Day");
+                // console.log("Update Day");
                 DATA_UPDATE({
                   ...item,
                   day: value,
@@ -147,7 +147,7 @@ function Availability({ isEdit, defaultValue, form }) {
                     htmlType="button"
                     color="danger"
                     onClick={() => {
-                      console.log("remove", item);
+                      // console.log("remove", item);
 
                       DATA_UPDATE({
                         ...item,

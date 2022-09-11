@@ -33,13 +33,13 @@ const PrescriptionForm = () => {
       doctorData,
       appointmentId,
       referToAnotherDoctor,
-      navigate,
+      // navigate,
       form,
       CreatePrescriptionModalVisible,
       PatientData,
     },
     actions: {
-      setLoading,
+      // setLoading,
       setFormData,
       setMedicines,
       setReferToAnotherDoctor,
@@ -55,13 +55,11 @@ const PrescriptionForm = () => {
   } = usePrescribeMedicines(socket);
 
   useEffect(() => {
-    console.log("appointment id", appointmentId);
+    // console.log("appointment id", appointmentId);
     if (appointmentId !== null && doctorData.appointments.length > 0) {
       handleAppointmentSelect(appointmentId);
     }
   }, [appointmentId, doctorData.appointments.length, handleAppointmentSelect]);
-
-  // console.log(formData);
 
   return (
     <React.Fragment>
@@ -83,9 +81,7 @@ const PrescriptionForm = () => {
               <Col span={18}>
                 <Select
                   placeholder="Select an appointment"
-                  style={{
-                    width: "100%",
-                  }}
+                  style={{ width: "100%" }}
                   allowClear
                   onChange={(value) => {
                     handleAppointmentSelect(value);
@@ -133,12 +129,7 @@ const PrescriptionForm = () => {
           <Form.Item
             label="Symptoms"
             name="symptoms"
-            rules={[
-              {
-                required: true,
-                message: "Please Enter Symptoms!",
-              },
-            ]}
+            rules={[{ required: true, message: "Please Enter Symptoms!" }]}
           >
             <Input.TextArea
               required
@@ -250,10 +241,7 @@ const PrescriptionForm = () => {
           visible={PatientData.open}
           width={"60%"}
           onClose={() => {
-            setPatientData({
-              open: false,
-              data: null,
-            });
+            setPatientData({ open: false, data: null });
           }}
         >
           {PatientData.data && (
@@ -261,7 +249,6 @@ const PrescriptionForm = () => {
           )}
         </Drawer>
 
-        {/* Prescription Info Modal*/}
         <Modal
           visible={CreatePrescriptionModalVisible}
           onOk={() => {

@@ -2,8 +2,8 @@ import React from "react";
 import { Button, Space, Typography } from "antd";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 
-import LogoutModal from "../Modal/logoutModal";
 import AuthModal from "../Modal/AuthModal";
+import LogoutModal from "../Modal/logoutModal";
 
 const UserTop = ({ Auth, setAuth }) => {
   const [isModalVisible, setIsModalVisible] = React.useState(false);
@@ -11,7 +11,6 @@ const UserTop = ({ Auth, setAuth }) => {
   if (Auth.isLoggedIn) {
     return (
       <Space>
-        {/* TODO Add icons according to current logged in user type */}
         {Auth.user.role === "ADMIN" && (
           <UserOutlined style={{ fontSize: 20 }} />
         )}

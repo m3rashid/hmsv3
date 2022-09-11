@@ -39,14 +39,14 @@ export const developers = [
 
 export const professors = [
   {
-    name: "Prof. Sarfaraz Masood",
-    image: "/images/SarfarazMassod.png",
+    name: "Prof. Tanveer Ahmad",
+    image: "/images/TanvirAhmad.jpg",
     department: "Dept. of CSE, FET-JMI",
     portfolio: "",
   },
   {
-    name: "Prof. Tanveer Ahmad",
-    image: "/images/TanvirAhmad.jpg",
+    name: "Prof. Sarfaraz Masood",
+    image: "/images/SarfarazMassod.png",
     department: "Dept. of CSE, FET-JMI",
     portfolio: "",
   },

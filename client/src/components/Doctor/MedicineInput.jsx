@@ -1,13 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
-import { Button, Col, Input, Row, Select, Space, Spin, Typography } from "antd";
+import { MdDelete } from "react-icons/md";
 import { useDebounce } from "use-debounce";
-import styles from "./medicineinput.module.css";
-import { inventoryState } from "../../atoms/inventory";
+import React, { useCallback, useEffect, useState } from "react";
+import { Button, Col, Input, Row, Select, Space, Typography } from "antd";
+
 import { instance } from "../../api/instance";
 import { dosages } from "../../utils/constants";
-import { MdDelete } from "react-icons/md";
+import styles from "./medicineinput.module.css";
+import { inventoryState } from "../../atoms/inventory";
+
 const MedicineInput = ({
   index,
   medicine,
@@ -17,7 +19,7 @@ const MedicineInput = ({
   isExtra,
 }) => {
   const medicineDB = useRecoilValue(inventoryState);
-  console.log(medicineDB);
+  // console.log(medicineDB);
   const [MedicineData, setMedicineData] = useState(medicine);
   const [availabilityInfo, setAvailabilityInfo] = useState({
     available: true,
@@ -70,7 +72,7 @@ const MedicineInput = ({
     UpdateMedicine(medicineType, { ...value, ...availabilityInfo }, index);
   }, [value, availabilityInfo, UpdateMedicine, medicineType, index]);
 
-  console.log(MedicineData);
+  // console.log(MedicineData);
 
   return (
     <Row
@@ -92,8 +94,6 @@ const MedicineInput = ({
       >
         <Select
           style={{ width: 220 }}
-          // style={{flexGrow: 1 }}
-
           showSearch
           optionFilterProp="children"
           filterOption={(input, option) => option.children?.includes(input)}
@@ -169,7 +169,6 @@ const MedicineInput = ({
 
         {medicine?.medicine?.medType === "SYRUP" && (
           <Space>
-            {/* <Typography>Dosage Amount :</Typography> */}
             <Input
               placeholder="Dosage Amount"
               type="number"
@@ -192,8 +191,6 @@ const MedicineInput = ({
           padding: "0 10px",
         }}
       >
-        {/* <Space style={{ width: "100%" }}> */}
-        {/* <Typography>Duration : </Typography> */}
         <Input
           type={"number"}
           placeholder="Enter duration"
@@ -202,7 +199,6 @@ const MedicineInput = ({
           onChange={(e) => handleChange(e.target.value, "duration")}
           addonAfter={"days"}
         />
-        {/* </Space> */}
       </Col>
       {/* <Col
         span={3}

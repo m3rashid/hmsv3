@@ -1,8 +1,9 @@
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
-import { DatePicker } from "antd";
-import { Days } from "../../utils/constants";
 import moment from "moment";
+import { DatePicker } from "antd";
+import PropTypes from "prop-types";
+import React, { useCallback } from "react";
+
+import { Days } from "../../utils/constants";
 
 function DoctorTimeSelector({ doctor, onChange, style }) {
   const createRange = useCallback((list = [], last) => {
@@ -56,14 +57,14 @@ function DoctorTimeSelector({ doctor, onChange, style }) {
         }
       );
 
-      console.log(availableTime, createRange(availableTime.minute, 60));
+      // console.log(availableTime, createRange(availableTime.minute, 60));
 
       const res = {
         disabledMinutes: () => createRange(availableTime.minute, 60),
         disabledHours: () => createRange(availableTime.hour, 24),
       };
 
-      console.log(res);
+      // console.log(res);
       return res;
     },
     [createRange, doctor]

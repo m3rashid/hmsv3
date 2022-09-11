@@ -22,7 +22,6 @@ function DoctorSelector({ onChange, style }) {
       allowClear
       onChange={(value) => {
         const selectedDoctor = DoctorData.find((doctor) => doctor.id === value);
-
         onChange(selectedDoctor);
       }}
       style={style}

@@ -10,7 +10,6 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
   const [, setAuth] = useRecoilState(authState);
   const onFinish = async (values) => {
     try {
-      console.log("Received values of form: ", values);
       message.loading({ content: "Loading...", key: "auth/login" });
       const { data } = await instance.post("/auth/login", {
         email: values.email.trim(),

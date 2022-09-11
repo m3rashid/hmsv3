@@ -2,24 +2,20 @@ import {
   Form,
   Button,
   AutoComplete,
-  DatePicker,
   message,
   Typography,
   Row,
   Col,
-  Divider,
   Space,
   Card,
 } from "antd";
-import moment from "moment";
 import axios from "axios";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { socket } from "../../api/socket";
-import Header from "../../components/Header";
+// import { Days } from "../../utils/constants";
 import { instance } from "../../api/instance";
 import DoctorSelector from "../../components/Doctor/Selector";
-import { Days } from "../../utils/constants";
 import DoctorTimeSelector from "../../components/Doctor/TimeSelector";
 import DoctorDisplay from "../../components/Doctor/Display/DoctorDisplay";
 
@@ -78,64 +74,64 @@ const CreateAppointmentForm = () => {
     };
   }, [form]);
 
-  const createRange = useCallback((acc, last) => {
-    const result = [];
-    for (let i = 0; i < last; i++) {
-      const canAdd = acc.every((item) => {
-        return i > item[1] && i < item[0];
-      });
+  // const createRange = useCallback((acc, last) => {
+  //   const result = [];
+  //   for (let i = 0; i < last; i++) {
+  //     const canAdd = acc.every((item) => {
+  //       return i > item[1] && i < item[0];
+  //     });
 
-      if (canAdd) {
-        result.push(i);
-      }
-    }
-    return result;
-  }, []);
+  //     if (canAdd) {
+  //       result.push(i);
+  //     }
+  //   }
+  //   return result;
+  // }, []);
 
-  const isAllowedDate = useCallback(
-    (current, isDate) => {
-      const day = current?.day();
-      const hour = current?.hour();
-      const minute = current?.minute();
-      const DayArr = Object.values(Days);
-      const DayChosen = DayArr[day];
+  // const isAllowedDate = useCallback(
+  //   (current, isDate) => {
+  //     const day = current?.day();
+  //     const hour = current?.hour();
+  //     const minute = current?.minute();
+  //     const DayArr = Object.values(Days);
+  //     const DayChosen = DayArr[day];
 
-      const doctor = FormSelected.doctor;
+  //     const doctor = FormSelected.doctor;
 
-      if (!doctor) return true;
+  //     if (!doctor) return true;
 
-      const availableDay = doctor.profile.availability.find(
-        (avail) => avail.day === DayChosen
-      );
-      if (!availableDay) {
-        if (isDate) return true;
-        return {};
-      }
-      if (isDate === true) return false;
+  //     const availableDay = doctor.profile.availability.find(
+  //       (avail) => avail.day === DayChosen
+  //     );
+  //     if (!availableDay) {
+  //       if (isDate) return true;
+  //       return {};
+  //     }
+  //     if (isDate === true) return false;
 
-      const availableTime = availableDay.range.reduce(
-        (acc, range) => {
-          acc.minute.push([range?.from?.minute, range?.to?.minute]);
-          acc.hour.push([range?.from?.hour, range?.to?.hour]);
+  //     const availableTime = availableDay.range.reduce(
+  //       (acc, range) => {
+  //         acc.minute.push([range?.from?.minute, range?.to?.minute]);
+  //         acc.hour.push([range?.from?.hour, range?.to?.hour]);
 
-          return acc;
-        },
-        {
-          minute: [],
-          hour: [],
-        }
-      );
+  //         return acc;
+  //       },
+  //       {
+  //         minute: [],
+  //         hour: [],
+  //       }
+  //     );
 
-      const res = {
-        disabledMinutes: () => createRange(availableTime.minute, 60),
-        disabledHours: () => createRange(availableTime.hour, 24),
-      };
+  //     const res = {
+  //       disabledMinutes: () => createRange(availableTime.minute, 60),
+  //       disabledHours: () => createRange(availableTime.hour, 24),
+  //     };
 
-      console.log(res);
-      return res;
-    },
-    [FormSelected.doctor, createRange]
-  );
+  //     console.log(res);
+  //     return res;
+  //   },
+  //   [FormSelected.doctor, createRange]
+  // );
 
   const UpdatePatients = async (value) => {
     if (patients.cancelToken) {
@@ -192,10 +188,6 @@ const CreateAppointmentForm = () => {
 
   return (
     <React.Fragment>
-      <Header />
-
-      <Divider />
-
       <Row>
         <Col span={12}>
           <Form

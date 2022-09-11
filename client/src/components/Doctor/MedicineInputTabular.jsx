@@ -1,33 +1,19 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
-import {
-  Alert,
-  Button,
-  Col,
-  Divider,
-  Input,
-  Row,
-  Select,
-  Space,
-  Spin,
-  Table,
-  Typography,
-} from "antd";
-import { useDebounce } from "use-debounce";
-
-import styles from "./medicineinput.module.css";
-import { inventoryState } from "../../atoms/inventory";
-import { instance } from "../../api/instance";
-import { dosages } from "../../utils/constants";
-import { MdDelete } from "react-icons/md";
 import { BsDash } from "react-icons/bs";
-import usePrescribeMedicines from "../../pages/doctor/helpers/prescribeMeds.hook";
+import { MdDelete } from "react-icons/md";
+import { useDebounce } from "use-debounce";
+import React, { useCallback, useEffect, useState } from "react";
+import { Button, Input, Select, Spin, Table, Typography } from "antd";
+
+import { instance } from "../../api/instance";
+import styles from "./medicineinput.module.css";
+import { dosages } from "../../utils/constants";
+import { inventoryState } from "../../atoms/inventory";
+// import usePrescribeMedicines from "../../pages/doctor/helpers/prescribeMeds.hook";
 
 const MedicineInputTable = ({ medicines, setMedicines }) => {
-  // const [medicines, setMedicines] = useState(medicinesDefault);
-
-  console.log(medicines);
+  // console.log(medicines);
 
   const addEmptyMedicine = useCallback(
     (type) => {
@@ -101,6 +87,7 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
     },
     [setMedicines]
   );
+
   const quantityRequiredHandler = useCallback(
     (index, quantityRequired) => {
       setMedicines((prev) => ({

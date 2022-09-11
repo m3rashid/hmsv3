@@ -1,10 +1,10 @@
 import React from "react";
 import dayjs from "dayjs";
-import { Space, Typography, Card, Table, Tooltip } from "antd";
 import PropTypes from "prop-types";
-import SingleMedicine from "../../pages/doctor/helpers/singleMedicine";
-import { getEstimatedMedRequirement } from "../../pages/pharmacy/helpers/functions";
+import { Space, Typography, Card, Table, Tooltip } from "antd";
 import { AiOutlineCheck, AiOutlineWarning } from "react-icons/ai";
+// import SingleMedicine from "../../pages/doctor/helpers/singleMedicine";
+// import { getEstimatedMedRequirement } from "../../pages/pharmacy/helpers/functions";
 
 function DisplayMedicine({
   patient,
@@ -17,12 +17,7 @@ function DisplayMedicine({
 }) {
   return (
     <React.Fragment>
-      <Space
-        direction="vertical"
-        style={{
-          width: "100%",
-        }}
-      >
+      <Space direction="vertical" style={{ width: "100%" }}>
         <Typography.Title level={4}>Prescription Preview</Typography.Title>
         <Card title="Appointment Details" style={{ background: "transparent" }}>
           <Space direction="vertical">
@@ -77,7 +72,7 @@ DisplayMedicine.propTypes = {
 export default DisplayMedicine;
 
 const ViewPrescriptionTable = ({ prescriptionData, showAvailability }) => {
-  console.log(prescriptionData);
+  // console.log(prescriptionData);
   const medicineTableColumns = [
     {
       title: "Name",
@@ -148,10 +143,7 @@ const ViewPrescriptionTable = ({ prescriptionData, showAvailability }) => {
     <Space
       direction="vertical"
       size={3}
-      style={{
-        padding: "10px",
-        width: "100%",
-      }}
+      style={{ padding: "10px", width: "100%" }}
     >
       {prescriptionData && (
         <Table

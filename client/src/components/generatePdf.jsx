@@ -1,8 +1,6 @@
-import { useRecoilValue } from "recoil";
 import { useEffect, useState } from "react";
 import { Col, Collapse, Row, Space, Table, Typography } from "antd";
 
-import { authState } from "../atoms/auth";
 import { quantityCalculator } from "./Doctor/quantityCalculator";
 
 const normalTextStyles = {
@@ -18,7 +16,6 @@ const lighterFontFlex = {
 
 const GeneratePdf = (props) => {
   const parchiData = props?.data[0];
-  const { user } = useRecoilValue(authState);
   const [activeKey, setActiveKey] = useState("1");
 
   useEffect(() => {
@@ -70,7 +67,7 @@ const GeneratePdf = (props) => {
                           padding: "2px",
                         }}
                         alt="null"
-                      ></img>
+                      />
                       <Typography.Title level={4}>
                         Dr M.A ANSARI HEALTH CENTER
                       </Typography.Title>
@@ -85,7 +82,7 @@ const GeneratePdf = (props) => {
                           padding: "2px",
                         }}
                         alt="null"
-                      ></img>
+                      />
                     </div>
                     <div style={lighterFontFlex}>
                       <span style={normalTextStyles}>
@@ -272,7 +269,6 @@ const GeneratePdf = (props) => {
                               </span>
                             ),
                           },
-                          // { title: "Description", dataIndex: "description" },
                         ]}
                         dataSource={parchiData?.CustomMedicines}
                         pagination={false}

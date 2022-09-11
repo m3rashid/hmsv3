@@ -3,7 +3,6 @@ import React, { createContext } from "react";
 
 import { socket } from "../../api/socket";
 import Prescriptions from "./Prescriptions";
-import Header from "../../components/Header";
 import InventoryTable from "./InventoryTable";
 import CreateReceipts from "./CreateReceipts";
 import Notifications from "../doctor/notifications";
@@ -13,7 +12,6 @@ import usePharmacy from "../../components/Pharmacy/usePharmacy";
 export const PharmacyContext = createContext();
 
 const Pharmacy = () => {
-  const [online, setOnline] = React.useState(true);
   const { Inventory, setInventory, getMedicine, reduceMedicine } =
     usePharmacy();
 
@@ -65,7 +63,6 @@ const Pharmacy = () => {
       }}
     >
       <div style={{ padding: "20px" }}>
-        <Header online={online} setOnline={setOnline} />
         <Tabs defaultActiveKey="1">
           <Tabs.TabPane tab="Prescriptions" key="0">
             <Prescriptions />

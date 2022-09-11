@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useQuery } from "react-query";
 import { instance } from "../../api/instance";
 import DisplayMedicine from "../Doctor/DisplayMedicine";

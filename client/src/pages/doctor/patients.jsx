@@ -18,7 +18,7 @@ const DoctorPatients = () => {
 
   useEffect(() => {
     socket.on("found-doctor-patients", (data) => {
-      const { doctorId, patients } = data;
+      const { patients } = data;
       setData(patients);
       setLoading(false);
     });
@@ -67,22 +67,13 @@ const DoctorPatients = () => {
     },
   ];
 
-  // const data = GenerateData(10);
-
   return (
-    <div
-      style={{
-        marginTop: "20px",
-      }}
-    >
+    <div style={{ marginTop: "20px" }}>
       <Table
         loading={loading}
         dataSource={data}
         columns={columns}
-        pagination={{
-          total: data.length,
-          defaultPageSize: 5,
-        }}
+        pagination={{ total: data.length, defaultPageSize: 5 }}
       />
     </div>
   );

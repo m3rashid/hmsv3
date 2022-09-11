@@ -1,9 +1,9 @@
-import { Tabs, Typography } from "antd";
 import React from "react";
-import Header from "../../components/Header";
+import { Tabs, Typography } from "antd";
+
 import AddNewInventory from "./AddNew";
-import InventoryDisplay from "./Display";
 import styles from "./style.module.css";
+import InventoryDisplay from "./Display";
 
 const { TabPane } = Tabs;
 
@@ -11,7 +11,6 @@ function Inventory() {
   return (
     <div className={styles.container}>
       <Typography.Title level={4}>Inventory Management System</Typography.Title>
-      <Header />
 
       <Tabs>
         <TabPane tab="Inventory Show" key="1">

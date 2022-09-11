@@ -7,7 +7,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { socket } from "../../api/socket";
 import { instance } from "../../api/instance";
 import { pharmacyState } from "../../atoms/pharmacy";
-import GeneratePdf from "../../components/generatePdf";
+// import GeneratePdf from "../../components/generatePdf";
 import MedicineTable from "../../components/Pharmacy/MedicineTable";
 import usePrescribeMedicines from "../doctor/helpers/prescribeMeds.hook";
 import ShowReceipt from "./ShowReciept";

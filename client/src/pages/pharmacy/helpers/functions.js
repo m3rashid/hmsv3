@@ -9,11 +9,8 @@ export const DOSAGE_MAP = {
   QW: 4 / 7,
 };
 
-export const getEstimatedMedRequirement = ({duration, dosage, medType})=>{
-    let requiredQuantity =  Math.ceil(
-          duration * DOSAGE_MAP[dosage]
-        )
+export const getEstimatedMedRequirement = ({ duration, dosage, medType }) => {
+  let requiredQuantity = Math.ceil(duration * DOSAGE_MAP[dosage]);
 
-return requiredQuantity
-
-}
+  return requiredQuantity;
+};

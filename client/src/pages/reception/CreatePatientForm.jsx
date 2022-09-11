@@ -6,11 +6,9 @@ import {
   Input,
   InputNumber,
   message,
-  Divider,
   Typography,
 } from "antd";
 import { socket } from "../../api/socket";
-import Header from "../../components/Header";
 import { showGender } from "../../utils/strings";
 import { useRecoilState } from "recoil";
 import { LoadingAtom } from "../../atoms/loading";
@@ -44,14 +42,7 @@ const CreatePatientForm = () => {
 
   return (
     <React.Fragment>
-      <Header />
-      <Divider />
-      <Typography.Title
-        level={2}
-        style={{
-          paddingLeft: 45,
-        }}
-      >
+      <Typography.Title level={2} style={{ paddingLeft: 45 }}>
         Create Patient
       </Typography.Title>
       <Form
@@ -60,9 +51,7 @@ const CreatePatientForm = () => {
         labelAlign="left"
         labelCol={{ span: 6 }}
         wrapperCol={{ span: 12 }}
-        style={{
-          paddingLeft: 20,
-        }}
+        style={{ paddingLeft: 20 }}
       >
         <Form.Item
           label="Name"

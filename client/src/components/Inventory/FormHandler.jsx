@@ -3,28 +3,20 @@ import {
   Button,
   AutoComplete,
   message,
-  // Typography,
-  // Col,
   Input,
   Select,
   DatePicker,
 } from "antd";
-// import axios from "axios";
 import moment from "moment";
 import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
 import React, { useState } from "react";
 
-// import { instance } from "../../api/instance";
 import { inventoryState } from "../../atoms/inventory";
 import StatefullFormRenderer from "../common/StatefullFormRenderer";
 import { Category, InventoryTypes, MedType } from "../../utils/constants";
 
 function InventoryFormHandler(props) {
-  // const [itemlist, setItemlist] = useState({
-  //   data: [],
-  //   cancelToken: undefined,
-  // });
   const inventory = useRecoilValue(inventoryState);
   const [Search, setSearch] = useState({
     name: [],

@@ -1,19 +1,18 @@
 import { message } from "antd";
 import { useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import { socket } from "../../api/socket";
-
 import { authState } from "../../atoms/auth";
 import { instance } from "../../api/instance";
 import { doctorState } from "../../atoms/doctor";
 import { LoadingAtom } from "../../atoms/loading";
 import { pharmacyState } from "../../atoms/pharmacy";
-import { inventoryState } from "../../atoms/inventory";
-import { InventoryTypes, permissions } from "../../utils/constants";
-import useNotifications from "../../Hooks/useNotifications";
 import { functionState } from "../../atoms/functions";
-import { useNavigate } from "react-router-dom";
+import { inventoryState } from "../../atoms/inventory";
+import useNotifications from "../../Hooks/useNotifications";
+import { InventoryTypes, permissions } from "../../utils/constants";
 
 // Used for all on socket events
 export default function useFetchSockets() {
@@ -38,7 +37,6 @@ export default function useFetchSockets() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /** Socket Events for Inventory Roles */
   const loadInventoryItems = useCallback(async () => {
     try {
       const MedicineInventory = await instance.get("/inventory/search", {

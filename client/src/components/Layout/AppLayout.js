@@ -67,8 +67,7 @@ function Index(props) {
       </Layout>
       <Layout.Footer className={styles.footer}>
         <p style={{ textAlign: "center" }}>
-          Project Designed and Developed in-house under Dept. of Computer
-          Science, Faculty of Engineering and Technology, Jamia Millia Islamia
+          Project Designed and Developed in-house under Dept. of CSE (FET-JMI),
           <Link style={{ marginLeft: "10px" }} to="/about">
             Know More . . .
           </Link>

@@ -11,21 +11,21 @@ import {
   Others,
   LogReports,
 } from "./pages/admin";
-
 import {
   Medicines,
   NonMedicines,
   OtherAssets,
 } from "./pages/inventory/Display";
-
-import DoctorAppointments from "./pages/doctor/Appointments";
-import PrescriptionForm from "./pages/doctor/prescribeMedicine";
-import Prescriptions from "./pages/pharmacy/Prescriptions";
-import CreateReceipts from "./pages/pharmacy/CreateReceipts";
-import CreateAppointmentForm from "./pages/reception/CreateAppointmentForm";
 import AddNewInventory from "./pages/inventory/New";
+import Prescriptions from "./pages/pharmacy/Prescriptions";
+import DoctorAppointments from "./pages/doctor/Appointments";
+import CreateReceipts from "./pages/pharmacy/CreateReceipts";
+import PrescriptionForm from "./pages/doctor/prescribeMedicine";
 import CreatePatientForm from "./pages/reception/CreatePatientForm";
+import CreateAppointmentForm from "./pages/reception/CreateAppointmentForm";
+
 import { permissions } from "./utils/constants";
+import ProfilePage from "./pages/profile";
 
 export const checkAccess = (Auth, route) => {
   if (!Auth.isLoggedIn) {
@@ -33,13 +33,13 @@ export const checkAccess = (Auth, route) => {
   }
 
   const userType = Auth.user.permissions;
+  if (route.role.includes("*")) return true;
   if (userType === "ADMIN") return true;
   const contains = route.role.some((role) => userType.includes(role));
   return contains;
 };
 
 const routes = [
-  // admin routes
   {
     path: "/admin/home",
     component: AdminHome,
@@ -94,8 +94,12 @@ const routes = [
     text: "Log Reports",
     role: ["ADMIN"],
   },
-
-  // doctor routes
+  {
+    path: "/reception/add-appointment",
+    component: CreateAppointmentForm,
+    text: "Create Appointment",
+    role: [permissions.RECEPTION_ADD_APPOINTMENT],
+  },
   {
     path: "/doctor/appointments",
     component: DoctorAppointments,
@@ -108,16 +112,12 @@ const routes = [
     text: "Prescribe Medicine",
     role: [permissions.DOCTOR_PRESCRIBE_MEDICINE],
   },
-
-  // patient routes
   {
     path: "/patient",
     component: Patient,
     text: "Patient",
     role: ["PATIENT"],
   },
-
-  // pharmacy routes
   {
     path: "/pharmacy/prescriptions",
     component: Prescriptions,
@@ -130,24 +130,12 @@ const routes = [
     text: "Create receipts",
     role: [permissions.PHARMACY_RECEIPT],
   },
-
-  // receptionist route
-  {
-    path: "/reception/add-appointment",
-    component: CreateAppointmentForm,
-    text: "Create Appointment",
-    role: [permissions.RECEPTION_ADD_APPOINTMENT],
-  },
-
-  // appointment routes
   {
     path: "/appointment/create-patient",
     component: CreatePatientForm,
     text: "Create Patient",
     role: [permissions.RECEPTION_CREATE_PATIENT],
   },
-
-  // inventory manager routes
   {
     path: "/inventory/new",
     component: AddNewInventory,
@@ -172,14 +160,18 @@ const routes = [
     text: "View Other Assets",
     role: [permissions.INVENTORY_VIEW],
   },
-
-  //
   {
     path: "/patient/:id",
     component: Patient,
     text: "Patient",
     role: [permissions.DOCTOR_APPOINTMENTS],
     showInNav: false,
+  },
+  {
+    path: "/me",
+    component: ProfilePage,
+    text: "My Profile",
+    role: ["*"],
   },
 ];
 

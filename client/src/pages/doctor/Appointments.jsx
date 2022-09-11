@@ -1,6 +1,5 @@
 import {
   Button,
-  Divider,
   Modal,
   Space,
   Table,
@@ -11,18 +10,17 @@ import {
   Drawer,
 } from "antd";
 import dayjs from "dayjs";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
 import React, { useCallback, useEffect, useState } from "react";
 
 import { socket } from "../../api/socket";
-import Header from "../../components/Header";
 import { authState } from "../../atoms/auth";
-import { doctorState } from "../../atoms/doctor";
-import { functionState } from "../../atoms/functions";
-import { LoadingAtom } from "../../atoms/loading";
-import ShowPrescriptionByID from "../../components/Prescription/ShowPrescrptionByID";
 import { instance } from "../../api/instance";
+import { doctorState } from "../../atoms/doctor";
+import { LoadingAtom } from "../../atoms/loading";
+import { functionState } from "../../atoms/functions";
+import ShowEntry from "../../components/common/showEntry";
 import DisplayMedicine from "../../components/Doctor/DisplayMedicine";
 
 const { TabPane } = Tabs;
@@ -57,7 +55,7 @@ function DoctorAppointments() {
       `/doctor/appointment-prescription/${record.id}`
     );
 
-    console.log(data);
+    // console.log(data);
     setPrescriptionDrawer({
       visible: true,
       id: record.id,
@@ -66,9 +64,7 @@ function DoctorAppointments() {
   }, []);
 
   useEffect(() => {
-    socket.emit("get-doctor-appointments", {
-      doctorId: user.id,
-    });
+    socket.emit("get-doctor-appointments", { doctorId: user.id });
   }, [user.id]);
 
   const columnsPending = [
@@ -220,25 +216,21 @@ function DoctorAppointments() {
         refetchAppointments: false,
       });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [functionData]);
 
-  console.log(doctorData);
+  // console.log(doctorData);
 
   return (
     <div style={{ marginTop: "20px" }}>
-      <Header />
-      <Divider />
       <Typography.Title
         level={4}
         style={{ width: "100%", textAlign: "center" }}
       >
-        Appointments
+        Doctor Appointments
       </Typography.Title>
       <Button
-        style={{
-          zIndex: 100,
-          marginTop: 10,
-        }}
+        style={{ zIndex: 100, marginTop: 10 }}
         onClick={refreshAppointments}
         loading={loadingData.refetchAppointments}
       >
@@ -249,13 +241,7 @@ function DoctorAppointments() {
         </Typography.Text>
       </Button>
 
-      <Tabs
-        defaultActiveKey="1"
-        centered
-        style={{
-          marginTop: -5,
-        }}
-      >
+      <Tabs defaultActiveKey="1" centered style={{ marginTop: -5 }}>
         <TabPane tab="Active" key="1">
           <Table
             loading={doctorData.loading}
@@ -288,9 +274,7 @@ function DoctorAppointments() {
         visible={PrescriptionDrawer.visible}
         width={1000}
         onClose={() => {
-          setPrescriptionDrawer({
-            visible: false,
-          });
+          setPrescriptionDrawer({ visible: false });
         }}
       >
         <DisplayMedicine
@@ -314,27 +298,26 @@ function DoctorAppointments() {
         ]}
       >
         <div>
-          <p>
-            <strong>Date and Time: </strong>
-            {dayjs(ModalVisible.data?.date).format("MMMM DD YYYY, h:mm:ss a")}
-          </p>
+          <ShowEntry
+            label="Date and Time"
+            value={dayjs(ModalVisible.data?.date).format(
+              "MMMM DD YYYY, h:mm:ss a"
+            )}
+          />
           <div>
             <h4>
               <strong>Patient Info </strong>
             </h4>
             <Space direction="vertical" size={3} style={{ padding: "10px" }}>
-              <div>
-                <strong>Name: </strong>
-                {ModalVisible.data?.patient?.name}
-              </div>
-              <div>
-                <strong>Age: </strong>
-                {ModalVisible.data?.patient?.age}
-              </div>
-              <div>
-                <strong>Email: </strong>
-                {ModalVisible.data?.patient?.email}
-              </div>
+              <ShowEntry
+                label="Name"
+                value={ModalVisible.data?.patient?.name}
+              />
+              <ShowEntry label="Age" value={ModalVisible.data?.patient?.age} />
+              <ShowEntry
+                label="Email"
+                value={ModalVisible.data?.patient?.email}
+              />
             </Space>
           </div>
         </div>
