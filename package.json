@@ -4,10 +4,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/m3rashid/hmsv2.git"
+    "url": "git+https://github.com/FET-JMI/hmsv2.git"
   },
   "bugs": {
-    "url": "https://github.com/m3rashid/hmsv2/issues"
+    "url": "https://github.com/FET-JMI/hmsv2/issues"
   },
   "husky": {
     "hooks": {
