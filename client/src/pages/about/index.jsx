@@ -1,8 +1,8 @@
 import React from "react";
 import { Card } from "antd";
 
-import { developers, professors } from "./data";
-import ShowEntry from "../../components/common/showEntry";
+import ShowEntry from "components/common/showEntry";
+import { developers, professors } from "pages/about/data";
 
 const Profile = ({ data }) => {
   return (

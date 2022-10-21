@@ -2,19 +2,25 @@ const {
   receptionistLeft,
   createAppointment,
   searchPatients,
-} = require("./reception.socket.js");
+} = require("../../routes/sockets/reception.socket");
 const {
   doctorLeft,
   createPrescriptionByDoctor,
   getDoctorAppointments,
   getDoctorPatients,
   getPatientById,
-} = require("./doctor.socket");
-const { createUser } = require("./admin.socket");
+} = require("../../routes/sockets/doctor.socket");
 const { safeSocket } = require("../../middlewares/socket");
 const { socketConstants } = require("../../utils/constants.js");
-const { pharmacistLeft, dispensePrescription } = require("./pharmacy.socket");
-const { createPatient, deletePatient } = require("./coadmin.socket");
+const { createUser } = require("../../routes/sockets/admin.socket");
+const {
+  createPatient,
+  deletePatient,
+} = require("../../routes/sockets/coadmin.socket");
+const {
+  pharmacistLeft,
+  dispensePrescription,
+} = require("../../routes/sockets/pharmacy.socket");
 
 const router = (io, socket) => {
   socket.on(

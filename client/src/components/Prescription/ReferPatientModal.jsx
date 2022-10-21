@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button,
   Col,
@@ -10,10 +10,10 @@ import {
   Typography,
 } from "antd";
 
-import { instance } from "../../api/instance";
-import DoctorSelector from "../Doctor/DoctorSelector";
-import DoctorDisplay from "../Doctor/DoctorDisplay";
-import DoctorTimeSelector from "../Reception/TimeSelector";
+import { instance } from "api/instance";
+import DoctorDisplay from "components/Doctor/DoctorDisplay";
+import DoctorSelector from "components/Doctor/DoctorSelector";
+import DoctorTimeSelector from "components/Reception/TimeSelector";
 
 const ReferPatientModal = ({
   patientId,
@@ -22,7 +22,7 @@ const ReferPatientModal = ({
   setModalState,
 }) => {
   const closeModal = () => setModalState(false);
-  const [formData, setformData] = useState({});
+  const [formData, setformData] = React.useState({});
   // TODO: use this with sockets
   const onFinish = async () => {
     try {

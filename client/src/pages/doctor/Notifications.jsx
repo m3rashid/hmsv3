@@ -1,7 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
 
-import useNotifications from "../../Hooks/useNotifications";
+import useNotifications from "Hooks/useNotifications";
 
 const Notifications = () => {
   const { notifications } = useNotifications();

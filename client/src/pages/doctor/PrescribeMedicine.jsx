@@ -14,15 +14,14 @@ import {
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
 
-import { socket } from "../../api/socket";
-import usePrescribeMedicines from '../../components/Doctor/hooks/prescribeMeds.hook';
-import MedicineInput from "../../components/Medicine/MedicineInput";
-import ReferPatientModal from "../../components/Prescription/ReferPatientModal";
-import styles from "./css/PrescribeMedicine.module.css";
-import PatientInfo from "../patient";
-
-import MedicineInputTable from "../../components/Medicine/MedicineInputTabular";
-import PrescriptionDisplay from "../../components/Prescription/PrescriptionDisplay";
+import { socket } from "api/socket";
+import PatientInfo from "pages/patient";
+import MedicineInput from "components/Medicine/MedicineInput";
+import styles from "pages/doctor/PrescribeMedicine.module.css";
+import ReferPatientModal from "components/Prescription/ReferPatientModal";
+import MedicineInputTable from "components/Medicine/MedicineInputTabular";
+import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
+import usePrescribeMedicines from "components/Doctor/hooks/prescribeMeds.hook";
 
 const PrescriptionForm = () => {
   const {

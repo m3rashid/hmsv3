@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { List, Space, Tag, Typography } from "antd";
 
 function ShowAvailability({ availability }) {
-  // console.log(availability);
-
   return (
     <div>
       {availability &&

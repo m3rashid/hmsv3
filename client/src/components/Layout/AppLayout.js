@@ -3,10 +3,10 @@ import { useRecoilState } from "recoil";
 import { useNavigate, Link } from "react-router-dom";
 import { Layout, Typography, Col, Menu } from "antd";
 
-import UserTop from "./userTop";
-import styles from "./layout.module.less";
-import { authState } from "../../atoms/auth";
-import routes, { checkAccess } from "../../routes";
+import { authState } from "atoms/auth";
+import routes, { checkAccess } from "routes";
+import UserTop from "components/Layout/userTop";
+import styles from "components/Layout/layout.module.less";
 
 function Index(props) {
   const navigate = useNavigate();

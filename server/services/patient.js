@@ -1,7 +1,7 @@
 const prisma = require("../utils/prisma");
-const { permissions, serverActions } = require("../utils/constants");
-const { checkAccess } = require("../utils/auth.helpers");
 const { addEventLog } = require("../utils/logs");
+const { checkAccess } = require("../utils/auth.helpers");
+const { permissions, serverActions } = require("../utils/constants");
 
 const createPatientService = async (
   { name, age, sex, contact, address, email, jamiaId },

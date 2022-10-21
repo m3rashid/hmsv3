@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useRecoilState } from "recoil";
 
-import { notificationsState } from "../atoms/notifications";
+import { notificationsState } from "atoms/notifications";
 
 const useNotifications = () => {
   const [notifications, setNotifications] = useRecoilState(notificationsState);

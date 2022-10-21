@@ -1,7 +1,8 @@
-import { Col, Row, Space, Typography } from "antd";
-import React, { useMemo } from "react";
 import PropTypes from "prop-types";
-import ShowAvailability from "./ShowAvailability";
+import React, { useMemo } from "react";
+import { Col, Row, Space, Typography } from "antd";
+
+import ShowAvailability from "components/Doctor/ShowAvailability";
 
 function DoctorDisplay({ doctor, DisabledItems }) {
   const DoctorInfo = useMemo(

@@ -3,12 +3,10 @@ import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { Space, Typography, Card, Table, Tooltip } from "antd";
 import { AiOutlineCheck, AiOutlineWarning } from "react-icons/ai";
-// import SingleMedicine from "../../pages/doctor/helpers/singleMedicine";
-// import { getEstimatedMedRequirement } from "../../pages/pharmacy/helpers/functions";
 
 /**
  * Display Prescription of a patient
- * @returns 
+ * @returns
  */
 function PrescriptionDisplay({
   patient,
@@ -76,7 +74,6 @@ PrescriptionDisplay.propTypes = {
 export default PrescriptionDisplay;
 
 const ViewPrescriptionTable = ({ prescriptionData, showAvailability }) => {
-  // console.log(prescriptionData);
   const medicineTableColumns = [
     {
       title: "Name",

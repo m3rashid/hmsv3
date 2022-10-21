@@ -14,14 +14,14 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { socket } from "../../api/socket";
-import { authState } from "../../atoms/auth";
-import { instance } from "../../api/instance";
-import { doctorState } from "../../atoms/doctor";
-import { LoadingAtom } from "../../atoms/loading";
-import { functionState } from "../../atoms/functions";
-import ShowEntry from "../../components/common/showEntry";
-import PrescriptionDisplay from "../../components/Prescription/PrescriptionDisplay";
+import { socket } from "api/socket";
+import { authState } from "atoms/auth";
+import { instance } from "api/instance";
+import { doctorState } from "atoms/doctor";
+import { LoadingAtom } from "atoms/loading";
+import { functionState } from "atoms/functions";
+import ShowEntry from "components/common/showEntry";
+import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
 
 const { TabPane } = Tabs;
 

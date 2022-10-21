@@ -1,8 +1,9 @@
-import { Col, Row, Select, Space, Typography } from "antd";
 import React from "react";
-import { useQuery } from "react-query";
-import { instance } from "../../api/instance";
 import PropTypes from "prop-types";
+import { useQuery } from "react-query";
+import { Col, Row, Select, Space, Typography } from "antd";
+
+import { instance } from "api/instance";
 
 function DoctorSelector({ onChange, style }) {
   const { data: DoctorData } = useQuery("Doctor's List", async () => {

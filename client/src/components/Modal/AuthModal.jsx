@@ -2,9 +2,9 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import { Modal, Button, Input, Form, message } from "antd";
 
-import { socket } from "../../api/socket";
-import { authState } from "../../atoms/auth";
-import { instance } from "../../api/instance";
+import { socket } from "api/socket";
+import { authState } from "atoms/auth";
+import { instance } from "api/instance";
 
 function AuthModal({ handleCancel, isModalVisible, handleOk }) {
   const [, setAuth] = useRecoilState(authState);

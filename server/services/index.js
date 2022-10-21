@@ -4,14 +4,14 @@ const {
   generateReportsService,
   updateUserProfileService,
   getReportDetailsService,
-} = require("./admin");
+} = require("../services/admin");
 
 const {
   loginService,
   logoutService,
   revalidateService,
   signupService,
-} = require("./auth.js");
+} = require("../services/auth");
 
 const {
   getDoctorAppointmentsService,
@@ -21,7 +21,8 @@ const {
   checkMedAvailabilityService,
   referAnotherDoctorAppointmentService,
   updateAppointmentService,
-} = require("./doctor.js");
+  getPrescriptionByAppointmentService,
+} = require("../services/doctor");
 
 const {
   DeleteInventoryService,
@@ -30,7 +31,7 @@ const {
   editMedicineService,
   getMedicine,
   searchInventoryService,
-} = require("./inventory");
+} = require("../services/inventory");
 
 const {
   addTest,
@@ -39,25 +40,25 @@ const {
   getAllTests,
   getTest,
   getTestsByType,
-} = require("./lab");
+} = require("../services/lab");
 
 const {
   createPatientService,
   deletePatientService,
   getPatientByIdService,
   searchPatientsService,
-} = require("./patient.js");
+} = require("../services/patient");
 
 const {
   dispensePrescriptionService,
   getAllPrescriptionsService,
   getPrescriptionByIdService,
-} = require("./pharmacist");
+} = require("../services/pharmacist");
 
 const {
   createAppointmentService,
   getAppointmentByIdService,
-} = require("./reception");
+} = require("../services/reception");
 
 module.exports = {
   editPermissionsService,
@@ -103,5 +104,6 @@ module.exports = {
   getAppointmentByIdService,
   checkMedAvailabilityService,
   referAnotherDoctorAppointmentService,
+  getPrescriptionByAppointmentService,
   updateAppointmentService,
 };

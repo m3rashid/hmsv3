@@ -4,13 +4,12 @@ import { Button, Form, Select, Spin } from "antd";
 import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
-import { socket } from "../../api/socket";
-import { instance } from "../../api/instance";
-import { pharmacyState } from "../../atoms/pharmacy";
-// import GeneratePdf from "../../components/generatePdf";
-import MedicineTable from "../../components/Pharmacy/MedicineTable";
-import usePrescribeMedicines from "../../components/Doctor/hooks/prescribeMeds.hook";
-import ShowReceipt from "./ShowReciept";
+import { socket } from "api/socket";
+import { instance } from "api/instance";
+import { pharmacyState } from "atoms/pharmacy";
+import ShowReceipt from "pages/pharmacy/ShowReciept";
+import MedicineTable from "components/Pharmacy/MedicineTable";
+import usePrescribeMedicines from "components/Doctor/hooks/prescribeMeds.hook";
 
 function CreateReceipts() {
   const {
@@ -75,7 +74,7 @@ function CreateReceipts() {
     prescriptionId,
   ]);
 
-  const [total, setTotal] = useState({});
+  // const [total, setTotal] = useState({});
   const formSubmitHandler = async (values) => {
     if (loading) return;
 
@@ -84,7 +83,7 @@ function CreateReceipts() {
       medicines: selectedMedicines,
     });
 
-    setTotal({});
+    // setTotal({});
     setSelectedPrescription(null);
     setSelectedPrescriptionData({ data: [] });
     form.resetFields();

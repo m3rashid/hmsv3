@@ -2,8 +2,8 @@ import React from "react";
 import { Button, Space, Typography } from "antd";
 import { LogoutOutlined, UserOutlined } from "@ant-design/icons";
 
-import AuthModal from "../Modal/AuthModal";
-import LogoutModal from "../Modal/logoutModal";
+import AuthModal from "components/Modal/AuthModal";
+import LogoutModal from "components/Modal/logoutModal";
 
 const UserTop = ({ Auth, setAuth }) => {
   const [isModalVisible, setIsModalVisible] = React.useState(false);

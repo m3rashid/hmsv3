@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 
-import { toSentenceCase } from "../../utils/strings";
+import { toSentenceCase } from "utils/strings";
 
 const AdminWrapper = ({ aside, children }) => {
   const { pathname } = useLocation();

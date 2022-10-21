@@ -1,9 +1,9 @@
 import React from "react";
 import { Tabs, Typography } from "antd";
 
-import AddNewInventory from "./AddNew";
-import styles from "./style.module.css";
-import InventoryDisplay from "./Display";
+import styles from "pages/inventory/style.module.css";
+import AddNewInventory from "components/Inventory/AddNew";
+import InventoryDisplay from "components/Inventory/Display";
 
 const { TabPane } = Tabs;
 

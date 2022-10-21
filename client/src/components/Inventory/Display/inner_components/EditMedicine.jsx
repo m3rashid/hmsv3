@@ -3,9 +3,9 @@ import { message } from "antd";
 import PropTypes from "prop-types";
 import { useSetRecoilState } from "recoil";
 
-import { instance } from "../../../../api/instance";
-import { inventoryState } from "../../../../atoms/inventory";
-import InventoryFormHandler from "../../../../components/Inventory/FormHandler";
+import { instance } from "api/instance";
+import { inventoryState } from "atoms/inventory";
+import InventoryFormHandler from "components/Inventory/FormHandler";
 
 function EditMedicine(props) {
   const setInventoryData = useSetRecoilState(inventoryState);

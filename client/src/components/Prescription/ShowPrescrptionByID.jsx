@@ -1,8 +1,9 @@
 import React from "react";
 import { useQuery } from "react-query";
-import { instance } from "../../api/instance";
-import DisplayMedicine from "../Doctor/DisplayMedicine";
-import Loading from "../Loading/Loading";
+
+import { instance } from "api/instance";
+import Loading from "components/Loading/Loading";
+import DisplayMedicine from "components/Doctor/DisplayMedicine";
 
 function ShowPrescriptionByID({ id, type }) {
   const { data, isLoading, isError } = useQuery(

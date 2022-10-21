@@ -1,6 +1,6 @@
-const { serverActions } = require("../utils/constants");
-const { addEventLog } = require("../utils/logs");
 const prisma = require("../utils/prisma");
+const { addEventLog } = require("../utils/logs");
+const { serverActions } = require("../utils/constants");
 
 const addTest = async ({
   name,

@@ -1,8 +1,8 @@
 import React from "react";
-import ProfileWrapper from "../../../components/Profile/ProfileWrapper";
-import AdminWrapper from "../adminWrapper";
 
-import CreateUserModal from "./helpers/createUserModal";
+import AdminWrapper from "components/Admin/adminWrapper";
+import ProfileWrapper from "components/Profile/ProfileWrapper";
+import CreateUserModal from "components/Admin/modules/helpers/createUserModal";
 
 const Home = () => {
   return (

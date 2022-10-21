@@ -1,7 +1,7 @@
 import React from "react";
 import { Spin, Image, Space, Typography } from "antd";
 
-import styles from "./loading.module.less";
+import styles from "components/Loading/loading.module.less";
 
 function Loading({ spin = true, text = "Loading..." }) {
   return (

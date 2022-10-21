@@ -1,11 +1,10 @@
 import React from "react";
 
-import { showGender, toSentenceCase } from "../../../../utils/strings";
-import CreateUserModal from "./createUserModal";
-import UserDetailsModal from "./userDetailsModal";
+import { showGender, toSentenceCase } from "utils/strings";
+import CreateUserModal from "components/Admin/modules/helpers/createUserModal";
+import UserDetailsModal from "components/Admin/modules/helpers/userDetailsModal";
 
 export const formatForTable = (users) => {
-  // console.log({ users });
   const data = users.reduce((acc, user) => {
     try {
       return [
@@ -32,11 +31,9 @@ export const formatForTable = (users) => {
         },
       ];
     } catch (err) {
-      // console.log({ err });
       return [...acc];
     }
   }, []);
-  // console.log({ data });
   return data;
 };
 

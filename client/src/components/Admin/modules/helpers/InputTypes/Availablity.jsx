@@ -1,9 +1,10 @@
-import { Button, Divider, Select, Space, TimePicker } from "antd";
-import React, { useCallback, useEffect, useState } from "react";
 import moment from "moment";
-import { DeleteFilled } from "@ant-design/icons";
 import { useRecoilState } from "recoil";
-import { UserSlotManagerAtom } from "../../../../../atoms/UserSlotManager";
+import { DeleteFilled } from "@ant-design/icons";
+import React, { useCallback, useEffect } from "react";
+import { Button, Divider, Select, Space, TimePicker } from "antd";
+
+import { UserSlotManagerAtom } from "atoms/UserSlotManager";
 
 function Availability({ isEdit, defaultValue, form }) {
   const [Data, setData] = useRecoilState(UserSlotManagerAtom);
@@ -19,12 +20,12 @@ function Availability({ isEdit, defaultValue, form }) {
     if (Data == null) setData(defaultValue || []);
   }, [Data, defaultValue, setData]);
 
-  const DATA_REMOVE = useCallback(
-    (payload) => {
-      setData(Data.filter((item) => item.id !== payload.id));
-    },
-    [Data, setData]
-  );
+  // const DATA_REMOVE = useCallback(
+  //   (payload) => {
+  //     setData(Data.filter((item) => item.id !== payload.id));
+  //   },
+  //   [Data, setData]
+  // );
 
   const DATA_UPDATE = useCallback(
     (payload) => {
@@ -42,9 +43,6 @@ function Availability({ isEdit, defaultValue, form }) {
     },
     [Data, setData]
   );
-  useEffect(() => {
-    // console.log("Availability Data Render");
-  }, []);
 
   useEffect(() => {
     if (Data !== defaultValue) {
@@ -55,8 +53,6 @@ function Availability({ isEdit, defaultValue, form }) {
   }, [form, Data, defaultValue]);
 
   const UpdateSlotTimingHandler = (value, rangeItem, item) => {
-    // console.log(value, rangeItem, item);
-
     const newItem = {
       ...item,
       range: item.range.map((_item) => {
@@ -78,8 +74,6 @@ function Availability({ isEdit, defaultValue, form }) {
     };
     DATA_UPDATE(newItem);
   };
-
-  // console.log(Data);
 
   return (
     <div>
@@ -147,8 +141,6 @@ function Availability({ isEdit, defaultValue, form }) {
                     htmlType="button"
                     color="danger"
                     onClick={() => {
-                      // console.log("remove", item);
-
                       DATA_UPDATE({
                         ...item,
                         range: item.range.filter(

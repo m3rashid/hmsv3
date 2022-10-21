@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Form,
   Button,
@@ -8,10 +8,12 @@ import {
   message,
   Typography,
 } from "antd";
-import { socket } from "../../api/socket";
-import { showGender } from "../../utils/strings";
 import { useRecoilState } from "recoil";
-import { LoadingAtom } from "../../atoms/loading";
+
+import { socket } from "api/socket";
+import { showGender } from "utils/strings";
+import { LoadingAtom } from "atoms/loading";
+
 const { TextArea } = Input;
 
 const CreatePatientForm = () => {
@@ -26,7 +28,7 @@ const CreatePatientForm = () => {
     from.resetFields();
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     socket.on("new-patient-created", ({ data }) => {
       message.success(`Patient ${data.name} created successfully!`);
       setLoadingData({

@@ -1,4 +1,4 @@
-import { instance } from "../instance";
+import { instance } from "api/instance";
 
 export const revalidateJWT = async (setAuth, setSocket) => {
   const token = localStorage.getItem("refresh_token");

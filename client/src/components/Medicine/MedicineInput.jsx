@@ -5,10 +5,10 @@ import { useDebounce } from "use-debounce";
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Col, Input, Row, Select, Space, Typography } from "antd";
 
-import { instance } from "../../api/instance";
-import { dosages } from "../../utils/constants";
-import styles from "./medicineinput.module.css";
-import { inventoryState } from "../../atoms/inventory";
+import { instance } from "api/instance";
+import { dosages } from "utils/constants";
+import { inventoryState } from "atoms/inventory";
+import styles from "components/Medicine/medicineinput.module.css";
 
 const MedicineInput = ({
   index,
@@ -19,7 +19,6 @@ const MedicineInput = ({
   isExtra,
 }) => {
   const medicineDB = useRecoilValue(inventoryState);
-  // console.log(medicineDB);
   const [MedicineData, setMedicineData] = useState(medicine);
   const [availabilityInfo, setAvailabilityInfo] = useState({
     available: true,
@@ -71,8 +70,6 @@ const MedicineInput = ({
   useEffect(() => {
     UpdateMedicine(medicineType, { ...value, ...availabilityInfo }, index);
   }, [value, availabilityInfo, UpdateMedicine, medicineType, index]);
-
-  // console.log(MedicineData);
 
   return (
     <Row

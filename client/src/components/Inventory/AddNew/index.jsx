@@ -2,9 +2,9 @@ import React from "react";
 import { message } from "antd";
 import { useSetRecoilState } from "recoil";
 
-import { instance } from "../../../api/instance";
-import { inventoryState } from "../../../atoms/inventory";
-import InventoryFormHandler from "../FormHandler";
+import { instance } from "api/instance";
+import { inventoryState } from "atoms/inventory";
+import InventoryFormHandler from "components/Inventory/FormHandler";
 
 const AddNewInventory = () => {
   const setInventoryData = useSetRecoilState(inventoryState);

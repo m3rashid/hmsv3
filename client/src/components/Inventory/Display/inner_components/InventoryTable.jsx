@@ -16,12 +16,11 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import React, { useEffect, useMemo, useState } from "react";
 
-import EditMedicine from "./EditMedicine";
-
-import { authState } from "../../../../atoms/auth";
-import { instance } from "../../../../api/instance";
-import { inventoryState } from "../../../../atoms/inventory";
-import { allPermissions } from "../../../../utils/constants";
+import { authState } from "atoms/auth";
+import { instance } from "api/instance";
+import { inventoryState } from "atoms/inventory";
+import { allPermissions } from "utils/constants";
+import EditMedicine from "components/Inventory/Display/inner_components/EditMedicine";
 
 function InventoryTable(prop) {
   const auth = useRecoilValue(authState);

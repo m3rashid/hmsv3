@@ -1,7 +1,7 @@
 import React from "react";
 import io from "socket.io-client";
 
-import { SOCKET_URL } from "./config";
+import { SOCKET_URL } from "globals/config";
 
 export const socket = io(SOCKET_URL);
 

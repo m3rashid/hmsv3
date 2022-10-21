@@ -1,8 +1,8 @@
 import React from "react";
 import { Tabs } from "antd";
 
-import Active from "../../components/Appointments/active"
-import Completed from "../../components/Appointments/completed";
+import Active from "components/Appointments/active";
+import Completed from "components/Appointments/completed";
 
 const Appointments = () => {
   return (

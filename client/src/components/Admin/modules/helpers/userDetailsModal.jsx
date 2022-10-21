@@ -1,10 +1,10 @@
 import React from "react";
 import { Modal, Button, Space, Form, Select, message } from "antd";
 
-import { instance } from "../../../../api/instance";
-import { toSentenceCase } from "../../../../utils/strings";
-import ShowEntry from "../../../../components/common/showEntry";
-import { allPermissions, backToRealDays } from "../../../../utils/constants";
+import { instance } from "api/instance";
+import { toSentenceCase } from "utils/strings";
+import ShowEntry from "components/common/showEntry";
+import { allPermissions, backToRealDays } from "utils/constants";
 
 const UserDetailsModal = ({ data }) => {
   const [editPermissions, setEditPermissions] = React.useState(false);

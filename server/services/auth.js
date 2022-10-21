@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 
 const prisma = require("../utils/prisma");
-const { issueJWT, revalidateJWT } = require("../utils/jwt.js");
+const { issueJWT, revalidateJWT } = require("../utils/jwt");
 const {
   supportedUserRoles,
   permissions,

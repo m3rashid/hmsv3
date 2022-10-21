@@ -4,16 +4,12 @@ import { useParams } from "react-router-dom";
 import React, { useCallback, useMemo, useState } from "react";
 import { Row, Col, Typography, Divider, Button, Table, Drawer } from "antd";
 
-import styles from "./styles.module.css";
-import { instance } from "../../api/instance";
-import Loading from "../../components/Loading/Loading";
-import DoctorDisplay from "../../components/Doctor/DoctorDisplay";
-import PrescriptionDisplay from "../../components/Prescription/PrescriptionDisplay";
+import { instance } from "api/instance";
+import Loading from "components/Loading/Loading";
+import styles from "pages/patient/styles.module.css";
+import DoctorDisplay from "components/Doctor/DoctorDisplay";
+import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
 
-/**
- * @description Displays Patient Info and Appointments
- * @returns {JSX.Element}
- */
 const PatientInfo = (props) => {
   const { id } = useParams();
   const { data, isLoading, isError } = useQuery(
@@ -53,19 +49,6 @@ const PatientInfo = (props) => {
     []
   );
 
-  // Data Schema for Doctor Info
-  // const DoctorInfo = useMemo(
-  //   () => [
-  //     { title: "ID No.", dataIndex: "id" },
-  //     { title: "Authority Name", dataIndex: "authorityName" },
-  //     { title: "Designation", dataIndex: "designation" },
-  //     { title: "Sex", dataIndex: "sex" },
-  //     { title: "Bio", dataIndex: "bio" },
-  //   ],
-  //   []
-  // );
-
-  // Handle Modal
   const PrescriptionModalHandler = useCallback(
     (item) => () => {
       setPrescriptionModal(() => {

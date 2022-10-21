@@ -1,10 +1,13 @@
 const dayjs = require("dayjs");
-const prisma = require("../utils/prisma");
-const { permissions, serverActions } = require("../utils/constants");
-const { quantityCalculator } = require("../utils/medecine.helpers");
-const { addEventLog } = require("../utils/logs");
 const { Days } = require("@prisma/client");
+
+const prisma = require("../utils/prisma");
+const { addEventLog } = require("../utils/logs");
+const { quantityCalculator } = require("../utils/medecine.helpers");
+const { permissions, serverActions } = require("../utils/constants");
+
 console.log(Days);
+
 const getDoctorAppointmentsService = async (
   userId,
   { limit, offset, pending } = {}

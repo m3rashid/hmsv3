@@ -6,8 +6,8 @@ const {
   referAnotherDoctorAppointmentService,
   checkMedAvailabilityService,
   getAppointmentByIdService,
+  getPrescriptionByAppointmentService,
 } = require("../services");
-const { getPrescriptionByAppointmentService } = require("../services/doctor");
 const { permissions } = require("../utils/constants");
 
 const getDoctorAppointments = async (req, res) => {

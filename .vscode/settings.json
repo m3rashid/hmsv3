@@ -7,7 +7,7 @@
     "source.fixAll.format": true
   },
   "[dotenv]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "sqltools.connections": [
     {

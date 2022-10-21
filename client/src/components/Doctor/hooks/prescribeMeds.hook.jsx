@@ -5,8 +5,8 @@ import { useCallback, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { doctorState } from "../../../atoms/doctor";
-import { LoadingAtom } from "../../../atoms/loading";
+import { doctorState } from "atoms/doctor";
+import { LoadingAtom } from "atoms/loading";
 
 const usePrescribeMedicines = (socket) => {
   const [form] = Form.useForm();

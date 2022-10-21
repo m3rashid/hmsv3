@@ -6,8 +6,8 @@ const {
   getPatientById,
   searchPatients,
 } = require("../controllers");
-const { useRoute } = require("../utils/errors.js");
-const { checkAuth } = require("../middlewares/auth.js");
+const { useRoute } = require("../utils/errors");
+const { checkAuth } = require("../middlewares/auth");
 
 const router = express.Router();
 

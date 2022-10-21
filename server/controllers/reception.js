@@ -1,5 +1,5 @@
-const { createAppointmentService } = require("../services");
 const { permissions } = require("../utils/constants");
+const { createAppointmentService } = require("../services");
 
 const createAppointment = async (req, res) => {
   if (!req.isAuthenticated) throw new Error("Unauthorized");

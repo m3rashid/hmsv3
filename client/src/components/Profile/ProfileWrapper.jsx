@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Badge, Card, Col, Divider, PageHeader, Row } from "antd";
 
-import { authState } from "../../atoms/auth";
+import { authState } from "atoms/auth";
 
 const ProfileWrapper = ({ children }) => {
   const auth = useRecoilValue(authState);

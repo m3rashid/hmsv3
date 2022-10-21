@@ -1,13 +1,13 @@
 import { message, Tabs, Badge } from "antd";
 import React, { createContext } from "react";
 
-import { socket } from "../../api/socket";
-import Prescriptions from "./Prescriptions";
-import InventoryTable from "./InventoryTable";
-import CreateReceipts from "./CreateReceipts";
-import Notifications from "../doctor/notifications";
-import useNotifications from "../../Hooks/useNotifications";
-import usePharmacy from "../../components/Pharmacy/usePharmacy";
+import { socket } from "api/socket";
+import useNotifications from "Hooks/useNotifications";
+import Notifications from "pages/doctor/notifications";
+import Prescriptions from "pages/pharmacy/Prescriptions";
+import usePharmacy from "components/Pharmacy/usePharmacy";
+import InventoryTable from "pages/pharmacy/InventoryTable";
+import CreateReceipts from "pages/pharmacy/CreateReceipts";
 
 export const PharmacyContext = createContext();
 

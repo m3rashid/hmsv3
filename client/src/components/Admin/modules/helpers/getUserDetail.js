@@ -1,9 +1,9 @@
-import { useRecoilState } from "recoil";
-import { instance } from "../../../../api/instance";
-
-import { formatForTable } from "./table";
-import { adminState } from "../../../../atoms/admin";
 import { Button, message } from "antd";
+import { useRecoilState } from "recoil";
+
+import { instance } from "api/instance";
+import { adminState } from "atoms/admin";
+import { formatForTable } from "components/Admin/modules/helpers/table";
 
 const useGetUserDetail = ({ userType, userRole }) => {
   const [adminData, setAdminData] = useRecoilState(adminState);

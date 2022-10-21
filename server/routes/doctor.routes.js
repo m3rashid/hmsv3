@@ -9,8 +9,8 @@ const {
   createPrescriptionByDoctor,
   checkMedAvailability,
 } = require("../controllers");
-const { useRoute } = require("../utils/errors.js");
-const { checkAuth } = require("../middlewares/auth.js");
+const { useRoute } = require("../utils/errors");
+const { checkAuth } = require("../middlewares/auth");
 const { GetPrescriptionByAppointmentID } = require("../controllers/doctor");
 
 const router = express.Router();

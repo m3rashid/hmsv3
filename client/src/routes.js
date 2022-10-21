@@ -1,5 +1,3 @@
-import Patient from "./pages/patient";
-
 import {
   Home as AdminHome,
   Receptionists,
@@ -10,22 +8,23 @@ import {
   CoAdmins,
   Others,
   LogReports,
-} from "./pages/admin";
+} from "pages/admin";
+import Patient from "pages/patient";
+import ProfilePage from "pages/profile";
+import Prescriptions from "pages/pharmacy/Prescriptions";
+import DoctorAppointments from "pages/doctor/Appointments";
+import CreateReceipts from "pages/pharmacy/CreateReceipts";
+import PrescriptionForm from "pages/doctor/PrescribeMedicine";
+import CreatePatientForm from "pages/reception/CreatePatient";
+import CreateAppointmentForm from "pages/reception/CreateAppointment";
+
 import {
   Medicines,
   NonMedicines,
   OtherAssets,
-} from "./components/Inventory/Display";
-import AddNewInventory from "./components/Inventory/AddNew";
-import Prescriptions from "./pages/pharmacy/Prescriptions";
-import DoctorAppointments from "./pages/doctor/Appointments";
-import CreateReceipts from "./pages/pharmacy/CreateReceipts";
-import PrescriptionForm from "./pages/doctor/PrescribeMedicine";
-import CreatePatientForm from "./pages/reception/CreatePatient";
-import CreateAppointmentForm from "./pages/reception/CreateAppointment";
-
-import { allPermissions } from "./utils/constants";
-import ProfilePage from "./pages/profile";
+} from "components/Inventory/Display";
+import { allPermissions } from "utils/constants";
+import AddNewInventory from "components/Inventory/AddNew";
 
 export const checkAccess = (Auth, route) => {
   if (!Auth.isLoggedIn) {

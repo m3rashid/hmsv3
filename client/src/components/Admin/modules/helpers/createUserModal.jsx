@@ -11,12 +11,12 @@ import {
 import React from "react";
 import { useSetRecoilState } from "recoil";
 
-import useGetUserDetail from "./getUserDetail";
-import { instance } from "../../../../api/instance";
-import Availability from "./InputTypes/Availablity";
-import { showGender, toSentenceCase } from "../../../../utils/strings";
-import { UserSlotManagerAtom } from "../../../../atoms/UserSlotManager";
-import { supportedUserRoles, Category } from "../../../../utils/constants";
+import { instance } from "api/instance";
+import { showGender, toSentenceCase } from "utils/strings";
+import { UserSlotManagerAtom } from "atoms/UserSlotManager";
+import { supportedUserRoles, Category } from "utils/constants";
+import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
+import Availability from "components/Admin/modules/helpers/InputTypes/Availablity";
 
 const requiredFormFields = [
   { key: "name", label: "Name", inputType: "text", otherRules: [{}] },

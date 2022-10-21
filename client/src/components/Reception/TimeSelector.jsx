@@ -3,7 +3,7 @@ import { DatePicker } from "antd";
 import PropTypes from "prop-types";
 import React, { useCallback } from "react";
 
-import { Days } from "../../utils/constants";
+import { Days } from "utils/constants";
 
 function DoctorTimeSelector({ doctor, onChange, style }) {
   const createRange = useCallback((list = [], last) => {

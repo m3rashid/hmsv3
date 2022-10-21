@@ -3,16 +3,16 @@ import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { socket } from "../../api/socket";
-import { authState } from "../../atoms/auth";
-import { instance } from "../../api/instance";
-import { doctorState } from "../../atoms/doctor";
-import { LoadingAtom } from "../../atoms/loading";
-import { pharmacyState } from "../../atoms/pharmacy";
-import { functionState } from "../../atoms/functions";
-import { inventoryState } from "../../atoms/inventory";
-import useNotifications from "../../Hooks/useNotifications";
-import { InventoryTypes, allPermissions } from "../../utils/constants";
+import { socket } from "api/socket";
+import { authState } from "atoms/auth";
+import { instance } from "api/instance";
+import { doctorState } from "atoms/doctor";
+import { LoadingAtom } from "atoms/loading";
+import { pharmacyState } from "atoms/pharmacy";
+import { functionState } from "atoms/functions";
+import { inventoryState } from "atoms/inventory";
+import useNotifications from "Hooks/useNotifications";
+import { InventoryTypes, allPermissions } from "utils/constants";
 
 // Used for all on socket events
 export default function useFetchSockets() {

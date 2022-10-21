@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Space, Table } from "antd";
-import AdminWrapper from "../adminWrapper";
+
+import AdminWrapper from "components/Admin/adminWrapper";
 
 const Patients = () => {
   const columns = [

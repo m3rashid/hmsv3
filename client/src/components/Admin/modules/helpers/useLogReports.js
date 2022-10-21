@@ -1,8 +1,8 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 
-import { instance } from "../../../../api/instance";
-import { logReports } from "../../../../atoms/logs";
+import { instance } from "api/instance";
+import { logReports } from "atoms/logs";
 
 const initialState = {
   action: {},

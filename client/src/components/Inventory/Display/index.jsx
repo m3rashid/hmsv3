@@ -1,7 +1,8 @@
 import React from "react";
-import { InventoryTypes } from "../../../utils/constants";
-import InventoryTable from "./components/InventoryTable";
-import InventoryWrapper from "./inventoryWrapper";
+
+import { InventoryTypes } from "utils/constants";
+import InventoryWrapper from "components/Inventory/Display/inventoryWrapper";
+import InventoryTable from "components/Inventory/Display/inner_components/InventoryTable";
 
 export const Medicines = () => (
   <InventoryWrapper>

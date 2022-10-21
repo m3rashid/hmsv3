@@ -12,9 +12,9 @@ import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
 import React, { useState } from "react";
 
-import { inventoryState } from "../../atoms/inventory";
-import StatefullFormRenderer from "../common/StatefullFormRenderer";
-import { Category, InventoryTypes, MedType } from "../../utils/constants";
+import { inventoryState } from "atoms/inventory";
+import { Category, InventoryTypes, MedType } from "utils/constants";
+import StatefullFormRenderer from "components/common/StatefullFormRenderer";
 
 function InventoryFormHandler(props) {
   const inventory = useRecoilValue(inventoryState);

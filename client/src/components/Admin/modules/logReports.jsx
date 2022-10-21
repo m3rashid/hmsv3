@@ -2,10 +2,10 @@ import dayjs from "dayjs";
 import React from "react";
 import { Button, Modal, Table } from "antd";
 
-import AdminWrapper from "../adminWrapper";
-import useLogReports from "./helpers/useLogReports";
-import { toSentenceCase } from "../../../utils/strings";
-import ShowEntry from "../../../components/common/showEntry";
+import { toSentenceCase } from "utils/strings";
+import ShowEntry from "components/common/showEntry";
+import AdminWrapper from "components/Admin/adminWrapper";
+import useLogReports from "components/Admin/modules/helpers/useLogReports";
 
 const LogReports = () => {
   const {

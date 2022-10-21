@@ -4,11 +4,10 @@ import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { message, Button, Space, Table, Tabs, Drawer } from "antd";
 
-import ShowReceipt from "./ShowReciept";
-import { instance } from "../../api/instance";
-import { pharmacyState } from "../../atoms/pharmacy";
-import PrescriptionDisplay from "../../components/Prescription/PrescriptionDisplay";
-
+import { instance } from "api/instance";
+import { pharmacyState } from "atoms/pharmacy";
+import ShowReceipt from "pages/pharmacy/ShowReciept";
+import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
 
 function Prescriptions() {
   const pharmacyData = useRecoilValue(pharmacyState);

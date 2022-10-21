@@ -2,8 +2,6 @@ import React from "react";
 import { Alert, Space, Typography } from "antd";
 
 const SingleMedicine = ({ index, medicine, isExtra }) => {
-  // console.log(medicine);
-
   return (
     <Space direction="vertical" key={index} style={{ marginLeft: 20 }}>
       <Space>

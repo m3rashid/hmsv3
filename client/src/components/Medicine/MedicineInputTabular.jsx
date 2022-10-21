@@ -6,16 +6,12 @@ import { useDebounce } from "use-debounce";
 import React, { useCallback, useEffect, useState } from "react";
 import { Button, Input, Select, Spin, Table, Typography } from "antd";
 
-import { instance } from "../../api/instance";
-import styles from "./medicineinput.module.css";
-import { dosages } from "../../utils/constants";
-import { inventoryState } from "../../atoms/inventory";
-// import usePrescribeMedicines from "../../pages/doctor/helpers/prescribeMeds.hook";
-
+import { instance } from "api/instance";
+import { dosages } from "utils/constants";
+import { inventoryState } from "atoms/inventory";
+import styles from "components/Medicine/medicineinput.module.css";
 
 const MedicineInputTable = ({ medicines, setMedicines }) => {
-  // console.log(medicines);
-
   const addEmptyMedicine = useCallback(
     (type) => {
       setMedicines((prev) => ({
