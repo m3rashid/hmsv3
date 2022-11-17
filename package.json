@@ -2,27 +2,6 @@
   "name": "hmsv2",
   "version": "1.0.0",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/FET-JMI/hmsv2.git"
-  },
-  "bugs": {
-    "url": "https://github.com/FET-JMI/hmsv2/issues"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint",
-      "prettier --write"
-    ],
-    "*.json": [
-      "prettier --write"
-    ]
-  },
   "scripts": {
     "prepare": "husky install",
     "check:format": "prettier --check .",
@@ -44,5 +23,26 @@
     "husky": "^7.0.4",
     "lint-staged": "^12.3.5",
     "prettier": "^2.7.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FET-JMI/hmsv2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FET-JMI/hmsv2/issues"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint",
+      "prettier --write"
+    ],
+    "*.json": [
+      "prettier --write"
+    ]
   }
 }
