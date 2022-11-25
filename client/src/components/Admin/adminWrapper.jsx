@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 import { toSentenceCase } from "utils/strings";
 
-const AdminWrapper = ({ aside, children }) => {
+const AdminWrapper = ({ aside, children, hideHeading }) => {
   const { pathname } = useLocation();
 
   const heading = pathname
@@ -22,7 +22,7 @@ const AdminWrapper = ({ aside, children }) => {
             justifyContent: "space-between",
           }}
         >
-          <h2>{heading}</h2>
+          {!hideHeading && <h2>{heading}</h2>}
           {aside}
         </div>
         <div style={{ marginTop: "10px", marginLeft: "0px" }}>{children}</div>

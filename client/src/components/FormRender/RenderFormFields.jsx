@@ -2,7 +2,7 @@ import { Select } from "antd";
 import Input from "rc-input";
 import React from "react";
 import { Form } from "react-router-dom";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 
 const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
   return (
@@ -63,20 +63,24 @@ const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
 };
 
 RenderFormFields.propTypes = {
-    formFields: PropTypes.arrayOf(PropTypes.shape({
-        key: PropTypes.string.isRequired,
-        label: PropTypes.string.isRequired,
-        inputType: PropTypes.string,
-        otherRules: PropTypes.array,
-        options: PropTypes.arrayOf(PropTypes.shape({
-            key: PropTypes.string.isRequired,
-            label: PropTypes.string.isRequired,
-        }))
-    })).isRequired,
-    isEdit: PropTypes.bool,
-    required: PropTypes.bool,
-    data: PropTypes.object,
-    form: PropTypes.object.isRequired,
-}
+  formFields: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      inputType: PropTypes.string,
+      otherRules: PropTypes.array,
+      options: PropTypes.arrayOf(
+        PropTypes.shape({
+          key: PropTypes.string.isRequired,
+          label: PropTypes.string.isRequired,
+        })
+      ),
+    })
+  ).isRequired,
+  isEdit: PropTypes.bool,
+  required: PropTypes.bool,
+  data: PropTypes.object,
+  form: PropTypes.object.isRequired,
+};
 
 export default RenderFormFields;

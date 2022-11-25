@@ -1,23 +1,14 @@
-import {
-  Modal,
-  Button,
-  Input,
-  Form,
-  message,
-  Select,
-  Collapse,
-  Space,
-} from "antd";
 import React from "react";
 import { useSetRecoilState } from "recoil";
+import { Modal, Button, Form, message, Collapse, Space } from "antd";
 
 import { instance } from "api/instance";
 import { showGender, toSentenceCase } from "utils/strings";
 import { UserSlotManagerAtom } from "atoms/UserSlotManager";
 import { supportedUserRoles, Category } from "utils/constants";
+import RenderFormFields from "components/FormRender/RenderFormFields";
 import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
 import Availability from "components/Admin/modules/helpers/InputTypes/Availablity";
-import RenderFormFields from "components/FormRender/RenderFormFields";
 
 const requiredFormFields = [
   { key: "name", label: "Name", inputType: "text", otherRules: [{}] },
@@ -95,7 +86,6 @@ const otherFormFields = [
   { key: "origin", label: "Origin", inputType: "text" },
 ];
 
-
 const CreateUserModal = ({ isEdit, data }) => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = React.useState(false);
@@ -148,18 +138,14 @@ const CreateUserModal = ({ isEdit, data }) => {
   return (
     <React.Fragment>
       <Space>
-        <Button
-          onClick={() => {
-            setIsModalVisible(true);
-          }}
-        >
+        <Button onClick={() => setIsModalVisible(true)}>
           {isEdit ? "Edit User" : "Register New User"}
         </Button>
       </Space>
 
       <Modal
         title="Create"
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}

@@ -21,7 +21,7 @@ const LogoutModal = ({ isModalVisible, setIsModalVisible, setAuth }) => {
     <Modal
       title="Logout"
       okText="Logout"
-      visible={isModalVisible}
+      open={isModalVisible}
       onOk={handleLogout}
       onCancel={handleCancel}
     >
