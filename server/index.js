@@ -11,6 +11,9 @@ const { checkSocketAuth } = require("./middlewares/socket.js");
 const { isProduction, corsOrigin } = require("./utils/config.js");
 const { globalErrorHandlerMiddleware } = require("./middlewares/error.js");
 
+const {
+  router: dataMigrationRoutes,
+} = require("./routes/dataMigration.routes.js");
 const { router: AdminRoutes } = require("./routes/admin.routes");
 const { router: AuthRoutes } = require("./routes/auth.routes.js");
 const { router: DoctorRoutes } = require("./routes/doctor.routes.js");
@@ -46,8 +49,10 @@ io.on("connection", (socket) => {
 });
 
 app.use(cors({ origin: corsOrigin, optionsSuccessStatus: 200 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "50mb", parameterLimit: 100000 }));
+app.use(
+  express.urlencoded({ extended: true, limit: "50mb", parameterLimit: 100000 })
+);
 app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
@@ -64,6 +69,7 @@ app.use("/api/patient", PatientRoutes);
 app.use("/api/reception", ReceptionRoutes);
 app.use("/api/inventory", InventoryRoutes);
 app.use("/api/pharmacy", PharmacyRoutes);
+app.use("/api/data-migration", dataMigrationRoutes);
 
 app.get("/health", (req, res) => {
   const healthcheck = {

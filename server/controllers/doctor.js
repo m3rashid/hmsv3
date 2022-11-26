@@ -116,7 +116,7 @@ const checkMedAvailability = async (req, res) => {
 const GetPrescriptionByAppointmentID = async (req, res) => {
   const { id } = req.query;
 
-  console.log(req.query);
+  // console.log(req.query);
 
   const data = await getPrescriptionByAppointmentService({
     id,

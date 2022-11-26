@@ -66,9 +66,9 @@ S.No EMP ID EMP NAME EMPLOYEE DESIGNATION FAMILY MEMBER NAME RELATIONSHIP FAMILY
 1. Convert the Excel sheet into json `employees.json`
 2. Iterate over the employees database,
    - If the employee is present in the `employees.json`,
-     - update the `isActive` field to `true` in database
+       <!-- - update the `isActive` field to `true` in database -->
      - remove those employees from the `employees.json`
-   - else update the `isActive` field in the database to `false`
+     <!-- - else update the `isActive` field in the database to `false` -->
 3. Iterate over the entries in `employees.json`
    - add the data to the database
      - check for field maps and put the data to desired place

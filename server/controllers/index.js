@@ -41,6 +41,8 @@ const {
 
 const { createAppointment } = require("../controllers/reception");
 
+const { handleDataMigration } = require("./dataMigration");
+
 module.exports = {
   editPermissions,
   getAllUsers,
@@ -76,4 +78,6 @@ module.exports = {
   getPrescriptionById,
 
   createAppointment,
+
+  handleDataMigration,
 };

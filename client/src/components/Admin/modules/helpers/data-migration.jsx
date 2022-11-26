@@ -2,24 +2,34 @@ import React from "react";
 import { Button, message, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
+import { instance } from "api/instance";
+
 const DataMigrationInput = () => {
   const [file, setFile] = React.useState(null);
 
   const onDrop = (e) => {
-    console.log("Dropped files", e.dataTransfer.files);
+    e.preventDefault();
     setFile(e.dataTransfer.files[0]);
   };
 
   const onChange = (info) => {
-    console.log("info", info);
     setFile(info.file);
   };
 
-  const uploadFile = () => {
+  const uploadFile = async () => {
     if (!file) {
       message.error("Please select a file to upload");
       return;
     }
+    const form = new FormData();
+    form.append("data", file.originFileObj);
+
+    const res = await instance.post("/data-migration", form, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    console.log(res);
   };
 
   return (

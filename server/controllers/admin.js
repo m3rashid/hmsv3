@@ -51,7 +51,7 @@ const updateUser = async (req, res) => {
     throw new Error("Unauthorized for this resource");
   }
 
-  console.log(req.body);
+  // console.log(req.body);
 
   const { auth, profile } = await updateUserProfileService(
     req.body.userId,
