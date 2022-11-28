@@ -60,6 +60,18 @@ enum Dosage {
   QW
 }
 
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  UNKNOWN
+}
+
 enum TestType {
   BLOOD_SUGAR
   BLOOD_PRESSURE
@@ -75,6 +87,14 @@ enum PatientType {
   PENSIONER
   FAMILY_PENSIONER
   DEPENDENT
+  OTHER
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
 }
 
 model Auth {
@@ -109,24 +129,30 @@ model Profile {
 }
 
 model Patient {
-  id          Int           @id @default(autoincrement())
-  empId       String        @unique
-  name        String
-  dob         DateTime
-  dor         DateTime
-  type        PatientType
-  isDeleted   Boolean
-  designation String?
-  for         String?
-  sex         Sex
-  lastVisit   String?
-  contact     String        @unique
-  address     String?
-  jamiaId     String?
-  userData    Json?
-  Appointment Appointment[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @default(now())
+  id                    Int           @id @default(autoincrement())
+  userId                String?       @unique // jamia ID for student and empId for employees
+  name                  String?
+  fathersName           String?
+  type                  PatientType
+  otherUser             String?
+  relationWithOtherUser String        @default("SELF")
+  sex                   Sex?
+  bloodGroup            BloodGroup    @default(UNKNOWN)
+  dob                   String?
+  dor                   String?
+  isDeleted             Boolean       @default(false)
+  designation           String?
+  department            String?
+  contact               String?
+  fdr                   String?
+  maritalStatus         MaritalStatus @default(SINGLE)
+  userData              Json?
+  lastVisit             String?
+  address               String?
+  dependentStatus       Boolean       @default(false)
+  Appointment           Appointment[]
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @default(now())
 }
 
 model Appointment {

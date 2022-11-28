@@ -3,18 +3,11 @@ const fs = require("fs");
 const { handleMigrationService } = require("../services/dataMigration");
 
 const handleDataMigration = async (req, res) => {
-  console.log(
-    "====================== Inside the handleDataMigration function ======================"
-  );
-  console.log("req.file: ", req.file);
-
+  console.log("File Got : ", req.file);
   if (!req.file) throw new Error("No files found");
+
   const { path: filePath } = req.file;
   const wb = XLSX.readFile(filePath);
-
-  // ============================= //
-  //    DO ALL PROCESSING HERE     //
-  // ============================= //
 
   const supportedSheets = [
     "Employee",
@@ -32,7 +25,11 @@ const handleDataMigration = async (req, res) => {
   }
 
   const [employeeSheet, pensionerSheet, familyPensionerSheet, dependentSheet] =
-    supportedSheets.map((s) => XLSX.utils.sheet_to_json(wb.Sheets[s]));
+    supportedSheets.map((s) =>
+      XLSX.utils.sheet_to_json(wb.Sheets[s], {
+        rawNumbers: false,
+      })
+    );
 
   const p1 = handleMigrationService("EMPLOYEE", employeeSheet, "EMP ID");
   const p2 = handleMigrationService("PENSIONER", pensionerSheet, "EMP ID");
@@ -45,7 +42,10 @@ const handleDataMigration = async (req, res) => {
 
   await Promise.all([p1, p2, p3, p4]);
 
-  console.log("Data Got:", {
+  clearInterval(timer);
+  console.log("Data migration completed successfully ");
+
+  console.log("Data Processed:", {
     employees: employeeSheet.length,
     pensioners: pensionerSheet.length,
     familyPensioners: familyPensionerSheet.length,

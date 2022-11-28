@@ -17,10 +17,16 @@ CREATE TYPE "Category" AS ENUM ('GENERAL_MEDICINE', 'CARDIOLOGY', 'DERMATOLOGY',
 CREATE TYPE "Dosage" AS ENUM ('OD', 'BD', 'TD', 'QD', 'OW', 'BW', 'TW', 'QW');
 
 -- CreateEnum
+CREATE TYPE "BloodGroup" AS ENUM ('A_POSITIVE', 'A_NEGATIVE', 'B_POSITIVE', 'B_NEGATIVE', 'O_POSITIVE', 'O_NEGATIVE', 'AB_POSITIVE', 'AB_NEGATIVE', 'UNKNOWN');
+
+-- CreateEnum
 CREATE TYPE "TestType" AS ENUM ('BLOOD_SUGAR', 'BLOOD_PRESSURE', 'URINE_ALBUMIN', 'URINE_GLUCOSE', 'URINE_POTASSIUM');
 
 -- CreateEnum
-CREATE TYPE "PatientType" AS ENUM ('EMPLOYEE', 'STUDENT', 'PENSIONER', 'FAMILY_PENSIONER', 'DEPENDENT');
+CREATE TYPE "PatientType" AS ENUM ('EMPLOYEE', 'STUDENT', 'PENSIONER', 'FAMILY_PENSIONER', 'DEPENDENT', 'OTHER');
+
+-- CreateEnum
+CREATE TYPE "MaritalStatus" AS ENUM ('SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED');
 
 -- CreateTable
 CREATE TABLE "Auth" (
@@ -58,20 +64,26 @@ CREATE TABLE "Profile" (
 -- CreateTable
 CREATE TABLE "Patient" (
     "id" SERIAL NOT NULL,
-    "empId" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "dob" TIMESTAMP(3) NOT NULL,
-    "dor" TIMESTAMP(3) NOT NULL,
+    "userId" TEXT,
+    "name" TEXT,
+    "fathersName" TEXT,
     "type" "PatientType" NOT NULL,
-    "isDeleted" BOOLEAN NOT NULL,
+    "otherUser" TEXT,
+    "relationWithOtherUser" TEXT NOT NULL DEFAULT 'SELF',
+    "sex" "Sex",
+    "bloodGroup" "BloodGroup" NOT NULL DEFAULT 'UNKNOWN',
+    "dob" TEXT,
+    "dor" TEXT,
+    "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "designation" TEXT,
-    "for" TEXT,
-    "sex" "Sex" NOT NULL,
-    "lastVisit" TEXT,
-    "contact" TEXT NOT NULL,
-    "address" TEXT,
-    "jamiaId" TEXT,
+    "department" TEXT,
+    "contact" TEXT,
+    "fdr" TEXT,
+    "maritalStatus" "MaritalStatus" NOT NULL DEFAULT 'SINGLE',
     "userData" JSONB,
+    "lastVisit" TEXT,
+    "address" TEXT,
+    "dependentStatus" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -193,10 +205,7 @@ CREATE TABLE "Log" (
 CREATE UNIQUE INDEX "Auth_email_key" ON "Auth"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Patient_empId_key" ON "Patient"("empId");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Patient_contact_key" ON "Patient"("contact");
+CREATE UNIQUE INDEX "Patient_userId_key" ON "Patient"("userId");
 
 -- AddForeignKey
 ALTER TABLE "Auth" ADD CONSTRAINT "Auth_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "Profile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

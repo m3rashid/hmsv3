@@ -8,7 +8,7 @@ S.No EMP ID EMP NAME EMPLOYEE DESIGNATION FAMILY MEMBER NAME RELATIONSHIP FAMILY
 
 ## User Table
 
-- jamiaId <!-- employee ID for employee and student Id fro student -->
+- userId <!-- employee ID for employee and student Id fro student -->
 - name
 - father
 - type <!-- EMPLOYEE, STUDENT, PENSIONER, FAMILY_PENSIONER,DEPENDENT -->
@@ -29,7 +29,8 @@ S.No EMP ID EMP NAME EMPLOYEE DESIGNATION FAMILY MEMBER NAME RELATIONSHIP FAMILY
 
 - ID : INT
 - EMP_ID : INT
-- Employee Name
+- Employee Name: String
+- Father's Name: String
 - Type : ENUM
 - Relation : String
 - Gender : ENUM
@@ -40,6 +41,7 @@ S.No EMP ID EMP NAME EMPLOYEE DESIGNATION FAMILY MEMBER NAME RELATIONSHIP FAMILY
 - Designation : String
 - Contact : String
 - FDR : INT
+- maritalStatus: ENUM
 - User_Data : JSON
 <!-- - PENSIONER_NAME : String
 - PENSIONER_RELATION

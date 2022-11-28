@@ -145,7 +145,9 @@ const signupService = async ({
     fromId: doneBy?.id ?? -1,
     actionId: profile?.id,
     actionTable: "profile",
-    message: `${doneBy?.name} <(${doneBy?.email})> created user ${user?.name} <(${user?.email})> as ${role}`,
+    message: `${doneBy?.name || "DEV"} <(${
+      doneBy?.email || "dev@jmi"
+    })> created user ${user?.name} <(${user?.email})> as ${role}`,
   });
 
   return user;
