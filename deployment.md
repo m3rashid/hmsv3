@@ -22,5 +22,3 @@
 ### Next Steps
 
 1. If desktop app would be better ?
-
-
