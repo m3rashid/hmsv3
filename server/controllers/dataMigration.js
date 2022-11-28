@@ -42,7 +42,6 @@ const handleDataMigration = async (req, res) => {
 
   await Promise.all([p1, p2, p3, p4]);
 
-  clearInterval(timer);
   console.log("Data migration completed successfully ");
 
   console.log("Data Processed:", {
