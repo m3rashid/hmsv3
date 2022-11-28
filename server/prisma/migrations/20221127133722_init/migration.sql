@@ -19,6 +19,9 @@ CREATE TYPE "Dosage" AS ENUM ('OD', 'BD', 'TD', 'QD', 'OW', 'BW', 'TW', 'QW');
 -- CreateEnum
 CREATE TYPE "TestType" AS ENUM ('BLOOD_SUGAR', 'BLOOD_PRESSURE', 'URINE_ALBUMIN', 'URINE_GLUCOSE', 'URINE_POTASSIUM');
 
+-- CreateEnum
+CREATE TYPE "PatientType" AS ENUM ('EMPLOYEE', 'STUDENT', 'PENSIONER', 'FAMILY_PENSIONER', 'DEPENDENT');
+
 -- CreateTable
 CREATE TABLE "Auth" (
     "id" SERIAL NOT NULL,
@@ -55,14 +58,20 @@ CREATE TABLE "Profile" (
 -- CreateTable
 CREATE TABLE "Patient" (
     "id" SERIAL NOT NULL,
+    "empId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "age" INTEGER NOT NULL,
+    "dob" TIMESTAMP(3) NOT NULL,
+    "dor" TIMESTAMP(3) NOT NULL,
+    "type" "PatientType" NOT NULL,
+    "isDeleted" BOOLEAN NOT NULL,
+    "designation" TEXT,
+    "for" TEXT,
     "sex" "Sex" NOT NULL,
     "lastVisit" TEXT,
     "contact" TEXT NOT NULL,
     "address" TEXT,
-    "email" TEXT,
     "jamiaId" TEXT,
+    "userData" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -182,6 +191,9 @@ CREATE TABLE "Log" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Auth_email_key" ON "Auth"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Patient_empId_key" ON "Patient"("empId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Patient_contact_key" ON "Patient"("contact");

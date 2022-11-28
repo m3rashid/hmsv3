@@ -1,11 +1,11 @@
-import { prisma } from "../utils/prisma";
+const { prisma } = require("../utils/prisma");
 
 const patientTypes = [
   "EMPLOYEE",
   "STUDENT",
   "PENSIONER",
   "FAMILY_PENSIONER",
-  "DEPENDANT",
+  "DEPENDENT",
 ];
 
 // mappers provide a way to map data from the excel sheet to the database
@@ -103,7 +103,7 @@ const correctMapper = {
  * - not complete
  * - only made keeping employees in mind
  */
-export const handleMigration = async (type, dataSheet, uniqueLabel) => {
+const handleMigrationService = async (type, dataSheet, uniqueLabel) => {
   const mapper = correctMapper[type];
 
   if (!patientTypes.includes(type)) {
@@ -119,35 +119,47 @@ export const handleMigration = async (type, dataSheet, uniqueLabel) => {
       [curr[uniqueLabel]]: curr,
     };
   }, {});
+  console.log(sheetData);
 
-  const dataDb = await prisma.patient.findMany({
-    where: { type: type },
-  });
+  // const dataDb = await prisma.patient.findMany({
+  //   where: { type: type },
+  // });
 
-  for (items in dataDb) {
-    if (sheetData[items[uniqueFieldInDb]]) {
-      sheetData[items[uniqueFieldInDb]] = null;
-    }
-  }
+  // for (items in dataDb) {
+  //   if (sheetData[items[uniqueFieldInDb]]) {
+  //     sheetData[items[uniqueFieldInDb]] = null;
+  //   }
+  // }
 
   // remove the null values from sheetData
-  const filteredData = Object.entries(sheetData).reduce((acc, [key, value]) => {
-    return value ? { ...acc, [key]: value } : acc;
-  }, {});
+
+  // const filteredData = Object.entries(sheetData).reduce((acc, [key, value]) => {
+  //   return value ? { ...acc, [key]: value } : acc;
+  // }, {});
 
   // convert the data to the format required by the database
-  Object.values(filteredData).forEach((dataItem) => {
-    const convertedData = Object.entries(dataItem).reduce(
-      (acc, [key, value]) => {
-        return { ...acc, [mapper[key]]: value };
-      },
-      {}
-    );
-    prisma.patient.create({
-      data: {
-        ...convertedData,
-        type: type,
-      },
-    });
-  });
+  // const promises = [];
+
+  // Object.values(filteredData).forEach((dataItem) => {
+  //   const convertedData = Object.entries(dataItem).reduce(
+  //     (acc, [key, value]) => {
+  //       return { ...acc, [mapper[key]]: value };
+  //     },
+  //     {}
+  //   );
+  //   promises.push(
+  //     prisma.patient.create({
+  //       data: {
+  //         ...convertedData,
+  //         type: type,
+  //       },
+  //     })
+  //   );
+  // });
+
+  // await Promise.all(promises);
+};
+
+module.exports = {
+  handleMigrationService,
 };

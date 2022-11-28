@@ -1,7 +1,14 @@
 const XLSX = require("xlsx");
 const fs = require("fs");
+const { handleMigrationService } = require("../services/dataMigration");
 
 const handleDataMigration = async (req, res) => {
+  console.log(
+    "====================== Inside the handleDataMigration function ======================"
+  );
+  console.log("req.file: ", req.file);
+
+  if (!req.file) throw new Error("No files found");
   const { path: filePath } = req.file;
   const wb = XLSX.readFile(filePath);
 
@@ -27,14 +34,14 @@ const handleDataMigration = async (req, res) => {
   const [employeeSheet, pensionerSheet, familyPensionerSheet, dependentSheet] =
     supportedSheets.map((s) => XLSX.utils.sheet_to_json(wb.Sheets[s]));
 
-  const p1 = handleDataMigration("EMPLOYEE", employeeSheet, "EMP ID");
-  const p2 = handleDataMigration("PENSIONER", pensionerSheet, "EMP ID");
-  const p3 = handleDataMigration(
+  const p1 = handleMigrationService("EMPLOYEE", employeeSheet, "EMP ID");
+  const p2 = handleMigrationService("PENSIONER", pensionerSheet, "EMP ID");
+  const p3 = handleMigrationService(
     "FAMILY_PENSIONER",
     familyPensionerSheet,
     "EMP ID"
   );
-  const p4 = handleDataMigration("DEPENDENT", dependentSheet, "EMP ID");
+  const p4 = handleMigrationService("DEPENDENT", dependentSheet, "EMP ID");
 
   await Promise.all([p1, p2, p3, p4]);
 

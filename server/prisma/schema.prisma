@@ -74,7 +74,7 @@ enum PatientType {
   STUDENT
   PENSIONER
   FAMILY_PENSIONER
-  DEPENDANT
+  DEPENDENT
 }
 
 model Auth {

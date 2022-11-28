@@ -12,3 +12,5 @@ hmsv2.code-workspace
 
 # Local Netlify folder
 .netlify
+server/uploads/*.*
+!server/uploads/.gitkeep
