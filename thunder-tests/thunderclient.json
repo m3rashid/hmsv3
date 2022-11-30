@@ -17,5 +17,24 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "abbe32bd-dac2-4ae2-ae98-39d7c3f745d6",
+    "colId": "7713ab23-0a5a-4c42-a3ac-ba9f8033fe2f",
+    "containerId": "",
+    "name": "Login",
+    "url": "{{host}}/api/auth/login",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2022-11-30T05:01:24.063Z",
+    "modified": "2022-11-30T05:02:18.225Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"email\": \"admin@jmi.ac.in\",\n  \"password\": \"admin123\"\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]

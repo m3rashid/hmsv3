@@ -4,17 +4,12 @@ const { checkAccess } = require("../utils/auth.helpers");
 const { permissions, serverActions } = require("../utils/constants");
 
 const createPatientService = async (
-  { name, age, sex, contact, address, email, jamiaId },
+  data,
   UserPermissions,
   doneBy
 ) => {
   if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions)) {
     throw new Error("Forbidden");
-  }
-
-  const data = { name, age, sex, contact, address, email, jamiaId };
-  if (!name || !age || !sex || !contact || !email) {
-    throw new Error("Missing credentials");
   }
 
   const newPatient = await prisma.patient.create({ data });
@@ -24,7 +19,7 @@ const createPatientService = async (
     fromId: doneBy.id,
     actionId: newPatient.id,
     actionTable: "patient",
-    message: `${doneBy.name} <(${doneBy.email})> created patient  ${name}  <(${email})>`,
+    message: `${doneBy?.name} <(${doneBy?.email})> created patient  ${data?.name}`,
   });
 
   return { patient: newPatient };
@@ -82,25 +77,18 @@ const getPatientByIdService = async (patientId) => {
 
 const searchPatientsService = async ({
   name,
-  minAge,
-  maxAge,
   sex,
   contact,
   address,
-  email,
-  jamiaId,
-  lastVisitedBefore,
-  lastVisitedAfter,
 }) => {
   const patients = await prisma.Patient.findMany({
     where: {
       OR: [
         { name: { contains: name } },
-        { age: { gte: minAge, lte: maxAge } },
+        // { age: { gte: minAge, lte: maxAge } },
         { sex: { eq: sex } },
         { contact: { contains: contact } },
         { address: { contains: address } },
-        { email: { contains: email } },
       ],
     },
     orderBy: { createdAt: "desc" },

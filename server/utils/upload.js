@@ -8,11 +8,11 @@ const upload = multer({
     },
 
     filename: (req, file, done) => {
-      const extenion = file.originalname.slice(
+      const extension = file.originalname.slice(
         file.originalname.lastIndexOf(".")
       );
 
-      done(null, file.fieldname + "-" + Date.now() + extenion);
+      done(null, file.fieldname + "-" + Date.now() + extension);
     },
   }),
 });

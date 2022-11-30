@@ -5,17 +5,9 @@ const {
 
 const createPatient =
   (io, socket) =>
-  async ({ name, age, sex, contact, address, email, jamiaId }) => {
+    async (data) => {
     const { patient } = await createPatientService(
-      {
-        name,
-        age,
-        sex,
-        contact,
-        email,
-        address,
-        jamiaId,
-      },
+      data,
       socket.user.permissions,
       socket.user
     );
