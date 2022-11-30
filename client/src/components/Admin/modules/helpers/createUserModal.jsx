@@ -128,6 +128,7 @@ const CreateUserModal = ({ isEdit, data }) => {
     }
   };
 
+
   const onFinishFailed = (errorInfo) => {
     message.error({
       content: "User creation Failed",
@@ -165,6 +166,7 @@ const CreateUserModal = ({ isEdit, data }) => {
             formFields={requiredFormFields}
             required={!isEdit}
             data={data}
+            // form={form}
           />
 
           <Collapse bordered={false} style={{ padding: 0, margin: 0 }}>

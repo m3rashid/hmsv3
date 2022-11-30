@@ -81,3 +81,22 @@ export const PatientTypeEnum = {
   FAMILY_PENSIONER: "FAMILY_PENSIONER",
   DEPENDANT: "DEPENDANT"
 }
+
+export const BloodGroup = {
+  "A_POSITIVE": "A_POSITIVE",
+  "A_NEGATIVE": "A_NEGATIVE",
+  "B_POSITIVE": "B_POSITIVE",
+  "B_NEGATIVE": "B_NEGATIVE",
+  "O_POSITIVE": "O_POSITIVE",
+  "O_NEGATIVE": "O_NEGATIVE",
+  "AB_POSITIVE": "AB_POSITIVE",
+  "AB_NEGATIVE": "AB_NEGATIVE",
+  "UNKNOWN": "UNKNOWN"
+}
+
+export const maritalStatus = {
+  "SINGLE": "SINGLE",
+  "MARRIED": "MARRIED",
+  "DIVORCED": "DIVORCED",
+  "WIDOWED": "WIDOWED",
+}

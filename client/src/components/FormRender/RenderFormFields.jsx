@@ -1,63 +1,70 @@
-import { Select } from "antd";
-import Input from "rc-input";
+import { Form, Input, Select } from "antd";
 import React from "react";
-import { Form } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
+
+
   return (
     <React.Fragment>
-      {formFields.map((f) => (
-        <Form.Item
-          key={f.key}
-          name={f.key}
-          label={f.label}
-          {...(required && {
-            rules: [
-              {
-                required: true,
-                message: `Please ${
-                  f.inputType === "select" ? "Select" : "Enter"
-                } a ${f.label}`,
-              },
-              ...f.otherRules,
-            ],
-          })}
-        >
-          {f.inputType === "select" ? (
-            <Select
-              {...(isEdit && { defaultValue: data[f.key] })}
-              {...(f.multiple && { mode: "multiple" })}
-              placeholder={`Select ${f.label}`}
-            >
-              {f.options.map((o) => (
-                <Select.Option key={o.key} value={o.key}>
-                  {o.label}
-                </Select.Option>
-              ))}
-            </Select>
-          ) : f.inputType === "textarea" ? (
-            <Input.TextArea
-              {...(isEdit && { defaultValue: data[f.key] })}
-              placeholder={f.label}
-              rows={3}
-            />
-          ) : f.inputType === "custom" ? (
-            <React.Fragment>
-              <f.component
-                {...(isEdit && { defaultValue: data[f.key] })}
-                form={form}
+      {formFields.map((f) => {
+        return (
+        <React.Fragment>
+          <Form.Item
+            key={f.key}
+            name={f.key}
+            label={f.label}
+            {...((required || f?.required) && {
+                rules: [
+                {
+                  required: true,
+                  message: `Please ${
+                    f.inputType === "select" ? "Select" : "Enter"
+                  } a ${f.label}`,
+                },
+                ...f.otherRules,
+                ],
+              }  )}
+          >
+            {f.inputType === "select" ? (
+              <Select
+              {...((f?.defaultValue !== undefined && !isEdit) && { defaultValue: f.defaultValue })}
+                  {...(isEdit && { defaultValue: data[f.key] })}
+                {...(f?.multiple && { mode: "multiple" })}
+                placeholder={`Select ${f.label}`}
+              >
+                {f.options.map((o) => (
+                  <Select.Option key={o.key} value={o.key}>
+                    {o.label}
+                  </Select.Option>
+                ))}
+              </Select>
+            ) : f.inputType === "textarea" ? (
+              <Input.TextArea
+              {...((f?.defaultValue !== undefined && !isEdit) && { defaultValue: f.defaultValue })}
+                    {...(isEdit && { defaultValue: data[f.key] })}
+                placeholder={f.label}
+                rows={3}
               />
-            </React.Fragment>
-          ) : (
-            <Input
-              {...(isEdit && { defaultValue: data[f.key] })}
-              placeholder={f.label}
-              type={f.inputType ?? "text"}
-            />
-          )}
-        </Form.Item>
-      ))}
+            ) : f.inputType === "custom" ? (
+              <React.Fragment>
+                <f.component
+                                            {...((f?.defaultValue !== undefined && !isEdit) && { defaultValue: f.defaultValue })}
+                        {...(isEdit && { defaultValue: data[f.key] })}
+                  form={form}
+                />
+              </React.Fragment>
+            ) : (
+              <Input
+              {...((f?.defaultValue !== undefined && !isEdit) && { defaultValue: f.defaultValue })}
+                        {...(isEdit && { defaultValue: data[f.key] })}
+                placeholder={f.label}
+                type={f.inputType ?? "text"}
+              />  
+            )}
+            </Form.Item>
+          </React.Fragment>
+      )})}
     </React.Fragment>
   );
 };

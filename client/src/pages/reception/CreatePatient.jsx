@@ -14,14 +14,128 @@ import { useRecoilState } from "recoil";
 import { socket } from "api/socket";
 import { showGender } from "utils/strings";
 import { LoadingAtom } from "atoms/loading";
-import { PatientTypeEnum } from "utils/constants";
+import { BloodGroup, maritalStatus, PatientTypeEnum } from "utils/constants";
+import RenderFormFields from "components/FormRender/RenderFormFields";
 
 const { TextArea } = Input;
+
+const PatientFormFields = [
+  {
+    key: "userId",
+    label: "User ID",
+    inputType: "text",
+    otherRules: [{}],
+  },
+  {
+    key: "name",
+    label: "Name",
+    inputType: "text",
+    otherRules: [{}],
+  },
+  {
+    key: "fathersName",
+    label: "Father's Name",
+    inputType: "text",
+    otherRules: [{}],
+  },
+  {
+    key: "type",
+    label: "Patient Type",
+    inputType: "select",
+    otherRules: [{}],
+    options: Object.keys(PatientTypeEnum).map((key) => ({
+      key,
+      label: PatientTypeEnum[key],
+    })),
+    required: true,
+  },
+  {
+    key: "otherUser",
+    label: "Other User",
+    inputType: "text",
+        otherRules: [{}],
+
+  },
+  {
+    key: "relationWithOtherUser",
+    label: "Relation with Other User",
+    inputType: "text",
+        otherRules: [{}],
+
+  },
+  {
+    key: "bloodGroup",
+    label: "Blood Group",
+    inputType: "select",
+    options: Object.keys(BloodGroup).map((key) => ({
+      key,
+      label: BloodGroup[key],
+    })),
+        otherRules: [{}],
+
+  },
+    {
+    key: "dob",
+    label: "Date of Birth",
+    inputType: "date",
+    otherRules: [{}],
+  },
+  {
+    key: "dor",
+    label: "Date of Resignation",
+    inputType: "date",
+    otherRules: [{}],
+  },
+  {
+    key: "designation",
+    label: "Designation",
+    inputType: "text",
+    otherRules: [{}],
+  },
+  {
+    key: "department",
+    label: "Department",
+    inputType: "text",
+    otherRules: [{}],
+
+  },
+  {
+    key: "contact",
+    label: "Contact",
+    inputType: "text",
+    otherRules: [{
+      pattern: new RegExp(/^[0-9]{10}$/),
+    }],
+  },
+  {
+    key: "fdr",
+    label: "FDR No.",
+    inputType: "text",
+    otherRules: [{}],
+  },
+  {
+    key: "maritalStatus",
+    label: "Marital Status",
+    inputType: "select",
+    options: Object.keys(maritalStatus).map((key) => ({
+      key,
+      label: key,
+    })),
+    otherRules: [{}],
+
+  },
+  {
+    key: "address",
+    label: "Address",
+    inputType: "textarea",
+    otherRules: [{}],
+
+  },
+]
 
 const CreatePatientForm = () => {
   const [LoadingData, setLoadingData] = useRecoilState(LoadingAtom);
   const [form] = Form.useForm();
-  const [PatientType, setPatientType] = useState("");
   const formSubmitHandler = (values) => {
     if (LoadingData?.CreatePatientForm) return;
     setLoadingData({
@@ -45,22 +159,7 @@ const CreatePatientForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const PatientFormField = useMemo(() => {
-    return [
-      {
-        formFields : [{
-        key: "empId",
-        label: "Employee ID",
-        inputType: "text",
-          otherRules: [{}],
-        }],
-        isEdit: false,
-        required: true,
-        data: {},
-        form: form,
-      }
-    ]
-  },[PatientType,form]);
+
 
   return (
     <React.Fragment>
@@ -68,18 +167,6 @@ const CreatePatientForm = () => {
         Create Patient
       </Typography.Title>
 
-      <Select
-        options={Object.keys(PatientTypeEnum).map((key) => ({
-          value: key,
-          label: PatientTypeEnum[key],
-        }))}
-        placeholder="Select Patient Type"
-        style={{ width: 200 }}
-        onChange={(value) => setPatientType(value)}
-        value={PatientType}
-  
-      />
-      
       
       <Form
         onFinish={formSubmitHandler}
@@ -89,45 +176,11 @@ const CreatePatientForm = () => {
         wrapperCol={{ span: 12 }}
         style={{ paddingLeft: 20 }}
       >
-        <Form.Item
-          label="Name"
-          name="name"
-          rules={[{ required: true, message: "Please Enter patient name!" }]}
-        >
-          <Input type="text" />
-        </Form.Item>
-        <Form.Item label="Age" name="age">
-          <InputNumber min={0} />
-        </Form.Item>
-        <Form.Item
-          label="Sex"
-          name="sex"
-          rules={[{ required: true, message: "Please select patient sex!" }]}
-        >
-          <Radio.Group size="large">
-            {["m", "f", "o"].map((gender, i) => (
-              <Radio.Button key={gender} value={gender}>
-                {showGender(gender)}
-              </Radio.Button>
-            ))}
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item
-          label="Contact"
-          name="contact"
-          rules={[{ required: true, message: "Please enter contact info!" }]}
-        >
-          <Input type="text" />
-        </Form.Item>
-        <Form.Item label="Address" name="address">
-          <TextArea type="text" />
-        </Form.Item>
-        <Form.Item name="email" label="Email">
-          <Input type="text" />
-        </Form.Item>
-        <Form.Item label="Jamia ID" name="jamiaId">
-          <Input type="text" />
-        </Form.Item>
+        <RenderFormFields
+          formFields={PatientFormFields}
+          isEdit={false}
+          required={false}
+        />
         <Form.Item wrapperCol={{ offset: 2 }}>
           <Button
             loading={LoadingData?.CreatePatientForm}
