@@ -4,6 +4,7 @@ const {
   updateUser,
   generateHmsReports,
   reportDetails,
+  getSinglePatientDetails,
 } = require("../controllers/admin");
 
 const { login, revalidate, signup } = require("../controllers/auth");
@@ -49,6 +50,7 @@ module.exports = {
   updateUser,
   generateHmsReports,
   reportDetails,
+  getSinglePatientDetails,
 
   login,
   revalidate,

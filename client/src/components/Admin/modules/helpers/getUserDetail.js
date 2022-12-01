@@ -13,16 +13,27 @@ const useGetUserDetail = ({ userType, userRole }) => {
     await getUsers();
   };
 
+  const getSinglePatientDetail = async (id) => {
+    const res = await instance.post("/admin/single-patient-details", {
+      id,
+    });
+    console.log(res.data);
+  };
+
   const getUsers = async () => {
     try {
       const res = await instance.post("/admin/all", { userRole });
 
-      const users = formatForTable(res.data.users);
+      const users =
+        userRole !== "PATIENT"
+          ? formatForTable(res.data.users)
+          : res.data.users;
       setAdminData((prev) => ({ ...prev, [userType]: users }));
     } catch (err) {}
   };
 
   const RefreshUserButton = () => {
+    console.log({ adminData });
     return (
       <Button
         onClick={() =>
@@ -39,6 +50,7 @@ const useGetUserDetail = ({ userType, userRole }) => {
     getUsers,
     RefreshUserButton,
     users: adminData[userType],
+    getSinglePatientDetail,
   };
 };
 

@@ -2,8 +2,20 @@ import React from "react";
 import { Button, Space, Table } from "antd";
 
 import AdminWrapper from "components/Admin/adminWrapper";
+import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
 
 const Patients = () => {
+  const { getAllUsers, users, RefreshUserButton, getSinglePatientDetail } =
+    useGetUserDetail({
+      userType: "patients",
+      userRole: "PATIENT",
+    });
+
+  React.useEffect(() => {
+    getAllUsers().then().catch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const columns = [
     {
       title: "Name",
@@ -13,7 +25,7 @@ const Patients = () => {
     },
     {
       title: "Mobile No.",
-      dataIndex: "mobile",
+      dataIndex: "contact",
       key: "mobile",
     },
     {
@@ -25,30 +37,33 @@ const Patients = () => {
       title: "Last Visit",
       dataIndex: "lastVisit",
       key: "lastVisit",
+      render: (text) => <span>{text ?? "No Visit"}</span>,
       sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     },
     {
       title: "Actions",
       dataIndex: "actions",
       key: "actions",
-      render: (text, record) => (
-        <Space>
-          <Button> Details </Button>
-        </Space>
-      ),
+      render: (text, record) => {
+        return (
+          <Space>
+            <Button onClick={() => getSinglePatientDetail(record.id)}>
+              Details
+            </Button>
+          </Space>
+        );
+      },
     },
   ];
 
-  const data = [];
-
   return (
-    <AdminWrapper>
+    <AdminWrapper aside={<RefreshUserButton />}>
       <Table
-        dataSource={data}
+        dataSource={users}
         columns={columns}
         pagination={{
-          total: data.length,
-          defaultPageSize: 5,
+          total: users.length,
+          defaultPageSize: 10,
         }}
       />
     </AdminWrapper>

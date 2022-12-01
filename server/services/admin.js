@@ -3,9 +3,27 @@ const bcrypt = require("bcrypt");
 const { prisma } = require("../utils/prisma");
 const { addEventLog } = require("../utils/logs");
 const { supportedUserRoles, serverActions } = require("../utils/constants");
+const { exclude, include } = require("../utils/includeExclude");
+
+const getSinglePatientDetailsService = async (id) => {
+  if (!id) return {};
+  const patientDetail = await prisma.patient.findUnique({
+    where: { id },
+  });
+
+  return exclude(patientDetail, ["isDeleted"]);
+};
 
 const getAllUsersService = async (userRole) => {
   if (!userRole) return [];
+  if (userRole === "PATIENT") {
+    const users = await prisma.patient.findMany({
+      where: { isDeleted: false },
+    });
+
+    return include(users, ["id", "name", "contact", "address", "lastVisit"]);
+  }
+
   if (!supportedUserRoles.includes(userRole)) {
     throw new Error("Invalid user role");
   }
@@ -181,4 +199,5 @@ module.exports = {
   generateReportsService,
   viewMoreDataLogsService,
   getReportDetailsService,
+  getSinglePatientDetailsService,
 };

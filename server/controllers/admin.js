@@ -4,6 +4,7 @@ const {
   generateReportsService,
   updateUserProfileService,
   getReportDetailsService,
+  getSinglePatientDetailsService,
 } = require("../services");
 const { permissions } = require("../utils/constants");
 
@@ -103,10 +104,18 @@ const reportDetails = async (req, res) => {
   return res.status(200).json(details);
 };
 
+const getSinglePatientDetails = async (req, res) => {
+  console.log(req.body);
+  const { id } = req.body;
+  const details = await getSinglePatientDetailsService(id);
+  return res.status(200).json(details);
+};
+
 module.exports = {
   getAllUsers,
   editPermissions,
   updateUser,
   generateHmsReports,
   reportDetails,
+  getSinglePatientDetails,
 };
