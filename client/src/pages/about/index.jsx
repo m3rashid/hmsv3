@@ -31,9 +31,21 @@ const Profile = ({ data }) => {
           marginTop: 10,
         }}
       >
-        {data.github && <a href={data.github}>Github</a>}
-        {data.linkedin && <a href={data.linkedin}>Linkedin</a>}
-        {data.portfolio && <a href={data.portfolio}>Portfolio</a>}
+        {data.github && (
+          <a target="_blank" rel="noreferrer" href={data.github}>
+            Github
+          </a>
+        )}
+        {data.linkedin && (
+          <a target="_blank" rel="noreferrer" href={data.linkedin}>
+            Linkedin
+          </a>
+        )}
+        {data.portfolio && (
+          <a target="_blank" rel="noreferrer" href={data.portfolio}>
+            Portfolio
+          </a>
+        )}
       </div>
     </Card>
   );

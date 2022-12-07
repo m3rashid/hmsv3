@@ -4,7 +4,7 @@ import { Button, Form, Select, Spin } from "antd";
 import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
-import { socket } from "api/socket";
+import { socket } from "api/instance";
 import { instance } from "api/instance";
 import { pharmacyState } from "atoms/pharmacy";
 import ShowReceipt from "pages/pharmacy/ShowReciept";

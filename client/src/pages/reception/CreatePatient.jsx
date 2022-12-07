@@ -1,23 +1,11 @@
-import React, { useMemo, useState } from "react";
-import {
-  Form,
-  Button,
-  Radio,
-  Input,
-  InputNumber,
-  message,
-  Typography,
-  Select,
-} from "antd";
+import React from "react";
+import { Form, Button, message, Typography } from "antd";
 import { useRecoilState } from "recoil";
 
-import { socket } from "api/socket";
-import { showGender } from "utils/strings";
+import { socket } from "api/instance";
 import { LoadingAtom } from "atoms/loading";
 import { BloodGroup, maritalStatus, PatientTypeEnum } from "utils/constants";
 import RenderFormFields from "components/FormRender/RenderFormFields";
-
-const { TextArea } = Input;
 
 const PatientFormFields = [
   {
@@ -53,15 +41,13 @@ const PatientFormFields = [
     key: "otherUser",
     label: "Other User",
     inputType: "text",
-        otherRules: [{}],
-
+    otherRules: [{}],
   },
   {
     key: "relationWithOtherUser",
     label: "Relation with Other User",
     inputType: "text",
-        otherRules: [{}],
-
+    otherRules: [{}],
   },
   {
     key: "bloodGroup",
@@ -71,10 +57,9 @@ const PatientFormFields = [
       key,
       label: BloodGroup[key],
     })),
-        otherRules: [{}],
-
+    otherRules: [{}],
   },
-    {
+  {
     key: "dob",
     label: "Date of Birth",
     inputType: "date",
@@ -97,15 +82,16 @@ const PatientFormFields = [
     label: "Department",
     inputType: "text",
     otherRules: [{}],
-
   },
   {
     key: "contact",
     label: "Contact",
     inputType: "text",
-    otherRules: [{
-      pattern: new RegExp(/^[0-9]{10}$/),
-    }],
+    otherRules: [
+      {
+        pattern: new RegExp(/^[0-9]{10}$/),
+      },
+    ],
   },
   {
     key: "fdr",
@@ -122,16 +108,14 @@ const PatientFormFields = [
       label: key,
     })),
     otherRules: [{}],
-
   },
   {
     key: "address",
     label: "Address",
     inputType: "textarea",
     otherRules: [{}],
-
   },
-]
+];
 
 const CreatePatientForm = () => {
   const [LoadingData, setLoadingData] = useRecoilState(LoadingAtom);
@@ -159,15 +143,12 @@ const CreatePatientForm = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-
-
   return (
     <React.Fragment>
       <Typography.Title level={2} style={{ paddingLeft: 45 }}>
         Create Patient
       </Typography.Title>
 
-      
       <Form
         onFinish={formSubmitHandler}
         form={form}

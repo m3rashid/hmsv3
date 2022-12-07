@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { socket } from "api/socket";
+import { socket } from "api/instance";
 import { authState } from "atoms/auth";
 import { instance } from "api/instance";
 import { doctorState } from "atoms/doctor";

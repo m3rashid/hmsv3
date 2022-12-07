@@ -12,7 +12,7 @@ import {
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-import { socket } from "api/socket";
+import { socket } from "api/instance";
 import { instance } from "api/instance";
 import DoctorDisplay from "components/Doctor/DoctorDisplay";
 import DoctorSelector from "components/Doctor/DoctorSelector";

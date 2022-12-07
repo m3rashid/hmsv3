@@ -1,7 +1,7 @@
 import { message, Tabs, Badge } from "antd";
 import React, { createContext } from "react";
 
-import { socket } from "api/socket";
+import { socket } from "api/instance";
 import useNotifications from "Hooks/useNotifications";
 import Notifications from "pages/doctor/notifications";
 import Prescriptions from "pages/pharmacy/Prescriptions";

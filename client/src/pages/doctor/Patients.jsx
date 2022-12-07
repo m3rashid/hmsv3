@@ -2,7 +2,7 @@ import { useRecoilValue } from "recoil";
 import { Button, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
 
-import { socket } from "api/socket";
+import { socket } from "api/instance";
 import { authState } from "atoms/auth";
 
 const DoctorPatients = () => {

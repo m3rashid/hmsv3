@@ -14,7 +14,7 @@ import {
 import dayjs from "dayjs";
 import React, { useEffect } from "react";
 
-import { socket } from "api/socket";
+import { socket } from "api/instance";
 import PatientInfo from "pages/patient";
 import MedicineInput from "components/Medicine/MedicineInput";
 import styles from "pages/doctor/PrescribeMedicine.module.css";

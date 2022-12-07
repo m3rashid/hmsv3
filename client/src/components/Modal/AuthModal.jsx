@@ -2,7 +2,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import { Modal, Button, Input, Form, message } from "antd";
 
-import { socket } from "api/socket";
+import { socket } from "api/instance";
 import { authState } from "atoms/auth";
 import { instance } from "api/instance";
 

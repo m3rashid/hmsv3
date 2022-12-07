@@ -8,7 +8,7 @@ const { instrument } = require("@socket.io/admin-ui");
 
 const { prisma } = require("./utils/prisma.js");
 const { checkSocketAuth } = require("./middlewares/socket.js");
-const { isProduction, corsOrigin } = require("./utils/config.js");
+const { isProduction, corsOrigin, PORT, HOST } = require("./utils/config.js");
 const { globalErrorHandlerMiddleware } = require("./middlewares/error.js");
 
 const {
@@ -17,12 +17,11 @@ const {
 const { router: AdminRoutes } = require("./routes/admin.routes");
 const { router: AuthRoutes } = require("./routes/auth.routes.js");
 const { router: DoctorRoutes } = require("./routes/doctor.routes.js");
+const { router: socketHandler } = require("./routes/sockets/index.js");
 const { router: PatientRoutes } = require("./routes/patient.routes.js");
 const { router: InventoryRoutes } = require("./routes/inventory.routes");
 const { router: ReceptionRoutes } = require("./routes/reception.routes.js");
 const { router: PharmacyRoutes } = require("./routes/pharmacy.routes.js");
-
-const { router: socketHandler } = require("./routes/sockets/index.js");
 
 const app = express();
 const server = http.createServer(app);
@@ -49,17 +48,23 @@ io.on("connection", (socket) => {
 });
 
 app.use(cors({ origin: corsOrigin, optionsSuccessStatus: 200 }));
-app.use(express.json({ limit: "50mb", parameterLimit: 100000 }));
 app.use(
-  express.urlencoded({ extended: true, limit: "50mb", parameterLimit: 100000 })
+  express.json({
+    limit: "50mb",
+    parameterLimit: 100000,
+  })
+);
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: "50mb",
+    parameterLimit: 100000,
+  })
 );
 app.use(morgan("dev"));
 
 app.get("/", (req, res) => {
   return res.send("Hello World");
-});
-app.use((req, res, next) => {
-  setTimeout(next, 300);
 });
 
 app.use("/api/auth", AuthRoutes);
@@ -88,8 +93,6 @@ app.get("/health", (req, res) => {
 
 app.use(globalErrorHandlerMiddleware);
 
-const PORT = process.env.PORT || 5000;
-
 const startServer = async () => {
   try {
     instrument(io, { auth: false });
@@ -97,8 +100,8 @@ const startServer = async () => {
 
     await prisma.$connect();
     console.log("Connection established successfully");
-    server.listen(PORT, () =>
-      console.log(`Server on http://localhost:${PORT}`)
+    server.listen(PORT, HOST, () =>
+      console.log(`Server on http://${HOST}:${PORT}`)
     );
   } catch (err) {
     await prisma.$disconnect();

@@ -1,16 +1,14 @@
+const PORT = process.env.PORT || 5000;
+
+const HOST = process.env.SERVER_HOST || "localhost";
+
 const isProduction = process.env.NODE_ENV === "production";
 
-const corsOrigin = isProduction
-  ? // ? ["https://admin.socket.io", "https://ansarihms.surge.sh"]
-    "*"
-  : // [
-    // "https://admin.socket.io",
-    // "http://localhost:3000",
-    // "http://10.31.5.172:3000",
-    "*";
-// ];
+const corsOrigin = isProduction ? "*" : "*";
 
 module.exports = {
+  PORT,
+  HOST,
   isProduction,
   corsOrigin,
 };

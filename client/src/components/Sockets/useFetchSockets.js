@@ -3,7 +3,7 @@ import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
 
-import { socket } from "api/socket";
+import { socket } from "api/instance";
 import { authState } from "atoms/auth";
 import { instance } from "api/instance";
 import { doctorState } from "atoms/doctor";
