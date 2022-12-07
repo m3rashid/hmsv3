@@ -7,7 +7,7 @@ import Home from "pages/home";
 import About from "pages/about";
 import UnAuthPage from "pages/unAuthenticated";
 
-import { socket } from "api/socket";
+import { socket } from "api/instance";
 import { authState } from "atoms/auth";
 import { instance } from "api/instance";
 import routes, { checkAccess } from "routes";
@@ -24,15 +24,17 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   const revalidate = useCallback(async () => {
-    try {
-      const res = await revalidateJWT(setAuth);
-      socket.io.opts.auth.token = res.token;
-      socket.disconnect().connect();
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setIsLoading(false);
-    }
+    setTimeout(() => {
+      revalidateJWT(setAuth)
+        .then((res) => {
+          socket.io.opts.auth.token = res.token;
+          socket.disconnect().connect();
+        })
+        .catch(console.log)
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }, 1000);
   }, [setAuth]);
 
   useEffect(() => {

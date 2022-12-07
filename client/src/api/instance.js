@@ -1,11 +1,40 @@
 import axios from "axios";
+import io from "socket.io-client";
+import { invoke } from "@tauri-apps/api/tauri";
 
-export const SERVER_ROOT_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://arcane-wave-41173.herokuapp.com"
-    : "http://localhost:5000";
-// "http://10.31.5.172:5000"; // Computer Centre, Dept. of CSE-JMI
+export const isDesktopApp = !!window.__TAURI__;
+
+const defaultServerUrl = "http://localhost:5000";
+
+let serverRootUrl;
+
+if (isDesktopApp) {
+  invoke("get_environment_variable", { name: "HMSV2_HOST_IP" })
+    .then((hostIp) => {
+      if (hostIp) serverRootUrl = "http://" + hostIp + ":5000";
+      else serverRootUrl = defaultServerUrl;
+    })
+    .catch(console.log);
+} else serverRootUrl = defaultServerUrl;
 
 export const instance = axios.create({
-  baseURL: SERVER_ROOT_URL + "/api",
+  baseURL: serverRootUrl + "/api",
 });
+
+export let socket = io(serverRootUrl, {
+  autoConnect: false,
+  auth: {
+    token: localStorage.getItem("refresh_token"),
+  },
+});
+
+window.setTimeout(() => {
+  instance.defaults.baseURL = serverRootUrl + "/api";
+
+  socket = io(serverRootUrl, {
+    autoConnect: false,
+    auth: {
+      token: localStorage.getItem("refresh_token"),
+    },
+  });
+}, 500);

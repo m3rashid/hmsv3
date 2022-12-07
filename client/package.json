@@ -2,9 +2,19 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject",
+    "ci": "yarn install --production",
+    "tauri": "tauri",
+    "bundle": "tauri build"
+  },
   "dependencies": {
     "@ant-design/icons": "^4.7.0",
     "@craco/craco": "^6.4.3",
+    "@tauri-apps/api": "^1.2.0",
     "antd": "^4.19.1",
     "axios": "^0.27.2",
     "craco-less": "^2.0.0",
@@ -22,13 +32,8 @@
     "socket.io-client": "^4.5.1",
     "use-debounce": "^8.0.3"
   },
-  "devDependencies": {},
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "craco eject",
-    "ci": "yarn install --production"
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.2.1"
   },
   "eslintConfig": {
     "extends": [
