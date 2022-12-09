@@ -53,11 +53,7 @@
       "resources": [],
       "shortDescription": "",
       "targets": "all",
-      "windows": {
-        "certificateThumbprint": null,
-        "digestAlgorithm": "sha256",
-        "timestampUrl": ""
-      }
+      "windows": {}
     },
     "security": {
       "csp": null
@@ -67,10 +63,12 @@
     },
     "windows": [
       {
+        "minHeight": 800,
+        "minWidth": 1500,
         "fullscreen": false,
         "center": true,
+        "resizable": true,
         "maximized": true,
-        "resizable": false,
         "title": "M.A. Ansari Health Centre"
       }
     ]
