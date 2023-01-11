@@ -244,6 +244,7 @@ function DoctorAppointments() {
       <Tabs defaultActiveKey="1" centered style={{ marginTop: -5 }}>
         <TabPane tab="Active" key="1">
           <Table
+            size="small"
             loading={doctorData.loading}
             dataSource={doctorData.appointments.filter((apt) => apt.pending)}
             columns={columnsPending}
@@ -259,12 +260,9 @@ function DoctorAppointments() {
         </TabPane>
         <TabPane tab="Completed" key="2">
           <Table
+            size="small"
             dataSource={doctorData.appointments.filter((apt) => !apt.pending)}
             columns={columnsPrevious}
-            // pagination={{
-            //   total: doctorData.appointments.reduce((acc, curr) => curr.pending ? acc : acc + 1, 0),
-            //   defaultPageSize: 5,
-            // }}
             rowKey="id"
           />
         </TabPane>

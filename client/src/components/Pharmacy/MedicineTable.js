@@ -96,6 +96,7 @@ const MedicineTable = ({
   };
   return (
     <Table
+      size="small"
       rowSelection={{
         type: "checkbox",
         ...rowSelection,

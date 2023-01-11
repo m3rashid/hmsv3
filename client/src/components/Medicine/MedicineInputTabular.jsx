@@ -10,6 +10,7 @@ import { instance } from "api/instance";
 import { dosages } from "utils/constants";
 import { inventoryState } from "atoms/inventory";
 import styles from "components/Medicine/medicineinput.module.css";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const MedicineInputTable = ({ medicines, setMedicines }) => {
   const addEmptyMedicine = useCallback(
@@ -173,7 +174,11 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
 
   return (
     <>
-      <Table columns={medicineInputTableColumns} dataSource={medicines || []} />
+      <Table
+        size="small"
+        columns={medicineInputTableColumns}
+        dataSource={medicines || []}
+      />
       <Button
         type="dashed"
         onClick={addEmptyMedicine}
@@ -320,7 +325,10 @@ const AvailabilityCol = ({ medicine, index, quantityRequiredHandler }) => {
   return (
     <>
       {value?.Medicine?.id && value.dosage && value.duration ? (
-        <Spin spinning={availabilityInfo.loading}>
+        <Spin
+          spinning={availabilityInfo.loading}
+          indicator={<LoadingOutlined />}
+        >
           <Typography.Text
             type={availabilityInfo.available ? "success" : "warning"}
           >

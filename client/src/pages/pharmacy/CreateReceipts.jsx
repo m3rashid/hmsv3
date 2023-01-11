@@ -10,6 +10,7 @@ import { pharmacyState } from "atoms/pharmacy";
 import ShowReceipt from "pages/pharmacy/ShowReciept";
 import MedicineTable from "components/Pharmacy/MedicineTable";
 import usePrescribeMedicines from "components/Doctor/hooks/prescribeMeds.hook";
+import { LoadingOutlined } from "@ant-design/icons";
 
 function CreateReceipts() {
   const {
@@ -129,7 +130,10 @@ function CreateReceipts() {
           </Select>
         </Form.Item>
 
-        <Spin spinning={selectedPrescriptionData.loading}>
+        <Spin
+          spinning={selectedPrescriptionData.loading}
+          indicator={<LoadingOutlined />}
+        >
           {selectedPrescription && (
             <MedicineTable
               medicines={selectedPrescriptionData.data?.medicines || []}

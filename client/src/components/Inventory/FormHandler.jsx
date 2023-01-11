@@ -7,7 +7,7 @@ import {
   Select,
   DatePicker,
 } from "antd";
-import moment from "moment";
+import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
 import { Fragment, useState } from "react";
@@ -61,7 +61,7 @@ function InventoryFormHandler(props) {
         initialValues={{
           ...props?.defaultValues,
           expiryDate: props?.defaultValues?.expiryDate
-            ? moment(props?.defaultValues?.expiryDate, "YYYY-MM-DD")
+            ? dayjs(props?.defaultValues?.expiryDate, "YYYY-MM-DD")
             : undefined,
         }}
       >
@@ -148,7 +148,7 @@ function InventoryFormHandler(props) {
                 placeholder="Enter Expiry Date"
                 type="date"
                 disabledDate={(current) =>
-                  current && current < moment().endOf("day")
+                  current && current < dayjs().endOf("day")
                 }
               />
             </Form.Item>

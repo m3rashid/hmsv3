@@ -22,7 +22,7 @@ const exclude = (data, keysToExclude) => {
   if (Array.isArray(data)) {
     return data.map((obj) => singleExcludeInclude(obj, keysToExclude, true));
   }
-  return singleExclude(data, keysToExclude, true);
+  return singleExcludeInclude(data, keysToExclude, true);
 };
 
 const include = (data, keysToInclude) => {

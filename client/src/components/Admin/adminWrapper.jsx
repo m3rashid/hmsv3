@@ -13,7 +13,7 @@ const AdminWrapper = ({ aside, children, hideHeading }) => {
 
   return (
     <>
-      <div style={{ padding: "20px", paddingTop: "5px" }}>
+      <div style={{ padding: "20px" }}>
         <div
           style={{
             display: "flex",

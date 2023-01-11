@@ -24,7 +24,7 @@ export const developers = [
     batch: "2020-2024",
     github: "https://github.com/husain3012",
     linkedin: "https://github.com/husain3012",
-    portfolio: "",
+    portfolio: "https://husain3012.github.io/mysite/",
   },
   {
     name: "Anzal Husain Abidi",

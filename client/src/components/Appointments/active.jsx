@@ -37,6 +37,7 @@ const Active = () => {
   return (
     <div style={{ marginTop: "20px" }}>
       <Table
+        size="small"
         dataSource={data}
         columns={columns}
         pagination={{

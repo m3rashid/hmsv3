@@ -157,6 +157,7 @@ function Prescriptions() {
       <Tabs defaultActiveKey="1" centered>
         <Tabs.TabPane tab="Active" key="1">
           <Table
+            size="small"
             dataSource={pharmacyData.prescriptions.filter(
               (prsp) => prsp.pending
             )}
@@ -165,6 +166,7 @@ function Prescriptions() {
         </Tabs.TabPane>
         <Tabs.TabPane tab="Completed" key="2">
           <Table
+            size="small"
             dataSource={pharmacyData.prescriptions.filter(
               (prsp) => !prsp.pending
             )}

@@ -1,5 +1,5 @@
-// import "styles/theme.less";
-import "antd/dist/antd.less";
+import "antd/dist/reset.css";
+import { ConfigProvider } from "antd";
 import { useRecoilState } from "recoil";
 import { Routes, Route } from "react-router-dom";
 import { createContext, useCallback, useEffect, useState } from "react";
@@ -11,12 +11,12 @@ import UnAuthPage from "pages/unAuthenticated";
 import { socket } from "api/instance";
 import { authState } from "atoms/auth";
 import { instance } from "api/instance";
+import antDesignTheme from "styles/theme";
 import routes, { checkAccess } from "routes";
 import Loading from "components/Loading/Loading";
 import AppLayout from "components/Layout/AppLayout";
 import { revalidateJWT } from "api/auth/revalidateJWT";
 import useFetchSockets from "components/Sockets/useFetchSockets";
-import { ConfigProvider } from "antd";
 
 export const SocketContext = createContext();
 
@@ -51,36 +51,29 @@ function App() {
     }
   }, [Auth]);
 
-  if (isLoading) {
-    return <Loading text="App is Loading.." />;
-  }
-
+  if (isLoading) return <Loading text="App is Loading . ." />;
   return (
-    <ConfigProvider>
+    <ConfigProvider theme={antDesignTheme}>
       <AppLayout>
-        <div className="App">
-          <div style={{ height: "100vh" }}>
-            <Routes>
-              {routes.map((route, index) => {
-                const validated = checkAccess(Auth, route);
-                if (!validated) {
-                  return (
-                    <Route key={index} path="*" element={<UnAuthPage />} />
-                  );
-                }
+        <div style={{ minHeight: "calc(100vh - 115px)" }}>
+          <Routes>
+            {routes.map((route, index) => {
+              const validated = checkAccess(Auth, route);
+              if (!validated) {
+                return <Route key={index} path="*" element={<UnAuthPage />} />;
+              }
 
-                return (
-                  <Route
-                    key={`route ${index} ${route.path}`}
-                    path={route.path}
-                    element={<route.component />}
-                  />
-                );
-              })}
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-            </Routes>
-          </div>
+              return (
+                <Route
+                  key={`route ${index} ${route.path}`}
+                  path={route.path}
+                  element={<route.component />}
+                />
+              );
+            })}
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+          </Routes>
         </div>
       </AppLayout>
     </ConfigProvider>

@@ -26,7 +26,7 @@ function InventoryTable() {
 
   return (
     <div>
-      <Table dataSource={Inventory} columns={columns} />
+      <Table size="small" dataSource={Inventory} columns={columns} />
     </div>
   );
 }

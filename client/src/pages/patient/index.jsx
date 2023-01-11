@@ -154,7 +154,11 @@ const PatientInfo = (props) => {
           })}
       </Col>
       <Divider>Patient's History</Divider>
-      <Table columns={AppointmentSchema} dataSource={data.Appointment} />
+      <Table
+        size="small"
+        columns={AppointmentSchema}
+        dataSource={data.Appointment}
+      />
       <Drawer
         open={PrescriptionModal.visible}
         width={"40%"}

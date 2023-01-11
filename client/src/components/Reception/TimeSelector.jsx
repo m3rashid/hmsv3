@@ -1,4 +1,4 @@
-import moment from "moment";
+import dayjs from "dayjs";
 import { DatePicker } from "antd";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
@@ -79,7 +79,7 @@ function DoctorTimeSelector({ doctor, onChange, style }) {
       disabled={!doctor}
       disabledDate={(current) => isAllowedDate(current, true)}
       disabledTime={(current) => {
-        return isAllowedDate(moment(current), false);
+        return isAllowedDate(dayjs(current), false);
       }}
       onChange={onChange}
       style={style}

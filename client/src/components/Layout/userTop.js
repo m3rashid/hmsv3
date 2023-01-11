@@ -23,7 +23,7 @@ const UserTop = ({ Auth, setAuth }) => {
         {Auth.user.role === "OTHER" && (
           <UserOutlined style={{ fontSize: 20 }} />
         )}
-        <Typography.Text type="secondary" italic>
+        <Typography.Text type="secondary" italic style={{ color: "white" }}>
           Welcome, {Auth.user.email}
         </Typography.Text>
         <Button type="primary" onClick={() => setIsModalVisible(true)}>

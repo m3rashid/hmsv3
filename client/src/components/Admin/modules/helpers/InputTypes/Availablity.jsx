@@ -1,4 +1,4 @@
-import moment from "moment";
+import dayjs from "dayjs";
 import { useRecoilState } from "recoil";
 import { DeleteFilled } from "@ant-design/icons";
 import { useCallback, useEffect } from "react";
@@ -60,12 +60,12 @@ function Availability({ isEdit, defaultValue, form }) {
           return {
             id: rangeItem.id,
             from: {
-              hour: moment(value[0]).hour(),
-              minute: moment(value[0]).minute(),
+              hour: dayjs(value[0]).hour(),
+              minute: dayjs(value[0]).minute(),
             },
             to: {
-              hour: moment(value[1]).hour(),
-              minute: moment(value[1]).minute(),
+              hour: dayjs(value[1]).hour(),
+              minute: dayjs(value[1]).minute(),
             },
           };
         }
@@ -121,13 +121,13 @@ function Availability({ isEdit, defaultValue, form }) {
                     format={"HH:mm"}
                     value={[
                       rangeItem?.from
-                        ? moment(
+                        ? dayjs(
                             `${rangeItem?.from?.hour}:${rangeItem?.from?.minute}`,
                             "HH:mm"
                           )
                         : null,
                       rangeItem?.to
-                        ? moment(
+                        ? dayjs(
                             `${rangeItem?.to?.hour}:${rangeItem?.to?.minute}`,
                             "HH:mm"
                           )

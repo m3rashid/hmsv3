@@ -197,32 +197,6 @@ const MedicineInput = ({
           addonAfter={"days"}
         />
       </Col>
-      {/* <Col
-        span={3}
-        style={{
-          borderRight: "1px solid #ddd",
-          // display: 'flex',
-          alignItems: "center",
-          justifyContent: "center",
-          margin: "auto",
-          padding: "0 10px",
-          display: isExtra ? "none" : "flex",
-        }}
-      >
-        <Spin spinning={availabilityInfo.loading && medicine.medicine}>
-          {availabilityInfo.medicine && (
-            <Space>
-              {availabilityInfo?.available ? (
-                <>
-                  <Typography.Text type="success">Available</Typography.Text>
-                </>
-              ) : (
-                <Typography.Text type="warning">Unavailable</Typography.Text>
-              )}
-            </Space>
-          )}
-        </Spin>
-      </Col> */}
       <Col
         span={5}
         style={{

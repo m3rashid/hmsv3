@@ -192,6 +192,7 @@ const GeneratePdf = (props) => {
                       }}
                     >
                       <Table
+                        size="small"
                         columns={[
                           {
                             title: "Medicine",
@@ -246,6 +247,7 @@ const GeneratePdf = (props) => {
                       }}
                     >
                       <Table
+                        size="small"
                         columns={[
                           {
                             title: "Medicine",

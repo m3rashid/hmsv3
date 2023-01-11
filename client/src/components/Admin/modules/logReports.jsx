@@ -69,6 +69,7 @@ const LogReports = () => {
       }
     >
       <Table
+        size="small"
         dataSource={allLogs}
         columns={columns}
         pagination={{

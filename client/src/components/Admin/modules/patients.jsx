@@ -4,6 +4,7 @@ import { Button, Modal, Space, Spin, Table } from "antd";
 import AdminWrapper from "components/Admin/adminWrapper";
 import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
 import ShowEntry from "components/common/showEntry";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const Patients = () => {
   const [modal, setModal] = useState({
@@ -78,7 +79,7 @@ const Patients = () => {
         onOk={closeModal}
         onCancel={closeModal}
       >
-        <Spin spinning={modal.loading}></Spin>
+        <Spin indicator={<LoadingOutlined />} spinning={modal.loading} />
         {modal.data && (
           <div>
             {Object.entries(modal.data).map(([key, value]) => (
@@ -92,6 +93,7 @@ const Patients = () => {
         )}
       </Modal>
       <Table
+        size="small"
         dataSource={users}
         columns={columns}
         pagination={{
