@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
 import { MdDelete } from "react-icons/md";
 import { useDebounce } from "use-debounce";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Col, Input, Row, Select, Space, Typography } from "antd";
 
 import { instance } from "api/instance";

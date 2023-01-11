@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Badge, Card, Col, Divider, PageHeader, Row } from "antd";
@@ -7,11 +7,10 @@ import { authState } from "atoms/auth";
 
 const ProfileWrapper = ({ children }) => {
   const auth = useRecoilValue(authState);
-  // const [online, setOnline] = React.useState(true);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (pathname === "/me" && auth.user.permissions.includes("ADMIN")) {
       navigate("/admin/home");
     }

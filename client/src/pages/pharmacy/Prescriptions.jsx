@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useRecoilValue } from "recoil";
-import React, { useCallback } from "react";
+import { Fragment, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { message, Button, Space, Table, Tabs, Drawer } from "antd";
 
@@ -12,7 +12,7 @@ import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
 function Prescriptions() {
   const pharmacyData = useRecoilValue(pharmacyState);
   const navigate = useNavigate();
-  const [ModalVisible, setModalVisible] = React.useState({
+  const [ModalVisible, setModalVisible] = useState({
     visible: false,
     id: null,
     type: null,
@@ -31,8 +31,6 @@ function Prescriptions() {
       const { data } = await instance.get(
         `/pharmacy/prescriptions/${record.id}`
       );
-
-      // console.log("Show Prescription", data);
 
       setModalVisible({
         visible: true,
@@ -155,7 +153,7 @@ function Prescriptions() {
   ];
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Tabs defaultActiveKey="1" centered>
         <Tabs.TabPane tab="Active" key="1">
           <Table
@@ -175,7 +173,7 @@ function Prescriptions() {
         </Tabs.TabPane>
       </Tabs>
       <Drawer
-        visible={ModalVisible?.visible}
+        open={ModalVisible?.visible}
         onOk={ToggleModal}
         onClose={ToggleModal}
         footer={[
@@ -207,7 +205,7 @@ function Prescriptions() {
           />
         )}
       </Drawer>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

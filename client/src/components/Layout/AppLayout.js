@@ -1,4 +1,3 @@
-import React from "react";
 import { useRecoilState } from "recoil";
 import { useNavigate, Link } from "react-router-dom";
 import { Layout, Typography, Col, Menu } from "antd";

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import React, { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, Fragment } from "react";
 import { Row, Col, Typography, Divider, Button, Table, Drawer } from "antd";
 
 import { instance } from "api/instance";
@@ -111,14 +111,14 @@ const PatientInfo = (props) => {
         dataIndex: "actions",
         key: "actions",
         render: (_, record) => (
-          <React.Fragment>
+          <Fragment>
             <Button
               onClick={PrescriptionModalHandler(record.Prescription[0])}
               disabled={!record.Prescription[0]}
             >
               {record.Prescription[0] ? "View Prescription" : "No Prescription"}
             </Button>
-          </React.Fragment>
+          </Fragment>
         ),
       },
     ],
@@ -156,7 +156,7 @@ const PatientInfo = (props) => {
       <Divider>Patient's History</Divider>
       <Table columns={AppointmentSchema} dataSource={data.Appointment} />
       <Drawer
-        visible={PrescriptionModal.visible}
+        open={PrescriptionModal.visible}
         width={"40%"}
         onClose={() => setPrescriptionModal({ visible: false })}
       >
@@ -170,7 +170,7 @@ const PatientInfo = (props) => {
         />
       </Drawer>
       <Drawer
-        visible={DoctorModal.visible}
+        open={DoctorModal.visible}
         okButtonProps={{
           style: { display: "none" },
         }}

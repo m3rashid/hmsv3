@@ -1,17 +1,33 @@
-import React from "react";
-import { Button, Space, Table } from "antd";
+import { useEffect, useState } from "react";
+import { Button, Modal, Space, Spin, Table } from "antd";
 
 import AdminWrapper from "components/Admin/adminWrapper";
 import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
+import ShowEntry from "components/common/showEntry";
 
 const Patients = () => {
+  const [modal, setModal] = useState({
+    data: null,
+    open: false,
+    loading: false,
+  });
   const { getAllUsers, users, RefreshUserButton, getSinglePatientDetail } =
     useGetUserDetail({
       userType: "patients",
       userRole: "PATIENT",
     });
 
-  React.useEffect(() => {
+  const handleGetDetails = async (id) => {
+    setModal({ data: null, open: true, loading: true });
+    const data = await getSinglePatientDetail(id);
+    setModal({ data, open: true, loading: false });
+  };
+
+  const closeModal = () => {
+    setModal({ data: null, open: false, loading: false });
+  };
+
+  useEffect(() => {
     getAllUsers().then().catch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -47,9 +63,7 @@ const Patients = () => {
       render: (text, record) => {
         return (
           <Space>
-            <Button onClick={() => getSinglePatientDetail(record.id)}>
-              Details
-            </Button>
+            <Button onClick={() => handleGetDetails(record.id)}>Details</Button>
           </Space>
         );
       },
@@ -58,6 +72,25 @@ const Patients = () => {
 
   return (
     <AdminWrapper aside={<RefreshUserButton />}>
+      <Modal
+        title="Patient Details"
+        open={modal.open}
+        onOk={closeModal}
+        onCancel={closeModal}
+      >
+        <Spin spinning={modal.loading}></Spin>
+        {modal.data && (
+          <div>
+            {Object.entries(modal.data).map(([key, value]) => (
+              <ShowEntry
+                key={key}
+                label={key.toUpperCase()}
+                value={value.toUpperCase()}
+              />
+            ))}
+          </div>
+        )}
+      </Modal>
       <Table
         dataSource={users}
         columns={columns}

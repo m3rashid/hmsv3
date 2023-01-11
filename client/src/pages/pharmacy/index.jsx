@@ -1,5 +1,5 @@
 import { message, Tabs, Badge } from "antd";
-import React, { createContext } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import { socket } from "api/instance";
 import useNotifications from "Hooks/useNotifications";
@@ -18,7 +18,7 @@ const Pharmacy = () => {
   const { unseenNotifications, addNotification, markAllAsSeen } =
     useNotifications();
 
-  React.useEffect(() => {
+  useEffect(() => {
     socket.on("new-prescription-by-doctor-created", ({ data }) => {
       message.success(
         `New Prescription for ${data.prescription.id} created successfully!`
@@ -49,7 +49,7 @@ const Pharmacy = () => {
     };
   }, [addNotification]);
 
-  const [prescription, setPrescription] = React.useState([]);
+  const [prescription, setPrescription] = useState([]);
 
   return (
     <PharmacyContext.Provider

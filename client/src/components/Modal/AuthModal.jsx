@@ -1,4 +1,3 @@
-import React from "react";
 import { useRecoilState } from "recoil";
 import { Modal, Button, Input, Form, message } from "antd";
 
@@ -48,7 +47,7 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
     <Modal
       title="Login"
       footer={null}
-      visible={isModalVisible}
+      open={isModalVisible}
       onOk={handleOk}
       onCancel={handleCancel}
     >

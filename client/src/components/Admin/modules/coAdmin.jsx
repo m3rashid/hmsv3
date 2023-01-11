@@ -1,9 +1,9 @@
-import React from "react";
 import { Table } from "antd";
 
 import AdminWrapper from "components/Admin/adminWrapper";
 import { columns } from "components/Admin/modules/helpers/table";
 import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
+import { useEffect } from "react";
 
 const CoAdmins = () => {
   const { getAllUsers, users, RefreshUserButton } = useGetUserDetail({
@@ -11,7 +11,7 @@ const CoAdmins = () => {
     userRole: "CO_ADMIN",
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     getAllUsers().then().catch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import { BsDash } from "react-icons/bs";
 import { MdDelete } from "react-icons/md";
 import { useDebounce } from "use-debounce";
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button, Input, Select, Spin, Table, Typography } from "antd";
 
 import { instance } from "api/instance";

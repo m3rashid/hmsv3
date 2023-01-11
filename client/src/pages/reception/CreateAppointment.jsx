@@ -10,7 +10,7 @@ import {
   Card,
 } from "antd";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { socket } from "api/instance";
 import { instance } from "api/instance";
@@ -186,7 +186,7 @@ const CreateAppointmentForm = () => {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Row>
         <Col span={12}>
           <Form
@@ -346,7 +346,7 @@ const CreateAppointmentForm = () => {
           </Space>
         </Col>
       </Row>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

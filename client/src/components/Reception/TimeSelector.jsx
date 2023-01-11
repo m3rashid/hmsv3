@@ -1,7 +1,7 @@
 import moment from "moment";
 import { DatePicker } from "antd";
 import PropTypes from "prop-types";
-import React, { useCallback } from "react";
+import { useCallback } from "react";
 
 import { Days } from "utils/constants";
 

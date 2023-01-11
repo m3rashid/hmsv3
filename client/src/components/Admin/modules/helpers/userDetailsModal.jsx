@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment, useState } from "react";
 import { Modal, Button, Space, Form, Select, message } from "antd";
 
 import { instance } from "api/instance";
@@ -7,8 +7,8 @@ import ShowEntry from "components/common/showEntry";
 import { allPermissions, backToRealDays } from "utils/constants";
 
 const UserDetailsModal = ({ data }) => {
-  const [editPermissions, setEditPermissions] = React.useState(false);
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [editPermissions, setEditPermissions] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   const openModal = () => setIsModalVisible(true);
   const closeModal = () => setIsModalVisible(false);
@@ -45,13 +45,13 @@ const UserDetailsModal = ({ data }) => {
   console.log({ data });
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Space>
         <Button onClick={openModal}>Details</Button>
       </Space>
       <Modal
         title={data.name + ", " + data.origin}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={closeModal}
         onCancel={closeModal}
         footer={null}
@@ -165,7 +165,7 @@ const UserDetailsModal = ({ data }) => {
           )}
         </div>
       </Modal>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

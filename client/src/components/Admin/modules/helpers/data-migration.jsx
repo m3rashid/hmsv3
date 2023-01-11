@@ -1,11 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import { Button, message, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
 import { instance } from "api/instance";
 
 const DataMigrationInput = () => {
-  const [file, setFile] = React.useState(null);
+  const [file, setFile] = useState(null);
 
   const onDrop = (e) => {
     e.preventDefault();

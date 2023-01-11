@@ -1,5 +1,5 @@
 import { Table } from "antd";
-import React, { useContext } from "react";
+import { useContext } from "react";
 
 import { PharmacyContext } from "pages/pharmacy";
 

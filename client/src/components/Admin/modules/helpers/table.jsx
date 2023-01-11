@@ -1,5 +1,3 @@
-import React from "react";
-
 import { showGender, toSentenceCase } from "utils/strings";
 import CreateUserModal from "components/Admin/modules/helpers/createUserModal";
 import UserDetailsModal from "components/Admin/modules/helpers/userDetailsModal";

@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import React from "react";
+import { useEffect } from "react";
 import { Button, Modal, Table } from "antd";
 
 import { toSentenceCase } from "utils/strings";
@@ -19,7 +19,7 @@ const LogReports = () => {
     refreshLogs,
   } = useLogReports();
 
-  React.useEffect(() => {
+  useEffect(() => {
     getLogs().then().catch(console.log);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -79,7 +79,7 @@ const LogReports = () => {
       <Modal
         title="Details"
         footer={null}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >

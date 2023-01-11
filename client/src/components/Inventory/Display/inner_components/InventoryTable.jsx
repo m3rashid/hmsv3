@@ -14,7 +14,7 @@ import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { authState } from "atoms/auth";
 import { instance } from "api/instance";
@@ -25,7 +25,7 @@ import EditMedicine from "components/Inventory/Display/inner_components/EditMedi
 function InventoryTable(prop) {
   const auth = useRecoilValue(authState);
   const [inventory, setinventoryData] = useRecoilState(inventoryState);
-  const [SearchQuery, setSearchQuery] = React.useState({});
+  const [SearchQuery, setSearchQuery] = useState({});
   const [isModalVisible, setIsModalVisible] = useState({
     open: false,
     isEdit: false,
@@ -200,7 +200,7 @@ function InventoryTable(prop) {
       {isModalVisible.open && (
         <Modal
           title={isModalVisible.isEdit ? "Edit Medicine" : "Medicine Details"}
-          visible={isModalVisible.open}
+          open={isModalVisible.open}
           onOk={() => setIsModalVisible({ open: false, data: {} })}
           onCancel={() => setIsModalVisible({ open: false, data: {} })}
         >

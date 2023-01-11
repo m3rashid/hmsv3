@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import { Alert, Space, Typography } from "antd";
 
 const SingleMedicine = ({ index, medicine, isExtra }) => {
@@ -29,7 +29,7 @@ const SingleMedicine = ({ index, medicine, isExtra }) => {
           Dosage : <strong>{medicine?.dosage}</strong>
         </Typography.Text>
         {medicine?.quantityRequired && (
-          <React.Fragment>
+          <Fragment>
             <Typography.Text>
               Quantity Required :<strong>{medicine?.quantityRequired}</strong>
             </Typography.Text>
@@ -40,7 +40,7 @@ const SingleMedicine = ({ index, medicine, isExtra }) => {
                 display: medicine?.available || isExtra ? "none" : "block",
               }}
             />
-          </React.Fragment>
+          </Fragment>
         )}
         <Typography.Text>{medicine?.description}</Typography.Text>
       </Space>

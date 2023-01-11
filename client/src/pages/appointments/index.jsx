@@ -1,4 +1,3 @@
-import React from "react";
 import { Tabs } from "antd";
 
 import Active from "components/Appointments/active";

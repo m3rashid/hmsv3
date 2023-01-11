@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Space, Table } from "antd";
 
 const Active = () => {

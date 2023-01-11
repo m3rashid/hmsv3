@@ -10,7 +10,7 @@ import {
 import moment from "moment";
 import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
-import React, { useState } from "react";
+import { Fragment, useState } from "react";
 
 import { inventoryState } from "atoms/inventory";
 import { Category, InventoryTypes, MedType } from "utils/constants";
@@ -51,7 +51,7 @@ function InventoryFormHandler(props) {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Form
         form={form}
         onFinish={formSubmitHandler}
@@ -121,7 +121,7 @@ function InventoryFormHandler(props) {
             InventoryTypes.NonMedicine,
           ].includes(FormSelected.type)}
         >
-          <React.Fragment>
+          <Fragment>
             <Form.Item
               label="Batch Number"
               name="batchNumber"
@@ -152,7 +152,7 @@ function InventoryFormHandler(props) {
                 }
               />
             </Form.Item>
-          </React.Fragment>
+          </Fragment>
         </StatefullFormRenderer>
 
         <StatefullFormRenderer
@@ -209,7 +209,7 @@ function InventoryFormHandler(props) {
           </Button>
         </Form.Item>
       </Form>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

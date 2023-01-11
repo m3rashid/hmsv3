@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "antd";
 
 import ShowEntry from "components/common/showEntry";
@@ -52,9 +51,11 @@ const Profile = ({ data }) => {
 };
 
 const centerAll = {
-  display: "flex",
-  justifyContent: "center",
-  gap: "10px",
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  maxWidth: 700,
+  margin: "0 auto",
+  gap: 20,
 };
 
 const About = () => {

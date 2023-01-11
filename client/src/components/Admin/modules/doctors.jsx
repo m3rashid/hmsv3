@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import { Table } from "antd";
 
 import AdminWrapper from "components/Admin/adminWrapper";
@@ -11,7 +11,7 @@ const Doctors = () => {
     userRole: "DOCTOR",
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     getAllUsers().then().catch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { instance } from "api/instance";
@@ -12,8 +12,8 @@ const initialState = {
 
 const useLogReports = () => {
   const [allLogs, setAllLogs] = useRecoilState(logReports);
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
-  const [details, setDetails] = React.useState(initialState);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [details, setDetails] = useState(initialState);
 
   const handleOk = () => {
     setIsModalVisible(true);

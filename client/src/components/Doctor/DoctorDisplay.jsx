@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { useMemo } from "react";
+import { Fragment, useMemo } from "react";
 import { Col, Row, Space, Typography } from "antd";
 
 import ShowAvailability from "components/Doctor/ShowAvailability";
@@ -18,9 +18,9 @@ function DoctorDisplay({ doctor, DisabledItems }) {
         dataIndex: "availability",
         Cell: ({ doctor }) => {
           return (
-            <React.Fragment>
+            <Fragment>
               <ShowAvailability availability={doctor.availability} />
-            </React.Fragment>
+            </Fragment>
           );
         },
       },
@@ -28,10 +28,8 @@ function DoctorDisplay({ doctor, DisabledItems }) {
     []
   );
 
-  // console.log(doctor);
-
   return (
-    <React.Fragment>
+    <Fragment>
       <Space direction="vertical" style={{ width: "100%" }}>
         {DoctorInfo.map((_info, index) => {
           if (!doctor || !doctor[_info.dataIndex]) return null;
@@ -54,7 +52,7 @@ function DoctorDisplay({ doctor, DisabledItems }) {
           );
         })}
       </Space>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

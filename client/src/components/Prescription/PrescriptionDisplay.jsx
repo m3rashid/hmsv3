@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { Space, Typography, Card, Table, Tooltip } from "antd";
@@ -18,7 +18,7 @@ function PrescriptionDisplay({
   showAvailability,
 }) {
   return (
-    <React.Fragment>
+    <Fragment>
       <Space direction="vertical" style={{ width: "100%" }}>
         <Typography.Title level={4}>Prescription Preview</Typography.Title>
         <Card title="Appointment Details" style={{ background: "transparent" }}>
@@ -57,7 +57,7 @@ function PrescriptionDisplay({
           showAvailability={false}
         />
       </Space>
-    </React.Fragment>
+    </Fragment>
   );
 }
 

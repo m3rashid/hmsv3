@@ -1,5 +1,3 @@
-import React from "react";
-
 import AdminWrapper from "components/Admin/adminWrapper";
 import ProfileWrapper from "components/Profile/ProfileWrapper";
 import CreateUserModal from "components/Admin/modules/helpers/createUserModal";

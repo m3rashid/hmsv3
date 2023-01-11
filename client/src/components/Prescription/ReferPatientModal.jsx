@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment, useState } from "react";
 import {
   Button,
   Col,
@@ -22,7 +22,7 @@ const ReferPatientModal = ({
   setModalState,
 }) => {
   const closeModal = () => setModalState(false);
-  const [formData, setformData] = React.useState({});
+  const [formData, setformData] = useState({});
   // TODO: use this with sockets
   const onFinish = async () => {
     try {
@@ -55,10 +55,10 @@ const ReferPatientModal = ({
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Modal
         title="Refer Patient"
-        visible={modalState}
+        open={modalState}
         onOk={closeModal}
         onCancel={closeModal}
         footer={null}
@@ -132,7 +132,7 @@ const ReferPatientModal = ({
           </Col>
         </Row>
       </Modal>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

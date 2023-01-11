@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { Modal, Button, Form, message, Collapse, Space } from "antd";
 
@@ -88,7 +88,7 @@ const otherFormFields = [
 
 const CreateUserModal = ({ isEdit, data }) => {
   const [form] = Form.useForm();
-  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const setUserAtom = useSetRecoilState(UserSlotManagerAtom);
   const { getUsers } = useGetUserDetail({
     userType: "doctors",
@@ -128,7 +128,6 @@ const CreateUserModal = ({ isEdit, data }) => {
     }
   };
 
-
   const onFinishFailed = (errorInfo) => {
     message.error({
       content: "User creation Failed",
@@ -137,7 +136,7 @@ const CreateUserModal = ({ isEdit, data }) => {
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Space>
         <Button onClick={() => setIsModalVisible(true)}>
           {isEdit ? "Edit User" : "Register New User"}
@@ -206,7 +205,7 @@ const CreateUserModal = ({ isEdit, data }) => {
           </div>
         </Form>
       </Modal>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

@@ -1,4 +1,3 @@
-import React from "react";
 import { Form, Button, message, Typography } from "antd";
 import { useRecoilState } from "recoil";
 
@@ -6,6 +5,7 @@ import { socket } from "api/instance";
 import { LoadingAtom } from "atoms/loading";
 import { BloodGroup, maritalStatus, PatientTypeEnum } from "utils/constants";
 import RenderFormFields from "components/FormRender/RenderFormFields";
+import { Fragment, useEffect } from "react";
 
 const PatientFormFields = [
   {
@@ -129,7 +129,7 @@ const CreatePatientForm = () => {
     form.resetFields();
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     socket.on("new-patient-created", ({ data }) => {
       message.success(`Patient ${data.name} created successfully!`);
       setLoadingData({
@@ -144,7 +144,7 @@ const CreatePatientForm = () => {
   }, []);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <Typography.Title level={2} style={{ paddingLeft: 45 }}>
         Create Patient
       </Typography.Title>
@@ -172,7 +172,7 @@ const CreatePatientForm = () => {
           </Button>
         </Form.Item>
       </Form>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

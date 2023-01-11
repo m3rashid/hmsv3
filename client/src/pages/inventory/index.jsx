@@ -1,4 +1,3 @@
-import React from "react";
 import { Tabs, Typography } from "antd";
 
 import styles from "pages/inventory/style.module.css";

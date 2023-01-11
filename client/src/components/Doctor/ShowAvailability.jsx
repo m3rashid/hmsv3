@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 import PropTypes from "prop-types";
 import { List, Space, Tag, Typography } from "antd";
 
@@ -8,7 +8,7 @@ function ShowAvailability({ availability }) {
       {availability &&
         availability.map((item, index) => {
           return (
-            <React.Fragment>
+            <Fragment>
               <Typography.Text strong>{item.day}</Typography.Text>
               <List
                 dataSource={item.range}
@@ -28,7 +28,7 @@ function ShowAvailability({ availability }) {
                   );
                 }}
               />
-            </React.Fragment>
+            </Fragment>
           );
         })}
     </div>

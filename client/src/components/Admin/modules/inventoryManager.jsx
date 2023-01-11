@@ -1,5 +1,5 @@
-import React from "react";
 import { Table } from "antd";
+import { useEffect } from "react";
 
 import AdminWrapper from "components/Admin/adminWrapper";
 import { columns } from "components/Admin/modules/helpers/table";
@@ -11,7 +11,7 @@ const InventoryManagers = () => {
     userRole: "INVENTORY_MANAGER",
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     getAllUsers().then().catch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

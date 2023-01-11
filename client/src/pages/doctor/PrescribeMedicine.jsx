@@ -12,7 +12,7 @@ import {
   Drawer,
 } from "antd";
 import dayjs from "dayjs";
-import React, { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 
 import { socket } from "api/instance";
 import PatientInfo from "pages/patient";
@@ -61,7 +61,7 @@ const PrescriptionForm = () => {
   }, [appointmentId, doctorData.appointments.length, handleAppointmentSelect]);
 
   return (
-    <React.Fragment>
+    <Fragment>
       <div style={{ padding: 10 }}>
         <Typography.Title level={4}>Create Prescription</Typography.Title>
         <Form
@@ -237,7 +237,7 @@ const PrescriptionForm = () => {
         />
 
         <Drawer
-          visible={PatientData.open}
+          open={PatientData.open}
           width={"60%"}
           onClose={() => {
             setPatientData({ open: false, data: null });
@@ -249,7 +249,7 @@ const PrescriptionForm = () => {
         </Drawer>
 
         <Modal
-          visible={CreatePrescriptionModalVisible}
+          open={CreatePrescriptionModalVisible}
           onOk={() => {
             setCreatePrescriptionModalVisible(false);
             form.submit();
@@ -270,7 +270,7 @@ const PrescriptionForm = () => {
           />
         </Modal>
       </div>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

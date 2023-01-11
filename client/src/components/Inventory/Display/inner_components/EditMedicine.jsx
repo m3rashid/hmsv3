@@ -1,4 +1,3 @@
-import React from "react";
 import { message } from "antd";
 import PropTypes from "prop-types";
 import { useSetRecoilState } from "recoil";
