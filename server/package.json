@@ -6,13 +6,16 @@
   "scripts": {
     "dev": "NODE_ENV='development' nodemon index.js --ignore thunder-tests/",
     "start": "NODE_ENV='development' node index.js",
-    "prod": "NODE_ENV='production' node index.js",
-    "ci": "yarn install --production"
+    "prod": "NODE_ENV='production' pm2 start index.js -i 0",
+    "ci": "yarn install --production",
+    "pm2": "pm2"
   },
   "dependencies": {
     "@faker-js/faker": "^7.1.0",
     "@prisma/client": "4.2.1",
     "@socket.io/admin-ui": "^0.3.0",
+    "@socket.io/cluster-adapter": "^0.2.1",
+    "@socket.io/sticky": "^1.0.2",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dayjs": "^1.11.5",
@@ -26,6 +29,7 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@socket.io/pm2": "^5.1.0",
     "prisma": "4.2.1"
   }
 }

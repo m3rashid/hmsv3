@@ -22,6 +22,7 @@ export const instance = axios.create({
 });
 
 export let socket = io(serverRootUrl, {
+  transports: ["websocket"],
   autoConnect: false,
   auth: {
     token: localStorage.getItem("refresh_token"),

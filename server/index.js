@@ -4,7 +4,9 @@ const http = require("http");
 const morgan = require("morgan");
 const express = require("express");
 const { Server } = require("socket.io");
+const { setupWorker } = require("@socket.io/sticky");
 const { instrument } = require("@socket.io/admin-ui");
+const { createAdapter } = require("@socket.io/cluster-adapter");
 
 const { prisma } = require("./utils/prisma.js");
 const { checkSocketAuth } = require("./middlewares/socket.js");
@@ -34,6 +36,8 @@ const io = new Server(server, {
   },
 });
 
+io.adapter(createAdapter());
+setupWorker(io);
 io.use(checkSocketAuth);
 
 io.on("connection", (socket) => {
@@ -48,25 +52,13 @@ io.on("connection", (socket) => {
 });
 
 app.use(cors({ origin: corsOrigin, optionsSuccessStatus: 200 }));
+app.use(express.json({ limit: "50mb", parameterLimit: 100000 }));
 app.use(
-  express.json({
-    limit: "50mb",
-    parameterLimit: 100000,
-  })
-);
-app.use(
-  express.urlencoded({
-    extended: true,
-    limit: "50mb",
-    parameterLimit: 100000,
-  })
+  express.urlencoded({ extended: true, limit: "50mb", parameterLimit: 100000 })
 );
 app.use(morgan("dev"));
 
-app.get("/", (req, res) => {
-  return res.send("Hello World");
-});
-
+app.get("/", (req, res) => res.send("Hello World"));
 app.use("/api/auth", AuthRoutes);
 app.use("/api/admin", AdminRoutes);
 app.use("/api/doctor", DoctorRoutes);
