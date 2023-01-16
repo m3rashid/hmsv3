@@ -1,10 +1,9 @@
 import { Fragment, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Badge, Button, Card, Divider, theme } from "antd";
+import { Badge, Card, Divider, theme } from "antd";
 
 import { authState } from "atoms/auth";
-import { ArrowLeftOutlined } from "@ant-design/icons";
 import ShowEntry from "components/common/showEntry";
 
 const ProfileWrapper = ({ children }) => {
@@ -35,11 +34,6 @@ const ProfileWrapper = ({ children }) => {
                     gap: 10,
                   }}
                 >
-                  <Button
-                    style={{ border: 0 }}
-                    onClick={() => window.history.back()}
-                    icon={<ArrowLeftOutlined style={{ fontSize: 20 }} />}
-                  />
                   <ShowEntry label="Email" value={auth.user.email} />
                 </div>
               </Card>

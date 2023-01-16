@@ -1,18 +1,15 @@
+import { toSentenceCase } from "utils/strings";
+
 const ShowEntry = ({ label, value }) => (
   <div
     style={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "flex-start",
-      gap: "1rem",
+      display: "grid",
+      gridTemplateColumns: "1fr 3fr",
+      gridGap: 3,
     }}
   >
-    {label === "message" ? (
-      <p style={{ padding: 0, margin: 0 }}>{value || null}</p>
-    ) : (
-      <p style={{ padding: 0, margin: 0 }}>{label || null}</p>
-    )}
-    <p style={{ padding: 0, margin: 0 }}>{value || null}</p>
+    <div style={{ fontWeight: 700 }}>{toSentenceCase(label)}</div>
+    <div>{value || null}</div>
   </div>
 );
 

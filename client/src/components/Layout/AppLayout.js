@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { useNavigate, Link } from "react-router-dom";
-import { Layout, Typography, Menu } from "antd";
+import { Layout, Typography, Menu, theme } from "antd";
 
 import { authState } from "atoms/auth";
 import routes, { checkAccess } from "routes";
@@ -10,6 +10,7 @@ const darkColor = "#484C56";
 const lightColor = "#F9F9FB";
 
 const AppLayout = ({ children }) => {
+  const { token } = theme.useToken();
   const navigate = useNavigate();
   const [Auth, setAuth] = useRecoilState(authState);
 
@@ -86,7 +87,10 @@ const AppLayout = ({ children }) => {
           <p style={{ textAlign: "center" }}>
             Project Designed and Developed in-house under Dept. of CSE
             (FET-JMI),
-            <Link style={{ marginLeft: "10px" }} to="/about">
+            <Link
+              style={{ marginLeft: "10px", color: token.colorPrimary }}
+              to="/about"
+            >
               Know More . . .
             </Link>
           </p>

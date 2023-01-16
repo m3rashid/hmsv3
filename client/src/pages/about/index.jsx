@@ -1,4 +1,4 @@
-import { Card } from "antd";
+import { Card, theme } from "antd";
 import { Fragment } from "react";
 import {
   GithubOutlined,
@@ -10,6 +10,8 @@ import ShowEntry from "components/common/showEntry";
 import { developers, professors } from "pages/about/data";
 
 const Profile = ({ data }) => {
+  const { token } = theme.useToken();
+
   return (
     <Card
       hoverable
@@ -31,17 +33,23 @@ const Profile = ({ data }) => {
         <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
           {data.github && (
             <a target="_blank" rel="noreferrer" href={data.github}>
-              <GithubOutlined style={{ fontSize: 20 }} />
+              <GithubOutlined
+                style={{ fontSize: 20, color: token.colorPrimary }}
+              />
             </a>
           )}
           {data.linkedin && (
             <a target="_blank" rel="noreferrer" href={data.linkedin}>
-              <LinkedinOutlined style={{ fontSize: 20 }} />
+              <LinkedinOutlined
+                style={{ fontSize: 20, color: token.colorPrimary }}
+              />
             </a>
           )}
           {data.portfolio && (
             <a target="_blank" rel="noreferrer" href={data.portfolio}>
-              <GlobalOutlined style={{ fontSize: 20 }} />
+              <GlobalOutlined
+                style={{ fontSize: 20, color: token.colorPrimary }}
+              />
             </a>
           )}
         </div>

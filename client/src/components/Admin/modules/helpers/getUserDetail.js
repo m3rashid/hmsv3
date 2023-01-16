@@ -11,37 +11,9 @@ const useGetUserDetail = ({ userType, userRole }) => {
   const [adminData, setAdminData] = useRecoilState(adminState);
 
   const getAllUsers = async () => {
-    console.log({ adminData, userType, userRole });
     if (adminData[userType].length !== 0) return;
     await getUsers();
   };
-
-  /**
-   * {
-    "id": 39202,
-    "userId": "EMP\\AA0180",
-    "name": "Absar Alam",
-    "fathersName": "LATE MD. TAIYUM ALAM",
-    "type": "EMPLOYEE",
-    "otherUser": null,
-    "relationWithOtherUser": "SELF",
-    "sex": "m",
-    "bloodGroup": "UNKNOWN",
-    "dob": "22/02/1964",
-    "dor": "29/02/2024",
-    "designation": "SECTION OFFICER",
-    "department": "REGISTRAR'S OFFICE",
-    "contact": "8860288858",
-    "fdr": "389/01",
-    "maritalStatus": "MARRIED",
-    "userData": null,
-    "lastVisit": null,
-    "address": "C-4, Ajmal Bagh Noor Nagar New Delhi New Delhi Delhi 110025 India",
-    "dependentStatus": false,
-    "createdAt": "2022-11-28T18:06:07.153Z",
-    "updatedAt": "2022-11-28T18:06:07.153Z"
-}
-   */
 
   const getSinglePatientDetail = async (id) => {
     const res = await instance.post("/admin/single-patient-details", {

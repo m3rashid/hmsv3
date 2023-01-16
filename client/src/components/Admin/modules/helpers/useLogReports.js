@@ -1,30 +1,24 @@
+import dayjs from "dayjs";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { instance } from "api/instance";
 import { logReports } from "atoms/logs";
 import { showGender } from "utils/strings";
-import dayjs from "dayjs";
-
-const initialState = {
-  action: {},
-  doneBy: {},
-  actionToShow: {},
-};
 
 const useLogReports = () => {
   const [allLogs, setAllLogs] = useRecoilState(logReports);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [details, setDetails] = useState(initialState);
+  const [details, setDetails] = useState({});
 
   const handleOk = () => {
     setIsModalVisible(true);
-    setDetails(initialState);
+    setDetails({});
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    setDetails(initialState);
+    setDetails({});
   };
 
   const getLogs = async () => {
@@ -37,7 +31,6 @@ const useLogReports = () => {
   };
 
   const getDetails = async (logEntry) => {
-    console.log({ logEntry });
     const res = await instance.post("/admin/report-details", { log: logEntry });
     const actionToShow = Object.entries(res.data.action).reduce(
       (acc, [key, value]) => {
@@ -66,9 +59,6 @@ const useLogReports = () => {
       }
       return { ...acc, [key]: val };
     }, {});
-
-    const formattedMessages = logEntry.message;
-    console.log({ formattedMessages });
 
     setDetails(allData);
     setIsModalVisible(true);

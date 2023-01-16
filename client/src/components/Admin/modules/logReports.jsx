@@ -72,10 +72,7 @@ const LogReports = () => {
         size="small"
         dataSource={allLogs}
         columns={columns}
-        pagination={{
-          total: allLogs.length,
-          defaultPageSize: 10,
-        }}
+        pagination={{ total: allLogs.length, defaultPageSize: 10 }}
       />
       <Modal
         title="Details"
@@ -84,16 +81,10 @@ const LogReports = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <div
-          style={{
-            maxHeight: "60vh",
-            overflowY: "auto",
-          }}
-        >
+        <div style={{ maxHeight: "60vh", overflowY: "auto" }}>
           {Object.entries(details).map(([key, val]) => (
-            <ShowEntry label={key} value={val} />
+            <ShowEntry key={key} label={key} value={val} />
           ))}
-          <br />
         </div>
 
         <div
@@ -108,7 +99,7 @@ const LogReports = () => {
           <Button style={{ marginRight: "10px" }} onClick={handleCancel}>
             Cancel
           </Button>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" onClick={handleCancel}>
             OK
           </Button>
         </div>
