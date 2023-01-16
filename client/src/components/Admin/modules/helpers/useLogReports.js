@@ -3,6 +3,8 @@ import { useRecoilState } from "recoil";
 
 import { instance } from "api/instance";
 import { logReports } from "atoms/logs";
+import { showGender } from "utils/strings";
+import dayjs from "dayjs";
 
 const initialState = {
   action: {},
@@ -35,6 +37,7 @@ const useLogReports = () => {
   };
 
   const getDetails = async (logEntry) => {
+    console.log({ logEntry });
     const res = await instance.post("/admin/report-details", { log: logEntry });
     const actionToShow = Object.entries(res.data.action).reduce(
       (acc, [key, value]) => {
@@ -44,11 +47,30 @@ const useLogReports = () => {
       {}
     );
 
-    setDetails({
-      action: res.data.action,
-      doneBy: res.data.doneBy,
-      actionToShow,
-    });
+    const allData = Object.entries({
+      ...logEntry,
+      ...res.data.action,
+      ...actionToShow,
+    }).reduce((acc, [key, val]) => {
+      if (
+        !val ||
+        key === "availableDays" ||
+        key.endsWith("id") ||
+        key.endsWith("Id")
+      ) {
+        return acc;
+      }
+      if (key === "sex") return { ...acc, [key]: showGender(val) };
+      if (key.endsWith("at") || key.endsWith("At")) {
+        return { ...acc, [key]: dayjs(val).format("DD-MM-YYYY hh:mm A") };
+      }
+      return { ...acc, [key]: val };
+    }, {});
+
+    const formattedMessages = logEntry.message;
+    console.log({ formattedMessages });
+
+    setDetails(allData);
     setIsModalVisible(true);
   };
 

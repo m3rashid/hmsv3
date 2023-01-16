@@ -84,28 +84,12 @@ const LogReports = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        {Object.keys(details.action).length > 0 &&
-        Object.keys(details.doneBy).length > 0 ? (
-          <div style={{ maxHeight: "60vh", overflowY: "auto" }}>
-            <h3>Done By</h3>
-            <ShowEntry label="Name" value={details.doneBy["Auth"][0].name} />
-            <ShowEntry label="Email" value={details.doneBy["Auth"][0].email} />
-            <ShowEntry
-              label="Time"
-              value={dayjs(details.action.updatedAt).format(
-                "DD-MM-YYYY hh:mm A"
-              )}
-            />
-            <ShowEntry label="Role" value={details.doneBy.role} />
-
-            <br />
-
-            <h3>Action Details</h3>
-            <pre>{JSON.stringify(details.actionToShow, null, 2)}</pre>
-          </div>
-        ) : (
-          <div>Details Loading</div>
-        )}
+        <div style={{ maxHeight: "60vh", overflowY: "auto" }}>
+          {Object.entries(details).map(([key, val]) => (
+            <ShowEntry label={key} value={val} />
+          ))}
+          <br />
+        </div>
 
         <div
           style={{
