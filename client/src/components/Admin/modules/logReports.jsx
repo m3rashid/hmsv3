@@ -84,7 +84,12 @@ const LogReports = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <div style={{ maxHeight: "60vh", overflowY: "auto" }}>
+        <div
+          style={{
+            maxHeight: "60vh",
+            overflowY: "auto",
+          }}
+        >
           {Object.entries(details).map(([key, val]) => (
             <ShowEntry label={key} value={val} />
           ))}
