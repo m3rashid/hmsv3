@@ -1,7 +1,7 @@
+import MindMapGraph from "components/documentation/mindMap";
 import { GlobalOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import React, { Fragment, useState } from "react";
 import { Steps, Typography } from "antd";
-import { MindMapGraph } from "@ant-design/graphs";
 
 const Learn = () => {
   const steps = [

@@ -1,10 +1,16 @@
+import { useState } from "react";
 import { useRecoilState } from "recoil";
-import { useNavigate, Link } from "react-router-dom";
-import { Layout, Typography, Menu, theme, Divider } from "antd";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import { Layout, Typography, Menu, theme } from "antd";
 
 import { authState } from "atoms/auth";
 import routes, { checkAccess } from "routes";
 import UserTop from "components/Layout/userTop";
+import {
+  BookOutlined,
+  HomeOutlined,
+  FileTextOutlined,
+} from "@ant-design/icons";
 
 const darkColor = "#484C56";
 const lightColor = "#F9F9FB";
@@ -12,14 +18,55 @@ const lightColor = "#F9F9FB";
 const AppLayout = ({ children }) => {
   const { token } = theme.useToken();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [Auth, setAuth] = useRecoilState(authState);
+  const [currentMenuItem, setCurrentMenuItem] = useState(pathname);
 
-  const handleClick = () => {
-    navigate("/");
+  const items = [
+    !Auth.isLoggedIn && {
+      key: "/",
+      icon: <HomeOutlined />,
+      label: "Home",
+    },
+    ...routes.reduce((acc, route) => {
+      if (route?.showInNav === false || !checkAccess(Auth, route)) return acc;
+      return [
+        ...acc,
+        {
+          key: route.path,
+          icon: route.icon,
+          label: route.text,
+        },
+      ];
+    }, []),
+    {
+      key: "/learn",
+      icon: <BookOutlined />,
+      label: "Documentation",
+    },
+    {
+      key: "/about",
+      icon: <FileTextOutlined />,
+      label: "About",
+    },
+  ].reduce(
+    (acc, it) => [
+      ...acc,
+      {
+        ...it,
+        style: {
+          color: "#F9F9FB",
+          ...(currentMenuItem === it.key && { background: "#00BDC1" }),
+        },
+      },
+    ],
+    []
+  );
+
+  const handleMenuChange = ({ key }) => {
+    setCurrentMenuItem(key);
+    navigate(key);
   };
-
-  const commonLinkContainerStyles = { paddingLeft: 24, paddingRight: 16 };
-  const commonLinkStyles = { color: "#ffffff" };
 
   return (
     <Layout style={{ height: "100vh" }}>
@@ -47,7 +94,7 @@ const AppLayout = ({ children }) => {
                 padding: "2px",
                 cursor: "pointer",
               }}
-              onClick={handleClick}
+              onClick={() => navigate("/")}
             />
             Dr. M.A Ansari Health Centre
           </Typography.Title>
@@ -63,48 +110,12 @@ const AppLayout = ({ children }) => {
             boxShadow: "2px 0px 5px 0px rgba(0,0,0,0.3)",
           }}
         >
-          <Menu mode="inline" style={{ background: darkColor }}>
-            {!Auth.isLoggedIn && (
-              <Menu.Item key="/index/home/">
-                <Link style={commonLinkStyles} to="/">
-                  Home
-                </Link>
-              </Menu.Item>
-            )}
-            {routes.map((route, index) => {
-              if (!checkAccess(Auth, route)) return null;
-              if (route?.showInNav === false) return null;
-              return (
-                <Menu.Item key={`${index}-=-${route.path}-=-${route.text}`}>
-                  <Link style={commonLinkStyles} to={route.path}>
-                    {route.text}
-                  </Link>
-                </Menu.Item>
-              );
-            })}
-
-            <Divider
-              dashed
-              style={{
-                background: token.colorFillSecondary,
-                marginBottom: 10,
-                marginTop: 10,
-              }}
-            />
-            <Menu.Item key="/index/learn" style={commonLinkContainerStyles}>
-              <Link to="/learn" style={commonLinkStyles}>
-                Documentaion
-              </Link>
-            </Menu.Item>
-
-            <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
-              <Menu.Item key="/index/about" style={commonLinkContainerStyles}>
-                <Link style={commonLinkStyles} to="/about">
-                  About
-                </Link>
-              </Menu.Item>
-            </div>
-          </Menu>
+          <Menu
+            mode="inline"
+            style={{ background: darkColor }}
+            items={items}
+            onClick={handleMenuChange}
+          />
         </Layout.Sider>
 
         <Layout.Content style={{ overflowY: "auto", background: lightColor }}>
