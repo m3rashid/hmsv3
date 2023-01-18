@@ -4,7 +4,7 @@ const ShowEntry = ({ label, value }) => (
   <div
     style={{
       display: "grid",
-      gridTemplateColumns: "1fr 3fr",
+      gridTemplateColumns: label && value ? "1fr 3fr" : "1fr",
       gridGap: 3,
     }}
   >

@@ -40,9 +40,16 @@ export const checkAccess = (Auth, route) => {
 
 const routes = [
   {
+    path: "/me",
+    component: ProfilePage,
+    text: "Home",
+    role: ["*"],
+  },
+  {
     path: "/admin/home",
     component: AdminHome,
     text: "Admin Home",
+    showInNav: false,
     role: ["ADMIN"],
   },
   {
@@ -165,12 +172,6 @@ const routes = [
     text: "Patient",
     role: [allPermissions.DOCTOR_APPOINTMENTS],
     showInNav: false,
-  },
-  {
-    path: "/me",
-    component: ProfilePage,
-    text: "My Profile",
-    role: ["*"],
   },
 ];
 

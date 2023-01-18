@@ -1,6 +1,6 @@
 import "@ant-design/flowchart/dist/index.css";
 import "antd/dist/reset.css";
-import "./index.css";
+import "./styles/index.css";
 import enUs from "antd/locale/en_US";
 import { ConfigProvider } from "antd";
 import { useRecoilState } from "recoil";
@@ -20,6 +20,7 @@ import Loading from "components/Loading/Loading";
 import AppLayout from "components/Layout/AppLayout";
 import { revalidateJWT } from "api/auth/revalidateJWT";
 import useFetchSockets from "components/Sockets/useFetchSockets";
+import Learn from "pages/learn";
 
 export const SocketContext = createContext();
 
@@ -75,6 +76,7 @@ function App() {
               );
             })}
             <Route path="/" element={<Home />} />
+            <Route path="/learn" element={<Learn />} />
             <Route path="/about" element={<About />} />
           </Routes>
         </div>

@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { useNavigate, Link } from "react-router-dom";
-import { Layout, Typography, Menu, theme } from "antd";
+import { Layout, Typography, Menu, theme, Divider } from "antd";
 
 import { authState } from "atoms/auth";
 import routes, { checkAccess } from "routes";
@@ -17,6 +17,9 @@ const AppLayout = ({ children }) => {
   const handleClick = () => {
     navigate("/");
   };
+
+  const commonLinkContainerStyles = { paddingLeft: 24, paddingRight: 16 };
+  const commonLinkStyles = { color: "#ffffff" };
 
   return (
     <Layout style={{ height: "100vh" }}>
@@ -63,7 +66,7 @@ const AppLayout = ({ children }) => {
           <Menu mode="inline" style={{ background: darkColor }}>
             {!Auth.isLoggedIn && (
               <Menu.Item key="/index/home/">
-                <Link style={{ color: "#ffffff" }} to="/">
+                <Link style={commonLinkStyles} to="/">
                   Home
                 </Link>
               </Menu.Item>
@@ -73,20 +76,34 @@ const AppLayout = ({ children }) => {
               if (route?.showInNav === false) return null;
               return (
                 <Menu.Item key={`${index}-=-${route.path}-=-${route.text}`}>
-                  <Link style={{ color: "#ffffff" }} to={route.path}>
+                  <Link style={commonLinkStyles} to={route.path}>
                     {route.text}
                   </Link>
                 </Menu.Item>
               );
             })}
-            <Menu.Item
-              key="/index/about"
-              style={{ position: "absolute", bottom: 0 }}
-            >
-              <Link style={{ color: "#ffffff" }} to="/about">
-                About
+
+            <Divider
+              dashed
+              style={{
+                background: token.colorFillSecondary,
+                marginBottom: 10,
+                marginTop: 10,
+              }}
+            />
+            <Menu.Item key="/index/learn" style={commonLinkContainerStyles}>
+              <Link to="/learn" style={commonLinkStyles}>
+                Documentaion
               </Link>
             </Menu.Item>
+
+            <div style={{ position: "absolute", bottom: 0, width: "100%" }}>
+              <Menu.Item key="/index/about" style={commonLinkContainerStyles}>
+                <Link style={commonLinkStyles} to="/about">
+                  About
+                </Link>
+              </Menu.Item>
+            </div>
           </Menu>
         </Layout.Sider>
 

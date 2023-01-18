@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { useSetRecoilState } from "recoil";
-import { Modal, Button, Form, message, Collapse, Space } from "antd";
+import { Modal, Button, Form, message, Collapse } from "antd";
 
 import { instance } from "api/instance";
 import { showGender, toSentenceCase } from "utils/strings";
@@ -138,14 +138,12 @@ const CreateUserModal = ({ isEdit, data }) => {
 
   return (
     <Fragment>
-      <Space>
-        <Button onClick={() => setIsModalVisible(true)}>
-          {isEdit ? "Edit User" : "Register New User"}
-        </Button>
-      </Space>
+      <Button onClick={() => setIsModalVisible(true)}>
+        {isEdit ? "Edit User" : "Register New User"}
+      </Button>
 
       <Modal
-        title="Create"
+        title={isEdit ? "Edit" : "Create"}
         open={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -156,8 +154,9 @@ const CreateUserModal = ({ isEdit, data }) => {
             maxHeight: "70vh",
             overflowY: "auto",
             overflowX: "hidden",
-            paddingBottom: 10,
-            marginRight: -20,
+            paddingBottom: 15,
+            marginRight: -24,
+            paddingRight: 15,
           }}
         >
           <Form

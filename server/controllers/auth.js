@@ -53,12 +53,12 @@ const revalidate = async (req, res) => {
   const { user, userDetails, token, expires } = await revalidateService(
     refreshToken
   );
-
+  console.log("userRole: ", user.role);
   return res.status(200).json({
     message: "Token revalidated",
     token,
     expires,
-    user: { ...user.dataValues, [user.role]: userDetails },
+    user: { ...user.dataValues, profile: userDetails },
   });
 };
 

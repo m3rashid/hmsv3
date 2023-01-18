@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Button, message, Upload } from "antd";
+import { Fragment, useState } from "react";
+import { Button, message, Typography, Upload } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 
 import { instance } from "api/instance";
@@ -33,22 +33,15 @@ const DataMigrationInput = () => {
   };
 
   return (
-    <div
-      style={{
-        padding: "10px",
-        marginTop: "100px",
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <h2>Data Migration</h2>
+    <Fragment>
+      <Typography.Title level={4}>Data Migration</Typography.Title>
       <Upload.Dragger
         name="file"
         maxCount={1}
         onChange={onChange}
         onDrop={onDrop}
         accept=".xlsx, .xls, .csv, .xl, .ods, .ots, .xlr, .xltm"
+        style={{ paddingLeft: 25, paddingRight: 25 }}
       >
         <p className="ant-upload-drag-icon">
           <InboxOutlined />
@@ -57,14 +50,13 @@ const DataMigrationInput = () => {
           Click or drag file to this area to upload
         </p>
         <p className="ant-upload-hint" style={{ padding: "10px" }}>
-          Support for a single or bulk upload. Strictly prohibit from uploading
-          company data or other band files
+          Support for a single bulk upload
         </p>
       </Upload.Dragger>
-      <Button onClick={uploadFile} style={{ margin: "10px 0", width: "50%" }}>
+      <Button onClick={uploadFile} style={{ margin: "10px 0", width: "30%" }}>
         Upload
       </Button>
-    </div>
+    </Fragment>
   );
 };
 

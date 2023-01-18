@@ -19,6 +19,8 @@ const ProfileWrapper = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
+  console.log({ auth });
+
   return (
     <Fragment>
       <div style={{ borderRadius: 10 }}>
@@ -29,11 +31,12 @@ const ProfileWrapper = ({ children }) => {
                 <div
                   style={{
                     display: "flex",
-                    alignItems: "center",
-                    justifyContent: "start",
+                    justifyContent: "center",
+                    flexDirection: "column",
                     gap: 10,
                   }}
                 >
+                  <ShowEntry label={auth.user.name} />
                   <ShowEntry label="Email" value={auth.user.email} />
                 </div>
               </Card>
