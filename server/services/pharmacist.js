@@ -6,7 +6,7 @@ const { serverActions } = require("../utils/constants");
 const prisma = require("../utils/prisma");
 
 const getAllPrescriptionsService = async ({ limit, from, to, offset }) => {
-  const prescriptions = await prisma.prescription.findMany({
+  const prescriptions = await prisma.Prescription.findMany({
     where: {
       datePrescribed: {
         gte: from

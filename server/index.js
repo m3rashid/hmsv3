@@ -36,8 +36,10 @@ const io = new Server(server, {
   },
 });
 
-io.adapter(createAdapter());
-setupWorker(io);
+if (isProduction) {
+  io.adapter(createAdapter());
+  setupWorker(io);
+}
 io.use(checkSocketAuth);
 
 io.on("connection", (socket) => {
@@ -92,9 +94,7 @@ const startServer = async () => {
 
     await prisma.$connect();
     console.log("Connection established successfully");
-    server.listen(PORT, HOST, () =>
-      console.log(`Server on http://${HOST}:${PORT}`)
-    );
+    server.listen(PORT, () => console.log(`Server on http://:${PORT}`));
   } catch (err) {
     await prisma.$disconnect();
     console.log(err);

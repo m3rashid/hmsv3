@@ -102,7 +102,9 @@ const updateUserProfileService = async (
     },
   });
 
-  const updatedProfile = await prisma.profile.update({
+  if (category.length === 0) throw new Error("Category cannot be empty");
+
+  const updatedProfile = await prisma.Profile.update({
     where: { id: profileId },
     data: {
       ...(sex && sex.trim() && { sex }),
@@ -114,7 +116,7 @@ const updateUserProfileService = async (
       ...(availableDays && availableDays.trim() && { availableDays }),
       ...(roomNumber && roomNumber.trim() && { roomNumber }),
       ...(authorityName && authorityName.trim() && { authorityName }),
-      ...(category && category.trim() && { category }),
+      ...(category && { category }),
       ...(origin && origin.trim() && { origin }),
     },
   });

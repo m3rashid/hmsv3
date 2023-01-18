@@ -77,7 +77,6 @@ const otherFormFields = [
     key: "category",
     label: "Category",
     inputType: "select",
-    multiple: "true",
     options: Object.entries(Category).map(([key, value]) => ({
       key: key,
       label: value,
@@ -90,7 +89,7 @@ const CreateUserModal = ({ isEdit, data }) => {
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const setUserAtom = useSetRecoilState(UserSlotManagerAtom);
-  const { getUsers } = useGetUserDetail({
+  const { getAllUsers } = useGetUserDetail({
     userType: "doctors",
     userRole: "DOCTOR",
   });
@@ -119,11 +118,13 @@ const CreateUserModal = ({ isEdit, data }) => {
       });
     } catch (error) {
       message.error({
-        content: `User ${isEdit ? "updation" : "creation"} failed`,
+        content:
+          JSON.parse(error.response.data.message) ??
+          `User ${isEdit ? "updation" : "creation"} failed`,
         key: "auth/createUser",
       });
     } finally {
-      await getUsers();
+      await getAllUsers();
       handleCancel();
     }
   };
@@ -149,61 +150,70 @@ const CreateUserModal = ({ isEdit, data }) => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={null}
-        style={{ maxHeight: "70vh", overflowY: "auto", paddingBottom: 0 }}
       >
-        <Form
-          name="Create User"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          layout="horizontal"
-          labelCol={{ span: 7 }}
-          wrapperCol={{ span: 14 }}
-          form={form}
+        <div
+          style={{
+            maxHeight: "70vh",
+            overflowY: "auto",
+            overflowX: "hidden",
+            paddingBottom: 10,
+            marginRight: -20,
+          }}
         >
-          <RenderFormFields
-            isEdit={isEdit}
-            formFields={requiredFormFields}
-            required={!isEdit}
-            data={data}
-            // form={form}
-          />
-
-          <Collapse bordered={false} style={{ padding: 0, margin: 0 }}>
-            <Collapse.Panel header="Other Details" key="1">
-              <RenderFormFields
-                isEdit={isEdit}
-                formFields={otherFormFields}
-                required={false}
-                data={data}
-                form={form}
-              />
-            </Collapse.Panel>
-          </Collapse>
-
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              borderTop: "1px solid #f0f0f0",
-              margin: "24px -24px -10px -24px",
-              padding: "10px 24px 0 24px",
-            }}
+          <Form
+            name="Create User"
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            layout="horizontal"
+            labelCol={{ span: 7 }}
+            wrapperCol={{ span: 14 }}
+            form={form}
           >
-            <Button style={{ marginRight: "10px" }} onClick={handleCancel}>
-              Cancel
-            </Button>
-            <Button
-              type="primary"
-              htmlType="submit"
-              onClick={(e) => {
-                e.preventDefault();
-                form.submit();
+            <RenderFormFields
+              isEdit={isEdit}
+              formFields={requiredFormFields}
+              required={!isEdit}
+              data={data}
+              // form={form}
+            />
+
+            <Collapse bordered={false} style={{ padding: 0, margin: 0 }}>
+              <Collapse.Panel header="Other Details" key="1">
+                <RenderFormFields
+                  isEdit={isEdit}
+                  formFields={otherFormFields}
+                  required={false}
+                  data={data}
+                  form={form}
+                />
+              </Collapse.Panel>
+            </Collapse>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                borderTop: "1px solid #f0f0f0",
+                margin: "24px -24px -10px -24px",
+                padding: "10px 24px 0 24px",
               }}
             >
-              {isEdit ? "Update User" : "Create User"}
-            </Button>
-          </div>
-        </Form>
+              <Button style={{ marginRight: "10px" }} onClick={handleCancel}>
+                Cancel
+              </Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  form.submit();
+                }}
+              >
+                {isEdit ? "Update User" : "Create User"}
+              </Button>
+            </div>
+          </Form>
+        </div>
       </Modal>
     </Fragment>
   );

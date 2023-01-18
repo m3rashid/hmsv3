@@ -4,5 +4,6 @@ module.exports = {
   isProduction,
   PORT: process.env.PORT || 5000,
   HOST: process.env.SERVER_HOST || "localhost",
-  corsOrigin: isProduction ? "*" : "*",
+  // corsOrigin: isProduction ? "*" : "*",
+  corsOrigin: "*",
 };

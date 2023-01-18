@@ -3,11 +3,7 @@ const { addEventLog } = require("../utils/logs");
 const { checkAccess } = require("../utils/auth.helpers");
 const { permissions, serverActions } = require("../utils/constants");
 
-const createPatientService = async (
-  data,
-  UserPermissions,
-  doneBy
-) => {
+const createPatientService = async (data, UserPermissions, doneBy) => {
   if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions)) {
     throw new Error("Forbidden");
   }
@@ -75,20 +71,13 @@ const getPatientByIdService = async (patientId) => {
   return { patient };
 };
 
-const searchPatientsService = async ({
-  name,
-  sex,
-  contact,
-  address,
-}) => {
+const searchPatientsService = async ({ query }) => {
   const patients = await prisma.Patient.findMany({
     where: {
       OR: [
-        { name: { contains: name } },
-        // { age: { gte: minAge, lte: maxAge } },
-        { sex: { eq: sex } },
-        { contact: { contains: contact } },
-        { address: { contains: address } },
+        { name: { contains: query, mode: "insensitive" } },
+        { userId: { contains: query, mode: "insensitive" } },
+        { contact: { contains: query, mode: "insensitive" } },
       ],
     },
     orderBy: { createdAt: "desc" },

@@ -147,29 +147,29 @@ const CreateAppointmentForm = () => {
 
       const { data } = await instance.get(
         "/patient/search",
-        {
-          params: {
-            name: value,
-            email: value,
-            jamiaId: value,
-          },
-        },
+        { params: { query: value } },
         { cancelToken: CancelToken.token }
       );
 
       setPatients({
         ...patients,
         data: data.patients.map((patient) => {
+          console.log({ patient });
           return {
-            value: `${patient.name}, ${patient.jamiaId || patient.email || ""}`,
+            value: `${patient.name}, ${patient.userId || patient.email || ""}`,
             data: patient,
             label: (
               <Col direction="vertical" size={"small"} style={{ fontSize: 12 }}>
                 <Row>
                   <Typography.Text>{patient.name}</Typography.Text>
-                  {patient.jamiaId && (
-                    <Typography.Text type="danger">
-                      {`(${patient.jamiaId})`}
+                  {patient.userId && (
+                    <Typography.Text type="success">
+                      &nbsp; {`(${patient.userId})`}
+                    </Typography.Text>
+                  )}
+                  {patient.contact && (
+                    <Typography.Text type="secondary">
+                      &nbsp; MOB: {`(${patient.contact})`}
                     </Typography.Text>
                   )}
                 </Row>
@@ -281,7 +281,7 @@ const CreateAppointmentForm = () => {
               />
 
               <Typography.Text disabled style={{ fontSize: 10 }}>
-                *Search by (name or email or jamia Id)
+                *Search by (name or email or user/employee/student Id)
               </Typography.Text>
             </Form.Item>
 

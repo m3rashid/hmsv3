@@ -1,4 +1,5 @@
 import "antd/dist/reset.css";
+import "./index.css";
 import { ConfigProvider } from "antd";
 import { useRecoilState } from "recoil";
 import { Routes, Route } from "react-router-dom";
