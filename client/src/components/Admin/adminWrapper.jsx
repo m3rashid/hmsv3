@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { useLocation } from "react-router-dom";
 
 import { toSentenceCase } from "utils/strings";
@@ -12,21 +13,19 @@ const AdminWrapper = ({ aside, children, hideHeading }) => {
     .join(" ");
 
   return (
-    <>
-      <div style={{ padding: "20px" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          {!hideHeading && <h2>{heading}</h2>}
-          {aside}
-        </div>
-        <div style={{ marginTop: "10px", marginLeft: "0px" }}>{children}</div>
+    <Fragment>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        {!hideHeading && <h2>{heading}</h2>}
+        {aside}
       </div>
-    </>
+      {children}
+    </Fragment>
   );
 };
 

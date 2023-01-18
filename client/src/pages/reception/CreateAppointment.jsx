@@ -154,7 +154,6 @@ const CreateAppointmentForm = () => {
       setPatients({
         ...patients,
         data: data.patients.map((patient) => {
-          console.log({ patient });
           return {
             value: `${patient.name}, ${patient.userId || patient.email || ""}`,
             data: patient,
@@ -165,6 +164,11 @@ const CreateAppointmentForm = () => {
                   {patient.userId && (
                     <Typography.Text type="success">
                       &nbsp; {`(${patient.userId})`}
+                    </Typography.Text>
+                  )}
+                  {patient.department && (
+                    <Typography.Text type="danger">
+                      &nbsp; {`${patient.department}`}
                     </Typography.Text>
                   )}
                   {patient.contact && (
@@ -188,14 +192,13 @@ const CreateAppointmentForm = () => {
   return (
     <Fragment>
       <Row>
-        <Col span={12}>
+        <Col span={12} style={{ paddingRight: 15 }}>
           <Form
             form={form}
             onFinish={formSubmitHandler}
             labelAlign="left"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
-            style={{ padding: 20 }}
           >
             <Typography.Title
               level={4}
@@ -209,12 +212,9 @@ const CreateAppointmentForm = () => {
               rules={[{ required: true, message: "Please select a doctor!" }]}
             >
               <DoctorSelector
-                onChange={(value) => {
-                  setFormSelected({
-                    ...FormSelected,
-                    doctor: value,
-                  });
-                }}
+                onChange={(value) =>
+                  setFormSelected({ ...FormSelected, doctor: value })
+                }
               />
             </Form.Item>
             <Form.Item
@@ -227,10 +227,7 @@ const CreateAppointmentForm = () => {
               <DoctorTimeSelector
                 onChange={(value) => {
                   form.setFieldsValue({ datetime: value });
-                  setFormSelected({
-                    ...FormSelected,
-                    datetime: value,
-                  });
+                  setFormSelected({ ...FormSelected, datetime: value });
                 }}
                 doctor={FormSelected?.doctor}
               />
@@ -259,9 +256,9 @@ const CreateAppointmentForm = () => {
                     ),
                   });
                 }}
-                onClear={() => {
-                  setFormSelected({ ...FormSelected, patient: null });
-                }}
+                onClear={() =>
+                  setFormSelected({ ...FormSelected, patient: null })
+                }
                 onChange={(value) => {
                   const patientData = patients.data.find(
                     (patient) => patient.value === value
@@ -271,10 +268,7 @@ const CreateAppointmentForm = () => {
                     form.setFieldsValue({ patient: null });
                     return;
                   } else {
-                    setFormSelected({
-                      ...FormSelected,
-                      patient: patientData,
-                    });
+                    setFormSelected({ ...FormSelected, patient: patientData });
                     form.setFieldsValue({ patient: patientData.value });
                   }
                 }}
@@ -285,37 +279,30 @@ const CreateAppointmentForm = () => {
               </Typography.Text>
             </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 2 }}>
+            <Form.Item>
               <Button type="primary" htmlType="submit" loading={loading}>
                 Create Appointment
               </Button>
             </Form.Item>
           </Form>
         </Col>
-        <Col span={12} style={{ paddingTop: 20 }}>
-          <Typography.Title
-            level={4}
-            style={{ marginTop: 10, paddingLeft: 25 }}
-          >
+        <Col span={12} style={{ paddingLeft: 15 }}>
+          <Typography.Title level={4} style={{ marginTop: 10 }}>
             Appointment Details
           </Typography.Title>
-          <Row style={{ paddingLeft: 25 }}>
+          <Row>
             <Col>
-              <Typography.Text level={4}>Date : </Typography.Text>
+              <Typography.Text level={4}>Date : &nbsp;</Typography.Text>
             </Col>
-            <Col span={20}>
-              <Typography.Text
-                level={4}
-                style={{ marginLeft: 10 }}
-                type="danger"
-              >
+            <Col span={20} style={{ marginBottom: 10 }}>
+              <Typography.Text level={4} type="danger">
                 {form.getFieldValue("datetime")?.format("YYYY-MM-DD HH:mm A") ||
                   "N/A"}
               </Typography.Text>
             </Col>
           </Row>
           <Space direction="vertical" style={{ width: "100%" }}>
-            <Card title="Patient Details" style={{ background: "transparent" }}>
+            <Card title="Patient Details">
               {FormSelected.patient ? (
                 <Space direction="vertical">
                   <Typography.Text type="danger">
@@ -333,10 +320,10 @@ const CreateAppointmentForm = () => {
                 </Space>
               ) : (
                 <Typography.Text>No Patient Selected</Typography.Text>
-              )}{" "}
+              )}
             </Card>
 
-            <Card title="Doctor Details" style={{ background: "transparent" }}>
+            <Card title="Doctor Details">
               {FormSelected.doctor ? (
                 <DoctorDisplay doctor={FormSelected.doctor?.profile} />
               ) : (

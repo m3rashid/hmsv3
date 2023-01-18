@@ -175,6 +175,7 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
   return (
     <>
       <Table
+        className="user-table"
         size="small"
         columns={medicineInputTableColumns}
         dataSource={medicines || []}

@@ -5,23 +5,21 @@ import DataMigrationInput from "./helpers/data-migration";
 
 const Home = () => {
   return (
-    <>
-      <ProfileWrapper>
-        <AdminWrapper hideHeading>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
-            <CreateUserModal isEdit={false} />
-            <DataMigrationInput />
-          </div>
-        </AdminWrapper>
-      </ProfileWrapper>
-    </>
+    <ProfileWrapper>
+      <AdminWrapper hideHeading>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <CreateUserModal isEdit={false} />
+          <DataMigrationInput />
+        </div>
+      </AdminWrapper>
+    </ProfileWrapper>
   );
 };
 

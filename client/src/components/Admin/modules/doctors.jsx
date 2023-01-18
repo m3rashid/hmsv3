@@ -21,6 +21,7 @@ const Doctors = () => {
       <Table
         size="small"
         dataSource={users}
+        className="user-table"
         columns={columns}
         pagination={{
           total: users.length,

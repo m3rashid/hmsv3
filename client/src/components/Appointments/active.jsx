@@ -1,4 +1,5 @@
 import { Button, Space, Table } from "antd";
+import { Fragment } from "react";
 
 const Active = () => {
   const columns = [
@@ -35,8 +36,9 @@ const Active = () => {
   const data = [];
 
   return (
-    <div style={{ marginTop: "20px" }}>
+    <Fragment>
       <Table
+        className="user-table"
         size="small"
         dataSource={data}
         columns={columns}
@@ -45,7 +47,7 @@ const Active = () => {
           defaultPageSize: 5,
         }}
       />
-    </div>
+    </Fragment>
   );
 };
 

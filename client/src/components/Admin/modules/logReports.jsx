@@ -69,6 +69,7 @@ const LogReports = () => {
       }
     >
       <Table
+        className="user-table"
         size="small"
         dataSource={allLogs}
         columns={columns}

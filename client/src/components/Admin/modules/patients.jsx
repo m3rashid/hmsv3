@@ -93,6 +93,7 @@ const Patients = () => {
         )}
       </Modal>
       <Table
+        className="user-table"
         size="small"
         dataSource={users}
         columns={columns}

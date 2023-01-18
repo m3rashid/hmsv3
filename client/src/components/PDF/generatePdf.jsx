@@ -127,7 +127,7 @@ const GeneratePdf = (props) => {
                       }}
                     >
                       <span>
-                        Date :{" "}
+                        Date : &nbsp;
                         <strong>{parchiData?.date && parchiData.date}</strong>
                       </span>
                     </div>
@@ -192,6 +192,7 @@ const GeneratePdf = (props) => {
                       }}
                     >
                       <Table
+                        className="user-table"
                         size="small"
                         columns={[
                           {
@@ -247,6 +248,7 @@ const GeneratePdf = (props) => {
                       }}
                     >
                       <Table
+                        className="user-table"
                         size="small"
                         columns={[
                           {

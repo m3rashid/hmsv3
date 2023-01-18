@@ -1,5 +1,6 @@
 import "antd/dist/reset.css";
 import "./index.css";
+import enUs from "antd/locale/en_US";
 import { ConfigProvider } from "antd";
 import { useRecoilState } from "recoil";
 import { Routes, Route } from "react-router-dom";
@@ -54,9 +55,9 @@ function App() {
 
   if (isLoading) return <Loading text="App is Loading . ." />;
   return (
-    <ConfigProvider theme={antDesignTheme}>
+    <ConfigProvider theme={antDesignTheme} locale={enUs}>
       <AppLayout>
-        <div style={{ minHeight: "calc(100vh - 115px)" }}>
+        <div style={{ minHeight: "calc(100vh - 115px)", padding: 20 }}>
           <Routes>
             {routes.map((route, index) => {
               const validated = checkAccess(Auth, route);

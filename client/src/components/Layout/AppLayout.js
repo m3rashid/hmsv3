@@ -25,9 +25,10 @@ const AppLayout = ({ children }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "10px",
+          padding: "20px",
           background: darkColor,
           color: "white",
+          boxShadow: "0px 2px 5px 0px rgba(0,0,0,0.3)",
         }}
       >
         <div style={{ marginTop: 16 }}>
@@ -53,13 +54,21 @@ const AppLayout = ({ children }) => {
       </Layout.Header>
 
       <Layout>
-        <Layout.Sider theme="light" style={{ background: darkColor }}>
+        <Layout.Sider
+          theme="light"
+          style={{
+            background: darkColor,
+            boxShadow: "2px 0px 5px 0px rgba(0,0,0,0.3)",
+          }}
+        >
           <Menu mode="inline" style={{ background: darkColor }}>
-            <Menu.Item key="/index/home/">
-              <Link style={{ color: "#ffffff" }} to="/">
-                Home
-              </Link>
-            </Menu.Item>
+            {!Auth.isLoggedIn && (
+              <Menu.Item key="/index/home/">
+                <Link style={{ color: "#ffffff" }} to="/">
+                  Home
+                </Link>
+              </Menu.Item>
+            )}
             {routes.map((route, index) => {
               if (!checkAccess(Auth, route)) return null;
               if (route?.showInNav === false) return null;

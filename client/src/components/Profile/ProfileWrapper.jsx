@@ -21,7 +21,7 @@ const ProfileWrapper = ({ children }) => {
 
   return (
     <Fragment>
-      <div style={{ borderRadius: 10, paddingRight: 20, paddingLeft: 20 }}>
+      <div style={{ borderRadius: 10 }}>
         {auth.user && (
           <div style={{ width: "50%", margin: 20, marginLeft: 0 }}>
             <Badge.Ribbon color={token.colorPrimary} text="Online">

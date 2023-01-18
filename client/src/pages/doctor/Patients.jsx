@@ -70,6 +70,7 @@ const DoctorPatients = () => {
   return (
     <div style={{ marginTop: "20px" }}>
       <Table
+        className="user-table"
         size="small"
         loading={loading}
         dataSource={data}

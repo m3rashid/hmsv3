@@ -195,7 +195,12 @@ function InventoryTable(prop) {
         </Col>
       </Row>
 
-      <Table size="small" columns={columns} dataSource={data} />
+      <Table
+        className="user-table"
+        size="small"
+        columns={columns}
+        dataSource={data}
+      />
 
       {isModalVisible.open && (
         <Modal

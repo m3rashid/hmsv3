@@ -1,12 +1,13 @@
 import { Typography } from "antd";
+import { Fragment } from "react";
 
 const Home = () => {
   return (
-    <div style={{ padding: "20px" }}>
+    <Fragment>
       <img
         src="/images/center.jpg"
         alt="hospital"
-        style={{ width: "100%", maxHeight: "300px" }}
+        style={{ maxHeight: "300px", margin: -20, width: "calc(100% + 40px)" }}
       />
       <div
         style={{
@@ -35,7 +36,7 @@ const Home = () => {
             }}
           >
             <img
-              style={{ width: "100%", maxWidth: "300px" }}
+              style={{ width: "100%", maxWidth: "200px" }}
               src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Mukhtar_Ahmed_Ansari_1980_stamp_of_India.jpg"
               alt="Mukhtar ahmad ansari"
             />
@@ -45,17 +46,18 @@ const Home = () => {
               Mukhtar Ahmed Ansari
             </Typography.Title>
             <p>
-              Mukhtar Ahmed Ansari (25 December 1880 – 10 May 1936) was an
-              Indian nationalist and political leader, and former president of
-              the Indian National Congress and the Muslim League during the
-              Indian Independence Movement. One of the founders of the Jamia
-              Millia Islamia University he remained its chancellor 1928 to 1936.
+              Mukhtar Ahmed Ansari &#40;25 December 1880 &#45; 10 May 1936&#41;
+              was an Indian nationalist and political leader, and former
+              president of the Indian National Congress and the Muslim League
+              during the Indian Independence Movement. One of the founders of
+              the Jamia Millia Islamia University he remained its chancellor
+              1928 to 1936.
             </p>
             <p></p>
           </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
 

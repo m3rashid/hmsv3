@@ -71,9 +71,7 @@ const centerAll = {
 const About = () => {
   return (
     <Fragment>
-      <h2 align="center" style={{ marginTop: 50 }}>
-        Project under the guidance of
-      </h2>
+      <h2 align="center">Project under the guidance of</h2>
       <div style={{ ...centerAll, marginBottom: 36 }}>
         {professors.map((prof) => (
           <Profile key={prof.name} data={prof} />

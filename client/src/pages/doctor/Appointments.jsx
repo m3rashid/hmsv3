@@ -12,7 +12,7 @@ import {
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 
 import { socket } from "api/instance";
 import { authState } from "atoms/auth";
@@ -113,8 +113,7 @@ function DoctorAppointments() {
                 }
               >
                 <Button disabled={disabled} type="primary">
-                  {" "}
-                  Precribe{" "}
+                  Precribe
                 </Button>
               </Tooltip>
             </Popconfirm>
@@ -222,7 +221,7 @@ function DoctorAppointments() {
   // console.log(doctorData);
 
   return (
-    <div style={{ marginTop: "20px" }}>
+    <Fragment>
       <Typography.Title
         level={4}
         style={{ width: "100%", textAlign: "center" }}
@@ -244,6 +243,7 @@ function DoctorAppointments() {
       <Tabs defaultActiveKey="1" centered style={{ marginTop: -5 }}>
         <TabPane tab="Active" key="1">
           <Table
+            className="user-table"
             size="small"
             loading={doctorData.loading}
             dataSource={doctorData.appointments.filter((apt) => apt.pending)}
@@ -260,6 +260,7 @@ function DoctorAppointments() {
         </TabPane>
         <TabPane tab="Completed" key="2">
           <Table
+            className="user-table"
             size="small"
             dataSource={doctorData.appointments.filter((apt) => !apt.pending)}
             columns={columnsPrevious}
@@ -320,7 +321,7 @@ function DoctorAppointments() {
           </div>
         </div>
       </Modal>
-    </div>
+    </Fragment>
   );
 }
 

@@ -1,8 +1,9 @@
 import { Fragment } from "react";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
-import { Space, Typography, Card, Table, Tooltip } from "antd";
+import { Space, Typography, Card, Table, Tooltip, Divider } from "antd";
 import { AiOutlineCheck, AiOutlineWarning } from "react-icons/ai";
+import ShowEntry from "components/common/showEntry";
 
 /**
  * Display Prescription of a patient
@@ -21,37 +22,36 @@ function PrescriptionDisplay({
     <Fragment>
       <Space direction="vertical" style={{ width: "100%" }}>
         <Typography.Title level={4}>Prescription Preview</Typography.Title>
-        <Card title="Appointment Details" style={{ background: "transparent" }}>
+        <Card size="small" title="Appointment Details">
           <Space direction="vertical">
-            <Typography.Text>Appointment ID: {id}</Typography.Text>
-            <Typography.Text>Patient Name: {patient?.name}</Typography.Text>
-            <Typography.Text>
-              Date: {dayjs(date).format("MMMM DD YYYY HH:mm A")}
-            </Typography.Text>
+            {id && <ShowEntry label="Appointment ID" value={id} />}
+            {patient?.name && (
+              <ShowEntry label="Patient Name" value={patient?.name} />
+            )}
+            <ShowEntry
+              label="Date"
+              value={dayjs(date).format("MMMM DD YYYY HH:mm A")}
+            />
           </Space>
         </Card>
 
-        <Space
-          direction="vertical"
-          style={{
-            marginLeft: 20,
-            padding: 20,
-            width: "75%",
-            borderRadius: 15,
-            backgroundColor: "#fff",
-          }}
-        >
-          <Typography.Text type="success">Symptoms:</Typography.Text>
-          <Typography.Text>{symptoms}</Typography.Text>
-        </Space>
+        <Card size="small" title="Symptoms">
+          {symptoms && <Typography.Text>{symptoms}</Typography.Text>}
+        </Card>
 
-        <Typography.Text strong>Medicines</Typography.Text>
+        <Divider />
+        <Typography.Title level={4} strong>
+          Medicines
+        </Typography.Title>
         <ViewPrescriptionTable
           prescriptionData={Medicines}
           showAvailability={showAvailability}
         />
 
-        <Typography.Text strong>Custom Medicines</Typography.Text>
+        <Divider />
+        <Typography.Title level={4} strong>
+          Custom Medicines
+        </Typography.Title>
         <ViewPrescriptionTable
           prescriptionData={ExtraMedicines}
           showAvailability={false}
@@ -140,20 +140,17 @@ const ViewPrescriptionTable = ({ prescriptionData, showAvailability }) => {
   ];
 
   return (
-    <Space
-      direction="vertical"
-      size={3}
-      style={{ padding: "10px", width: "100%" }}
-    >
+    <Fragment>
       {prescriptionData && (
         <Table
+          className="user-table"
+          style={{ marginTop: -10 }}
           size="small"
           pagination={false}
           columns={medicineTableColumns}
           dataSource={prescriptionData}
-          scroll={{ x: 500 }}
         />
       )}
-    </Space>
+    </Fragment>
   );
 };

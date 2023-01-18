@@ -26,7 +26,12 @@ function InventoryTable() {
 
   return (
     <div>
-      <Table size="small" dataSource={Inventory} columns={columns} />
+      <Table
+        className="user-table"
+        size="small"
+        dataSource={Inventory}
+        columns={columns}
+      />
     </div>
   );
 }

@@ -75,19 +75,12 @@ const ReferPatientModal = ({
               labelCol={{ span: 7 }}
               wrapperCol={{ span: 14 }}
             >
-              <Space
-                direction="vertical"
-                style={{
-                  width: "100%",
-                }}
-              >
+              <Space direction="vertical" style={{ width: "100%" }}>
                 <DoctorSelector
                   onChange={(value) =>
                     setformData({ ...formData, doctor: value })
                   }
-                  style={{
-                    width: "100%",
-                  }}
+                  style={{ width: "100%" }}
                 />
 
                 <DoctorTimeSelector
@@ -95,9 +88,7 @@ const ReferPatientModal = ({
                     setformData({ ...formData, date: value })
                   }
                   doctor={formData.doctor}
-                  style={{
-                    width: "100%",
-                  }}
+                  style={{ width: "100%" }}
                 />
               </Space>
               <div
@@ -120,12 +111,7 @@ const ReferPatientModal = ({
             </Form>
           </Col>
           <Col span={12}>
-            <Typography.Text
-              strong
-              style={{
-                marginTop: 20,
-              }}
-            >
+            <Typography.Text strong style={{ marginTop: 20 }}>
               Doctor Details
             </Typography.Text>
             <DoctorDisplay doctor={formData?.doctor?.profile} />

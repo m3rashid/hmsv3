@@ -119,7 +119,7 @@ function CreateReceipts() {
                 return (
                   <Select.Option key={presp.id} value={presp.id}>
                     <span>
-                      {presp.appointment.patient.name} -{" "}
+                      {presp.appointment.patient.name} - &nbsp;
                       {dayjs(presp.datePrescribed).format(
                         "DD MMM YY,  HH:mm A"
                       )}
