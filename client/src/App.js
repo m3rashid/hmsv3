@@ -1,3 +1,4 @@
+import "@ant-design/flowchart/dist/index.css";
 import "antd/dist/reset.css";
 import "./index.css";
 import enUs from "antd/locale/en_US";

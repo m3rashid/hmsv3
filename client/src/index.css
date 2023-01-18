@@ -24,3 +24,8 @@
   border-radius: 16px;
   background: #00bdc1;
 }
+
+:where(.css-dev-only-do-not-override-1rs6sf).ant-menu-light
+  .ant-menu-item-selected {
+  background-color: #00bdc1;
+}
