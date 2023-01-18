@@ -20,7 +20,7 @@ import Loading from "components/Loading/Loading";
 import AppLayout from "components/Layout/AppLayout";
 import { revalidateJWT } from "api/auth/revalidateJWT";
 import useFetchSockets from "components/Sockets/useFetchSockets";
-import Learn from "pages/learn";
+import Learn from "pages/documentation";
 
 export const SocketContext = createContext();
 
