@@ -90,6 +90,8 @@ const serverActions = {
 
   EDIT_PERMISSIONS: "EDIT_PERMISSIONS",
   UPDATE_PROFILE: "UPDATE_PROFILE",
+
+  CREATE_DOCTOR_LEAVE: "CREATE_DOCTOR_LEAVE",
 };
 
 module.exports = {

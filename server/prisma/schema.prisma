@@ -120,6 +120,7 @@ model Profile {
   authorityName        String?
   category             Category?
   role                 Role
+  leave                Leave[]
   origin               String?       @default("JMI")
   createdAt            DateTime      @default(now())
   updatedAt            DateTime      @default(now())
@@ -251,4 +252,16 @@ model Log {
   actionTable String
   message     String
   createdAt   DateTime @default(now())
+}
+
+
+model Leave {
+  id          Int      @id @default(autoincrement())
+  doctorId    Int
+  doctor      Profile  @relation(fields: [doctorId], references: [id])
+  reason      String
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
 }

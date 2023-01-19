@@ -69,6 +69,7 @@ const router = (io, socket) => {
     socketConstants.dispensePrescription,
     safeSocket(dispensePrescription)(io, socket)
   );
+  socket.on(socketConstants.doctorLeft, safeSocket(doctorLeft)(io, socket));
 };
 
 module.exports = {

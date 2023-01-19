@@ -1,3 +1,4 @@
+const { makeLeaveRequest } = require("../routes/sockets/doctor.socket");
 const {
   getDoctorAppointmentsService,
   getDoctorPatientsService,
@@ -125,6 +126,17 @@ const GetPrescriptionByAppointmentID = async (req, res) => {
   return res.status(200).json(data);
 };
 
+const makeDoctorLeave = async (req, res) => {
+  if (!req.isAuthenticated) throw new Error("Unauthorized");
+
+  const date = new Date();
+  const { doctorId, reason } = req.body;
+
+  const data = await makeLeaveRequest(doctorId, reason, date, req.user);
+
+  return res.status(200).json(data);
+};
+
 module.exports = {
   searchDoctors,
   getDoctorPatients,
@@ -134,4 +146,5 @@ module.exports = {
   createPrescriptionByDoctor,
   checkMedAvailability,
   GetPrescriptionByAppointmentID,
+  makeDoctorLeave,
 };

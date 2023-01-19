@@ -279,6 +279,39 @@ const getPrescriptionByAppointmentService = async ({ id }) => {
   return data;
 };
 
+const createDoctorLeaveService = async ({
+  doctorId,
+  start,
+  end,
+  reason,
+  doneBy,
+}) => {
+  const leave = await prisma.profile.create({
+    where: {
+      id: doctorId,
+    },
+    data: {
+      leave: {
+        create: {
+          start,
+          end,
+          reason,
+        },
+      },
+    },
+  });
+
+  await addEventLog({
+    action: serverActions.CREATE_DOCTOR_LEAVE,
+    fromId: doneBy.id,
+    actionId: leave.id,
+    actionTable: "doctorLeave",
+    message: `${doneBy.name} <(${doneBy.email})> created leave for doctor ${leave.doctor.name}`,
+  });
+
+  return leave;
+};
+
 module.exports = {
   searchDoctorsService,
   getDoctorPatientsService,
@@ -288,4 +321,5 @@ module.exports = {
   referAnotherDoctorAppointmentService,
   checkMedAvailabilityService,
   getPrescriptionByAppointmentService,
+  createDoctorLeaveService,
 };

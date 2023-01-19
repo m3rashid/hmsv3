@@ -11,7 +11,10 @@ const {
 } = require("../controllers");
 const { useRoute } = require("../utils/errors");
 const { checkAuth } = require("../middlewares/auth");
-const { GetPrescriptionByAppointmentID } = require("../controllers/doctor");
+const {
+  GetPrescriptionByAppointmentID,
+  makeDoctorLeave,
+} = require("../controllers/doctor");
 
 const router = express.Router();
 
@@ -38,6 +41,8 @@ router.post(
 );
 
 router.get("/appointment-prescription/:id", GetPrescriptionByAppointmentID);
+
+router.post("/leave", checkAuth, makeDoctorLeave);
 
 module.exports = {
   router,

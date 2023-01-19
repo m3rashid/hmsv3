@@ -17,6 +17,7 @@ const {
   getAppointmentById,
   referAnotherDoctor,
   searchDoctors,
+  makeDoctorLeave,
 } = require("../controllers/doctor");
 
 const {
@@ -63,6 +64,7 @@ module.exports = {
   getAppointmentById,
   referAnotherDoctor,
   searchDoctors,
+  makeDoctorLeave,
 
   CreateDummyInventory,
   DeleteInventory,
