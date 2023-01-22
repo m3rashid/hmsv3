@@ -22,9 +22,6 @@ const Learn = () => {
           justifyContent: "stretch",
           height: "calc(100vh - 200px)",
         }}
-        tabBarStyle={{
-          overflowX: "auto",
-        }}
         items={[
           {
             key: "1",
