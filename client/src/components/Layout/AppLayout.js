@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Layout, Typography, Menu, theme } from "antd";
 
 import { authState } from "atoms/auth";
+import { configState } from "atoms/config";
 import routes, { checkAccess } from "routes";
 import UserTop from "components/Layout/userTop";
 import {
@@ -12,10 +13,8 @@ import {
   FileTextOutlined,
 } from "@ant-design/icons";
 
-const darkColor = "#484C56";
-const lightColor = "#F9F9FB";
-
 const AppLayout = ({ children }) => {
+  const config = useRecoilValue(configState);
   const { token } = theme.useToken();
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -26,7 +25,7 @@ const AppLayout = ({ children }) => {
     !Auth.isLoggedIn && {
       key: "/",
       icon: <HomeOutlined />,
-      label: "Home",
+      label: config.sidebar_keymaps["home"],
     },
     ...routes.reduce((acc, route) => {
       if (route?.showInNav === false || !checkAccess(Auth, route)) return acc;
@@ -35,33 +34,35 @@ const AppLayout = ({ children }) => {
         {
           key: route.path,
           icon: route.icon,
-          label: route.text,
+          label: config.sidebar_keymaps[route.text],
         },
       ];
     }, []),
     {
       key: "/learn",
       icon: <BookOutlined />,
-      label: "Documentation",
+      label: config.sidebar_keymaps["documentation"],
     },
     {
       key: "/about",
       icon: <FileTextOutlined />,
-      label: "About",
+      label: config.sidebar_keymaps["about"],
     },
-  ].reduce(
-    (acc, it) => [
+  ].reduce((acc, it) => {
+    if (!it) return acc;
+    return [
       ...acc,
       {
         ...it,
         style: {
-          color: "#F9F9FB",
-          ...(currentMenuItem === it.key && { background: "#00BDC1" }),
+          color: config.app_light_color,
+          ...(currentMenuItem === it.key && {
+            background: config.app_theme_color,
+          }),
         },
       },
-    ],
-    []
-  );
+    ];
+  }, []);
 
   const handleMenuChange = ({ key }) => {
     setCurrentMenuItem(key);
@@ -76,7 +77,7 @@ const AppLayout = ({ children }) => {
           justifyContent: "space-between",
           alignItems: "center",
           padding: "20px",
-          background: darkColor,
+          background: config.app_dark_color,
           color: "white",
           boxShadow: "0px 2px 5px 0px rgba(0,0,0,0.3)",
         }}
@@ -96,7 +97,7 @@ const AppLayout = ({ children }) => {
               }}
               onClick={() => navigate("/")}
             />
-            Dr. M.A Ansari Health Centre
+            {config.app_name}
           </Typography.Title>
         </div>
 
@@ -106,28 +107,29 @@ const AppLayout = ({ children }) => {
       <Layout>
         <Layout.Sider
           style={{
-            background: darkColor,
+            background: config.app_dark_color,
             boxShadow: "2px 0px 5px 0px rgba(0,0,0,0.3)",
           }}
         >
           <Menu
             mode="inline"
-            style={{ background: darkColor }}
+            style={{ background: config.app_dark_color }}
             items={items}
             onClick={handleMenuChange}
           />
         </Layout.Sider>
 
-        <Layout.Content style={{ overflowY: "auto", background: lightColor }}>
+        <Layout.Content
+          style={{ overflowY: "auto", background: config.app_light_color }}
+        >
           {children}
           <p style={{ textAlign: "center" }}>
-            Project Designed and Developed in-house under Dept. of CSE
-            (FET-JMI),
+            {config.footer_text},
             <Link
               style={{ marginLeft: "10px", color: token.colorPrimary }}
               to="/about"
             >
-              Know More . . .
+              {config.footer_link_text}
             </Link>
           </p>
         </Layout.Content>

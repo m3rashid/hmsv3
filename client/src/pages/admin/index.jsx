@@ -7,6 +7,7 @@ import InventoryManagers from "components/Admin/modules/inventoryManager";
 import CoAdmins from "components/Admin/modules/coAdmin";
 import Others from "components/Admin/modules/others";
 import LogReports from "components/Admin/modules/logReports";
+import DevConfig from "components/Admin/modules/devConfig";
 
 export {
   Home,
@@ -18,4 +19,5 @@ export {
   CoAdmins,
   Others,
   LogReports,
+  DevConfig,
 };

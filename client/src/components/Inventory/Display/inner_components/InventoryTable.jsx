@@ -196,6 +196,7 @@ function InventoryTable(prop) {
       </Row>
 
       <Table
+        rowKey={(record) => record.id}
         className="user-table"
         size="small"
         columns={columns}

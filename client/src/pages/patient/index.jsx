@@ -155,6 +155,7 @@ const PatientInfo = (props) => {
       </Col>
       <Divider>Patient's History</Divider>
       <Table
+        rowKey={(record) => record.id}
         className="user-table"
         size="small"
         columns={AppointmentSchema}

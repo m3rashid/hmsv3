@@ -1,13 +1,14 @@
-import { Card, theme } from "antd";
-import { Fragment } from "react";
 import {
   GithubOutlined,
   LinkedinOutlined,
   GlobalOutlined,
 } from "@ant-design/icons";
+import { Fragment } from "react";
+import { Card, theme } from "antd";
+import { useRecoilValue } from "recoil";
 
+import { configState } from "atoms/config";
 import ShowEntry from "components/common/showEntry";
-import { developers, professors } from "pages/about/data";
 
 const Profile = ({ data }) => {
   const { token } = theme.useToken();
@@ -69,18 +70,20 @@ const centerAll = {
 };
 
 const About = () => {
+  const config = useRecoilValue(configState);
+
   return (
     <Fragment>
       <h2 align="center">Project under the guidance of</h2>
       <div style={{ ...centerAll, marginBottom: 36 }}>
-        {professors.map((prof) => (
+        {config.guidance_faculty.map((prof) => (
           <Profile key={prof.name} data={prof} />
         ))}
       </div>
 
       <h2 align="center">Developers in the project</h2>
       <div style={centerAll}>
-        {developers.map((dev) => (
+        {config.developers.map((dev) => (
           <Profile key={dev.name} data={dev} />
         ))}
       </div>

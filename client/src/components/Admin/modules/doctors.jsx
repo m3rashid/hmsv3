@@ -19,6 +19,7 @@ const Doctors = () => {
   return (
     <AdminWrapper aside={<RefreshUserButton />}>
       <Table
+        rowKey={(record) => record.id}
         size="small"
         dataSource={users}
         className="user-table"

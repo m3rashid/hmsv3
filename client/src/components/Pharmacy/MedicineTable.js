@@ -96,6 +96,7 @@ const MedicineTable = ({
   };
   return (
     <Table
+      rowKey={(record) => record.id}
       size="small"
       rowSelection={{
         type: "checkbox",

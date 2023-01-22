@@ -13,7 +13,6 @@ const ProfilePage = () => {
 
   const formSubmitHandler = async (values) => {
     setLoading(true);
-    //clear form
     form.resetFields();
     try {
       const { data } = await instance.post("/doctor/leave", values);

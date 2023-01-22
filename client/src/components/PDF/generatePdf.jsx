@@ -192,6 +192,7 @@ const GeneratePdf = (props) => {
                       }}
                     >
                       <Table
+                        rowKey={(record) => record.id}
                         className="user-table"
                         size="small"
                         columns={[
@@ -248,6 +249,7 @@ const GeneratePdf = (props) => {
                       }}
                     >
                       <Table
+                        rowKey={(record) => record.id}
                         className="user-table"
                         size="small"
                         columns={[

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
-import { MdDelete } from "react-icons/md";
+import { DeleteOutlined } from "@ant-design/icons";
 import { useDebounce } from "use-debounce";
 import { useCallback, useEffect, useState } from "react";
 import { Button, Col, Input, Row, Select, Space, Typography } from "antd";
@@ -228,10 +228,9 @@ const MedicineInput = ({
           <Button
             type="dashed"
             danger
+            icon={<DeleteOutlined />}
             onClick={() => deleteMedicine(index, medicineType)}
-          >
-            <MdDelete size={20} />
-          </Button>
+          />
         </Space>
       </Col>
     </Row>

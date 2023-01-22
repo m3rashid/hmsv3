@@ -1,3 +1,0 @@
-- [ ] Data Migration
-  - [x] Completed the creation of the data migration script
-  - [ ] updation left

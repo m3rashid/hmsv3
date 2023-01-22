@@ -27,6 +27,7 @@ function InventoryTable() {
   return (
     <div>
       <Table
+        rowKey={(record) => record.id}
         className="user-table"
         size="small"
         dataSource={Inventory}

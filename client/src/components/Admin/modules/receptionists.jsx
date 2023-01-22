@@ -19,6 +19,7 @@ const Receptionists = () => {
   return (
     <AdminWrapper aside={<RefreshUserButton />}>
       <Table
+        rowKey={(record) => record.id}
         className="user-table"
         size="small"
         dataSource={users}

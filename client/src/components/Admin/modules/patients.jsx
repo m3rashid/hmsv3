@@ -93,6 +93,7 @@ const Patients = () => {
         )}
       </Modal>
       <Table
+        rowKey={(record) => record.id}
         className="user-table"
         size="small"
         dataSource={users}

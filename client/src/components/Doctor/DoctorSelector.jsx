@@ -54,7 +54,7 @@ function DoctorSelector({ onChange, style }) {
 
 DoctorSelector.propTypes = {
   onChange: PropTypes.func.isRequired,
-  style: PropTypes.string.isRequired,
+  style: PropTypes.object,
 };
 
 export default DoctorSelector;

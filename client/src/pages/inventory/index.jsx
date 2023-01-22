@@ -4,21 +4,25 @@ import styles from "pages/inventory/style.module.css";
 import AddNewInventory from "components/Inventory/AddNew";
 import InventoryDisplay from "components/Inventory/Display";
 
-const { TabPane } = Tabs;
-
 function Inventory() {
   return (
     <div className={styles.container}>
       <Typography.Title level={4}>Inventory Management System</Typography.Title>
 
-      <Tabs>
-        <TabPane tab="Inventory Show" key="1">
-          <InventoryDisplay />
-        </TabPane>
-        <TabPane tab="Inventory Add" key="2">
-          <AddNewInventory />
-        </TabPane>
-      </Tabs>
+      <Tabs
+        items={[
+          {
+            key: "1",
+            tab: "Inventory Show",
+            children: <InventoryDisplay />,
+          },
+          {
+            key: "2",
+            tab: "Inventory Add",
+            children: <AddNewInventory />,
+          },
+        ]}
+      />
     </div>
   );
 }

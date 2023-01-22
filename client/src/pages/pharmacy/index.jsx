@@ -63,33 +63,41 @@ const Pharmacy = () => {
       }}
     >
       <div style={{ padding: "20px" }}>
-        <Tabs defaultActiveKey="1">
-          <Tabs.TabPane tab="Prescriptions" key="0">
-            <Prescriptions />
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Create Receipts" key="1">
-            <CreateReceipts />
-          </Tabs.TabPane>
-          <Tabs.TabPane
-            tab={
-              <div onClick={() => markAllAsSeen()}>
-                <Badge
-                  count={unseenNotifications()}
-                  showZero={false}
-                  offset={[5, -5]}
-                >
-                  Notifications
-                </Badge>
-              </div>
-            }
-            key="2"
-          >
-            <Notifications />
-          </Tabs.TabPane>
-          <Tabs.TabPane tab="Inventory" key="3">
-            <InventoryTable />
-          </Tabs.TabPane>
-        </Tabs>
+        <Tabs
+          defaultActiveKey="1"
+          items={[
+            {
+              key: "0",
+              tab: "Prescriptions",
+              content: <Prescriptions />,
+            },
+            {
+              key: "1",
+              tab: "Create Receipts",
+              content: <CreateReceipts />,
+            },
+            {
+              key: "2",
+              tab: (
+                <div onClick={() => markAllAsSeen()}>
+                  <Badge
+                    count={unseenNotifications()}
+                    showZero={false}
+                    offset={[5, -5]}
+                  >
+                    Notifications
+                  </Badge>
+                </div>
+              ),
+              children: <Notifications />,
+            },
+            {
+              key: "3",
+              tab: "Inventory",
+              content: <InventoryTable />,
+            },
+          ]}
+        />
       </div>
     </PharmacyContext.Provider>
   );

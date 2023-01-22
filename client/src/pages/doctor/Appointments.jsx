@@ -23,8 +23,6 @@ import { functionState } from "atoms/functions";
 import ShowEntry from "components/common/showEntry";
 import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
 
-const { TabPane } = Tabs;
-
 function DoctorAppointments() {
   const navigate = useNavigate();
   const { user } = useRecoilValue(authState);
@@ -240,37 +238,54 @@ function DoctorAppointments() {
         </Typography.Text>
       </Button>
 
-      <Tabs defaultActiveKey="1" centered style={{ marginTop: -5 }}>
-        <TabPane tab="Active" key="1">
-          <Table
-            className="user-table"
-            size="small"
-            loading={doctorData.loading}
-            dataSource={doctorData.appointments.filter((apt) => apt.pending)}
-            columns={columnsPending}
-            pagination={{
-              total: doctorData.appointments.reduce(
-                (acc, curr) => (!curr.pending ? acc : acc + 1),
-                0
-              ),
-              pageSize: 5,
-            }}
-            rowKey="id"
-          />
-        </TabPane>
-        <TabPane tab="Completed" key="2">
-          <Table
-            className="user-table"
-            size="small"
-            dataSource={doctorData.appointments.filter((apt) => !apt.pending)}
-            columns={columnsPrevious}
-            rowKey="id"
-          />
-        </TabPane>
-      </Tabs>
+      <Tabs
+        defaultActiveKey="1"
+        centered
+        style={{ marginTop: -5 }}
+        items={[
+          {
+            key: "1",
+            tab: "Active",
+            children: (
+              <Table
+                rowKey={(record) => record.id}
+                className="user-table"
+                size="small"
+                loading={doctorData.loading}
+                dataSource={doctorData.appointments.filter(
+                  (apt) => apt.pending
+                )}
+                columns={columnsPending}
+                pagination={{
+                  total: doctorData.appointments.reduce(
+                    (acc, curr) => (!curr.pending ? acc : acc + 1),
+                    0
+                  ),
+                  pageSize: 5,
+                }}
+              />
+            ),
+          },
+          {
+            key: "2",
+            tab: "Completed",
+            children: (
+              <Table
+                rowKey={(record) => record.id}
+                className="user-table"
+                size="small"
+                dataSource={doctorData.appointments.filter(
+                  (apt) => !apt.pending
+                )}
+                columns={columnsPrevious}
+              />
+            ),
+          },
+        ]}
+      />
 
       <Drawer
-        visible={PrescriptionDrawer.visible}
+        open={PrescriptionDrawer.visible}
         width={1000}
         onClose={() => {
           setPrescriptionDrawer({ visible: false });
@@ -287,7 +302,7 @@ function DoctorAppointments() {
       </Drawer>
 
       <Modal
-        visible={ModalVisible.visible}
+        open={ModalVisible.visible}
         onOk={ToggleModal}
         onCancel={ToggleModal}
         footer={[

@@ -70,6 +70,7 @@ const DoctorPatients = () => {
   return (
     <div style={{ marginTop: "20px" }}>
       <Table
+        rowKey={(record) => record.id}
         className="user-table"
         size="small"
         loading={loading}

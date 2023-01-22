@@ -90,7 +90,7 @@ function DoctorTimeSelector({ doctor, onChange, style }) {
 DoctorTimeSelector.propTypes = {
   doctor: PropTypes.object,
   onChange: PropTypes.func.isRequired,
-  style: PropTypes.string.isRequired,
+  style: PropTypes.object,
 };
 
 export default DoctorTimeSelector;

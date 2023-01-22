@@ -69,6 +69,7 @@ const LogReports = () => {
       }
     >
       <Table
+        rowKey={(record) => record.id}
         className="user-table"
         size="small"
         dataSource={allLogs}

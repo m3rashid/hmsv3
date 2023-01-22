@@ -90,7 +90,7 @@ RenderFormFields.propTypes = {
   isEdit: PropTypes.bool,
   required: PropTypes.bool,
   data: PropTypes.object,
-  form: PropTypes.object.isRequired,
+  form: PropTypes.object,
 };
 
 export default RenderFormFields;

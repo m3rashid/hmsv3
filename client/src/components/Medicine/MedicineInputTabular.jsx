@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { useRecoilValue } from "recoil";
-import { BsDash } from "react-icons/bs";
-import { MdDelete } from "react-icons/md";
+import { DeleteOutlined, DashOutlined } from "@ant-design/icons";
 import { useDebounce } from "use-debounce";
 import { useCallback, useEffect, useState } from "react";
 import { Button, Input, Select, Spin, Table, Typography } from "antd";
@@ -165,9 +164,11 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
       dataIndex: "action",
       key: "action",
       render: (text, record) => (
-        <Button danger onClick={() => deleteMedicineHandler(record.key)}>
-          <MdDelete />
-        </Button>
+        <Button
+          icon={<DeleteOutlined />}
+          danger
+          onClick={() => deleteMedicineHandler(record.key)}
+        />
       ),
     },
   ];
@@ -175,6 +176,7 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
   return (
     <>
       <Table
+        rowKey={(record) => record.id}
         className="user-table"
         size="small"
         columns={medicineInputTableColumns}
@@ -192,10 +194,10 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
 };
 
 MedicineInputTable.propTypes = {
-  // index: PropTypes.number.isRequired,
-  medicine: PropTypes.object.isRequired,
-  // deleteMedicine: PropTypes.func.isRequired,
-  // setMedicines: PropTypes.func.isRequired,
+  // index: PropTypes.number,
+  medicine: PropTypes.object,
+  // deleteMedicine: PropTypes.func,
+  // setMedicines: PropTypes.func,
 };
 
 export default MedicineInputTable;
@@ -343,7 +345,7 @@ const AvailabilityCol = ({ medicine, index, quantityRequiredHandler }) => {
         <Typography>{value?.medicine?.quantity} in stock</Typography>
       ) : (
         <Typography style={{ textAlign: "center" }}>
-          <BsDash />
+          <DashOutlined />
         </Typography>
       )}
     </>

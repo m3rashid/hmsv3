@@ -6,7 +6,29 @@ const {
   getReportDetailsService,
   getSinglePatientDetailsService,
 } = require("../services");
+const { getConfig, setConfig } = require("../services/config/handleConfig");
 const { permissions } = require("../utils/constants");
+
+const getAppConfig = async (req, res) => {
+  const config = getConfig();
+  return res.status(200).json({
+    message: "Got Config",
+    config,
+  });
+};
+
+const setAppConfig = async (req, res) => {
+  if (!req.permissions.includes(permissions.ADMIN)) {
+    throw new Error("Unauthorized for this resource");
+  }
+  const config = req.body.config;
+  const status = await setConfig(config);
+  if (!status) throw new Error("Config not updated");
+
+  return res.status(200).json({
+    message: "Successfully update the config",
+  });
+};
 
 const getAllUsers = async (req, res) => {
   if (
@@ -118,4 +140,6 @@ module.exports = {
   generateHmsReports,
   reportDetails,
   getSinglePatientDetails,
+  getAppConfig,
+  setAppConfig,
 };

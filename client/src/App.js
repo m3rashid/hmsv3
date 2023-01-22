@@ -14,20 +14,26 @@ import UnAuthPage from "pages/unAuthenticated";
 import { socket } from "api/instance";
 import { authState } from "atoms/auth";
 import { instance } from "api/instance";
-import antDesignTheme from "styles/theme";
 import routes, { checkAccess } from "routes";
 import Loading from "components/Loading/Loading";
 import AppLayout from "components/Layout/AppLayout";
 import { revalidateJWT } from "api/auth/revalidateJWT";
 import useFetchSockets from "components/Sockets/useFetchSockets";
 import Learn from "pages/documentation";
+import { getConfig } from "api/getConfig";
+import { configState } from "atoms/config";
 
 export const SocketContext = createContext();
 
 function App() {
   useFetchSockets();
   const [Auth, setAuth] = useRecoilState(authState);
+  const [config, setConfig] = useRecoilState(configState);
   const [isLoading, setIsLoading] = useState(true);
+
+  const getAppConfig = useCallback(async () => {
+    getConfig().then((config) => setConfig(config));
+  }, [setConfig]);
 
   const revalidate = useCallback(async () => {
     setTimeout(() => {
@@ -37,15 +43,14 @@ function App() {
           socket.disconnect().connect();
         })
         .catch(console.log)
-        .finally(() => {
-          setIsLoading(false);
-        });
+        .finally(() => setIsLoading(false));
     }, 1000);
   }, [setAuth]);
 
   useEffect(() => {
     revalidate();
-  }, [revalidate]);
+    getAppConfig();
+  }, [revalidate, getAppConfig]);
 
   useEffect(() => {
     if (Auth.isLoggedIn) {
@@ -57,7 +62,17 @@ function App() {
 
   if (isLoading) return <Loading text="App is Loading . ." />;
   return (
-    <ConfigProvider theme={antDesignTheme} locale={enUs}>
+    <ConfigProvider
+      theme={{
+        token: {
+          fontFamily: "Poppins, sans-serif",
+          colorPrimary: config.app_theme_color,
+          colorBgTextHover: config.app_theme_color,
+          colorFill: config.app_theme_color,
+        },
+      }}
+      locale={enUs}
+    >
       <AppLayout>
         <div style={{ minHeight: "calc(100vh - 115px)", padding: 20 }}>
           <Routes>

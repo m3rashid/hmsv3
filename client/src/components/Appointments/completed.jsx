@@ -38,6 +38,7 @@ const Completed = () => {
   return (
     <Fragment>
       <Table
+        rowKey={(record) => record.id}
         className="user-table"
         size="small"
         dataSource={data}

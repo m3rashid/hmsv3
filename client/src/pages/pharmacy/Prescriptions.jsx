@@ -154,28 +154,42 @@ function Prescriptions() {
 
   return (
     <Fragment>
-      <Tabs defaultActiveKey="1" centered>
-        <Tabs.TabPane tab="Active" key="1">
-          <Table
-            className="user-table"
-            size="small"
-            dataSource={pharmacyData.prescriptions.filter(
-              (prsp) => prsp.pending
-            )}
-            columns={pendingColumns}
-          />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Completed" key="2">
-          <Table
-            className="user-table"
-            size="small"
-            dataSource={pharmacyData.prescriptions.filter(
-              (prsp) => !prsp.pending
-            )}
-            columns={processedColumns}
-          />
-        </Tabs.TabPane>
-      </Tabs>
+      <Tabs
+        defaultActiveKey="1"
+        centered
+        items={[
+          {
+            key: "1",
+            tab: "Active",
+            children: (
+              <Table
+                rowKey={(record) => record.id}
+                className="user-table"
+                size="small"
+                dataSource={pharmacyData.prescriptions.filter(
+                  (prsp) => prsp.pending
+                )}
+                columns={pendingColumns}
+              />
+            ),
+          },
+          {
+            key: "2",
+            tab: "Completed",
+            children: (
+              <Table
+                rowKey={(record) => record.id}
+                className="user-table"
+                size="small"
+                dataSource={pharmacyData.prescriptions.filter(
+                  (prsp) => !prsp.pending
+                )}
+                columns={processedColumns}
+              />
+            ),
+          },
+        ]}
+      />
       <Drawer
         open={ModalVisible?.visible}
         onOk={ToggleModal}

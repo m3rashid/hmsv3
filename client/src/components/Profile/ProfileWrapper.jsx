@@ -19,8 +19,6 @@ const ProfileWrapper = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
-  console.log({ auth });
-
   return (
     <Fragment>
       <div style={{ borderRadius: 10 }}>

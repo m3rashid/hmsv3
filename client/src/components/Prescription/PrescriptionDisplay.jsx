@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
 import { Space, Typography, Card, Table, Tooltip, Divider } from "antd";
-import { AiOutlineCheck, AiOutlineWarning } from "react-icons/ai";
+import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import ShowEntry from "components/common/showEntry";
 
 /**
@@ -120,7 +120,7 @@ const ViewPrescriptionTable = ({ prescriptionData, showAvailability }) => {
                 <Typography style={{ textAlign: "center" }}>
                   {availability ? (
                     <Tooltip title="Available" color="green" placement="right">
-                      <AiOutlineCheck style={{ color: "green" }} />
+                      <CheckCircleOutlined style={{ color: "green" }} />
                     </Tooltip>
                   ) : (
                     <Tooltip
@@ -128,7 +128,7 @@ const ViewPrescriptionTable = ({ prescriptionData, showAvailability }) => {
                       color="orange"
                       placement="right"
                     >
-                      <AiOutlineWarning style={{ color: "orange" }} />
+                      <WarningOutlined style={{ color: "orange" }} />
                     </Tooltip>
                   )}
                 </Typography>
@@ -143,6 +143,7 @@ const ViewPrescriptionTable = ({ prescriptionData, showAvailability }) => {
     <Fragment>
       {prescriptionData && (
         <Table
+          rowKey={(record) => record.id}
           className="user-table"
           style={{ marginTop: -10 }}
           size="small"
