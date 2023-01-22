@@ -64,21 +64,22 @@ const Pharmacy = () => {
     >
       <div style={{ padding: "20px" }}>
         <Tabs
+          centered
           defaultActiveKey="1"
           items={[
             {
               key: "0",
-              tab: "Prescriptions",
+              tlabelab: "Prescriptions",
               content: <Prescriptions />,
             },
             {
               key: "1",
-              tab: "Create Receipts",
+              label: "Create Receipts",
               content: <CreateReceipts />,
             },
             {
               key: "2",
-              tab: (
+              label: (
                 <div onClick={() => markAllAsSeen()}>
                   <Badge
                     count={unseenNotifications()}
@@ -93,7 +94,7 @@ const Pharmacy = () => {
             },
             {
               key: "3",
-              tab: "Inventory",
+              label: "Inventory",
               content: <InventoryTable />,
             },
           ]}

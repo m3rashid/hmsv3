@@ -160,7 +160,7 @@ function Prescriptions() {
         items={[
           {
             key: "1",
-            tab: "Active",
+            label: "Active",
             children: (
               <Table
                 rowKey={(record) => record.id}
@@ -175,7 +175,7 @@ function Prescriptions() {
           },
           {
             key: "2",
-            tab: "Completed",
+            label: "Completed",
             children: (
               <Table
                 rowKey={(record) => record.id}

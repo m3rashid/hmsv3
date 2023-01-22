@@ -7,10 +7,11 @@ const Appointments = () => {
   return (
     <div style={{ padding: "20px" }}>
       <Tabs
+        centered
         defaultActiveKey="1"
         items={[
-          { key: "1", tab: "Active", children: <Active /> },
-          { key: "2", tab: "Completed", children: <Completed /> },
+          { key: "1", label: "Active", children: <Active /> },
+          { key: "2", label: "Completed", children: <Completed /> },
         ]}
       />
     </div>

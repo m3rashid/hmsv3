@@ -245,7 +245,7 @@ function DoctorAppointments() {
         items={[
           {
             key: "1",
-            tab: "Active",
+            label: "Active",
             children: (
               <Table
                 rowKey={(record) => record.id}
@@ -268,7 +268,7 @@ function DoctorAppointments() {
           },
           {
             key: "2",
-            tab: "Completed",
+            label: "Completed",
             children: (
               <Table
                 rowKey={(record) => record.id}

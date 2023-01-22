@@ -10,15 +10,17 @@ function Inventory() {
       <Typography.Title level={4}>Inventory Management System</Typography.Title>
 
       <Tabs
+        centered
+        defaultActiveKey="1"
         items={[
           {
             key: "1",
-            tab: "Inventory Show",
+            label: "Inventory Show",
             children: <InventoryDisplay />,
           },
           {
             key: "2",
-            tab: "Inventory Add",
+            label: "Inventory Add",
             children: <AddNewInventory />,
           },
         ]}
