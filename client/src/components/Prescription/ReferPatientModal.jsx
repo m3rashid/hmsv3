@@ -77,16 +77,22 @@ const ReferPatientModal = ({
             >
               <Space direction="vertical" style={{ width: "100%" }}>
                 <DoctorSelector
-                  onChange={(value) =>
-                    setformData({ ...formData, doctor: value })
-                  }
                   style={{ width: "100%" }}
+                  onChange={(value) => {
+                    if (!value || !value.id) return;
+                    if (value?.id === doctorId) {
+                      message.error("Cannot refer to self");
+                      setformData((prev) => ({ ...prev, doctor: null }));
+                      return;
+                    }
+                    setformData((prev) => ({ ...prev, doctor: value }));
+                  }}
                 />
 
                 <DoctorTimeSelector
-                  onChange={(value) =>
-                    setformData({ ...formData, date: value })
-                  }
+                  onChange={(value) => {
+                    setformData({ ...formData, date: value });
+                  }}
                   doctor={formData.doctor}
                   style={{ width: "100%" }}
                 />
@@ -104,7 +110,11 @@ const ReferPatientModal = ({
                   Cancel
                 </Button>
 
-                <Button type="primary" htmlType="submit">
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  disabled={!formData.doctor}
+                >
                   Refer patient to this doctor
                 </Button>
               </div>

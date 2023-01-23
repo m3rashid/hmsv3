@@ -236,7 +236,9 @@ const GeneratePdf = (props) => {
                     >
                       <Row>
                         <Col span={8}>
-                          <strong>Custom Medicines</strong>
+                          <Typography.Title level={4}>
+                            Custom Medicines
+                          </Typography.Title>
                         </Col>
                       </Row>
                     </Space>
@@ -250,7 +252,6 @@ const GeneratePdf = (props) => {
                     >
                       <Table
                         rowKey={(record) => record.id}
-                        className="user-table"
                         size="small"
                         columns={[
                           {

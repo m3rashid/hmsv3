@@ -31,7 +31,7 @@ function DoctorTimeSelector({ doctor, onChange, style }) {
 
       if (!doctor) return true;
 
-      const availableDay = doctor.profile.availability.find(
+      const availableDay = doctor.profile.availability?.find(
         (avail) => avail.day === DayChosen
       );
       if (!availableDay) {

@@ -148,7 +148,6 @@ const reportDetails = async (req, res) => {
 };
 
 const getSinglePatientDetails = async (req, res) => {
-  console.log(req.body);
   const { id } = req.body;
   const details = await getSinglePatientDetailsService(id);
   return res.status(200).json(details);

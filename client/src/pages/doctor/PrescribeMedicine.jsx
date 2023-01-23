@@ -10,8 +10,14 @@ import {
   Modal,
   Divider,
   Drawer,
+  Empty,
 } from "antd";
 import dayjs from "dayjs";
+import {
+  CheckCircleOutlined,
+  PlusCircleOutlined,
+  UserSwitchOutlined,
+} from "@ant-design/icons";
 import { Fragment, useEffect } from "react";
 
 import { socket } from "api/instance";
@@ -22,11 +28,6 @@ import ReferPatientModal from "components/Prescription/ReferPatientModal";
 import MedicineInputTable from "components/Medicine/MedicineInputTabular";
 import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
 import usePrescribeMedicines from "components/Doctor/hooks/prescribeMeds.hook";
-import {
-  CheckCircleOutlined,
-  PlusCircleOutlined,
-  UserSwitchOutlined,
-} from "@ant-design/icons";
 
 const PrescriptionForm = () => {
   const {
@@ -37,13 +38,11 @@ const PrescriptionForm = () => {
       doctorData,
       appointmentId,
       referToAnotherDoctor,
-      // navigate,
       form,
       CreatePrescriptionModalVisible,
       PatientData,
     },
     actions: {
-      // setLoading,
       setFormData,
       setMedicines,
       setReferToAnotherDoctor,
@@ -59,7 +58,6 @@ const PrescriptionForm = () => {
   } = usePrescribeMedicines(socket);
 
   useEffect(() => {
-    // console.log("appointment id", appointmentId);
     if (appointmentId !== null && doctorData.appointments.length > 0) {
       handleAppointmentSelect(appointmentId);
     }
@@ -80,49 +78,42 @@ const PrescriptionForm = () => {
           name="appointment"
           rules={[{ required: true, message: "Please Enter Appointment!" }]}
         >
-          <Row gutter={10}>
-            <Col span={18}>
-              <Select
-                placeholder="Select an appointment"
-                style={{ width: "100%" }}
-                allowClear
-                onChange={(value) => {
-                  handleAppointmentSelect(value);
-                }}
-                optionLabelProp="Appointment"
-              >
-                {doctorData.appointments
-                  .filter(
-                    (apt) =>
-                      apt.pending &&
-                      {
-                        /* dayjs(apt.date).isBefore(dayjs().add(6, "hours")) */
-                      }
-                  )
-                  .map((appointment) => (
-                    <Select.Option key={appointment.id} value={appointment.id}>
-                      <span>
-                        {appointment.patient?.name} - &nbsp;
-                        {dayjs(appointment.date).format("MMMM DD YYYY HH:mm A")}
-                      </span>
-                    </Select.Option>
-                  ))}
-              </Select>
-            </Col>
-            <Col>
-              <Button
-                disabled={formData.appointment ? false : true}
-                onClick={() => {
-                  setPatientData({
-                    open: true,
-                    data: formData.appointmentInfo,
-                  });
-                }}
-              >
-                View Patient's History
-              </Button>
-            </Col>
-          </Row>
+          <Select
+            placeholder="Select an appointment"
+            style={{ maxWidth: 500, display: "block" }}
+            onChange={(value) => {
+              handleAppointmentSelect(value);
+            }}
+            optionLabelProp="Appointment"
+            options={doctorData.appointments?.reduce((acc, appointment) => {
+              if (!appointment.pending) return acc;
+              return [
+                ...acc,
+                {
+                  value: appointment.id,
+                  key: appointment.id,
+                  label: (
+                    <span key={appointment.id}>
+                      {appointment.patient?.name} - &nbsp;
+                      {dayjs(appointment.date).format("MMMM DD YYYY HH:mm A")}
+                    </span>
+                  ),
+                },
+              ];
+            }, [])}
+          />
+          <Button
+            disabled={formData.appointment ? false : true}
+            style={{ marginTop: 10 }}
+            onClick={() => {
+              setPatientData({
+                open: true,
+                data: formData.appointmentInfo,
+              });
+            }}
+          >
+            View Patient's History
+          </Button>
         </Form.Item>
         <Form.Item
           label="Symptoms"
@@ -132,6 +123,7 @@ const PrescriptionForm = () => {
           <Input.TextArea
             required
             type="text"
+            style={{ maxWidth: 500 }}
             placeholder="Enter symptoms"
             allowClear
             onChange={(e) => {
@@ -140,21 +132,30 @@ const PrescriptionForm = () => {
           />
         </Form.Item>
         <Divider />
-        <Space direction="vertical" style={{ width: "100%" }}>
-          <Typography.Text strong>Medicines</Typography.Text>
+        <Space
+          direction="vertical"
+          style={{ width: "100%" }}
+          className="user-table"
+        >
+          <Typography.Title level={4}>Medicines</Typography.Title>
           <MedicineInputTable
+            tableClassName=""
             medicines={medicines.medicines}
             setMedicines={setMedicines}
           />
         </Space>
         <Divider />
 
-        <Space direction="vertical" style={{ width: "100%" }}>
-          <strong>Custom Medicines</strong>
+        <Space
+          direction="vertical"
+          style={{ width: "100%" }}
+          className="user-table"
+        >
+          <Typography.Title level={4}>Custom Medicines</Typography.Title>
 
-          {medicines.extraMedicines.length > 0 && (
+          {medicines.extraMedicines.length > 0 ? (
             <Row className={styles.prescribeTableHeader}>
-              <Col className={styles.prescribeColHeader} span={6}>
+              <Col className={`${styles.prescribeColHeader}`} span={6}>
                 Medicine
               </Col>
               <Col className={styles.prescribeColHeader} span={4}>
@@ -170,6 +171,13 @@ const PrescriptionForm = () => {
                 Action
               </Col>
             </Row>
+          ) : (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={
+                <Typography.Text disabled>No Custom Medicines</Typography.Text>
+              }
+            />
           )}
 
           {medicines.extraMedicines?.map((medicine, index) => (
@@ -184,28 +192,31 @@ const PrescriptionForm = () => {
               UpdateMedicine={UpdateMedicine}
             />
           ))}
-          <Button
-            type="primary"
-            htmlType="button"
-            onClick={() => addEmptyMedicine("extraMedicines")}
-            style={{ marginTop: 10, marginBottom: 10 }}
-            icon={<PlusCircleOutlined />}
-          >
-            Add New Custom Medicine
-          </Button>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <Button
+              type="dashed"
+              onClick={() => addEmptyMedicine("extraMedicines")}
+              icon={<PlusCircleOutlined />}
+              style={{ margin: "auto" }}
+            >
+              Add Custom Medicines
+            </Button>
+          </div>
         </Space>
 
-        <Form.Item style={{ display: "flex", justifyContent: "flex-end" }}>
+        <Form.Item
+          style={{ display: "flex", justifyContent: "center", marginTop: 20 }}
+        >
           <Space>
             {formData.appointmentInfo && (
               <Button
                 htmlType="button"
-                type="link"
+                type="dashed"
                 danger
                 onClick={handleReferPatientModalShow}
                 icon={<UserSwitchOutlined />}
               >
-                Refer Patient to another doctor
+                Refer Patient
               </Button>
             )}
             <Button
@@ -215,7 +226,7 @@ const PrescriptionForm = () => {
               onClick={() => setCreatePrescriptionModalVisible(true)}
               icon={<CheckCircleOutlined />}
             >
-              Confirm Create Prescription
+              Confirm Prescription
             </Button>
           </Space>
         </Form.Item>

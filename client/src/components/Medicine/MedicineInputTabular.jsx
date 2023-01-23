@@ -11,7 +11,7 @@ import { inventoryState } from "atoms/inventory";
 import styles from "components/Medicine/medicineinput.module.css";
 import { LoadingOutlined } from "@ant-design/icons";
 
-const MedicineInputTable = ({ medicines, setMedicines }) => {
+const MedicineInputTable = ({ medicines, setMedicines, tableClassName }) => {
   const addEmptyMedicine = useCallback(
     (type) => {
       setMedicines((prev) => ({
@@ -113,7 +113,6 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
         />
       ),
     },
-
     {
       title: "Dosage",
       dataIndex: "dosage",
@@ -126,7 +125,6 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
         />
       ),
     },
-
     {
       title: "Duration",
       dataIndex: "duration",
@@ -177,7 +175,7 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
     <>
       <Table
         rowKey={(record) => record.id}
-        className="user-table"
+        className={tableClassName ?? "user-table"}
         size="small"
         columns={medicineInputTableColumns}
         dataSource={medicines || []}
@@ -194,10 +192,7 @@ const MedicineInputTable = ({ medicines, setMedicines }) => {
 };
 
 MedicineInputTable.propTypes = {
-  // index: PropTypes.number,
   medicine: PropTypes.object,
-  // deleteMedicine: PropTypes.func,
-  // setMedicines: PropTypes.func,
 };
 
 export default MedicineInputTable;

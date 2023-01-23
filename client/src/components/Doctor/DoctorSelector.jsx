@@ -31,6 +31,7 @@ function DoctorSelector({ onChange, style }) {
           ? DoctorData?.map((doctor) => {
               return {
                 value: doctor.id,
+                key: doctor.id,
                 label: (
                   <Fragment key={doctor.id}>
                     <Typography.Text>{doctor.name}</Typography.Text>

@@ -40,22 +40,30 @@ function PrescriptionDisplay({
         </Card>
 
         <Divider />
-        <Typography.Title level={4} strong>
-          Medicines
-        </Typography.Title>
-        <ViewPrescriptionTable
-          prescriptionData={Medicines}
-          showAvailability={showAvailability}
-        />
+
+        <div className="user-table">
+          <Typography.Title level={4} strong>
+            Medicines
+          </Typography.Title>
+          <br />
+          <ViewPrescriptionTable
+            prescriptionData={Medicines}
+            showAvailability={showAvailability}
+          />
+        </div>
 
         <Divider />
-        <Typography.Title level={4} strong>
-          Custom Medicines
-        </Typography.Title>
-        <ViewPrescriptionTable
-          prescriptionData={ExtraMedicines}
-          showAvailability={false}
-        />
+
+        <div className="user-table">
+          <Typography.Title level={4} strong>
+            Custom Medicines
+          </Typography.Title>
+          <br />
+          <ViewPrescriptionTable
+            prescriptionData={ExtraMedicines}
+            showAvailability={false}
+          />
+        </div>
       </Space>
     </Fragment>
   );
@@ -144,7 +152,6 @@ const ViewPrescriptionTable = ({ prescriptionData, showAvailability }) => {
       {prescriptionData && (
         <Table
           rowKey={(record) => record.id}
-          className="user-table"
           style={{ marginTop: -10 }}
           size="small"
           pagination={false}
