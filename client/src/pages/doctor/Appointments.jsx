@@ -345,9 +345,7 @@ const DoctorAppointments = () => {
       <Drawer
         open={PrescriptionDrawer.visible}
         width={1000}
-        onClose={() => {
-          setPrescriptionDrawer({ visible: false });
-        }}
+        onClose={() => setPrescriptionDrawer({ visible: false })}
       >
         <PrescriptionDisplay
           id={PrescriptionDrawer?.data?.appointmentId}
@@ -369,45 +367,38 @@ const DoctorAppointments = () => {
           </Button>,
         ]}
       >
-        <div>
-          <ShowEntry
-            label="Date and Time"
-            value={dayjs(ModalVisible.data?.date).format(
-              "MMMM DD YYYY, h:mm:ss a"
-            )}
-          />
-          <div>
-            <Divider>
-              <Typography.Title level={5}>Patient Info</Typography.Title>
-            </Divider>
-            <Space direction="vertical" size={3} style={{ padding: "10px" }}>
-              <ShowEntry
-                label="Name"
-                value={ModalVisible.data?.patient?.name}
-              />
-              {[
-                "department",
-                "age",
-                "email",
-                "fathersName",
-                "bloodGroup",
-                "designation",
-              ].map((item) => {
-                const data = ModalVisible.data?.patient?.[item];
-                if (!!data) {
-                  return (
-                    <ShowEntry
-                      key={item}
-                      label={toSentenceCase(item)}
-                      value={data}
-                    />
-                  );
-                }
-                return null;
-              })}
-            </Space>
-          </div>
-        </div>
+        <ShowEntry
+          label="Date and Time"
+          value={dayjs(ModalVisible.data?.date).format(
+            "MMMM DD YYYY, h:mm:ss a"
+          )}
+        />
+        <Divider>
+          <Typography.Title level={5}>Patient Info</Typography.Title>
+        </Divider>
+        <Space direction="vertical" size={3} style={{ padding: "10px" }}>
+          {[
+            "name",
+            "department",
+            "age",
+            "email",
+            "fathersName",
+            "bloodGroup",
+            "designation",
+          ].map((item) => {
+            const data = ModalVisible.data?.patient?.[item];
+            if (!!data) {
+              return (
+                <ShowEntry
+                  key={item}
+                  label={toSentenceCase(item)}
+                  value={data}
+                />
+              );
+            }
+            return null;
+          })}
+        </Space>
       </Modal>
     </Fragment>
   );
