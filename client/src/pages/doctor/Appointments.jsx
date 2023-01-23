@@ -50,10 +50,10 @@ const DoctorAppointments = () => {
   const [loadingData, setLoadingData] = useRecoilState(LoadingAtom);
 
   const ToggleModal = () => {
-    setModalVisible({
-      ...ModalVisible,
+    setModalVisible((prev) => ({
+      ...prev,
       visible: !ModalVisible.visible,
-    });
+    }));
   };
 
   const GetPrescriptionByAppointmentID = useCallback(async (record) => {
@@ -206,24 +206,16 @@ const DoctorAppointments = () => {
       render: (text, record) => (
         <Space>
           <Button
-            onClick={() => {
-              setModalVisible({ visible: true, id: record.id, data: record });
-            }}
+            onClick={() =>
+              setModalVisible({ visible: true, id: record.id, data: record })
+            }
           >
             View Form
           </Button>
-          <Button
-            onClick={() => {
-              GetPrescriptionByAppointmentID(record);
-            }}
-          >
+          <Button onClick={() => GetPrescriptionByAppointmentID(record)}>
             View Prescription
           </Button>
-          <Button
-            onClick={() => {
-              navigate(`/patient/${record.patient.id}`);
-            }}
-          >
+          <Button onClick={() => navigate(`/patient/${record.patient.id}`)}>
             View Patient
           </Button>
         </Space>
@@ -288,20 +280,29 @@ const DoctorAppointments = () => {
                 rowKey={(record) => record.id}
                 className="user-table"
                 size="small"
-                loading={doctorData.loading}
+                loading={!isReception ? doctorData.loading : false}
                 dataSource={
                   !isReception
-                    ? doctorData.appointments.filter((apt) => apt.pending)
+                    ? (doctorData.appointments || []).filter(
+                        (apt) => apt.pending
+                      )
                     : receptionistState.activeAppointments
                 }
                 columns={columnsPending}
-                pagination={{
-                  total: doctorData.appointments.reduce(
-                    (acc, curr) => (!curr.pending ? acc : acc + 1),
-                    0
-                  ),
-                  pageSize: 5,
-                }}
+                pagination={
+                  !isReception
+                    ? {
+                        total: (doctorData.appointments || []).reduce(
+                          (acc, curr) => (!curr.pending ? acc : acc + 1),
+                          0
+                        ),
+                        pageSize: 5,
+                      }
+                    : {
+                        total: receptionistState.activeAppointments.length,
+                        pageSize: 5,
+                      }
+                }
               />
             ),
           },
@@ -315,10 +316,26 @@ const DoctorAppointments = () => {
                 size="small"
                 dataSource={
                   !isReception
-                    ? doctorData.appointments.filter((apt) => !apt.pending)
+                    ? (doctorData.appointments || []).filter(
+                        (apt) => !apt.pending
+                      )
                     : receptionistState.completedAppointments
                 }
                 columns={columnsPrevious}
+                pagination={
+                  !isReception
+                    ? {
+                        total: (doctorData.appointments || []).reduce(
+                          (acc, curr) => (!curr.pending ? acc : acc - 1),
+                          doctorData.appointments.length
+                        ),
+                        pageSize: 5,
+                      }
+                    : {
+                        total: receptionistState.completedAppointments.length,
+                        pageSize: 5,
+                      }
+                }
               />
             ),
           },
