@@ -6,13 +6,29 @@ const {
   getReportDetailsService,
   getSinglePatientDetailsService,
 } = require("../services");
-const { getConfig, setConfig } = require("../services/config/handleConfig");
+const {
+  getConfig,
+  setConfig,
+  resetConfig,
+} = require("../services/config/handleConfig");
 const { permissions } = require("../utils/constants");
 
 const getAppConfig = async (req, res) => {
   const config = getConfig();
+  return res.status(200).json({ message: "Got Config", config });
+};
+
+const resetAppConfig = async (req, res) => {
+  if (!req.permissions.includes(permissions.ADMIN)) {
+    console.log("not permitted");
+    throw new Error("Unauthorized for this resource");
+  }
+
+  const { status, config } = await resetConfig({ doneBy: req.user });
+  if (!status) throw new Error("Config not updated");
+
   return res.status(200).json({
-    message: "Got Config",
+    message: "Successfully update the config",
     config,
   });
 };
@@ -21,12 +37,17 @@ const setAppConfig = async (req, res) => {
   if (!req.permissions.includes(permissions.ADMIN)) {
     throw new Error("Unauthorized for this resource");
   }
-  const config = req.body.config;
-  const status = await setConfig(config);
+  const { config, change } = req.body;
+  const { status, config: newUpdatedConfig } = await setConfig({
+    config,
+    change,
+    doneBy: req.user,
+  });
   if (!status) throw new Error("Config not updated");
 
   return res.status(200).json({
     message: "Successfully update the config",
+    config: newUpdatedConfig,
   });
 };
 
@@ -142,4 +163,5 @@ module.exports = {
   getSinglePatientDetails,
   getAppConfig,
   setAppConfig,
+  resetAppConfig,
 };

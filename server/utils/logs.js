@@ -17,8 +17,6 @@ const addEventLog = async ({
     },
   });
 
-  console.log({ log });
-
   return log;
 };
 

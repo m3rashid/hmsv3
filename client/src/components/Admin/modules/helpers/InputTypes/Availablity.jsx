@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useRecoilState } from "recoil";
-import { DeleteFilled } from "@ant-design/icons";
+import { DeleteFilled, PlusOutlined } from "@ant-design/icons";
 import { useCallback, useEffect } from "react";
 import { Button, Divider, Select, Space, TimePicker } from "antd";
 
@@ -97,25 +97,13 @@ function Availability({ isEdit, defaultValue, form }) {
                 { label: "Sunday", value: "SUN" },
               ]}
               onChange={(value) => {
-                // console.log("Update Day");
-                DATA_UPDATE({
-                  ...item,
-                  day: value,
-                });
+                DATA_UPDATE({ ...item, day: value });
               }}
               placeholder="Select Day"
-              style={{
-                marginBottom: "10px",
-              }}
+              style={{ marginBottom: "10px" }}
             />
             {item.range.map((rangeItem) => (
-              <div
-                key={rangeItem.id}
-                style={{
-                  marginTop: 4,
-                  marginBottom: 4,
-                }}
-              >
+              <div key={rangeItem.id} style={{ marginTop: 4, marginBottom: 4 }}>
                 <Space>
                   <TimePicker.RangePicker
                     format={"HH:mm"}
@@ -174,17 +162,13 @@ function Availability({ isEdit, defaultValue, form }) {
       <Button
         htmlType="button"
         type="primary"
-        style={{
-          marginTop: "10px",
-        }}
+        style={{ marginTop: "10px" }}
         onClick={() => {
-          DATA_ADD({
-            id: Math.random(),
-            range: [],
-          });
+          DATA_ADD({ id: Math.random(), range: [] });
         }}
+        icon={<PlusOutlined />}
       >
-        + Add New Availability
+        Add New Availability
       </Button>
     </div>
   );

@@ -10,7 +10,11 @@ const {
   reportDetails,
   getSinglePatientDetails,
 } = require("../controllers");
-const { getAppConfig, setAppConfig } = require("../controllers/admin");
+const {
+  getAppConfig,
+  setAppConfig,
+  resetAppConfig,
+} = require("../controllers/admin");
 
 const router = express.Router();
 
@@ -41,6 +45,8 @@ router.post(
 router.get("/config", useRoute(getAppConfig));
 
 router.post("/config", checkAuth, useRoute(setAppConfig));
+
+router.post("/config/reset", checkAuth, useRoute(resetAppConfig));
 
 module.exports = {
   router,

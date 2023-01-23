@@ -10,7 +10,7 @@ const { createAdapter } = require("@socket.io/cluster-adapter");
 
 const { prisma } = require("./utils/prisma.js");
 const { checkSocketAuth } = require("./middlewares/socket.js");
-const { isProduction, corsOrigin, PORT, HOST } = require("./utils/config.js");
+const { isProduction, corsOrigin, PORT } = require("./utils/config.js");
 const { globalErrorHandlerMiddleware } = require("./middlewares/error.js");
 
 const {

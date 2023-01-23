@@ -163,17 +163,17 @@ const CreateAppointmentForm = () => {
                   <Typography.Text>{patient.name}</Typography.Text>
                   {patient.userId && (
                     <Typography.Text type="success">
-                      &nbsp; {`(${patient.userId})`}
+                      {`(${patient.userId})`}
                     </Typography.Text>
                   )}
                   {patient.department && (
                     <Typography.Text type="danger">
-                      &nbsp; {`${patient.department}`}
+                      {`${patient.department}`}
                     </Typography.Text>
                   )}
                   {patient.contact && (
                     <Typography.Text type="secondary">
-                      &nbsp; MOB: {`(${patient.contact})`}
+                      MOB: {`(${patient.contact})`}
                     </Typography.Text>
                   )}
                 </Row>
@@ -238,45 +238,50 @@ const CreateAppointmentForm = () => {
               name="patient"
               rules={[{ required: true, message: "Please select a patient!" }]}
             >
-              <AutoComplete
-                id="patient"
-                placeholder="Patient Name"
-                options={patients.data}
-                onSearch={(value) => UpdatePatients(value)}
-                allowClear
-                onSelect={(value) => {
-                  const patientData = patients.data.find(
-                    (patient) => patient.value === value
-                  );
-                  if (!patientData) return;
-                  setFormSelected({
-                    ...FormSelected,
-                    patient: patients.data.find(
+              <Fragment>
+                <AutoComplete
+                  id="patient"
+                  placeholder="Patient Name"
+                  options={patients.data}
+                  onSearch={(value) => UpdatePatients(value)}
+                  allowClear
+                  onSelect={(value) => {
+                    const patientData = patients.data.find(
                       (patient) => patient.value === value
-                    ),
-                  });
-                }}
-                onClear={() =>
-                  setFormSelected({ ...FormSelected, patient: null })
-                }
-                onChange={(value) => {
-                  const patientData = patients.data.find(
-                    (patient) => patient.value === value
-                  );
-                  if (!patientData) {
-                    setFormSelected({ ...FormSelected, patient: null });
-                    form.setFieldsValue({ patient: null });
-                    return;
-                  } else {
-                    setFormSelected({ ...FormSelected, patient: patientData });
-                    form.setFieldsValue({ patient: patientData.value });
+                    );
+                    if (!patientData) return;
+                    setFormSelected({
+                      ...FormSelected,
+                      patient: patients.data.find(
+                        (patient) => patient.value === value
+                      ),
+                    });
+                  }}
+                  onClear={() =>
+                    setFormSelected({ ...FormSelected, patient: null })
                   }
-                }}
-              />
+                  onChange={(value) => {
+                    const patientData = patients.data.find(
+                      (patient) => patient.value === value
+                    );
+                    if (!patientData) {
+                      setFormSelected({ ...FormSelected, patient: null });
+                      form.setFieldsValue({ patient: null });
+                      return;
+                    } else {
+                      setFormSelected({
+                        ...FormSelected,
+                        patient: patientData,
+                      });
+                      form.setFieldsValue({ patient: patientData.value });
+                    }
+                  }}
+                />
 
-              <Typography.Text disabled style={{ fontSize: 10 }}>
-                *Search by (name or email or user/employee/student Id)
-              </Typography.Text>
+                <Typography.Text disabled style={{ fontSize: 10 }}>
+                  *Search by &#40;name or email or user/employee/student Id&#41;
+                </Typography.Text>
+              </Fragment>
             </Form.Item>
 
             <Form.Item>

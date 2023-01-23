@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV='development' nodemon index.js --ignore thunder-tests/",
+    "dev": "NODE_ENV='development' nodemon index.js --ignore thunder-tests/ --ignore server/services/config/",
     "start": "NODE_ENV='development' node index.js",
     "prod": "NODE_ENV='production' pm2 start index.js -i 0",
     "ci": "yarn install --production",

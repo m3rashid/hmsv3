@@ -46,7 +46,9 @@ function InventoryTable(prop) {
   }, [inventory, SearchQuery, prop.type]);
 
   const hasEditPermission = useMemo(() => {
-    if (auth.user.permissions.includes(allPermissions.INVENTORY_ADD_MEDICINE)) {
+    if (
+      auth.user.permissions.includes(allPermissions.INVENTORY_ADD_MEDICINE.name)
+    ) {
       return true;
     }
     return false;

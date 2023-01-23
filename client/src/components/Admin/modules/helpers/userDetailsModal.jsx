@@ -124,8 +124,8 @@ const UserDetailsModal = ({ data }) => {
                   defaultValue={data.permissions}
                 >
                   {Object.entries(allPermissions).map(([key, value], i) => (
-                    <Select.Option key={`${key}-${i}`} value={value}>
-                      {value
+                    <Select.Option key={`${key}-${i}`} value={value.name}>
+                      {value.name
                         .split("_")
                         .map((s) => toSentenceCase(s))
                         .join(" ")}

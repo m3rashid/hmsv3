@@ -131,8 +131,9 @@ const PatientInfo = (props) => {
 
   return (
     <div style={{ padding: "20px" }}>
-      <Typography.Title level={2}>Patient Info</Typography.Title>
-      <Divider>Patient's Info</Divider>
+      <Divider>
+        <Typography.Title level={3}>Patient's Info</Typography.Title>
+      </Divider>
       <Col span={24}>
         {data &&
           InfoSchema.map((item, index) => {

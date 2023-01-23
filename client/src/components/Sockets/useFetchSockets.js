@@ -1,7 +1,7 @@
 import { message } from "antd";
 import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
 import { socket } from "api/instance";
 import { authState } from "atoms/auth";
@@ -13,15 +13,16 @@ import { functionState } from "atoms/functions";
 import { inventoryState } from "atoms/inventory";
 import useNotifications from "Hooks/useNotifications";
 import { InventoryTypes, allPermissions } from "utils/constants";
+import { receptionState } from "atoms/reception";
 
-// Used for all on socket events
 export default function useFetchSockets() {
   const auth = useRecoilValue(authState);
   const [DoctorData, setDoctorData] = useRecoilState(doctorState);
-  const [, setInventoryData] = useRecoilState(inventoryState);
-  const [, setPharmacyData] = useRecoilState(pharmacyState);
-  const [, setLoadingData] = useRecoilState(LoadingAtom);
-  const [, setFunctionData] = useRecoilState(functionState);
+  const setInventoryData = useSetRecoilState(inventoryState);
+  const setPharmacyData = useSetRecoilState(pharmacyState);
+  const setLoadingData = useSetRecoilState(LoadingAtom);
+  const setFunctionData = useSetRecoilState(functionState);
+  const setReceptionData = useSetRecoilState(receptionState);
   const { addNotification } = useNotifications();
   const navigate = useNavigate();
 
@@ -70,17 +71,18 @@ export default function useFetchSockets() {
   useEffect(() => {
     if (
       auth.isLoggedIn &&
-      (auth.user.permissions.includes(allPermissions.INVENTORY_VIEW) ||
+      (auth.user.permissions.includes(allPermissions.INVENTORY_VIEW.name) ||
         auth.user.permissions.includes(
-          allPermissions.DOCTOR_PRESCRIBE_MEDICINE
+          allPermissions.DOCTOR_PRESCRIBE_MEDICINE.name
         ) ||
-        auth.user.permissions.includes(allPermissions.INVENTORY_ADD_MEDICINE))
+        auth.user.permissions.includes(
+          allPermissions.INVENTORY_ADD_MEDICINE.name
+        ))
     ) {
       loadInventoryItems();
     }
   }, [auth, loadInventoryItems]);
 
-  /** Socket events for Pharmacy Roles */
   const loadPharmacyPrescriptions = useCallback(async () => {
     const { data } = await instance.get(`/pharmacy/prescriptions`);
 
@@ -89,10 +91,13 @@ export default function useFetchSockets() {
       prescriptions: data.prescriptions,
     }));
   }, [setPharmacyData]);
+
   useEffect(() => {
     if (
       !auth.isLoggedIn ||
-      !auth.user.permissions.includes(allPermissions.PHARMACY_PRESCRIPTIONS)
+      !auth.user.permissions.includes(
+        allPermissions.PHARMACY_PRESCRIPTIONS.name
+      )
     ) {
       return;
     }
@@ -123,12 +128,46 @@ export default function useFetchSockets() {
     setPharmacyData,
   ]);
 
-  /** Socket events for Doctor Roles */
+  const getAllAppointmentsReceptionist = useCallback(async () => {
+    if (
+      !auth.isLoggedIn ||
+      !auth.user.permissions.includes(
+        allPermissions.RECEPTION_ADD_APPOINTMENT.name
+      )
+    ) {
+      return;
+    }
 
-  /**Load Doctor Appointments */
+    const { data } = await instance.get("/reception/appointment/all");
+    const pending = [];
+    const completed = [];
+    data.appointments.forEach((appoint) => {
+      if (appoint.pending) pending.push(appoint);
+      else completed.push(appoint);
+    });
+    setReceptionData({
+      activeAppointments: pending,
+      completedAppointments: completed,
+    });
+  }, [setReceptionData, auth]);
+
+  useEffect(() => {
+    if (
+      !auth.isLoggedIn ||
+      !auth.user.permissions.includes(
+        allPermissions.RECEPTION_ADD_APPOINTMENT.name
+      )
+    ) {
+      return;
+    }
+
+    getAllAppointmentsReceptionist();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
+
   const loadDoctorAppointment = useCallback(async () => {
     setDoctorData((prev) => ({ ...prev, loading: true }));
-    const res = await instance.get(`/doctor/get-appointments`);
+    const res = await instance.get("/doctor/get-appointments");
     setDoctorData({
       ...DoctorData,
       appointments: res.data.appointments,
@@ -136,26 +175,19 @@ export default function useFetchSockets() {
     });
   }, [DoctorData, setDoctorData]);
 
-  /**
-   * @description : Load Doctor Patients
-   */
   useEffect(() => {
     if (
       auth.isLoggedIn &&
-      auth.user.permissions.includes(allPermissions.DOCTOR_APPOINTMENTS)
+      auth.user.permissions.includes(allPermissions.DOCTOR_APPOINTMENTS.name)
     ) {
       loadDoctorAppointment();
       loadMedicine();
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
   const loadMedicine = useCallback(async () => {}, []);
 
-  /**
-   * Add Appointment in Doctor Appointments
-   */
   const addAppointment = useCallback(
     async (data) => {
       setDoctorData((prev) => {
@@ -167,6 +199,7 @@ export default function useFetchSockets() {
     },
     [setDoctorData]
   );
+
   const setAppointmentPendingStatus = useCallback(
     async (id, pending) => {
       setDoctorData((prev) => ({
@@ -179,13 +212,12 @@ export default function useFetchSockets() {
     [setDoctorData]
   );
 
-  /**
-   * On Doctor Create New Prescription
-   */
   useEffect(() => {
     if (
       !auth.isLoggedIn ||
-      !auth.user.permissions.includes(allPermissions.DOCTOR_PRESCRIBE_MEDICINE)
+      !auth.user.permissions.includes(
+        allPermissions.DOCTOR_PRESCRIBE_MEDICINE.name
+      )
     ) {
       return;
     }
@@ -211,13 +243,10 @@ export default function useFetchSockets() {
     setLoadingData,
   ]);
 
-  /**
-   * Notify Doctor on New Appointment Created
-   */
   useEffect(() => {
     if (
       !auth.isLoggedIn ||
-      !auth.user.permissions.includes(allPermissions.DOCTOR_APPOINTMENTS)
+      !auth.user.permissions.includes(allPermissions.DOCTOR_APPOINTMENTS.name)
     ) {
       return;
     }
@@ -249,6 +278,7 @@ export default function useFetchSockets() {
       setAppointmentPendingStatus,
       loadPharmacyPrescriptions,
       loadInventoryItems,
+      receptionistGetAllAppointments: getAllAppointmentsReceptionist,
     });
   }, [
     addAppointment,
@@ -258,5 +288,6 @@ export default function useFetchSockets() {
     loadPharmacyPrescriptions,
     setAppointmentPendingStatus,
     setFunctionData,
+    getAllAppointmentsReceptionist,
   ]);
 }

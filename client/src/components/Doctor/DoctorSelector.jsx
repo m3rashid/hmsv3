@@ -1,6 +1,7 @@
+import { Fragment } from "react";
 import PropTypes from "prop-types";
 import { useQuery } from "react-query";
-import { Col, Row, Select, Space, Typography } from "antd";
+import { Select, Typography } from "antd";
 
 import { instance } from "api/instance";
 
@@ -25,30 +26,31 @@ function DoctorSelector({ onChange, style }) {
         onChange(selectedDoctor);
       }}
       style={style}
-    >
-      {DoctorData &&
-        DoctorData?.map((doctor) => {
-          return (
-            <Select.Option value={doctor.id} key={doctor.id}>
-              <Col direction="vertical" size={"small"} style={{ fontSize: 12 }}>
-                <Row>
-                  <Space>
+      options={
+        DoctorData
+          ? DoctorData?.map((doctor) => {
+              return {
+                value: doctor.id,
+                label: (
+                  <Fragment key={doctor.id}>
                     <Typography.Text>{doctor.name}</Typography.Text>
                     {doctor.profile.designation && (
-                      <Typography.Text type="danger">
-                        {`${"("}${doctor.profile.designation}${")"}`}
-                      </Typography.Text>
+                      <Fragment>
+                        <br />
+                        <Typography.Text type="danger">
+                          &#40;{doctor.profile.designation}&#41;
+                        </Typography.Text>
+                      </Fragment>
                     )}
-                  </Space>
-                </Row>
-                <Row>
-                  <Typography.Text disabled>{doctor.email}</Typography.Text>
-                </Row>
-              </Col>
-            </Select.Option>
-          );
-        })}
-    </Select>
+                    <br />
+                    <Typography.Text disabled>{doctor.email}</Typography.Text>
+                  </Fragment>
+                ),
+              };
+            })
+          : []
+      }
+    />
   );
 }
 

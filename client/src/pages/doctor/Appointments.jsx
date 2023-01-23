@@ -8,6 +8,7 @@ import {
   Tabs,
   Tooltip,
   Drawer,
+  Divider,
 } from "antd";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
@@ -22,12 +23,19 @@ import { LoadingAtom } from "atoms/loading";
 import { functionState } from "atoms/functions";
 import ShowEntry from "components/common/showEntry";
 import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
+import { receptionState } from "atoms/reception";
+import { allPermissions } from "utils/constants";
+import { toSentenceCase } from "utils/strings";
 
-function DoctorAppointments() {
+const DoctorAppointments = () => {
   const navigate = useNavigate();
+  const receptionistState = useRecoilValue(receptionState);
   const { user } = useRecoilValue(authState);
   const doctorData = useRecoilValue(doctorState);
   const functionData = useRecoilValue(functionState);
+  const isReception = user.permissions.includes(
+    allPermissions.RECEPTION_ADD_APPOINTMENT.name
+  );
   const [ModalVisible, setModalVisible] = useState({
     visible: false,
     id: null,
@@ -53,7 +61,6 @@ function DoctorAppointments() {
       `/doctor/appointment-prescription/${record.id}`
     );
 
-    // console.log(data);
     setPrescriptionDrawer({
       visible: true,
       id: record.id,
@@ -67,12 +74,32 @@ function DoctorAppointments() {
 
   const columnsPending = [
     {
-      title: "PatientName",
+      title: "Patient Name",
       dataIndex: "patient",
       key: "patient",
       sorter: (a, b) => a?.patient?.name?.localeCompare(b.patientname),
       render: (item) => {
         return <Typography.Text>{item?.name}</Typography.Text>;
+      },
+    },
+    isReception && {
+      title: "Doctor Name",
+      dataIndex: "doctor",
+      key: "doctor",
+      sorter: (a, b) =>
+        a?.doctor?.Auth[0].name?.localeCompare(b?.doctor?.Auth[0].name),
+      render: (item) => {
+        return <Typography.Text>{item?.Auth[0].name}</Typography.Text>;
+      },
+    },
+    isReception && {
+      title: "Doctor Email",
+      dataIndex: "doctor",
+      key: "doctor",
+      sorter: (a, b) =>
+        a?.doctor?.Auth[0].email?.localeCompare(b?.doctor?.Auth[0].email),
+      render: (item) => {
+        return <Typography.Text>{item?.Auth[0].email}</Typography.Text>;
       },
     },
     {
@@ -91,30 +118,32 @@ function DoctorAppointments() {
         const disabled = !dayjs(record.date).isBefore(dayjs().add(6, "hours"));
         return (
           <Space>
-            <Popconfirm
-              disabled={disabled}
-              title="Create a prescription for this appointment?"
-              onConfirm={() => {
-                navigate(
-                  `/doctor/prescribe-medicine?appointmentId=${record.id}`
-                );
-              }}
-              okText="Yes"
-              cancelText="Cancel"
-            >
-              <Tooltip
-                placement="left"
-                title={
-                  disabled
-                    ? "Cant prescribe at current time"
-                    : "Create a prescription"
-                }
+            {!isReception && (
+              <Popconfirm
+                disabled={disabled}
+                title="Create a prescription for this appointment?"
+                onConfirm={() => {
+                  navigate(
+                    `/doctor/prescribe-medicine?appointmentId=${record.id}`
+                  );
+                }}
+                okText="Yes"
+                cancelText="Cancel"
               >
-                <Button disabled={disabled} type="primary">
-                  Precribe
-                </Button>
-              </Tooltip>
-            </Popconfirm>
+                <Tooltip
+                  placement="left"
+                  title={
+                    disabled
+                      ? "Cant prescribe at current time"
+                      : "Create a prescription"
+                  }
+                >
+                  <Button disabled={disabled} type="primary">
+                    Precribe
+                  </Button>
+                </Tooltip>
+              </Popconfirm>
+            )}
             <Button
               onClick={() => {
                 setModalVisible({
@@ -202,21 +231,29 @@ function DoctorAppointments() {
     },
   ];
 
-  const refreshAppointments = useCallback(() => {
+  const refreshAppointments = useCallback(async () => {
     setLoadingData({
       ...loadingData,
       refetchAppointments: true,
     });
-    functionData.loadDoctorAppointment().then(() => {
-      setLoadingData({
-        ...loadingData,
-        refetchAppointments: false,
+
+    if (!isReception) {
+      functionData.loadDoctorAppointment().then(() => {
+        setLoadingData({
+          ...loadingData,
+          refetchAppointments: false,
+        });
       });
-    });
+    } else {
+      functionData.receptionistGetAllAppointments().then(() => {
+        setLoadingData({
+          ...loadingData,
+          refetchAppointments: false,
+        });
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [functionData]);
-
-  // console.log(doctorData);
 
   return (
     <Fragment>
@@ -233,7 +270,7 @@ function DoctorAppointments() {
       >
         <Typography.Text>
           {loadingData.refetchAppointments
-            ? "Refreshing Appointments"
+            ? "Getting Latest Appointments"
             : "Refresh Appointments"}
         </Typography.Text>
       </Button>
@@ -252,9 +289,11 @@ function DoctorAppointments() {
                 className="user-table"
                 size="small"
                 loading={doctorData.loading}
-                dataSource={doctorData.appointments.filter(
-                  (apt) => apt.pending
-                )}
+                dataSource={
+                  !isReception
+                    ? doctorData.appointments.filter((apt) => apt.pending)
+                    : receptionistState.activeAppointments
+                }
                 columns={columnsPending}
                 pagination={{
                   total: doctorData.appointments.reduce(
@@ -274,9 +313,11 @@ function DoctorAppointments() {
                 rowKey={(record) => record.id}
                 className="user-table"
                 size="small"
-                dataSource={doctorData.appointments.filter(
-                  (apt) => !apt.pending
-                )}
+                dataSource={
+                  !isReception
+                    ? doctorData.appointments.filter((apt) => !apt.pending)
+                    : receptionistState.completedAppointments
+                }
                 columns={columnsPrevious}
               />
             ),
@@ -319,25 +360,40 @@ function DoctorAppointments() {
             )}
           />
           <div>
-            <h4>
-              <strong>Patient Info </strong>
-            </h4>
+            <Divider>
+              <Typography.Title level={5}>Patient Info</Typography.Title>
+            </Divider>
             <Space direction="vertical" size={3} style={{ padding: "10px" }}>
               <ShowEntry
                 label="Name"
                 value={ModalVisible.data?.patient?.name}
               />
-              <ShowEntry label="Age" value={ModalVisible.data?.patient?.age} />
-              <ShowEntry
-                label="Email"
-                value={ModalVisible.data?.patient?.email}
-              />
+              {[
+                "department",
+                "age",
+                "email",
+                "fathersName",
+                "bloodGroup",
+                "designation",
+              ].map((item) => {
+                const data = ModalVisible.data?.patient?.[item];
+                if (!!data) {
+                  return (
+                    <ShowEntry
+                      key={item}
+                      label={toSentenceCase(item)}
+                      value={data}
+                    />
+                  );
+                }
+                return null;
+              })}
             </Space>
           </div>
         </div>
       </Modal>
     </Fragment>
   );
-}
+};
 
 export default DoctorAppointments;

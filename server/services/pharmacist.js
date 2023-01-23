@@ -3,10 +3,10 @@ const dayjs = require("dayjs");
 const { addEventLog } = require("../utils/logs");
 const { serverActions } = require("../utils/constants");
 
-const prisma = require("../utils/prisma");
+const { prisma } = require("../utils/prisma");
 
 const getAllPrescriptionsService = async ({ limit, from, to, offset }) => {
-  const prescriptions = await prisma.Prescription.findMany({
+  const prescriptions = await prisma.prescription.findMany({
     where: {
       datePrescribed: {
         gte: from

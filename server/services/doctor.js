@@ -15,8 +15,8 @@ const getDoctorAppointmentsService = async (
     },
     include: { patient: true },
     orderBy: { date: "desc" },
-    skip: offset || 0,
-    take: limit || 500,
+    skip: offset ?? 0,
+    take: limit ?? 500,
   });
 
   return { appointments };

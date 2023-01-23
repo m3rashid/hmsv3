@@ -9,5 +9,6 @@ export const functionState = atom({
     setAppointmentPendingStatus: async () => {},
     loadPharmacyPrescriptions: async () => {},
     loadInventoryItems: async () => {},
+    receptionistGetAllAppointments: async () => {},
   },
 });

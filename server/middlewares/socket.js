@@ -14,11 +14,9 @@ const checkSocketAuth = (socket, next) => {
     const payload = JWT.verify(token, keys.ACCESS_SECRET);
 
     socket.user = payload.sub;
-    console.log("========== Socket User ==========");
-    console.log(socket.user);
     return next();
   } catch (err) {
-    console.log({ socketErr: err });
+    console.log("Socket Err", err);
     next(err);
   }
 };
@@ -27,12 +25,8 @@ const safeSocket =
   (handler) =>
   (io, socket) =>
   (...args) => {
-    console.log("========== Socket Args ==========");
-    console.log(...args);
-    console.log({ sockeUser: socket.user });
     Promise.resolve(handler(io, socket)(...args)).catch((err) => {
-      console.log("========== Socket Err ==========");
-      console.log(err);
+      console.log("Socket Err", err);
       io.emit("error", {
         message: !isProduction
           ? err.message || "An error Occured"

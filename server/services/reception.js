@@ -35,7 +35,7 @@ const createAppointmentService = async ({
 };
 
 const getAppointmentByIdService = async (appointmentId) => {
-  const appointment = await prisma.Appointment.findUnique({
+  const appointment = await prisma.appointment.findUnique({
     where: { id: appointmentId },
     include: { patient: true, doctor: true },
   });
@@ -46,7 +46,25 @@ const getAppointmentByIdService = async (appointmentId) => {
   };
 };
 
+const getAllAppointmentsService = async () => {
+  const appointments = await prisma.appointment.findMany({
+    include: {
+      patient: true,
+      doctor: {
+        include: {
+          Auth: {
+            select: { email: true, name: true },
+          },
+        },
+      },
+    },
+  });
+
+  return appointments;
+};
+
 module.exports = {
   createAppointmentService,
   getAppointmentByIdService,
+  getAllAppointmentsService,
 };

@@ -86,7 +86,7 @@ function App() {
                 <Route
                   key={`route ${index} ${route.path}`}
                   path={route.path}
-                  element={<route.component />}
+                  element={<route.component {...route.props} />}
                 />
               );
             })}

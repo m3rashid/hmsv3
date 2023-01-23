@@ -1,7 +1,6 @@
 import MindMapGraph from "components/documentation/mindMap";
 import React, { Fragment } from "react";
 import { Tabs, Typography } from "antd";
-import DefaultPermissions from "components/documentation/defaultPermissions";
 import Admin from "components/documentation/admin";
 import Doctor from "components/documentation/doctor";
 import CoAdmin from "components/documentation/coAdmin";
@@ -20,7 +19,7 @@ const Learn = () => {
           display: "flex",
           alignItems: "stretch",
           justifyContent: "stretch",
-          height: "calc(100vh - 200px)",
+          minHeight: "calc(100vh - 200px)",
         }}
         items={[
           {
@@ -30,36 +29,31 @@ const Learn = () => {
           },
           {
             key: "2",
-            label: "Default Permissions",
-            children: <DefaultPermissions />,
-          },
-          {
-            key: "3",
             label: "Admin",
             children: <Admin />,
           },
           {
-            key: "4",
+            key: "3",
             label: "Co Admin",
             children: <CoAdmin />,
           },
           {
-            key: "5",
+            key: "4",
             label: "Doctor",
             children: <Doctor />,
           },
           {
-            key: "6",
+            key: "5",
             label: "Receptionist",
             children: <Receptionist />,
           },
           {
-            key: "7",
+            key: "6",
             label: "Pharmacist",
             children: <Pharmacist />,
           },
           {
-            key: "8",
+            key: "7",
             label: "Inventory Manager",
             children: <InventoryManager />,
           },

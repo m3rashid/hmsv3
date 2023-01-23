@@ -1,17 +1,17 @@
 import React, { Fragment } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import ReactJson from "react-json-view";
-import { message, Typography } from "antd";
+import { Button, message, Typography } from "antd";
 
 import { configState } from "atoms/config";
+import { instance } from "api/instance";
 
 const isProduction = process.env.NODE_ENV === "production";
 
 const DevConfig = () => {
-  const config = useRecoilValue(configState);
+  const [config, setConfig] = useRecoilState(configState);
   const configRootKeys = Object.keys(config);
   const sidebarKeymaps = Object.keys(config.sidebar_keymaps);
-  // const homepageContents = Object.keys(config.homepage_contents)
   const nonEditableFieldsInDevelopers = [
     "name",
     "department",
@@ -19,9 +19,31 @@ const DevConfig = () => {
     "linkedin",
   ];
 
+  const updateDevConfig = async (e) => {
+    const res = await instance.post("/admin/config", {
+      config: e.updated_src,
+      change: {
+        name: e.name,
+        oldValue: e.existing_value,
+        newValue: e.new_value ?? "",
+        namespace: e.namespace ?? [],
+      },
+    });
+    return res.data;
+  };
+
+  const resetConfig = async () => {
+    try {
+      await instance.post("/admin/config/reset", {});
+    } catch (err) {
+      console.log(err);
+      message.error("Error in resetting config");
+    }
+  };
+
   const onAdd = (e) => {};
 
-  const onEdit = (e) => {
+  const onEdit = async (e) => {
     if (configRootKeys.includes(e.name) && !e.new_value) {
       message.error(`${e.name} cannot be empty`);
       return false;
@@ -32,10 +54,18 @@ const DevConfig = () => {
         return false;
       }
     }
-    console.log({ e });
+
+    try {
+      const { config, message: txt } = await updateDevConfig(e);
+      message.success(txt);
+      setConfig(config);
+    } catch (err) {
+      console.log(err);
+      message.error("Error in updating config");
+    }
   };
 
-  const onDelete = (e) => {
+  const onDelete = async (e) => {
     if (configRootKeys.includes(e.name) || sidebarKeymaps.includes(e.name)) {
       message.error(`Cannot remove the (${e.name}) root key`);
       return false;
@@ -55,12 +85,29 @@ const DevConfig = () => {
       message.error(`Cannot remove the developers namespace`);
       return false;
     }
-    console.log({ e });
+
+    try {
+      const { config, message: txt } = await updateDevConfig(e);
+      message.success(txt);
+      setConfig(config);
+    } catch (err) {
+      message.error("Error in updating config");
+      console.log(err);
+    }
   };
 
   return (
     <Fragment>
-      <Typography.Title level={4}>Dev Config</Typography.Title>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography.Title level={4}>Dev Config</Typography.Title>
+        <Button onClick={resetConfig}>Reset Config to Defaults</Button>
+      </div>
       <ReactJson
         validationMessage="Error in updating config"
         name="Root Config"

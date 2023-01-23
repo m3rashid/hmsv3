@@ -12,7 +12,6 @@ const {
 } = require("../../routes/sockets/doctor.socket");
 const { safeSocket } = require("../../middlewares/socket");
 const { socketConstants } = require("../../utils/constants.js");
-const { createUser } = require("../../routes/sockets/admin.socket");
 const {
   createPatient,
   deletePatient,
@@ -32,7 +31,6 @@ const router = (io, socket) => {
     socketConstants.pharmacistLeft,
     safeSocket(pharmacistLeft)(io, socket)
   );
-  socket.on(socketConstants.createUser, safeSocket(createUser)(io, socket));
   socket.on(
     socketConstants.getDoctorAppointments,
     safeSocket(getDoctorAppointments)(io, socket)

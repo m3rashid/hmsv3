@@ -27,6 +27,7 @@ const signup = async (req, res) => {
     name: req.body.name,
     role: req.body.role,
     sex: req.body.sex,
+    roomNumber: req.body.roomNumber,
 
     designation: req.body.designation,
     contact: req.body.contact,
@@ -34,7 +35,6 @@ const signup = async (req, res) => {
     bio: req.body.bio,
     availability: req.body.availability,
     availableDays: req.body.availableDays,
-    roomNumber: req.body.roomNumber,
     authorityName: req.body.authorityName,
     category: req.body.category,
     origin: req.body.origin,
@@ -53,7 +53,6 @@ const revalidate = async (req, res) => {
   const { user, userDetails, token, expires } = await revalidateService(
     refreshToken
   );
-  console.log("userRole: ", user.role);
   return res.status(200).json({
     message: "Token revalidated",
     token,
