@@ -8,9 +8,13 @@ import { instance } from "api/instance";
 import { pharmacyState } from "atoms/pharmacy";
 import ShowReceipt from "pages/pharmacy/ShowReciept";
 import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
+import { authState } from "atoms/auth";
+import { allPermissions } from "utils/constants";
 
-function Prescriptions() {
+const Prescriptions = () => {
   const pharmacyData = useRecoilValue(pharmacyState);
+  const { user } = useRecoilValue(authState);
+  console.log({ user });
   const navigate = useNavigate();
   const [ModalVisible, setModalVisible] = useState({
     visible: false,
@@ -85,14 +89,15 @@ function Prescriptions() {
           >
             View Prescriptions
           </Button>
-          <Button
-            onClick={() => {
-              navigate(`/pharmacy/receipt?prescriptionId=${record.id}`);
-            }}
-          >
-            Dispense
-          </Button>
-          {/* </Popconfirm> */}
+          {user.permissions.includes(allPermissions.PHARMACY_RECEIPT.name) && (
+            <Button
+              onClick={() => {
+                navigate(`/pharmacy/receipt?prescriptionId=${record.id}`);
+              }}
+            >
+              Dispense
+            </Button>
+          )}
         </Space>
       ),
     },
@@ -225,6 +230,6 @@ function Prescriptions() {
       </Drawer>
     </Fragment>
   );
-}
+};
 
 export default Prescriptions;

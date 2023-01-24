@@ -1,14 +1,11 @@
 import { Fragment } from "react";
 import dayjs from "dayjs";
 import PropTypes from "prop-types";
+import DOMPurify from "dompurify";
 import { Space, Typography, Card, Table, Tooltip, Divider } from "antd";
 import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import ShowEntry from "components/common/showEntry";
 
-/**
- * Display Prescription of a patient
- * @returns
- */
 function PrescriptionDisplay({
   patient,
   date,
@@ -36,7 +33,11 @@ function PrescriptionDisplay({
         </Card>
 
         <Card size="small" title="Symptoms">
-          {symptoms && <Typography.Text>{symptoms}</Typography.Text>}
+          {symptoms && (
+            <div
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(symptoms) }}
+            />
+          )}
         </Card>
 
         <Divider />
