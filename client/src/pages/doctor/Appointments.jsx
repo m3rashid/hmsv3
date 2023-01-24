@@ -36,17 +36,20 @@ const DoctorAppointments = () => {
   const isReception = user.permissions.includes(
     allPermissions.RECEPTION_ADD_APPOINTMENT.name
   );
+
   const [ModalVisible, setModalVisible] = useState({
     visible: false,
     id: null,
     data: {},
   });
+
   const [PrescriptionDrawer, setPrescriptionDrawer] = useState({
     visible: false,
     id: null,
     data: {},
     type: "",
   });
+
   const [loadingData, setLoadingData] = useRecoilState(LoadingAtom);
 
   const ToggleModal = () => {
@@ -162,7 +165,7 @@ const DoctorAppointments = () => {
         );
       },
     },
-  ];
+  ].reduce((acc, curr) => (curr ? [...acc, curr] : acc), []);
 
   const columnsPrevious = [
     {
@@ -221,7 +224,7 @@ const DoctorAppointments = () => {
         </Space>
       ),
     },
-  ];
+  ].reduce((acc, curr) => (curr ? [...acc, curr] : acc), []);
 
   const refreshAppointments = useCallback(async () => {
     setLoadingData({
