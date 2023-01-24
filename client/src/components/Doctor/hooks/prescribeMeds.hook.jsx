@@ -104,16 +104,17 @@ const usePrescribeMedicines = (socket) => {
           ).format("MMMM DD YYYY hh:mm A")}`
         );
       } else {
-        setFormData((formData) => ({
-          ...formData,
+        console.log("removing");
+        setFormData((prev) => ({
+          ...prev,
           appointment: "",
-          appointmentInfo: {},
+          appointmentInfo: null,
         }));
-        form.setFieldValue("appointment", "");
+        form.resetFields(["appointment"]);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [doctorData.appointments, form]
+    [doctorData.appointments, form, setFormData]
   );
 
   const handleReferPatientModalShow = async () => {

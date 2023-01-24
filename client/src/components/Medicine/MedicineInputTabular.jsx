@@ -1,15 +1,20 @@
 import PropTypes from "prop-types";
+import ReactQuill from "react-quill";
 import { useRecoilValue } from "recoil";
-import { DeleteOutlined, DashOutlined } from "@ant-design/icons";
 import { useDebounce } from "use-debounce";
 import { useCallback, useEffect, useState } from "react";
 import { Button, Input, Select, Spin, Table, Typography } from "antd";
+import {
+  LoadingOutlined,
+  DeleteOutlined,
+  DashOutlined,
+} from "@ant-design/icons";
 
 import { instance } from "api/instance";
 import { dosages } from "utils/constants";
 import { inventoryState } from "atoms/inventory";
 import styles from "components/Medicine/medicineinput.module.css";
-import { LoadingOutlined } from "@ant-design/icons";
+import quillDefaults from "components/common/quillDefaults";
 
 const MedicineInputTable = ({ medicines, setMedicines, tableClassName }) => {
   const addEmptyMedicine = useCallback(
@@ -351,10 +356,10 @@ const RemarksCol = ({ remarks, medicine, index }) => {
   const handleChange = (value, field) => {};
 
   return (
-    <Input.TextArea
-      className={styles.textarea}
-      defaultValue={medicine.description}
-      onChange={(e) => handleChange(e.target.value, "description")}
+    <ReactQuill
+      value={medicine.description}
+      onChange={(value) => handleChange(value, "description")}
+      {...quillDefaults}
     />
   );
 };

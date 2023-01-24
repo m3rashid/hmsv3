@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import ReactQuill from "react-quill";
 import { useRecoilValue } from "recoil";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useDebounce } from "use-debounce";
@@ -9,6 +10,7 @@ import { instance } from "api/instance";
 import { dosages } from "utils/constants";
 import { inventoryState } from "atoms/inventory";
 import styles from "components/Medicine/medicineinput.module.css";
+import quillDefaults from "components/common/quillDefaults";
 
 const MedicineInput = ({
   index,
@@ -71,26 +73,19 @@ const MedicineInput = ({
     UpdateMedicine(medicineType, { ...value, ...availabilityInfo }, index);
   }, [value, availabilityInfo, UpdateMedicine, medicineType, index]);
 
+  const inputStyles = {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    padding: "0 10px",
+    margin: "auto",
+  };
+
   return (
-    <Row
-      style={{
-        borderBottom: "1px solid #ddd",
-        margin: "10px 0",
-      }}
-    >
-      <Col
-        style={{
-          borderRight: "1px solid #ddd",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          padding: "0 10px",
-          margin: "auto",
-        }}
-        span={6}
-      >
+    <Row style={{ borderBottom: "1px solid #ddd", padding: "10px 0" }}>
+      <Col span={5} style={inputStyles}>
         <Select
-          style={{ width: 220 }}
+          style={{ width: "100%" }}
           showSearch
           optionFilterProp="children"
           filterOption={(input, option) => option.children?.includes(input)}
@@ -138,24 +133,12 @@ const MedicineInput = ({
           </Typography.Text>
         )}
       </Col>
-      <Col
-        span={4}
-        style={{
-          borderRight: "1px solid #ddd",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          margin: "auto",
-          padding: "0 10px",
-        }}
-      >
+      <Col span={4} style={inputStyles}>
         <Select
           style={{ width: "100%" }}
           placeholder="Select Dosage"
           className={styles.select}
-          onChange={(value) => {
-            handleChange(value, "dosage");
-          }}
+          onChange={(value) => handleChange(value, "dosage")}
         >
           {dosages.map((dosage) => (
             <Select.Option key={dosage.value} value={dosage.value}>
@@ -177,17 +160,7 @@ const MedicineInput = ({
           </Space>
         )}
       </Col>
-      <Col
-        span={5}
-        style={{
-          borderRight: "1px solid #ddd",
-          display: "flex",
-          margin: "auto",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "0 10px",
-        }}
-      >
+      <Col span={4} style={inputStyles}>
         <Input
           type={"number"}
           placeholder="Enter duration"
@@ -197,30 +170,14 @@ const MedicineInput = ({
           addonAfter={"days"}
         />
       </Col>
-      <Col
-        span={5}
-        style={{
-          borderRight: "1px solid #ddd",
-          padding: "0 10px",
-        }}
-      >
-        <Input.TextArea
-          className={styles.textarea}
-          defaultValue={medicine.description}
-          onChange={(e) => handleChange(e.target.value, "description")}
+      <Col span={9} style={{ padding: "0 10px" }}>
+        <ReactQuill
+          value={medicine.description}
+          onChange={(value) => handleChange(value, "description")}
+          {...quillDefaults}
         />
       </Col>
-      <Col
-        span={4}
-        style={{
-          borderRight: "1px solid #ddd",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "0 10px",
-          margin: "auto",
-        }}
-      >
+      <Col span={2} style={inputStyles}>
         <Space
           direction="vertical"
           style={{ width: "100%", justifyContent: "center" }}

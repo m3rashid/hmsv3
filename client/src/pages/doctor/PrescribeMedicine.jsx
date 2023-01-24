@@ -1,7 +1,6 @@
 import {
   Form,
   Button,
-  Input,
   Select,
   Space,
   Typography,
@@ -18,16 +17,18 @@ import {
   PlusCircleOutlined,
   UserSwitchOutlined,
 } from "@ant-design/icons";
+import ReactQuill from "react-quill";
 import { Fragment, useEffect } from "react";
 
 import { socket } from "api/instance";
 import PatientInfo from "pages/patient";
+import quillDefaults from "components/common/quillDefaults";
 import MedicineInput from "components/Medicine/MedicineInput";
-import styles from "pages/doctor/PrescribeMedicine.module.css";
 import ReferPatientModal from "components/Prescription/ReferPatientModal";
 import MedicineInputTable from "components/Medicine/MedicineInputTabular";
 import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
 import usePrescribeMedicines from "components/Doctor/hooks/prescribeMeds.hook";
+import styles from "pages/doctor/PrescribeMedicine.module.css";
 
 const PrescriptionForm = () => {
   const {
@@ -80,6 +81,8 @@ const PrescriptionForm = () => {
         >
           <Fragment>
             <Select
+              allowClear
+              onClear={(value) => handleAppointmentSelect(value)}
               placeholder="Select an appointment"
               style={{ maxWidth: 500, display: "block" }}
               onChange={(value) => handleAppointmentSelect(value)}
@@ -119,16 +122,14 @@ const PrescriptionForm = () => {
           label="Symptoms"
           name="symptoms"
           rules={[{ required: true, message: "Please Enter Symptoms!" }]}
+          style={{ height: "100%" }}
         >
-          <Input.TextArea
-            required
-            type="text"
-            style={{ maxWidth: 500 }}
+          <ReactQuill
+            {...quillDefaults}
+            style={{ ...quillDefaults.style, maxWidth: 500, borderRadius: 8 }}
             placeholder="Enter symptoms"
-            allowClear
-            onChange={(e) => {
-              setFormData({ ...formData, symptoms: e.target.value });
-            }}
+            value={formData.symptoms}
+            onChange={(value) => setFormData({ ...formData, symptoms: value })}
           />
         </Form.Item>
         <Divider />
@@ -152,22 +153,21 @@ const PrescriptionForm = () => {
           className="user-table"
         >
           <Typography.Title level={4}>Custom Medicines</Typography.Title>
-
           {medicines.extraMedicines.length > 0 ? (
             <Row className={styles.prescribeTableHeader}>
-              <Col className={`${styles.prescribeColHeader}`} span={6}>
+              <Col className={`${styles.prescribeColHeader}`} span={5}>
                 Medicine
               </Col>
               <Col className={styles.prescribeColHeader} span={4}>
                 Dosage
               </Col>
-              <Col className={styles.prescribeColHeader} span={5}>
+              <Col className={styles.prescribeColHeader} span={4}>
                 Duration
               </Col>
-              <Col className={styles.prescribeColHeader} span={5}>
+              <Col className={styles.prescribeColHeader} span={9}>
                 Description
               </Col>
-              <Col className={styles.prescribeColHeader} span={4}>
+              <Col className={styles.prescribeColHeader} span={2}>
                 Action
               </Col>
             </Row>
@@ -208,7 +208,7 @@ const PrescriptionForm = () => {
           style={{ display: "flex", justifyContent: "center", marginTop: 20 }}
         >
           <Space>
-            {formData.appointmentInfo && (
+            {!!formData.appointmentInfo && (
               <Button
                 htmlType="button"
                 type="dashed"

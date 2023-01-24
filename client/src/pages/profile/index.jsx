@@ -1,10 +1,12 @@
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, message, Typography } from "antd";
 import React, { useEffect } from "react";
 
 import ProfileWrapper from "components/Profile/ProfileWrapper";
 import { useRecoilState } from "recoil";
 import { authState } from "atoms/auth";
 import { instance, socket } from "api/instance";
+import quillDefaults from "components/common/quillDefaults";
+import ReactQuill from "react-quill";
 
 const ProfilePage = () => {
   const { user } = useRecoilState(authState);
@@ -36,7 +38,8 @@ const ProfilePage = () => {
 
   return (
     <ProfileWrapper>
-      <h3>Are you leaving ?</h3>
+      <Typography.Title level={4}>Are you leaving ?</Typography.Title>
+
       <br />
 
       <Form
@@ -51,10 +54,21 @@ const ProfilePage = () => {
           style={{ display: "block" }}
           rules={[{ required: true, message: "Reason is required" }]}
         >
-          <Input.TextArea placeholder="Enter your reason to leave" />
+          <ReactQuill
+            placeholder="Enter your reason to leave"
+            onChange={(value) => {
+              form.setFieldValue("reason", value);
+            }}
+            {...quillDefaults}
+          />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 2 }}>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            disabled={loading}
+            loading={loading}
+          >
             Submit
           </Button>
         </Form.Item>

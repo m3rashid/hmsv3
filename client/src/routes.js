@@ -1,4 +1,18 @@
 import {
+  BookOutlined,
+  BookTwoTone,
+  DatabaseFilled,
+  MedicineBoxOutlined,
+  PlusCircleOutlined,
+  ProfileOutlined,
+  SettingOutlined,
+  UserAddOutlined,
+  UserOutlined,
+  UserSwitchOutlined,
+  WarningTwoTone,
+} from "@ant-design/icons";
+
+import {
   Home as AdminHome,
   Receptionists,
   Doctors,
@@ -26,19 +40,6 @@ import {
 } from "components/Inventory/Display";
 import { allPermissions } from "utils/constants";
 import AddNewInventory from "components/Inventory/AddNew";
-import {
-  BookOutlined,
-  BookTwoTone,
-  DatabaseFilled,
-  MedicineBoxOutlined,
-  PlusCircleOutlined,
-  ProfileOutlined,
-  SettingOutlined,
-  UserAddOutlined,
-  UserOutlined,
-  UserSwitchOutlined,
-  WarningTwoTone,
-} from "@ant-design/icons";
 
 export const checkAccess = (Auth, route) => {
   if (!Auth.isLoggedIn) {

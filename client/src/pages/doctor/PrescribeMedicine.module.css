@@ -1,11 +1,8 @@
 .prescribeTableHeader {
-  background-color: #eee;
+  background-color: #f9f9f9;
   border-bottom: 1px solid #ddd;
 }
-.prescribeColHeader:first-child {
-  border-left: 1px solid #ccc;
-}
+
 .prescribeColHeader {
-  border-right: 1px solid #ccc;
   padding: 10px;
 }

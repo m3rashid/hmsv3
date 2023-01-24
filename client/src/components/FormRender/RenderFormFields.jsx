@@ -1,6 +1,8 @@
 import { Form, Input, Select } from "antd";
 import { Fragment } from "react";
 import PropTypes from "prop-types";
+import ReactQuill from "react-quill";
+import quillDefaults from "components/common/quillDefaults";
 
 const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
   return (
@@ -39,12 +41,15 @@ const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
                   ))}
                 </Select>
               ) : f.inputType === "textarea" ? (
-                <Input.TextArea
+                <ReactQuill
                   {...(f?.defaultValue !== undefined &&
-                    !isEdit && { defaultValue: f.defaultValue })}
+                    !isEdit && {
+                      defaultValue: f.defaultValue,
+                      readOnly: true,
+                    })}
                   {...(isEdit && { defaultValue: data[f.key] })}
                   placeholder={f.label}
-                  rows={3}
+                  {...quillDefaults}
                 />
               ) : f.inputType === "custom" ? (
                 <Fragment>
