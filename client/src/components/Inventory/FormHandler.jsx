@@ -76,11 +76,13 @@ function InventoryFormHandler(props) {
               setFormSelected({ ...FormSelected, type: value });
             }}
             getPopupContainer={(trigger) => trigger.parentNode}
-            options={Object.keys(InventoryTypes).map((item) => ({
-              key: item,
-              value: item,
-            }))}
-          />
+          >
+            {Object.keys(InventoryTypes).map((item) => (
+              <Select.Option key={item} value={item}>
+                {item}
+              </Select.Option>
+            ))}
+          </Select>
         </Form.Item>
         <StatefullFormRenderer render={FormSelected.type}>
           <Form.Item
@@ -169,11 +171,13 @@ function InventoryFormHandler(props) {
             <Select
               getPopupContainer={(trigger) => trigger.parentNode}
               placeholder="Select Category"
-              options={Object.keys(Category).map((item) => ({
-                label: item,
-                value: item,
-              }))}
-            />
+            >
+              {Object.keys(Category).map((item) => (
+                <Select.Option key={item} value={item}>
+                  {item}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item label="Manufacturer" name="manufacturer">
             <Input placeholder="Enter Manufacturer" />
@@ -191,11 +195,13 @@ function InventoryFormHandler(props) {
             <Select
               getPopupContainer={(trigger) => trigger.parentNode}
               placeholder="Select Medicine Type"
-              options={Object.keys(MedType).map((item) => ({
-                label: item,
-                value: item,
-              }))}
-            />
+            >
+              {Object.keys(MedType).map((item) => (
+                <Select.Option key={item} value={item}>
+                  {item}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
         </StatefullFormRenderer>
 

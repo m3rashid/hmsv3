@@ -113,19 +113,18 @@ function CreateReceipts() {
             }}
             getPopupContainer={(trigger) => trigger.parentNode}
             optionLabelProp="Appointment"
-            options={pharmacyData.prescriptions
+          >
+            {pharmacyData.prescriptions
               ?.filter((pr) => pr.pending)
-              .map((presp) => ({
-                key: presp.id,
-                value: presp.id,
-                label: (
+              .map((presp) => (
+                <Select.Option key={presp.id} value={presp.id}>
                   <span>
                     {presp.appointment.patient.name} - &nbsp;
                     {dayjs(presp.datePrescribed).format("DD MMM YY,  HH:mm A")}
                   </span>
-                ),
-              }))}
-          />
+                </Select.Option>
+              ))}
+          </Select>
         </Form.Item>
 
         <Spin

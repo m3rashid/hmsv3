@@ -88,23 +88,31 @@ const PrescriptionForm = () => {
               onChange={(value) => handleAppointmentSelect(value)}
               getPopupContainer={(trigger) => trigger.parentNode}
               optionLabelProp="Appointment"
-              options={doctorData.appointments?.reduce((acc, appointment) => {
-                if (!appointment.pending) return acc;
-                return [
-                  ...acc,
-                  {
-                    value: appointment.id,
-                    key: appointment.id,
-                    label: (
-                      <span key={appointment.id}>
-                        {appointment.patient?.name} - &nbsp;
-                        {dayjs(appointment.date).format("MMMM DD YYYY HH:mm A")}
-                      </span>
-                    ),
-                  },
-                ];
-              }, [])}
-            />
+            >
+              {doctorData.appointments
+                ?.reduce((acc, appointment) => {
+                  if (!appointment.pending) return acc;
+                  return [
+                    ...acc,
+                    {
+                      value: appointment.id,
+                      label: (
+                        <span key={appointment.id}>
+                          {appointment.patient?.name} - &nbsp;
+                          {dayjs(appointment.date).format(
+                            "MMMM DD YYYY HH:mm A"
+                          )}
+                        </span>
+                      ),
+                    },
+                  ];
+                }, [])
+                .map((op) => (
+                  <Select.Option key={op.value} value={op.value}>
+                    {op.label}
+                  </Select.Option>
+                ))}
+            </Select>
             <Button
               disabled={formData.appointment ? false : true}
               style={{ marginTop: 10 }}

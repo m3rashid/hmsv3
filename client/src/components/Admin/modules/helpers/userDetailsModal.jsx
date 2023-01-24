@@ -123,17 +123,16 @@ const UserDetailsModal = ({ data }) => {
                   allowClear
                   style={{ width: "100%" }}
                   defaultValue={data.permissions}
-                  options={Object.entries(allPermissions).map(
-                    ([key, value], i) => ({
-                      key: `${key}-${i}`,
-                      value: value.name,
-                      label: value.name
+                >
+                  {Object.entries(allPermissions).map(([key, value], i) => (
+                    <Select.Option key={`${key}-${i}`} value={value.name}>
+                      {value.name
                         .split("_")
                         .map((s) => toSentenceCase(s))
-                        .join(" "),
-                    })
-                  )}
-                />
+                        .join(" ")}
+                    </Select.Option>
+                  ))}
+                </Select>
               </Form.Item>
 
               <div

@@ -23,30 +23,22 @@ function DoctorSelector({ onChange }) {
         const selectedDoctor = DoctorData.find((doctor) => doctor.id === value);
         onChange(selectedDoctor);
       }}
-      options={
-        DoctorData
-          ? DoctorData?.map((doctor) => ({
-              key: doctor.id,
-              value: doctor.id,
-              label: (
-                <Col
-                  direction="vertical"
-                  size={"small"}
-                  style={{ fontSize: 12 }}
-                >
-                  <Typography.Text>{doctor.name}</Typography.Text>
-                  {doctor.profile.designation && (
-                    <Typography.Text type="danger">
-                      &#40;{doctor.profile.designation}&#41;
-                    </Typography.Text>
-                  )}
-                  <Typography.Text disabled>{doctor.email}</Typography.Text>
-                </Col>
-              ),
-            }))
-          : []
-      }
-    />
+    >
+      {DoctorData &&
+        DoctorData?.map((doctor) => (
+          <Select.Option key={doctor.id} value={doctor.id}>
+            <Col direction="vertical" size={"small"} style={{ fontSize: 12 }}>
+              <Typography.Text>{doctor.name}</Typography.Text>
+              {doctor.profile.designation && (
+                <Typography.Text type="danger">
+                  &#40;{doctor.profile.designation}&#41;
+                </Typography.Text>
+              )}
+              <Typography.Text disabled>{doctor.email}</Typography.Text>
+            </Col>
+          </Select.Option>
+        ))}
+    </Select>
   );
 }
 

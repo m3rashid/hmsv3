@@ -27,32 +27,24 @@ function DoctorSelector({ onChange, style }) {
       }}
       getPopupContainer={(trigger) => trigger.parentNode}
       style={style}
-      options={
-        DoctorData
-          ? DoctorData?.map((doctor) => {
-              return {
-                value: doctor.id,
-                key: doctor.id,
-                label: (
-                  <Fragment key={doctor.id}>
-                    <Typography.Text>{doctor.name}</Typography.Text>
-                    {doctor.profile.designation && (
-                      <Fragment>
-                        <br />
-                        <Typography.Text type="danger">
-                          &#40;{doctor.profile.designation}&#41;
-                        </Typography.Text>
-                      </Fragment>
-                    )}
-                    <br />
-                    <Typography.Text disabled>{doctor.email}</Typography.Text>
-                  </Fragment>
-                ),
-              };
-            })
-          : []
-      }
-    />
+    >
+      {DoctorData &&
+        DoctorData?.map((doctor) => (
+          <Select.Option key={doctor.id} value={doctor.id}>
+            <Typography.Text>{doctor.name}</Typography.Text>
+            {doctor.profile.designation && (
+              <Fragment>
+                <br />
+                <Typography.Text type="danger">
+                  &#40;{doctor.profile.designation}&#41;
+                </Typography.Text>
+              </Fragment>
+            )}
+            <br />
+            <Typography.Text disabled>{doctor.email}</Typography.Text>
+          </Select.Option>
+        ))}
+    </Select>
   );
 }
 

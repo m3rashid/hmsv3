@@ -34,12 +34,13 @@ const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
                   {...(isEdit && { defaultValue: data[f.key] })}
                   {...(f?.multiple && { mode: "multiple" })}
                   placeholder={`Select ${f.label}`}
-                  options={f.options.map((o) => ({
-                    key: o.key,
-                    value: o.key,
-                    label: o.label,
-                  }))}
-                />
+                >
+                  {f.options.map((o) => (
+                    <Select.Option key={o.key} value={o.key}>
+                      {o.label}
+                    </Select.Option>
+                  ))}
+                </Select>
               ) : f.inputType === "textarea" ? (
                 <ReactQuill
                   {...(f?.defaultValue !== undefined &&
