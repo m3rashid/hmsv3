@@ -12,6 +12,7 @@ import {
   HomeOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
+import ErrorBoundary from "../../pages/errorBoundary";
 
 const AppLayout = ({ children }) => {
   const config = useRecoilValue(configState);
@@ -122,7 +123,7 @@ const AppLayout = ({ children }) => {
         <Layout.Content
           style={{ overflowY: "auto", background: config.app_light_color }}
         >
-          {children}
+          <ErrorBoundary>{children}</ErrorBoundary>
           <p style={{ textAlign: "center" }}>
             {config.footer_text},
             <Link

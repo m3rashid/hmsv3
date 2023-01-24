@@ -78,42 +78,42 @@ const PrescriptionForm = () => {
           name="appointment"
           rules={[{ required: true, message: "Please Enter Appointment!" }]}
         >
-          <Select
-            placeholder="Select an appointment"
-            style={{ maxWidth: 500, display: "block" }}
-            onChange={(value) => {
-              handleAppointmentSelect(value);
-            }}
-            optionLabelProp="Appointment"
-            options={doctorData.appointments?.reduce((acc, appointment) => {
-              if (!appointment.pending) return acc;
-              return [
-                ...acc,
-                {
-                  value: appointment.id,
-                  key: appointment.id,
-                  label: (
-                    <span key={appointment.id}>
-                      {appointment.patient?.name} - &nbsp;
-                      {dayjs(appointment.date).format("MMMM DD YYYY HH:mm A")}
-                    </span>
-                  ),
-                },
-              ];
-            }, [])}
-          />
-          <Button
-            disabled={formData.appointment ? false : true}
-            style={{ marginTop: 10 }}
-            onClick={() => {
-              setPatientData({
-                open: true,
-                data: formData.appointmentInfo,
-              });
-            }}
-          >
-            View Patient's History
-          </Button>
+          <Fragment>
+            <Select
+              placeholder="Select an appointment"
+              style={{ maxWidth: 500, display: "block" }}
+              onChange={(value) => handleAppointmentSelect(value)}
+              optionLabelProp="Appointment"
+              options={doctorData.appointments?.reduce((acc, appointment) => {
+                if (!appointment.pending) return acc;
+                return [
+                  ...acc,
+                  {
+                    value: appointment.id,
+                    key: appointment.id,
+                    label: (
+                      <span key={appointment.id}>
+                        {appointment.patient?.name} - &nbsp;
+                        {dayjs(appointment.date).format("MMMM DD YYYY HH:mm A")}
+                      </span>
+                    ),
+                  },
+                ];
+              }, [])}
+            />
+            <Button
+              disabled={formData.appointment ? false : true}
+              style={{ marginTop: 10 }}
+              onClick={() => {
+                setPatientData({
+                  open: true,
+                  data: formData.appointmentInfo,
+                });
+              }}
+            >
+              View Patient's History
+            </Button>
+          </Fragment>
         </Form.Item>
         <Form.Item
           label="Symptoms"
