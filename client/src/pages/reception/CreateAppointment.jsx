@@ -162,7 +162,10 @@ const CreateAppointmentForm = () => {
               label="Date"
               name="datetime"
               rules={[
-                { required: true, message: "Please enter date and time !" },
+                {
+                  required: true,
+                  message: "Please enter a valid date and time !",
+                },
               ]}
             >
               <DoctorTimeSelector
