@@ -207,6 +207,7 @@ const MedicineNameCol = ({ medicine, medicineChangeHandler, index }) => {
 
   return (
     <Select
+      getPopupContainer={(trigger) => trigger.parentNode}
       style={{ width: 250 }}
       value={medicine?.medicine?.name}
       showSearch

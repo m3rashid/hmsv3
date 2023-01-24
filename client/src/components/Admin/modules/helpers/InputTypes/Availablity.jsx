@@ -101,6 +101,7 @@ function Availability({ isEdit, defaultValue, form }) {
               }}
               placeholder="Select Day"
               style={{ marginBottom: "10px" }}
+              getPopupContainer={(trigger) => trigger.parentNode}
             />
             {item.range.map((rangeItem) => (
               <div key={rangeItem.id} style={{ marginTop: 4, marginBottom: 4 }}>

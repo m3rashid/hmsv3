@@ -25,6 +25,7 @@ function DoctorSelector({ onChange, style }) {
         const selectedDoctor = DoctorData.find((doctor) => doctor.id === value);
         onChange(selectedDoctor);
       }}
+      getPopupContainer={(trigger) => trigger.parentNode}
       style={style}
       options={
         DoctorData

@@ -86,6 +86,7 @@ const PrescriptionForm = () => {
               placeholder="Select an appointment"
               style={{ maxWidth: 500, display: "block" }}
               onChange={(value) => handleAppointmentSelect(value)}
+              getPopupContainer={(trigger) => trigger.parentNode}
               optionLabelProp="Appointment"
               options={doctorData.appointments?.reduce((acc, appointment) => {
                 if (!appointment.pending) return acc;

@@ -117,21 +117,23 @@ const UserDetailsModal = ({ data }) => {
                 label="Permissions"
               >
                 <Select
+                  getPopupContainer={(trigger) => trigger.parentNode}
                   placeholder="Select permissions"
                   mode="multiple"
                   allowClear
                   style={{ width: "100%" }}
                   defaultValue={data.permissions}
-                >
-                  {Object.entries(allPermissions).map(([key, value], i) => (
-                    <Select.Option key={`${key}-${i}`} value={value.name}>
-                      {value.name
+                  options={Object.entries(allPermissions).map(
+                    ([key, value], i) => ({
+                      key: `${key}-${i}`,
+                      value: value.name,
+                      label: value.name
                         .split("_")
                         .map((s) => toSentenceCase(s))
-                        .join(" ")}
-                    </Select.Option>
-                  ))}
-                </Select>
+                        .join(" "),
+                    })
+                  )}
+                />
               </Form.Item>
 
               <div

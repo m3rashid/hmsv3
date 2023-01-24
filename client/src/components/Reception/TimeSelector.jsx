@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
-import { DatePicker } from "antd";
+import { DatePicker, message } from "antd";
 import PropTypes from "prop-types";
 import { useCallback } from "react";
 
 import { Days } from "utils/constants";
 
-function DoctorTimeSelector({ doctor, onChange, style }) {
+const DoctorTimeSelector = ({ doctor, onChange, style }) => {
   const createRange = useCallback((list = [], last) => {
     const result = [];
 
@@ -36,7 +36,7 @@ function DoctorTimeSelector({ doctor, onChange, style }) {
       );
       if (!availableDay) {
         if (isDate) return true;
-        return {};
+        return false;
       }
       if (isDate === true) return false;
 
@@ -51,24 +51,26 @@ function DoctorTimeSelector({ doctor, onChange, style }) {
 
           return acc;
         },
-        {
-          minute: [],
-          hour: [],
-        }
+        { minute: [], hour: [] }
       );
-
-      // console.log(availableTime, createRange(availableTime.minute, 60));
 
       const res = {
         disabledMinutes: () => createRange(availableTime.minute, 60),
         disabledHours: () => createRange(availableTime.hour, 24),
       };
 
-      // console.log(res);
       return res;
     },
     [createRange, doctor]
   );
+
+  const handleChange = (v) => {
+    if (!isAllowedDate(v, false)) {
+      message.error("Doctor is not available at this time");
+      return;
+    }
+    onChange(v);
+  };
 
   return (
     <DatePicker
@@ -77,11 +79,11 @@ function DoctorTimeSelector({ doctor, onChange, style }) {
       disabled={!doctor}
       disabledDate={(current) => isAllowedDate(current, true)}
       disabledTime={(current) => isAllowedDate(dayjs(current), false)}
-      onChange={onChange}
+      onChange={handleChange}
       style={style}
     />
   );
-}
+};
 
 DoctorTimeSelector.propTypes = {
   doctor: PropTypes.object,

@@ -85,6 +85,7 @@ const MedicineInput = ({
     <Row style={{ borderBottom: "1px solid #ddd", padding: "10px 0" }}>
       <Col span={5} style={inputStyles}>
         <Select
+          getPopupContainer={(trigger) => trigger.parentNode}
           style={{ width: "100%" }}
           showSearch
           optionFilterProp="children"

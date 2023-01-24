@@ -73,16 +73,14 @@ function InventoryFormHandler(props) {
           <Select
             placeholder="Select Inventory Type"
             onChange={(value) => {
-              setFormSelected({
-                ...FormSelected,
-                type: value,
-              });
+              setFormSelected({ ...FormSelected, type: value });
             }}
-          >
-            {Object.keys(InventoryTypes).map((item) => (
-              <Select.Option key={item} value={item} />
-            ))}
-          </Select>
+            getPopupContainer={(trigger) => trigger.parentNode}
+            options={Object.keys(InventoryTypes).map((item) => ({
+              key: item,
+              value: item,
+            }))}
+          />
         </Form.Item>
         <StatefullFormRenderer render={FormSelected.type}>
           <Form.Item
@@ -169,6 +167,7 @@ function InventoryFormHandler(props) {
             ]}
           >
             <Select
+              getPopupContainer={(trigger) => trigger.parentNode}
               placeholder="Select Category"
               options={Object.keys(Category).map((item) => ({
                 label: item,
@@ -190,6 +189,7 @@ function InventoryFormHandler(props) {
             ]}
           >
             <Select
+              getPopupContainer={(trigger) => trigger.parentNode}
               placeholder="Select Medicine Type"
               options={Object.keys(MedType).map((item) => ({
                 label: item,

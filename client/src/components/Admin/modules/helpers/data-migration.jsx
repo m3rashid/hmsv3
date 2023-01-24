@@ -106,6 +106,8 @@ const DataMigrationInput = () => {
           progress={{
             strokeColor: config.app_theme_color,
             strokeWidth: 3,
+            showInfo: true,
+            format: (percent) => `${percent.toFixed(2)}%`,
           }}
           name="file"
           maxCount={1}
