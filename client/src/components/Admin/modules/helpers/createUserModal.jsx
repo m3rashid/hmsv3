@@ -101,6 +101,14 @@ const CreateUserModal = ({ isEdit, data }) => {
   };
 
   const onFinish = async (values) => {
+    if (
+      values.role === "DOCTOR" &&
+      (!values.availability || values.availability.length === 0)
+    ) {
+      message.error("Please select at least one slot for doctor");
+      return;
+    }
+
     try {
       message.loading({ content: "Loading...", key: "auth/createUser" });
       if (isEdit) {
@@ -112,6 +120,7 @@ const CreateUserModal = ({ isEdit, data }) => {
       } else {
         await instance.post("/auth/signup", { ...values });
       }
+      console.log({ values });
       message.success({
         content: `User ${isEdit ? "edited" : "created"} Successfully`,
         key: "auth/createUser",

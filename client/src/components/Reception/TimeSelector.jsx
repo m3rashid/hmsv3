@@ -72,15 +72,11 @@ function DoctorTimeSelector({ doctor, onChange, style }) {
 
   return (
     <DatePicker
-      showTime={{
-        format: "HH:mm",
-      }}
+      showTime={{ format: "HH:mm" }}
       allowClear
       disabled={!doctor}
       disabledDate={(current) => isAllowedDate(current, true)}
-      disabledTime={(current) => {
-        return isAllowedDate(dayjs(current), false);
-      }}
+      disabledTime={(current) => isAllowedDate(dayjs(current), false)}
       onChange={onChange}
       style={style}
     />

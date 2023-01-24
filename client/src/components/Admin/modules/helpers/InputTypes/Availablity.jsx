@@ -136,36 +136,29 @@ function Availability({ isEdit, defaultValue, form }) {
                         ),
                       });
                     }}
-                  >
-                    <DeleteFilled />
-                  </Button>
+                    icon={<DeleteFilled style={{ color: "#ff0000" }} />}
+                  />
                 </Space>
               </div>
             ))}
             <Button
               htmlType="button"
-              style={{
-                marginTop: "10px",
-              }}
+              style={{ marginTop: "10px" }}
               onClick={() => {
                 DATA_UPDATE({
                   ...item,
                   range: [...item.range, { id: Math.random() }],
                 });
               }}
-            >
-              +
-            </Button>
+              icon={<PlusOutlined />}
+            />
             <Divider />
           </div>
         ))}
       <Button
         htmlType="button"
-        type="primary"
-        style={{ marginTop: "10px" }}
-        onClick={() => {
-          DATA_ADD({ id: Math.random(), range: [] });
-        }}
+        type="dashed"
+        onClick={() => DATA_ADD({ id: Math.random(), range: [] })}
         icon={<PlusOutlined />}
       >
         Add New Availability
