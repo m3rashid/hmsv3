@@ -2,6 +2,7 @@ import { Table } from "antd";
 import { useContext } from "react";
 
 import { PharmacyContext } from "pages/pharmacy";
+import useTableStyles from "components/common/tableDefaults";
 
 const columns = [
   {
@@ -23,12 +24,13 @@ const columns = [
 
 function InventoryTable() {
   const { Inventory } = useContext(PharmacyContext);
+  const { tableStyles } = useTableStyles();
 
   return (
     <div>
       <Table
         rowKey={(record) => record.id}
-        className="user-table"
+        style={{ ...tableStyles }}
         size="small"
         dataSource={Inventory}
         columns={columns}

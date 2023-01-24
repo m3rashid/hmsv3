@@ -6,8 +6,10 @@ import { toSentenceCase } from "utils/strings";
 import ShowEntry from "components/common/showEntry";
 import AdminWrapper from "components/Admin/adminWrapper";
 import useLogReports from "components/Admin/modules/helpers/useLogReports";
+import useTableStyles from "components/common/tableDefaults";
 
 const LogReports = () => {
+  const { tableStyles } = useTableStyles();
   const {
     getLogs,
     allLogs,
@@ -70,7 +72,7 @@ const LogReports = () => {
     >
       <Table
         rowKey={(record) => record.id}
-        className="user-table"
+        style={{ ...tableStyles }}
         size="small"
         dataSource={allLogs}
         columns={columns}

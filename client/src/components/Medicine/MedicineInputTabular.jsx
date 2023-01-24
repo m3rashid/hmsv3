@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import ReactQuill from "react-quill";
 import { useRecoilValue } from "recoil";
 import { useDebounce } from "use-debounce";
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { Button, Input, Select, Spin, Table, Typography } from "antd";
 import {
   LoadingOutlined,
@@ -15,8 +15,11 @@ import { dosages } from "utils/constants";
 import { inventoryState } from "atoms/inventory";
 import styles from "components/Medicine/medicineinput.module.css";
 import quillDefaults from "components/common/quillDefaults";
+import useTableStyles from "components/common/tableDefaults";
 
-const MedicineInputTable = ({ medicines, setMedicines, tableClassName }) => {
+const MedicineInputTable = ({ medicines, setMedicines, showDepth = true }) => {
+  const { tableStyles } = useTableStyles();
+
   const addEmptyMedicine = useCallback(
     (type) => {
       setMedicines((prev) => ({
@@ -177,13 +180,13 @@ const MedicineInputTable = ({ medicines, setMedicines, tableClassName }) => {
   ];
 
   return (
-    <>
+    <Fragment>
       <Table
         rowKey={(record) => record.id}
-        className={tableClassName ?? "user-table"}
         size="small"
         columns={medicineInputTableColumns}
         dataSource={medicines || []}
+        style={showDepth ? { ...tableStyles } : {}}
       />
       <Button
         type="dashed"
@@ -192,7 +195,7 @@ const MedicineInputTable = ({ medicines, setMedicines, tableClassName }) => {
       >
         + Add Medicine
       </Button>
-    </>
+    </Fragment>
   );
 };
 

@@ -4,8 +4,10 @@ import { Table } from "antd";
 import AdminWrapper from "components/Admin/adminWrapper";
 import { columns } from "components/Admin/modules/helpers/table";
 import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
+import useTableStyles from "components/common/tableDefaults";
 
 const Doctors = () => {
+  const { tableStyles } = useTableStyles();
   const { getAllUsers, users, RefreshUserButton } = useGetUserDetail({
     userType: "doctors",
     userRole: "DOCTOR",
@@ -19,10 +21,10 @@ const Doctors = () => {
   return (
     <AdminWrapper aside={<RefreshUserButton />}>
       <Table
+        style={{ ...tableStyles }}
         rowKey={(record) => record.id}
         size="small"
         dataSource={users}
-        className="user-table"
         columns={columns}
         pagination={{
           total: users.length,

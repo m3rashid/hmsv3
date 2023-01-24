@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 
 import { socket } from "api/instance";
 import { authState } from "atoms/auth";
+import useTableStyles from "components/common/tableDefaults";
 
 const DoctorPatients = () => {
+  const { tableStyles } = useTableStyles();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useRecoilValue(authState);
@@ -71,7 +73,7 @@ const DoctorPatients = () => {
     <div style={{ marginTop: "20px" }}>
       <Table
         rowKey={(record) => record.id}
-        className="user-table"
+        style={{ ...tableStyles }}
         size="small"
         loading={loading}
         dataSource={data}

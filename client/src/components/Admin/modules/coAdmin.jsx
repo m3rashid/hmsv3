@@ -4,8 +4,10 @@ import AdminWrapper from "components/Admin/adminWrapper";
 import { columns } from "components/Admin/modules/helpers/table";
 import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
 import { useEffect } from "react";
+import useTableStyles from "components/common/tableDefaults";
 
 const CoAdmins = () => {
+  const { tableStyles } = useTableStyles();
   const { getAllUsers, users, RefreshUserButton } = useGetUserDetail({
     userType: "coAdmins",
     userRole: "CO_ADMIN",
@@ -19,8 +21,8 @@ const CoAdmins = () => {
   return (
     <AdminWrapper aside={<RefreshUserButton />}>
       <Table
+        style={{ ...tableStyles }}
         rowKey={(record) => record.id}
-        className="user-table"
         size="small"
         dataSource={users}
         columns={columns}

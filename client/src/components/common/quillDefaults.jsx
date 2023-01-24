@@ -11,6 +11,18 @@ const quillDefaults = {
     borderRadius: 8,
     height: 150,
   },
+  modules: {
+    toolbar: [
+      [
+        "bold",
+        "underline",
+        { list: "ordered" },
+        { list: "bullet" },
+        "link",
+        "image",
+      ],
+    ],
+  },
 };
 
 export default quillDefaults;

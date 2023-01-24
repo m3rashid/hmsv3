@@ -5,8 +5,10 @@ import AdminWrapper from "components/Admin/adminWrapper";
 import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
 import ShowEntry from "components/common/showEntry";
 import { LoadingOutlined } from "@ant-design/icons";
+import useTableStyles from "components/common/tableDefaults";
 
 const Patients = () => {
+  const { tableStyles } = useTableStyles();
   const [modal, setModal] = useState({
     data: null,
     open: false,
@@ -94,7 +96,7 @@ const Patients = () => {
       </Modal>
       <Table
         rowKey={(record) => record.id}
-        className="user-table"
+        style={{ ...tableStyles }}
         size="small"
         dataSource={users}
         columns={columns}

@@ -1,33 +1,39 @@
-import { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useNavigate, Link, useLocation } from "react-router-dom";
-import { Layout, Typography, Menu, theme } from "antd";
-
-import { authState } from "atoms/auth";
-import { configState } from "atoms/config";
-import routes, { checkAccess } from "routes";
-import UserTop from "components/Layout/userTop";
 import {
   BookOutlined,
   HomeOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
-import ErrorBoundary from "../../pages/errorBoundary";
+import { useState } from "react";
+import { Layout, Typography, Menu, theme } from "antd";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+
+import { authState } from "atoms/auth";
+import { configState } from "atoms/config";
+import routes, { checkAccess } from "routes";
+import UserTop from "components/Layout/userTop";
+import ErrorBoundary from "pages/errorBoundary";
+import { uiState } from "atoms/ui";
 
 const AppLayout = ({ children }) => {
   const config = useRecoilValue(configState);
   const { token } = theme.useToken();
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const setUi = useSetRecoilState(uiState);
   const [Auth, setAuth] = useRecoilState(authState);
   const [currentMenuItem, setCurrentMenuItem] = useState(pathname);
 
   const items = [
-    !Auth.isLoggedIn && {
-      key: "/",
-      icon: <HomeOutlined />,
-      label: config.sidebar_keymaps["home"],
-    },
+    ...(!Auth.isLoggedIn
+      ? [
+          {
+            key: "/",
+            icon: <HomeOutlined />,
+            label: config.sidebar_keymaps["home"],
+          },
+        ]
+      : []),
     ...routes.reduce((acc, route) => {
       if (route?.showInNav === false || !checkAccess(Auth, route)) return acc;
       return [
@@ -49,21 +55,15 @@ const AppLayout = ({ children }) => {
       icon: <FileTextOutlined />,
       label: config.sidebar_keymaps["about"],
     },
-  ].reduce((acc, it) => {
-    if (!it) return acc;
-    return [
-      ...acc,
-      {
-        ...it,
-        style: {
-          color: config.app_light_color,
-          ...(currentMenuItem === it.key && {
-            background: config.app_theme_color,
-          }),
-        },
-      },
-    ];
-  }, []);
+  ].map((it) => ({
+    ...it,
+    style: {
+      color: config.app_light_color,
+      ...(currentMenuItem === it.key && {
+        background: config.app_theme_color,
+      }),
+    },
+  }));
 
   const handleMenuChange = ({ key }) => {
     setCurrentMenuItem(key);
@@ -72,25 +72,45 @@ const AppLayout = ({ children }) => {
 
   return (
     <Layout style={{ height: "100vh" }}>
-      <Layout.Header
+      <Layout.Sider
+        breakpoint="lg"
+        collapsedWidth="0"
         style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "20px",
           background: config.app_dark_color,
-          color: "white",
-          boxShadow: "0px 2px 5px 0px rgba(0,0,0,0.3)",
+          boxShadow: "2px 0px 5px 0px rgba(0,0,0,0.3)",
+          paddingTop: 10,
         }}
+        onCollapse={(v) => setUi((p) => ({ ...p, sidebarCollapsed: v }))}
       >
-        <div style={{ marginTop: 16 }}>
-          <Typography.Title level={3} style={{ color: "white" }}>
+        <Menu
+          mode="inline"
+          style={{ background: config.app_dark_color }}
+          items={items}
+          onClick={handleMenuChange}
+        />
+      </Layout.Sider>
+
+      <Layout>
+        <Layout.Header
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "20px",
+            background: config.app_dark_color,
+            color: "white",
+            boxShadow: "-5px 0px 10px -15px rgba(0,0,0,0.3)",
+            paddingTop: 16,
+            zIndex: 10,
+          }}
+        >
+          <Typography.Title level={4} style={{ color: "white", marginTop: 16 }}>
             <img
               src="/images/logo.jpg"
               alt="null"
               style={{
-                width: "50px",
-                height: "50px",
+                width: 40,
+                height: 40,
                 borderRadius: "100%",
                 marginRight: "10px",
                 padding: "2px",
@@ -100,25 +120,9 @@ const AppLayout = ({ children }) => {
             />
             {config.app_name}
           </Typography.Title>
-        </div>
 
-        <UserTop {...{ Auth, setAuth }} />
-      </Layout.Header>
-
-      <Layout>
-        <Layout.Sider
-          style={{
-            background: config.app_dark_color,
-            boxShadow: "2px 0px 5px 0px rgba(0,0,0,0.3)",
-          }}
-        >
-          <Menu
-            mode="inline"
-            style={{ background: config.app_dark_color }}
-            items={items}
-            onClick={handleMenuChange}
-          />
-        </Layout.Sider>
+          <UserTop {...{ Auth, setAuth }} />
+        </Layout.Header>
 
         <Layout.Content
           style={{ overflowY: "auto", background: config.app_light_color }}

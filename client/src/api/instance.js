@@ -4,7 +4,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 
 export const isDesktopApp = !!window.__TAURI__;
 
-const defaultServerUrl = "http://192.168.0.132:5000";
+const defaultServerUrl = "http://localhost:5000";
 
 let serverRootUrl;
 

@@ -21,8 +21,10 @@ import { instance } from "api/instance";
 import { inventoryState } from "atoms/inventory";
 import { allPermissions } from "utils/constants";
 import EditMedicine from "components/Inventory/Display/inner_components/EditMedicine";
+import useTableStyles from "components/common/tableDefaults";
 
 function InventoryTable(prop) {
+  const { tableStyles } = useTableStyles();
   const auth = useRecoilValue(authState);
   const [inventory, setinventoryData] = useRecoilState(inventoryState);
   const [SearchQuery, setSearchQuery] = useState({});
@@ -199,7 +201,7 @@ function InventoryTable(prop) {
 
       <Table
         rowKey={(record) => record.id}
-        className="user-table"
+        style={{ ...tableStyles }}
         size="small"
         columns={columns}
         dataSource={data}

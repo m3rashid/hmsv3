@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Col, Collapse, Row, Space, Table, Typography } from "antd";
 
 import { quantityCalculator } from "utils/quantityCalculator";
+import useTableStyles from "components/common/tableDefaults";
 
 const normalTextStyles = {
   fontWeight: "normal",
@@ -15,6 +16,7 @@ const lighterFontFlex = {
 };
 
 const GeneratePdf = (props) => {
+  const { tableStyles } = useTableStyles();
   const parchiData = props?.data[0];
   const [activeKey, setActiveKey] = useState("1");
 
@@ -193,7 +195,7 @@ const GeneratePdf = (props) => {
                     >
                       <Table
                         rowKey={(record) => record.id}
-                        className="user-table"
+                        style={{ ...tableStyles }}
                         size="small"
                         columns={[
                           {

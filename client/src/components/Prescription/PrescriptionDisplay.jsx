@@ -5,6 +5,7 @@ import DOMPurify from "dompurify";
 import { Space, Typography, Card, Table, Tooltip, Divider } from "antd";
 import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
 import ShowEntry from "components/common/showEntry";
+import useTableStyles from "components/common/tableDefaults";
 
 function PrescriptionDisplay({
   patient,
@@ -15,6 +16,7 @@ function PrescriptionDisplay({
   ExtraMedicines,
   showAvailability,
 }) {
+  const { tableStyles } = useTableStyles();
   return (
     <Fragment>
       <Space direction="vertical" style={{ width: "100%" }}>
@@ -42,7 +44,7 @@ function PrescriptionDisplay({
 
         <Divider />
 
-        <div className="user-table">
+        <div style={{ ...tableStyles }}>
           <Typography.Title level={4} strong>
             Medicines
           </Typography.Title>
@@ -55,7 +57,7 @@ function PrescriptionDisplay({
 
         <Divider />
 
-        <div className="user-table">
+        <div style={{ ...tableStyles }}>
           <Typography.Title level={4} strong>
             Custom Medicines
           </Typography.Title>

@@ -9,8 +9,10 @@ import Loading from "components/Loading/Loading";
 import styles from "pages/patient/styles.module.css";
 import DoctorDisplay from "components/Doctor/DoctorDisplay";
 import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
+import useTableStyles from "components/common/tableDefaults";
 
 const PatientInfo = (props) => {
+  const { tableStyles } = useTableStyles();
   const { id } = useParams();
   const { data, isLoading, isError } = useQuery(
     ["patient", id, props],
@@ -35,7 +37,6 @@ const PatientInfo = (props) => {
     data: {},
   });
 
-  // Data Schema for Patient Info
   const InfoSchema = useMemo(
     () => [
       { title: "ID No.", dataIndex: "id" },
@@ -157,7 +158,7 @@ const PatientInfo = (props) => {
       <Divider>Patient's History</Divider>
       <Table
         rowKey={(record) => record.id}
-        className="user-table"
+        style={{ tableStyles }}
         size="small"
         columns={AppointmentSchema}
         dataSource={data.Appointment}

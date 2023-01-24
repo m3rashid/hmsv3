@@ -10,11 +10,12 @@ import ShowReceipt from "pages/pharmacy/ShowReciept";
 import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
 import { authState } from "atoms/auth";
 import { allPermissions } from "utils/constants";
+import useTableStyles from "components/common/tableDefaults";
 
 const Prescriptions = () => {
+  const { tableStyles } = useTableStyles();
   const pharmacyData = useRecoilValue(pharmacyState);
   const { user } = useRecoilValue(authState);
-  console.log({ user });
   const navigate = useNavigate();
   const [ModalVisible, setModalVisible] = useState({
     visible: false,
@@ -169,7 +170,7 @@ const Prescriptions = () => {
             children: (
               <Table
                 rowKey={(record) => record.id}
-                className="user-table"
+                style={{ ...tableStyles }}
                 size="small"
                 dataSource={pharmacyData.prescriptions.filter(
                   (prsp) => prsp.pending
@@ -184,7 +185,7 @@ const Prescriptions = () => {
             children: (
               <Table
                 rowKey={(record) => record.id}
-                className="user-table"
+                style={{ ...tableStyles }}
                 size="small"
                 dataSource={pharmacyData.prescriptions.filter(
                   (prsp) => !prsp.pending

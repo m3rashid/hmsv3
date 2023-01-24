@@ -1,7 +1,9 @@
 import { Button, Space, Table } from "antd";
+import useTableStyles from "components/common/tableDefaults";
 import { Fragment } from "react";
 
 const Completed = () => {
+  const { tableStyles } = useTableStyles();
   const columns = [
     {
       title: "Patient Name",
@@ -39,7 +41,7 @@ const Completed = () => {
     <Fragment>
       <Table
         rowKey={(record) => record.id}
-        className="user-table"
+        style={{ ...tableStyles }}
         size="small"
         dataSource={data}
         columns={columns}

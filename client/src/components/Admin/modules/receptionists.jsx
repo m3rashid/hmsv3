@@ -4,8 +4,10 @@ import { Table } from "antd";
 import AdminWrapper from "components/Admin/adminWrapper";
 import { columns } from "components/Admin/modules/helpers/table";
 import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
+import useTableStyles from "components/common/tableDefaults";
 
 const Receptionists = () => {
+  const { tableStyles } = useTableStyles();
   const { getAllUsers, users, RefreshUserButton } = useGetUserDetail({
     userType: "receptionists",
     userRole: "RECEPTIONIST",
@@ -20,7 +22,7 @@ const Receptionists = () => {
     <AdminWrapper aside={<RefreshUserButton />}>
       <Table
         rowKey={(record) => record.id}
-        className="user-table"
+        style={{ ...tableStyles }}
         size="small"
         dataSource={users}
         columns={columns}

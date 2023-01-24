@@ -11,18 +11,7 @@ const UserTop = ({ Auth, setAuth }) => {
   if (Auth.isLoggedIn) {
     return (
       <Space>
-        {Auth.user.role === "ADMIN" && (
-          <UserOutlined style={{ fontSize: 20 }} />
-        )}
-        {Auth.user.role === "DOCTOR" && (
-          <UserOutlined style={{ fontSize: 20 }} />
-        )}
-        {Auth.user.role === "RECEPTIONIST" && (
-          <UserOutlined style={{ fontSize: 20 }} />
-        )}
-        {Auth.user.role === "OTHER" && (
-          <UserOutlined style={{ fontSize: 20 }} />
-        )}
+        <UserOutlined />
         <Typography.Text type="secondary" italic style={{ color: "white" }}>
           Welcome, {Auth.user.email}
         </Typography.Text>
@@ -33,6 +22,7 @@ const UserTop = ({ Auth, setAuth }) => {
       </Space>
     );
   }
+
   return (
     <>
       <Button onClick={() => setIsModalVisible(true)}>Login</Button>

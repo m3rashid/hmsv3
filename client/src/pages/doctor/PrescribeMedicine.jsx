@@ -29,8 +29,10 @@ import MedicineInputTable from "components/Medicine/MedicineInputTabular";
 import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
 import usePrescribeMedicines from "components/Doctor/hooks/prescribeMeds.hook";
 import styles from "pages/doctor/PrescribeMedicine.module.css";
+import useTableStyles from "components/common/tableDefaults";
 
 const PrescriptionForm = () => {
+  const { tableStyles } = useTableStyles();
   const {
     state: {
       loading,
@@ -142,25 +144,17 @@ const PrescriptionForm = () => {
           />
         </Form.Item>
         <Divider />
-        <Space
-          direction="vertical"
-          style={{ width: "100%" }}
-          className="user-table"
-        >
+        <Space direction="vertical" style={{ ...tableStyles }}>
           <Typography.Title level={4}>Medicines</Typography.Title>
           <MedicineInputTable
-            tableClassName=""
+            showDepth={false}
             medicines={medicines.medicines}
             setMedicines={setMedicines}
           />
         </Space>
         <Divider />
 
-        <Space
-          direction="vertical"
-          style={{ width: "100%" }}
-          className="user-table"
-        >
+        <Space direction="vertical" style={{ ...tableStyles }}>
           <Typography.Title level={4}>Custom Medicines</Typography.Title>
           {medicines.extraMedicines.length > 0 ? (
             <Row className={styles.prescribeTableHeader}>
