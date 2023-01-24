@@ -112,6 +112,15 @@ const DoctorAppointments = () => {
       sorter: (a, b) => dayjs(a.date).isBefore(dayjs(b.date)),
       render: (item) => dayjs(item).format("MMMM DD YYYY, h:mm:ss a"),
       defaultSortOrder: "ascend",
+      filters: [
+        {
+          text: "Today",
+          value: 1,
+        },
+      ],
+      onFilter: (value, record) => {
+        return dayjs(record.date).isSame(dayjs(), "day");
+      },
     },
     {
       title: "Actions",
