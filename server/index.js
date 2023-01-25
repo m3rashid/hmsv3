@@ -94,7 +94,7 @@ const startServer = async () => {
 
     await prisma.$connect();
     console.log("Connection established successfully");
-    server.listen(PORT, () => console.log(`Server on http://:${PORT}`));
+    server.listen(PORT, () => console.log(`Server on :${PORT}`));
   } catch (err) {
     await prisma.$disconnect();
     console.log(err);

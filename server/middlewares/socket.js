@@ -25,6 +25,7 @@ const safeSocket =
   (handler) =>
   (io, socket) =>
   (...args) => {
+    console.log("Socket", socket.id, "called", handler.name, "with", ...args);
     Promise.resolve(handler(io, socket)(...args)).catch((err) => {
       console.log("Socket Err", err);
       io.emit("error", {
