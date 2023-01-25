@@ -10,45 +10,77 @@ const MindMapGraph = () => {
     nodes: [
       {
         id: "0",
-        value: { title: "Patient Enters", items: [{ text: "Patient" }] },
+        value: {
+          title: "0. Patient Enters",
+          items: [{ text: "Goes to Reception" }],
+        },
       },
       {
         id: "1",
         value: {
-          title: "Receptionist",
-          items: [{ text: "Create an appointment" }],
+          title: "1. Reception",
+          items: [{ text: "Patient's Query" }],
         },
       },
       {
         id: "2",
-        value: { title: "Co Admin", items: [{ text: "Register patient" }] },
+        value: {
+          title: "2. Co Admin",
+          items: [{ text: "Register patient" }],
+        },
       },
       {
         id: "3",
-        value: { title: "Doctor", items: [{ text: "Diagnose patient" }] },
+        value: {
+          title: "3. Doctor Not Available",
+          items: [{ text: "Reschedule for future" }],
+        },
       },
       {
         id: "4",
         value: {
-          title: "Pharmacist",
-          items: [{ text: "Prescribe medication" }],
+          title: "4. Doctor",
+          items: [{ text: "Diagnose the Patient" }],
         },
       },
       {
         id: "5",
         value: {
-          title: "Inventory Manager",
-          items: [{ text: "Dispense medication" }],
+          title: "5. Receptionist",
+          items: [{ text: "Create Appointment" }],
+        },
+      },
+      {
+        id: "6",
+        value: {
+          title: "6. Pharmacist",
+          items: [
+            { text: "Dispense Medicines" },
+            { text: "Discard Custom Medicines" },
+            { text: "Generate Receipt" },
+          ],
+        },
+      },
+      {
+        id: "8",
+        value: {
+          title: "8. Exit",
+          items: [{ text: "Patient exits" }],
         },
       },
     ],
     edges: [
       { source: "0", target: "1", value: "Registered" },
       { source: "0", target: "2", value: "Not Registered" },
-      { source: "2", target: "1", value: "Create Appointment" },
-      { source: "1", target: "3", value: "Appointment" },
-      { source: "3", target: "4", value: "Medication" },
-      { source: "4", target: "5", value: "Dispense Medicine" },
+      { source: "2", target: "1" },
+      { source: "1", target: "3", value: "Unavailable" },
+      { source: "3", target: "8" },
+      { source: "1", target: "4", value: "Has Appointment" },
+      { source: "1", target: "5", value: "No Appointment" },
+      { source: "5", target: "4" },
+      { source: "4", target: "6", value: "Meds Available" },
+      { source: "4", target: "7", value: "Meds Unavailable" },
+      { source: "6", target: "8" },
     ],
   };
 
@@ -58,14 +90,6 @@ const MindMapGraph = () => {
         data,
         nodeCfg: {
           size: [160, 30],
-          badge: {
-            style: (cfg) => {
-              return {
-                fill: config.app_theme_color,
-                radius: [2, 0, 0, 2],
-              };
-            },
-          },
           items: {
             containerStyle: {
               fill: config.app_light_color,

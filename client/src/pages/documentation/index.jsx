@@ -1,6 +1,6 @@
 import MindMapGraph from "components/documentation/mindMap";
 import React, { Fragment } from "react";
-import { Tabs, Typography } from "antd";
+import { Tabs } from "antd";
 import Admin from "components/documentation/admin";
 import Doctor from "components/documentation/doctor";
 import CoAdmin from "components/documentation/coAdmin";
@@ -11,7 +11,6 @@ import InventoryManager from "components/documentation/inventoryManager";
 const Learn = () => {
   return (
     <Fragment>
-      <Typography.Title level={3}>Documentation</Typography.Title>
       <Tabs
         defaultActiveKey="1"
         centered
