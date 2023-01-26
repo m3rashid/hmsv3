@@ -3,9 +3,9 @@ import {
   HomeOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Layout, Typography, Menu, theme } from "antd";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 
 import { authState } from "atoms/auth";
@@ -20,7 +20,7 @@ const AppLayout = ({ children }) => {
   const { token } = theme.useToken();
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const setUi = useSetRecoilState(uiState);
+  const [ui, setUi] = useRecoilState(uiState);
   const [Auth, setAuth] = useRecoilState(authState);
   const [currentMenuItem, setCurrentMenuItem] = useState(pathname);
 
@@ -71,40 +71,26 @@ const AppLayout = ({ children }) => {
   };
 
   return (
-    <Layout style={{ height: "100vh" }}>
-      <Layout.Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        style={{
-          background: config.app_dark_color,
-          boxShadow: "2px 0px 5px 0px rgba(0,0,0,0.3)",
-          paddingTop: 10,
-        }}
-        onCollapse={(v) => setUi((p) => ({ ...p, sidebarCollapsed: v }))}
-      >
-        <Menu
-          mode="inline"
-          style={{ background: config.app_dark_color }}
-          items={items}
-          onClick={handleMenuChange}
-        />
-      </Layout.Sider>
-
+    <Fragment>
       <Layout>
         <Layout.Header
           style={{
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "20px",
+            paddingTop: ui.isMobile ? "5px" : "12px",
+            paddingLeft: ui.isMobile ? "5px" : "20px",
+            paddingRight: ui.isMobile ? "5px" : "20px",
             background: config.app_dark_color,
             color: "white",
             boxShadow: "-5px 0px 10px -15px rgba(0,0,0,0.3)",
-            paddingTop: 16,
             zIndex: 10,
           }}
         >
-          <Typography.Title level={4} style={{ color: "white", marginTop: 16 }}>
+          <Typography.Title
+            level={4}
+            style={{ color: "white", marginTop: ui.isMobile ? 5 : 16 }}
+          >
             <img
               src="/images/logo.jpg"
               alt="null"
@@ -123,23 +109,45 @@ const AppLayout = ({ children }) => {
 
           <UserTop {...{ Auth, setAuth }} />
         </Layout.Header>
-
-        <Layout.Content
-          style={{ overflowY: "auto", background: config.app_light_color }}
-        >
-          <ErrorBoundary>{children}</ErrorBoundary>
-          <p style={{ textAlign: "center" }}>
-            {config.footer_text},
-            <Link
-              style={{ marginLeft: "10px", color: token.colorPrimary }}
-              to="/about"
-            >
-              {config.footer_link_text}
-            </Link>
-          </p>
-        </Layout.Content>
       </Layout>
-    </Layout>
+
+      <Layout style={{ height: "calc(100vh - 64px)" }}>
+        <Layout.Sider
+          breakpoint="lg"
+          collapsedWidth="0"
+          style={{
+            background: config.app_dark_color,
+            boxShadow: "2px 0px 5px 0px rgba(0,0,0,0.3)",
+          }}
+          zeroWidthTriggerStyle={{ marginTop: -64 }}
+          onCollapse={(v) => setUi((p) => ({ ...p, sidebarCollapsed: v }))}
+        >
+          <Menu
+            mode="inline"
+            style={{ background: config.app_dark_color }}
+            items={items}
+            onClick={handleMenuChange}
+          />
+        </Layout.Sider>
+
+        <Layout>
+          <Layout.Content
+            style={{ overflowY: "auto", background: config.app_light_color }}
+          >
+            <ErrorBoundary>{children}</ErrorBoundary>
+            <p style={{ textAlign: "center" }}>
+              {config.footer_text},
+              <Link
+                style={{ marginLeft: "10px", color: token.colorPrimary }}
+                to="/about"
+              >
+                {config.footer_link_text}
+              </Link>
+            </p>
+          </Layout.Content>
+        </Layout>
+      </Layout>
+    </Fragment>
   );
 };
 
