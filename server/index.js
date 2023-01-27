@@ -4,6 +4,7 @@ const http = require("http");
 const morgan = require("morgan");
 const express = require("express");
 const { Server } = require("socket.io");
+const compression = require("compression");
 const { setupWorker } = require("@socket.io/sticky");
 const { instrument } = require("@socket.io/admin-ui");
 const { createAdapter } = require("@socket.io/cluster-adapter");
@@ -53,6 +54,7 @@ io.on("connection", (socket) => {
   return socketHandler(io, socket);
 });
 
+app.use(compression());
 app.use(cors({ origin: corsOrigin, optionsSuccessStatus: 200 }));
 app.use(express.json({ limit: "50mb", parameterLimit: 100000 }));
 app.use(
