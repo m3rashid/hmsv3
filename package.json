@@ -1,15 +1,18 @@
 {
-  "name": "hmsv2",
+  "name": "hmsv3",
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky install",
     "check:format": "prettier --check .",
     "check:lint": "eslint . --ext .ts --ext .js",
     "format": "prettier --write .",
     "check:all": "yarn check:format && yarn check:lint && cd client && yarn build",
     "ci": "yarn install --production",
-    "precommit": "lint-staged"
+		"format:write": "prettier --write .",
+		"lint:check": "eslint .",
+		"lint:fix": "eslint --fix \"**/!(node_modules|dist)/*.{js,jsx,ts,tsx}\"",
+		"precommit": "lint-staged",
+		"prepare": "husky install"
   },
   "dependencies": {},
   "devDependencies": {
@@ -22,10 +25,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/FET-JMI/hmsv2.git"
+    "url": "git+https://github.com/m3rashid/hmsv3.git"
   },
   "bugs": {
-    "url": "https://github.com/FET-JMI/hmsv2/issues"
+    "url": "https://github.com/m3rashid/hmsv3/issues"
   },
   "husky": {
     "hooks": {
@@ -33,12 +36,12 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "eslint",
-      "prettier --write"
-    ],
-    "*.json": [
-      "prettier --write"
-    ]
+    "*.{js,ts,tsx,d.ts}": [
+			"yarn lint:fix",
+			"yarn format:write"
+		],
+		"*.json": [
+			"yarn format:write"
+		]
   }
 }

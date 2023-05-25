@@ -17,10 +17,14 @@
       "server": "localhost",
       "port": 5432,
       "driver": "PostgreSQL",
-      "database": "hmsv2",
+      "database": "hmsv3",
       "username": "rashid",
       "password": "rashid",
-      "name": "hmsv2"
+      "name": "hmsv3"
     }
-  ]
+	],
+	"cSpell.words": [
+		"hmsv",
+		"precommit"
+	]
 }

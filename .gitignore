@@ -8,7 +8,7 @@ package-lock.json
 server/config/
 server/migrations
 .env
-hmsv2.code-workspace
+hmsv3.code-workspace
 
 # Local Netlify folder
 .netlify

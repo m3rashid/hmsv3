@@ -8,7 +8,7 @@
     "withGlobalTauri": true
   },
   "package": {
-    "productName": "hmsv2",
+    "productName": "hmsv3",
     "version": "0.1.0"
   },
   "tauri": {
@@ -41,7 +41,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.fetjmi.hmsv2",
+      "identifier": "com.fetjmi.hmsv3",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
