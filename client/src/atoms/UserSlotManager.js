@@ -1,6 +1,6 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const UserSlotManagerAtom = atom({
-  key: "UserSlotManagerAtom",
+  key: 'UserSlotManagerAtom',
   default: null,
 });

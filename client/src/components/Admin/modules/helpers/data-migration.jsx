@@ -1,18 +1,10 @@
-import { Fragment, useState } from "react";
-import {
-  Button,
-  message,
-  Progress,
-  Spin,
-  theme,
-  Typography,
-  Upload,
-} from "antd";
-import { InboxOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Fragment, useState } from 'react';
+import { Button, message, Progress, Spin, theme, Typography, Upload } from 'antd';
+import { InboxOutlined, LoadingOutlined } from '@ant-design/icons';
 
-import { instance } from "api/instance";
-import { useRecoilValue } from "recoil";
-import { configState } from "atoms/config";
+import { instance } from 'api/instance';
+import { useRecoilValue } from 'recoil';
+import { configState } from 'atoms/config';
 
 const DataMigrationInput = () => {
   const config = useRecoilValue(configState);
@@ -32,16 +24,16 @@ const DataMigrationInput = () => {
 
   const uploadFile = async () => {
     if (!file) {
-      message.error("Please select a file to upload");
+      message.error('Please select a file to upload');
       return;
     }
     const form = new FormData();
-    form.append("data", file.originFileObj);
+    form.append('data', file.originFileObj);
 
     try {
-      const res = await instance.post("/data-migration", form, {
+      const res = await instance.post('/data-migration', form, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
         },
         onUploadProgress: (progress) => {
           const { loaded, total } = progress;
@@ -53,9 +45,9 @@ const DataMigrationInput = () => {
           }
         },
       });
-      message.success(res.data.message || "Upload successful");
+      message.success(res.data.message || 'Upload successful');
     } catch (err) {
-      message.error("Error in processing file");
+      message.error('Error in processing file');
     } finally {
       setFile(null);
       setLoading(false);
@@ -63,16 +55,16 @@ const DataMigrationInput = () => {
   };
 
   const containerStyles = {
-    display: "flex",
+    display: 'flex',
     gap: 20,
     padding: 20,
-    border: "1px dashed #d9d9d9",
+    border: '1px dashed #d9d9d9',
     borderRadius: 8,
-    background: "rgba(0,0,0,0.02)",
-    color: "rgba(0,0,0,0.88)",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
+    background: 'rgba(0,0,0,0.02)',
+    color: 'rgba(0,0,0,0.88)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
   };
 
   return (
@@ -82,11 +74,7 @@ const DataMigrationInput = () => {
         <div style={containerStyles}>
           <Spin
             size="large"
-            indicator={
-              <LoadingOutlined
-                style={{ fontSize: 24, color: token.colorPrimary }}
-              />
-            }
+            indicator={<LoadingOutlined style={{ fontSize: 24, color: token.colorPrimary }} />}
           />
           <Typography.Text>Processing your file</Typography.Text>
         </div>
@@ -96,7 +84,7 @@ const DataMigrationInput = () => {
             type="circle"
             strokeColor={token.colorPrimary}
             percent={percentFileUpload}
-            status={percentFileUpload === 100 ? "success" : "normal"}
+            status={percentFileUpload === 100 ? 'success' : 'normal'}
           />
           <Typography.Text>Uploading file to the server</Typography.Text>
         </div>
@@ -119,10 +107,8 @@ const DataMigrationInput = () => {
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
           </p>
-          <p className="ant-upload-text">
-            Click or drag file to this area to upload
-          </p>
-          <p className="ant-upload-hint" style={{ padding: "10px" }}>
+          <p className="ant-upload-text">Click or drag file to this area to upload</p>
+          <p className="ant-upload-hint" style={{ padding: '10px' }}>
             Support for a single bulk upload
           </p>
         </Upload.Dragger>
@@ -130,7 +116,7 @@ const DataMigrationInput = () => {
       <Button
         onClick={uploadFile}
         disabled={loading || percentFileUpload !== 0}
-        style={{ margin: "10px 0", width: "30%" }}
+        style={{ margin: '10px 0', width: '30%' }}
       >
         Upload
       </Button>

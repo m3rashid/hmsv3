@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const adminDefaultState = {
   receptionists: [],
@@ -11,6 +11,6 @@ export const adminDefaultState = {
 };
 
 export const adminState = atom({
-  key: "admin",
+  key: 'admin',
   default: adminDefaultState,
 });

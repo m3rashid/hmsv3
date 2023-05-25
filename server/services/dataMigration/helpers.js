@@ -1,4 +1,4 @@
-const { bloodGroupTypes, genderTypes, maritalStatus } = require("./types");
+const { bloodGroupTypes, genderTypes, maritalStatus } = require('./types');
 
 const handleGender = (g) => {
   return genderTypes[g] ?? genderTypes.Other;
@@ -13,7 +13,7 @@ const handleMaritalStatus = (m) => {
 };
 
 const handleDependentStatus = (d) => {
-  return d === "Y" ? true : false;
+  return d === 'Y' ? true : false;
 };
 
 module.exports = {

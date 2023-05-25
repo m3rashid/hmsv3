@@ -1,10 +1,10 @@
-const fs = require("fs");
-const path = require("path");
-const { serverActions } = require("../../utils/constants");
-const { addEventLog } = require("../../utils/logs");
-const { defaultConfig } = require("./data");
+const fs = require('fs');
+const path = require('path');
+const { serverActions } = require('../../utils/constants');
+const { addEventLog } = require('../../utils/logs');
+const { defaultConfig } = require('./data');
 
-const configFilePath = path.join(__dirname, "config.json");
+const configFilePath = path.join(__dirname, 'config.json');
 
 const getConfig = () => {
   try {
@@ -23,7 +23,7 @@ const resetConfig = async ({ doneBy }) => {
       action: serverActions.UPDATE_CONFIG,
       fromId: doneBy.id,
       actionId: doneBy.id,
-      actionTable: "",
+      actionTable: '',
       message: `${doneBy.name} <(${doneBy.email})> reset the app config to defaults`,
     });
     return { status: true, config: getConfig() };
@@ -40,13 +40,11 @@ const setConfig = async ({ config, change, doneBy }) => {
       action: serverActions.UPDATE_CONFIG,
       fromId: doneBy.id,
       actionId: doneBy.id,
-      actionTable: "",
-      message: `${doneBy.name} <(${doneBy.email})> updated app config ${
-        change.name
-      } from ${change.oldValue} to ${change.newValue} ${
-        change.namespace.length
-          ? "inside " + change.namespace.join(" ") + " namespaces"
-          : ""
+      actionTable: '',
+      message: `${doneBy.name} <(${doneBy.email})> updated app config ${change.name} from ${
+        change.oldValue
+      } to ${change.newValue} ${
+        change.namespace.length ? 'inside ' + change.namespace.join(' ') + ' namespaces' : ''
       }`,
     });
     return { status: true, config: getConfig() };

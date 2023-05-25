@@ -1,12 +1,12 @@
-import dayjs from "dayjs";
-import { Form } from "antd";
-import { useReactToPrint } from "react-to-print";
-import { useCallback, useRef, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import dayjs from 'dayjs';
+import { Form } from 'antd';
+import { useReactToPrint } from 'react-to-print';
+import { useCallback, useRef, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { doctorState } from "atoms/doctor";
-import { LoadingAtom } from "atoms/loading";
+import { doctorState } from 'atoms/doctor';
+import { LoadingAtom } from 'atoms/loading';
 
 const usePrescribeMedicines = (socket) => {
   const [form] = Form.useForm();
@@ -21,8 +21,7 @@ const usePrescribeMedicines = (socket) => {
   const doctorData = useRecoilValue(doctorState);
   const [formData, setFormData] = useState({});
   const [referToAnotherDoctor, setReferToAnotherDoctor] = useState(false);
-  const [CreatePrescriptionModalVisible, setCreatePrescriptionModalVisible] =
-    useState(false);
+  const [CreatePrescriptionModalVisible, setCreatePrescriptionModalVisible] = useState(false);
 
   const [medicines, setMedicines] = useState({
     medicines: [],
@@ -51,17 +50,14 @@ const usePrescribeMedicines = (socket) => {
     };
     if (loading?.PrescribeMedicines) return;
     setLoading({ PrescribeMedicines: true });
-    socket.emit("create-prescription-by-doctor", data);
+    socket.emit('create-prescription-by-doctor', data);
     form.resetFields();
   };
 
   const addEmptyMedicine = (type) => {
     setMedicines({
       ...medicines,
-      [type]: [
-        ...medicines[type],
-        { dosage: "", duration: 0, description: "", medicineId: "" },
-      ],
+      [type]: [...medicines[type], { dosage: '', duration: 0, description: '', medicineId: '' }],
     });
   };
 
@@ -82,7 +78,7 @@ const usePrescribeMedicines = (socket) => {
     [setMedicines]
   );
 
-  const appointmentId = searchParams.get("appointmentId");
+  const appointmentId = searchParams.get('appointmentId');
 
   const handleAppointmentSelect = useCallback(
     (appointment_id) => {
@@ -98,19 +94,19 @@ const usePrescribeMedicines = (socket) => {
           appointmentInfo: selectedAppointment,
         }));
         form.setFieldValue(
-          "appointment",
-          `${selectedAppointment.patient.name}-${dayjs(
-            selectedAppointment.date
-          ).format("MMMM DD YYYY hh:mm A")}`
+          'appointment',
+          `${selectedAppointment.patient.name}-${dayjs(selectedAppointment.date).format(
+            'MMMM DD YYYY hh:mm A'
+          )}`
         );
       } else {
-        console.log("removing");
+        console.log('removing');
         setFormData((prev) => ({
           ...prev,
-          appointment: "",
+          appointment: '',
           appointmentInfo: null,
         }));
-        form.resetFields(["appointment"]);
+        form.resetFields(['appointment']);
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,23 +1,21 @@
-import { useRecoilState } from "recoil";
-import { Modal, Button, Input, Form, message } from "antd";
+import { useRecoilState } from 'recoil';
+import { Modal, Button, Input, Form, message } from 'antd';
 
-import { socket } from "api/instance";
-import { authState } from "atoms/auth";
-import { instance } from "api/instance";
+import { socket } from 'api/instance';
+import { authState } from 'atoms/auth';
+import { instance } from 'api/instance';
 
 function AuthModal({ handleCancel, isModalVisible, handleOk }) {
   const [, setAuth] = useRecoilState(authState);
   const onFinish = async (values) => {
     try {
-      message.loading({ content: "Loading...", key: "auth/login" });
-      const { data } = await instance.post("/auth/login", {
+      message.loading({ content: 'Loading...', key: 'auth/login' });
+      const { data } = await instance.post('/auth/login', {
         email: values.email.trim(),
         password: values.password.trim(),
       });
 
-      instance.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${data.token}`;
+      instance.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
 
       setAuth({
         isLoggedIn: true,
@@ -25,21 +23,21 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
         token: data.token,
       });
 
-      localStorage.setItem("refresh_token", data.refreshToken);
+      localStorage.setItem('refresh_token', data.refreshToken);
       socket.io.opts.auth.token = data.token;
       socket.disconnect().connect();
 
-      message.success({ content: "Login Successful", key: "auth/login" });
+      message.success({ content: 'Login Successful', key: 'auth/login' });
       handleCancel();
     } catch (error) {
-      message.error({ content: "Login Failed", key: "auth/login" });
+      message.error({ content: 'Login Failed', key: 'auth/login' });
     }
   };
 
   const onFinishFailed = (errorInfo) => {
     message.error({
-      content: "Login Failed",
-      key: "auth/login",
+      content: 'Login Failed',
+      key: 'auth/login',
     });
   };
 
@@ -61,7 +59,7 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
         wrapperCol={{ span: 14 }}
       >
         <Form.Item
-          rules={[{ required: true, message: "Please enter your username!" }]}
+          rules={[{ required: true, message: 'Please enter your username!' }]}
           name="email"
           label="Email"
         >
@@ -70,20 +68,20 @@ function AuthModal({ handleCancel, isModalVisible, handleOk }) {
         <Form.Item
           name="password"
           label="Password"
-          rules={[{ required: true, message: "Please enter your password!" }]}
+          rules={[{ required: true, message: 'Please enter your password!' }]}
         >
           <Input placeholder="Password" type="password" />
         </Form.Item>
         <div
           style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            borderTop: "1px solid #f0f0f0",
-            margin: "24px -24px -10px -24px",
-            padding: "10px 24px 0 24px",
+            display: 'flex',
+            justifyContent: 'flex-end',
+            borderTop: '1px solid #f0f0f0',
+            margin: '24px -24px -10px -24px',
+            padding: '10px 24px 0 24px',
           }}
         >
-          <Button style={{ marginRight: "10px" }} onClick={handleCancel}>
+          <Button style={{ marginRight: '10px' }} onClick={handleCancel}>
             Cancel
           </Button>
           <Button type="primary" htmlType="submit">

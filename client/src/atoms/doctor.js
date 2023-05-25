@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const doctorDefaultState = {
   appointments: [],
@@ -7,6 +7,6 @@ export const doctorDefaultState = {
 };
 
 export const doctorState = atom({
-  key: "doctor",
+  key: 'doctor',
   default: doctorDefaultState,
 });

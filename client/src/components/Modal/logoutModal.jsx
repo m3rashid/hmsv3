@@ -1,15 +1,15 @@
-import { Modal } from "antd";
-import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
+import { Modal } from 'antd';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { socket } from "api/instance";
-import { authDefaultState } from "atoms/auth";
+import { socket } from 'api/instance';
+import { authDefaultState } from 'atoms/auth';
 
 const LogoutModal = ({ isModalVisible, setIsModalVisible, setAuth }) => {
   const navigate = useNavigate();
   const handleLogout = useCallback(() => {
-    localStorage.removeItem("refresh_token");
-    navigate("/");
+    localStorage.removeItem('refresh_token');
+    navigate('/');
 
     socket.disconnect();
     setAuth(authDefaultState);

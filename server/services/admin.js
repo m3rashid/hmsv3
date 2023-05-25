@@ -1,9 +1,9 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
 
-const { prisma } = require("../utils/prisma");
-const { addEventLog } = require("../utils/logs");
-const { supportedUserRoles, serverActions } = require("../utils/constants");
-const { exclude, include } = require("../utils/includeExclude");
+const { prisma } = require('../utils/prisma');
+const { addEventLog } = require('../utils/logs');
+const { supportedUserRoles, serverActions } = require('../utils/constants');
+const { exclude, include } = require('../utils/includeExclude');
 
 const getSinglePatientDetailsService = async (id) => {
   if (!id) return {};
@@ -11,21 +11,21 @@ const getSinglePatientDetailsService = async (id) => {
     where: { id },
   });
 
-  return exclude(patientDetail, ["isDeleted"]);
+  return exclude(patientDetail, ['isDeleted']);
 };
 
 const getAllUsersService = async (userRole) => {
   if (!userRole) return [];
-  if (userRole === "PATIENT") {
+  if (userRole === 'PATIENT') {
     const users = await prisma.patient.findMany({
       where: { isDeleted: false },
     });
 
-    return include(users, ["id", "name", "contact", "address", "lastVisit"]);
+    return include(users, ['id', 'name', 'contact', 'address', 'lastVisit']);
   }
 
   if (!supportedUserRoles.includes(userRole)) {
-    throw new Error("Invalid user role");
+    throw new Error('Invalid user role');
   }
 
   const users = await prisma.profile.findMany({
@@ -43,7 +43,7 @@ const editPermissionsService = async ({
   // TODO unhandled in sockets
   doneBy,
 }) => {
-  if (!userId || !permissions) throw new Error("Invalid data");
+  if (!userId || !permissions) throw new Error('Invalid data');
   const user = await prisma.auth.update({
     where: { id: userId },
     data: { permissions },
@@ -53,10 +53,8 @@ const editPermissionsService = async ({
     action: serverActions.EDIT_PERMISSIONS,
     fromId: doneBy.id,
     actionId: user.id,
-    actionTable: "auth",
-    message: `${doneBy.name} <(${
-      doneBy.email
-    })> changed permissions to ${permissions.join(" + ")}`,
+    actionTable: 'auth',
+    message: `${doneBy.name} <(${doneBy.email})> changed permissions to ${permissions.join(' + ')}`,
   });
 
   return user;
@@ -86,10 +84,10 @@ const updateUserProfileService = async (
   // TODO unhandled in sockets
   doneBy
 ) => {
-  if (!userId || !profileId) throw new Error("Insufficient data");
+  if (!userId || !profileId) throw new Error('Insufficient data');
 
-  let hashedPassword = "";
-  if (password && password.trim() !== "") {
+  let hashedPassword = '';
+  if (password && password.trim() !== '') {
     hashedPassword = await bcrypt.hash(password, 10);
   }
 
@@ -102,7 +100,7 @@ const updateUserProfileService = async (
     },
   });
 
-  if (category.length === 0) throw new Error("Category cannot be empty");
+  if (category.length === 0) throw new Error('Category cannot be empty');
 
   const updatedProfile = await prisma.Profile.update({
     where: { id: profileId },
@@ -125,7 +123,7 @@ const updateUserProfileService = async (
     action: serverActions.UPDATE_PROFILE,
     fromId: doneBy.id,
     actionId: profileId,
-    actionTable: "profile",
+    actionTable: 'profile',
     message: `${doneBy.name} <(${doneBy.email})> updated profile of ${updatedAuth.name}`,
   });
 
@@ -137,7 +135,7 @@ const updateUserProfileService = async (
 
 const generateReportsService = async ({ startDay, endDay, action }) => {
   if (action && !Object.values(serverActions).includes(action)) {
-    throw new Error("Unknown action");
+    throw new Error('Unknown action');
   }
 
   const reports = await prisma.log.findMany({
@@ -155,7 +153,7 @@ const generateReportsService = async ({ startDay, endDay, action }) => {
       ],
     },
     orderBy: {
-      createdAt: "desc",
+      createdAt: 'desc',
     },
   });
 

@@ -1,7 +1,6 @@
-const { dosages } = require("./constants");
+const { dosages } = require('./constants');
 
-const quantityCalculator = (duration, dosage) =>
-  Math.ceil(duration * dosages[dosage]);
+const quantityCalculator = (duration, dosage) => Math.ceil(duration * dosages[dosage]);
 
 module.exports = {
   quantityCalculator,

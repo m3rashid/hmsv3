@@ -1,14 +1,10 @@
-const { faker } = require("@faker-js/faker");
-const { Category, MedType } = require("@prisma/client");
+const { faker } = require('@faker-js/faker');
+const { Category, MedType } = require('@prisma/client');
 
-const { prisma } = require("../utils/prisma");
-const { addEventLog } = require("../utils/logs");
-const { InventoryTypes, serverActions } = require("../utils/constants");
-const {
-  dummymedicines,
-  dummynonmedicines,
-  dummyotherassets,
-} = require("./dummy");
+const { prisma } = require('../utils/prisma');
+const { addEventLog } = require('../utils/logs');
+const { InventoryTypes, serverActions } = require('../utils/constants');
+const { dummymedicines, dummynonmedicines, dummyotherassets } = require('./dummy');
 
 const addMedicineService = async ({
   type,
@@ -22,15 +18,15 @@ const addMedicineService = async ({
 
   if (type == InventoryTypes.Medicine) {
     asset = await prisma.medicine.create({ data });
-    assetType = "medicine";
+    assetType = 'medicine';
   } else if (type == InventoryTypes.NonMedicine) {
     asset = await prisma.nonMedicine.create({ data });
-    assetType = "nonMedicine";
+    assetType = 'nonMedicine';
   } else if (type == InventoryTypes.OtherAssets) {
     asset = await prisma.otherAssets.create({ data });
-    assetType = "otherAssets";
+    assetType = 'otherAssets';
   } else {
-    throw new Error("Invalid type");
+    throw new Error('Invalid type');
   }
 
   await addEventLog({
@@ -51,7 +47,7 @@ const DeleteInventoryService = async ({
   // TODO unhandled in sockets
   doneBy,
 }) => {
-  if (!medicineId) throw new Error("Invalid medicineId");
+  if (!medicineId) throw new Error('Invalid medicineId');
   let asset;
   let assetType;
 
@@ -59,19 +55,19 @@ const DeleteInventoryService = async ({
     asset = await prisma.medicine.delete({
       where: { id: medicineId },
     });
-    assetType = "medicine";
+    assetType = 'medicine';
   } else if (type == InventoryTypes.NonMedicine) {
     asset = await prisma.nonMedicine.delete({
       where: { id: medicineId },
     });
-    assetType = "nonMedicine";
+    assetType = 'nonMedicine';
   } else if (type == InventoryTypes.OtherAssets) {
     asset = await prisma.otherAssets.delete({
       where: { id: medicineId },
     });
-    assetType = "otherAssets";
+    assetType = 'otherAssets';
   } else {
-    throw new Error("Invalid type");
+    throw new Error('Invalid type');
   }
 
   await addEventLog({
@@ -101,21 +97,21 @@ const editMedicineService = async ({
       where: { id: id },
       data: data,
     });
-    assetType = "medicine";
+    assetType = 'medicine';
   } else if (type === InventoryTypes.NonMedicine) {
     asset = await prisma.nonMedicine.update({
       where: { id: id },
       data: data,
     });
-    assetType = "nonMedicine";
+    assetType = 'nonMedicine';
   } else if (type === InventoryTypes.OtherAssets) {
     asset = await prisma.otherAssets.update({
       where: { id: id },
       data: data,
     });
-    assetType = "otherAssets";
+    assetType = 'otherAssets';
   } else {
-    throw new Error("Invalid type");
+    throw new Error('Invalid type');
   }
 
   await addEventLog({
@@ -171,10 +167,7 @@ const addDummy = async () => {
 
 const searchInventoryService = async (type, { quantity, price, name }) => {
   let inventory = [];
-  const queries = [
-    { quantity: { gte: quantity } },
-    { name: { contains: name } },
-  ];
+  const queries = [{ quantity: { gte: quantity } }, { name: { contains: name } }];
   if (type == InventoryTypes.Medicine) {
     inventory = await prisma.medicine.findMany({
       where: { OR: queries },

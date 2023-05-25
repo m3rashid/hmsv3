@@ -1,16 +1,10 @@
-const { prisma } = require("../utils/prisma");
-const { addEventLog } = require("../utils/logs");
-const { serverActions } = require("../utils/constants");
+const { prisma } = require('../utils/prisma');
+const { addEventLog } = require('../utils/logs');
+const { serverActions } = require('../utils/constants');
 
-const addTest = async ({
-  name,
-  description,
-  prescriptionId,
-  testType,
-  doneBy,
-}) => {
+const addTest = async ({ name, description, prescriptionId, testType, doneBy }) => {
   if (!name || !prescriptionId || !testType) {
-    throw new Error("Insufficient data");
+    throw new Error('Insufficient data');
   }
 
   const newTest = await prisma.test.create({
@@ -41,7 +35,7 @@ const addTest = async ({
     action: serverActions.CREATE_TEST,
     fromId: doneBy.id,
     actionId: newTest.id,
-    actionTable: "test",
+    actionTable: 'test',
     message: `${doneBy.name} <(${doneBy.email})> added new test ${getNewTest.name} for patient ${getNewTest.prescription.appointment.patient.name}`,
   });
 
@@ -49,7 +43,7 @@ const addTest = async ({
 };
 
 const editTest = async ({ testId, doneBy, ...values }) => {
-  if (!testId) throw new Error("Insufficient data");
+  if (!testId) throw new Error('Insufficient data');
 
   const test = await prisma.test.update({
     where: { id: testId },
@@ -75,7 +69,7 @@ const editTest = async ({ testId, doneBy, ...values }) => {
     action: serverActions.EDIT_TEST,
     fromId: doneBy.id,
     actionId: test.id,
-    actionTable: "test",
+    actionTable: 'test',
     message: `${doneBy.name} <(${doneBy.email})> edited test ${getNewTest.name} for patient ${getNewTest.prescription.appointment.patient.name}`,
   });
 
@@ -83,7 +77,7 @@ const editTest = async ({ testId, doneBy, ...values }) => {
 };
 
 const deleteTest = async ({ testId, doneBy }) => {
-  if (!testId) throw new Error("Insufficient data");
+  if (!testId) throw new Error('Insufficient data');
 
   const getNewTest = await prisma.test.findFirst({
     where: { id: testId },
@@ -106,7 +100,7 @@ const deleteTest = async ({ testId, doneBy }) => {
     action: serverActions.DELETE_TEST,
     fromId: doneBy.id,
     actionId: testId,
-    actionTable: "test",
+    actionTable: 'test',
     message: `${doneBy.name} <(${doneBy.email})> deleted test ${getNewTest.name} for patient ${getNewTest.prescription.appointment.patient.name}`,
   });
 
@@ -114,7 +108,7 @@ const deleteTest = async ({ testId, doneBy }) => {
 };
 
 const getTest = async ({ testId, prescriptionId }) => {
-  if (!testId && !prescriptionId) throw new Error("Insufficient data");
+  if (!testId && !prescriptionId) throw new Error('Insufficient data');
 
   const test = await prisma.test.findUnique({
     where: {
@@ -126,7 +120,7 @@ const getTest = async ({ testId, prescriptionId }) => {
 };
 
 const getTestsByType = async ({ testType }) => {
-  if (!testType) throw new Error("Insufficient data");
+  if (!testType) throw new Error('Insufficient data');
 
   const tests = await prisma.test.findMany({
     where: { testType },

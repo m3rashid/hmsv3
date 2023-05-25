@@ -1,24 +1,24 @@
-import { Table } from "antd";
-import { useContext } from "react";
+import { Table } from 'antd';
+import { useContext } from 'react';
 
-import { PharmacyContext } from "pages/pharmacy";
-import useTableStyles from "components/common/tableDefaults";
+import { PharmacyContext } from 'pages/pharmacy';
+import useTableStyles from 'components/common/tableDefaults';
 
 const columns = [
   {
-    title: "Medicine",
-    dataIndex: "medicine",
-    key: "medicine",
+    title: 'Medicine',
+    dataIndex: 'medicine',
+    key: 'medicine',
   },
   {
-    title: "Qty",
-    dataIndex: "qty",
-    key: "qty",
+    title: 'Qty',
+    dataIndex: 'qty',
+    key: 'qty',
   },
   {
-    title: "Price",
-    dataIndex: "price",
-    key: "price",
+    title: 'Price',
+    dataIndex: 'price',
+    key: 'price',
   },
 ];
 

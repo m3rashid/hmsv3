@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const Catch = (component) => {
   return class extends React.Component {
@@ -19,11 +19,7 @@ const Catch = (component) => {
     }
 
     render() {
-      return component(
-        this.props,
-        this.state.error,
-        this.removeError.bind(this)
-      );
+      return component(this.props, this.state.error, this.removeError.bind(this));
     }
   };
 };

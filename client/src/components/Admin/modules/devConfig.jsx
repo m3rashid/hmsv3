@@ -1,31 +1,26 @@
-import React, { Fragment } from "react";
-import { useRecoilState } from "recoil";
-import ReactJson from "react-json-view";
-import { Button, message, Typography } from "antd";
+import React, { Fragment } from 'react';
+import { useRecoilState } from 'recoil';
+import ReactJson from 'react-json-view';
+import { Button, message, Typography } from 'antd';
 
-import { configState } from "atoms/config";
-import { instance } from "api/instance";
+import { configState } from 'atoms/config';
+import { instance } from 'api/instance';
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === 'production';
 
 const DevConfig = () => {
   const [config, setConfig] = useRecoilState(configState);
   const configRootKeys = Object.keys(config);
   const sidebarKeymaps = Object.keys(config.sidebar_keymaps);
-  const nonEditableFieldsInDevelopers = [
-    "name",
-    "department",
-    "github",
-    "linkedin",
-  ];
+  const nonEditableFieldsInDevelopers = ['name', 'department', 'github', 'linkedin'];
 
   const updateDevConfig = async (e) => {
-    const res = await instance.post("/admin/config", {
+    const res = await instance.post('/admin/config', {
       config: e.updated_src,
       change: {
         name: e.name,
         oldValue: e.existing_value,
-        newValue: e.new_value ?? "",
+        newValue: e.new_value ?? '',
         namespace: e.namespace ?? [],
       },
     });
@@ -34,10 +29,10 @@ const DevConfig = () => {
 
   const resetConfig = async () => {
     try {
-      await instance.post("/admin/config/reset", {});
+      await instance.post('/admin/config/reset', {});
     } catch (err) {
       console.log(err);
-      message.error("Error in resetting config");
+      message.error('Error in resetting config');
     }
   };
 
@@ -48,7 +43,7 @@ const DevConfig = () => {
       message.error(`${e.name} cannot be empty`);
       return false;
     }
-    if (e.namespace.includes("developers")) {
+    if (e.namespace.includes('developers')) {
       if (nonEditableFieldsInDevelopers.includes(e.name)) {
         message.error(`Cannot edit the ${e.name} field`);
         return false;
@@ -61,7 +56,7 @@ const DevConfig = () => {
       setConfig(config);
     } catch (err) {
       console.log(err);
-      message.error("Error in updating config");
+      message.error('Error in updating config');
     }
   };
 
@@ -70,7 +65,7 @@ const DevConfig = () => {
       message.error(`Cannot remove the (${e.name}) root key`);
       return false;
     }
-    if (e.namespace.includes("homepage_contents")) {
+    if (e.namespace.includes('homepage_contents')) {
       if (e.updated_src.homepage_contents.carousel.length === 0) {
         message.error(`Cannot remove all the carousel items`);
         return false;
@@ -81,7 +76,7 @@ const DevConfig = () => {
         return false;
       }
     }
-    if (e.namespace.includes("developers")) {
+    if (e.namespace.includes('developers')) {
       message.error(`Cannot remove the developers namespace`);
       return false;
     }
@@ -91,7 +86,7 @@ const DevConfig = () => {
       message.success(txt);
       setConfig(config);
     } catch (err) {
-      message.error("Error in updating config");
+      message.error('Error in updating config');
       console.log(err);
     }
   };
@@ -100,9 +95,9 @@ const DevConfig = () => {
     <Fragment>
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
         }}
       >
         <Typography.Title level={4}>Dev Config</Typography.Title>

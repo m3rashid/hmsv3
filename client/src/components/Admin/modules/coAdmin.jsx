@@ -1,16 +1,16 @@
-import { Table } from "antd";
+import { Table } from 'antd';
 
-import AdminWrapper from "components/Admin/adminWrapper";
-import { columns } from "components/Admin/modules/helpers/table";
-import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
-import { useEffect } from "react";
-import useTableStyles from "components/common/tableDefaults";
+import AdminWrapper from 'components/Admin/adminWrapper';
+import { columns } from 'components/Admin/modules/helpers/table';
+import useGetUserDetail from 'components/Admin/modules/helpers/getUserDetail';
+import { useEffect } from 'react';
+import useTableStyles from 'components/common/tableDefaults';
 
 const CoAdmins = () => {
   const { tableStyles } = useTableStyles();
   const { getAllUsers, users, RefreshUserButton } = useGetUserDetail({
-    userType: "coAdmins",
-    userRole: "CO_ADMIN",
+    userType: 'coAdmins',
+    userRole: 'CO_ADMIN',
   });
 
   useEffect(() => {

@@ -1,16 +1,16 @@
-import { useEffect } from "react";
-import { Table } from "antd";
+import { useEffect } from 'react';
+import { Table } from 'antd';
 
-import AdminWrapper from "components/Admin/adminWrapper";
-import { columns } from "components/Admin/modules/helpers/table";
-import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
-import useTableStyles from "components/common/tableDefaults";
+import AdminWrapper from 'components/Admin/adminWrapper';
+import { columns } from 'components/Admin/modules/helpers/table';
+import useGetUserDetail from 'components/Admin/modules/helpers/getUserDetail';
+import useTableStyles from 'components/common/tableDefaults';
 
 const Doctors = () => {
   const { tableStyles } = useTableStyles();
   const { getAllUsers, users, RefreshUserButton } = useGetUserDetail({
-    userType: "doctors",
-    userRole: "DOCTOR",
+    userType: 'doctors',
+    userRole: 'DOCTOR',
   });
 
   useEffect(() => {

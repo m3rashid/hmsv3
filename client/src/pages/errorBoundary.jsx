@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
-import Catch from "components/errorBoundary/catch";
-import ErrorHandlerFallback from "components/errorBoundary/fallback";
+import Catch from 'components/errorBoundary/catch';
+import ErrorHandlerFallback from 'components/errorBoundary/fallback';
 
 const ErrorBoundary = Catch((props, error, removeError) => {
   if (error) {

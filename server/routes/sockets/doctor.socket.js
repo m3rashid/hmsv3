@@ -3,14 +3,14 @@ const {
   getDoctorPatientsService,
   getPatientByIdService,
   createPrescriptionService,
-} = require("../../services");
-const { createDoctorLeaveService } = require("../../services/doctor");
+} = require('../../services');
+const { createDoctorLeaveService } = require('../../services/doctor');
 
 const getDoctorAppointments =
   (io, socket) =>
   async ({ doctorId }) => {
     const { appointments } = await getDoctorAppointmentsService(doctorId);
-    io.emit("found-doctor-appointments", {
+    io.emit('found-doctor-appointments', {
       doctorId,
       appointments,
     });
@@ -20,7 +20,7 @@ const getDoctorPatients =
   (io, socket) =>
   async ({ doctorId }) => {
     const { patients } = await getDoctorPatientsService(doctorId);
-    io.emit("found-doctor-patients", {
+    io.emit('found-doctor-patients', {
       doctorId,
       patients,
     });
@@ -30,26 +30,19 @@ const getPatientById =
   (io, socket) =>
   async ({ patientId }) => {
     const { patient } = await getPatientByIdService(patientId);
-    io.emit("patient-found", {
+    io.emit('patient-found', {
       patientId,
       patient,
     });
   };
 
 const doctorLeft = (io, socket) => async () => {
-  io.emit("doctor-left", { doctorId: socket.user });
+  io.emit('doctor-left', { doctorId: socket.user });
 };
 
 const createPrescriptionByDoctor =
   (io, socket) =>
-  async ({
-    appointment,
-    symptoms,
-    diagnosis,
-    CustomMedicines,
-    datetime,
-    medicines,
-  }) => {
+  async ({ appointment, symptoms, diagnosis, CustomMedicines, datetime, medicines }) => {
     const data = await createPrescriptionService({
       appointment,
       symptoms,
@@ -62,7 +55,7 @@ const createPrescriptionByDoctor =
 
     // console.log(data);
 
-    io.emit("new-prescription-by-doctor-created", { data });
+    io.emit('new-prescription-by-doctor-created', { data });
   };
 
 const referAnotherDoctor =
@@ -77,7 +70,7 @@ const referAnotherDoctor =
       doneBy: socket.user,
     });
 
-    io.emit("refer-another-doctor", { appointment });
+    io.emit('refer-another-doctor', { appointment });
   };
 
 const makeLeaveRequest =
@@ -89,7 +82,7 @@ const makeLeaveRequest =
       reason,
       doneBy: socket.user,
     });
-    io.emit("doctor-left", { leaveRequest });
+    io.emit('doctor-left', { leaveRequest });
   };
 
 module.exports = {

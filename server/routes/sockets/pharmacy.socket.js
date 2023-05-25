@@ -1,9 +1,9 @@
-const { dispensePrescriptionService } = require("../../services");
+const { dispensePrescriptionService } = require('../../services');
 
 const pharmacistLeft =
   (io, socket) =>
   ({ pharmacistId }) => {
-    io.emit("pharmacist-left", { pharmacistId });
+    io.emit('pharmacist-left', { pharmacistId });
   };
 
 const dispensePrescription =
@@ -14,7 +14,7 @@ const dispensePrescription =
       medicines,
       doneBy: socket.user,
     });
-    io.emit("prescription-dispensed", { data });
+    io.emit('prescription-dispensed', { data });
   };
 
 module.exports = {

@@ -5,37 +5,33 @@ const {
   updateUserProfileService,
   getReportDetailsService,
   getSinglePatientDetailsService,
-} = require("../services");
-const {
-  getConfig,
-  setConfig,
-  resetConfig,
-} = require("../services/config/handleConfig");
-const { permissions } = require("../utils/constants");
+} = require('../services');
+const { getConfig, setConfig, resetConfig } = require('../services/config/handleConfig');
+const { permissions } = require('../utils/constants');
 
 const getAppConfig = async (req, res) => {
   const config = getConfig();
-  return res.status(200).json({ message: "Got Config", config });
+  return res.status(200).json({ message: 'Got Config', config });
 };
 
 const resetAppConfig = async (req, res) => {
   if (!req.permissions.includes(permissions.ADMIN)) {
-    console.log("not permitted");
-    throw new Error("Unauthorized for this resource");
+    console.log('not permitted');
+    throw new Error('Unauthorized for this resource');
   }
 
   const { status, config } = await resetConfig({ doneBy: req.user });
-  if (!status) throw new Error("Config not updated");
+  if (!status) throw new Error('Config not updated');
 
   return res.status(200).json({
-    message: "Successfully update the config",
+    message: 'Successfully update the config',
     config,
   });
 };
 
 const setAppConfig = async (req, res) => {
   if (!req.permissions.includes(permissions.ADMIN)) {
-    throw new Error("Unauthorized for this resource");
+    throw new Error('Unauthorized for this resource');
   }
   const { config, change } = req.body;
   const { status, config: newUpdatedConfig } = await setConfig({
@@ -43,10 +39,10 @@ const setAppConfig = async (req, res) => {
     change,
     doneBy: req.user,
   });
-  if (!status) throw new Error("Config not updated");
+  if (!status) throw new Error('Config not updated');
 
   return res.status(200).json({
-    message: "Successfully update the config",
+    message: 'Successfully update the config',
     config: newUpdatedConfig,
   });
 };
@@ -56,13 +52,13 @@ const getAllUsers = async (req, res) => {
     !req.permissions.includes(permissions.ADMIN) &&
     !req.permissions.includes(permissions.GET_ALL_USERS)
   ) {
-    throw new Error("Unauthorized for this resource");
+    throw new Error('Unauthorized for this resource');
   }
 
   const users = await getAllUsersService(req.body.userRole);
 
   return res.status(200).json({
-    message: "Got users",
+    message: 'Got users',
     users,
   });
 };
@@ -72,7 +68,7 @@ const editPermissions = async (req, res) => {
     !req.permissions.includes(permissions.ADMIN) &&
     !req.permissions.includes(permissions.EDIT_USER_PERMISSIONS)
   ) {
-    throw new Error("Unauthorized for this resource");
+    throw new Error('Unauthorized for this resource');
   }
 
   const users = await editPermissionsService({
@@ -82,7 +78,7 @@ const editPermissions = async (req, res) => {
   });
 
   return res.status(200).json({
-    message: "Got users",
+    message: 'Got users',
     users,
   });
 };
@@ -92,7 +88,7 @@ const updateUser = async (req, res) => {
     !req.permissions.includes(permissions.ADMIN) &&
     !req.permissions.includes(permissions.EDIT_USER_PROFILE)
   ) {
-    throw new Error("Unauthorized for this resource");
+    throw new Error('Unauthorized for this resource');
   }
 
   // console.log(req.body);

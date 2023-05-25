@@ -1,16 +1,16 @@
-import { Table } from "antd";
-import { useEffect } from "react";
+import { Table } from 'antd';
+import { useEffect } from 'react';
 
-import AdminWrapper from "components/Admin/adminWrapper";
-import { columns } from "components/Admin/modules/helpers/table";
-import useGetUserDetail from "components/Admin/modules/helpers/getUserDetail";
-import useTableStyles from "components/common/tableDefaults";
+import AdminWrapper from 'components/Admin/adminWrapper';
+import { columns } from 'components/Admin/modules/helpers/table';
+import useGetUserDetail from 'components/Admin/modules/helpers/getUserDetail';
+import useTableStyles from 'components/common/tableDefaults';
 
 const InventoryManagers = () => {
   const { tableStyles } = useTableStyles();
   const { getAllUsers, users, RefreshUserButton } = useGetUserDetail({
-    userType: "inventoryManagers",
-    userRole: "INVENTORY_MANAGER",
+    userType: 'inventoryManagers',
+    userRole: 'INVENTORY_MANAGER',
   });
 
   useEffect(() => {

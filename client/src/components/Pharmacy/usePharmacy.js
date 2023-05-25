@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 function usePharmacy() {
   const [Inventory, setInventory] = useState([]);

@@ -1,12 +1,12 @@
-import dayjs from "dayjs";
-import { useEffect } from "react";
-import { Button, Modal, Table } from "antd";
+import dayjs from 'dayjs';
+import { useEffect } from 'react';
+import { Button, Modal, Table } from 'antd';
 
-import { toSentenceCase } from "utils/strings";
-import ShowEntry from "components/common/showEntry";
-import AdminWrapper from "components/Admin/adminWrapper";
-import useLogReports from "components/Admin/modules/helpers/useLogReports";
-import useTableStyles from "components/common/tableDefaults";
+import { toSentenceCase } from 'utils/strings';
+import ShowEntry from 'components/common/showEntry';
+import AdminWrapper from 'components/Admin/adminWrapper';
+import useLogReports from 'components/Admin/modules/helpers/useLogReports';
+import useTableStyles from 'components/common/tableDefaults';
 
 const LogReports = () => {
   const { tableStyles } = useTableStyles();
@@ -28,33 +28,31 @@ const LogReports = () => {
 
   const columns = [
     {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
       render: (text) =>
         text
-          .split("_")
+          .split('_')
           .map((e) => toSentenceCase(e))
-          .join(" "),
+          .join(' '),
     },
     {
-      title: "Message",
-      dataIndex: "message",
-      key: "message",
+      title: 'Message',
+      dataIndex: 'message',
+      key: 'message',
     },
     {
-      title: "Created At",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (text) => dayjs(text).format("DD-MM-YYYY hh:mm A"),
+      title: 'Created At',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (text) => dayjs(text).format('DD-MM-YYYY hh:mm A'),
     },
     {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
-      render: (text, record) => (
-        <Button onClick={() => getDetails(record)}>Details</Button>
-      ),
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
+      render: (text, record) => <Button onClick={() => getDetails(record)}>Details</Button>,
     },
   ];
 
@@ -65,7 +63,7 @@ const LogReports = () => {
   return (
     <AdminWrapper
       aside={
-        <Button onClick={refreshLogs} style={{ marginBottom: "10px" }}>
+        <Button onClick={refreshLogs} style={{ marginBottom: '10px' }}>
           Refresh Log Reports
         </Button>
       }
@@ -85,7 +83,7 @@ const LogReports = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <div style={{ maxHeight: "60vh", overflowY: "auto" }}>
+        <div style={{ maxHeight: '60vh', overflowY: 'auto' }}>
           {Object.entries(details).map(([key, val]) => (
             <ShowEntry key={key} label={key} value={val} />
           ))}
@@ -93,14 +91,14 @@ const LogReports = () => {
 
         <div
           style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            borderTop: "1px solid #f0f0f0",
-            margin: "24px -24px -10px -24px",
-            padding: "10px 24px 0 24px",
+            display: 'flex',
+            justifyContent: 'flex-end',
+            borderTop: '1px solid #f0f0f0',
+            margin: '24px -24px -10px -24px',
+            padding: '10px 24px 0 24px',
           }}
         >
-          <Button style={{ marginRight: "10px" }} onClick={handleCancel}>
+          <Button style={{ marginRight: '10px' }} onClick={handleCancel}>
             Cancel
           </Button>
           <Button type="primary" htmlType="submit" onClick={handleCancel}>

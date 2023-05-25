@@ -1,10 +1,10 @@
-import { Fragment, useState } from "react";
-import { Modal, Button, Space, Form, Select, message } from "antd";
+import { Fragment, useState } from 'react';
+import { Modal, Button, Space, Form, Select, message } from 'antd';
 
-import { instance } from "api/instance";
-import { toSentenceCase } from "utils/strings";
-import ShowEntry from "components/common/showEntry";
-import { allPermissions, backToRealDays } from "utils/constants";
+import { instance } from 'api/instance';
+import { toSentenceCase } from 'utils/strings';
+import ShowEntry from 'components/common/showEntry';
+import { allPermissions, backToRealDays } from 'utils/constants';
 
 const UserDetailsModal = ({ data }) => {
   const [editPermissions, setEditPermissions] = useState(false);
@@ -15,30 +15,30 @@ const UserDetailsModal = ({ data }) => {
 
   const onFinish = async (values) => {
     try {
-      message.loading({ content: "Loading...", key: "edit-permissions" });
-      await instance.post("/admin/edit-permissions", {
+      message.loading({ content: 'Loading...', key: 'edit-permissions' });
+      await instance.post('/admin/edit-permissions', {
         permissions: values.permissions,
         userId: data.id,
       });
 
       message.success({
-        content: "Permissions edited Successfully",
-        key: "edit-permissions",
+        content: 'Permissions edited Successfully',
+        key: 'edit-permissions',
       });
       closeModal();
     } catch (err) {
       closeModal();
       message.error({
-        content: "Permissions editing Failed",
-        key: "edit-permissions",
+        content: 'Permissions editing Failed',
+        key: 'edit-permissions',
       });
     }
   };
 
   const onFinishFailed = (errorInfo) => {
     message.error({
-      content: "Permissions editing Failed",
-      key: "edit-permissions",
+      content: 'Permissions editing Failed',
+      key: 'edit-permissions',
     });
   };
 
@@ -48,7 +48,7 @@ const UserDetailsModal = ({ data }) => {
         <Button onClick={openModal}>Details</Button>
       </Space>
       <Modal
-        title={data.name + ", " + data.origin}
+        title={data.name + ', ' + data.origin}
         open={isModalVisible}
         onOk={closeModal}
         onCancel={closeModal}
@@ -61,30 +61,24 @@ const UserDetailsModal = ({ data }) => {
           value={data.permissions
             .map((p) => {
               return p
-                .split("_")
+                .split('_')
                 .map((s) => toSentenceCase(s))
-                .join(" ");
+                .join(' ');
             })
-            .join(", ")}
+            .join(', ')}
         />
 
         {data.sex && <ShowEntry label="Gender" value={data.sex} />}
-        {data.designation && (
-          <ShowEntry label="Designation" value={data.designation} />
-        )}
+        {data.designation && <ShowEntry label="Designation" value={data.designation} />}
         {data.origin && <ShowEntry label="Origin" value={data.origin} />}
         {data.bio && <ShowEntry label="Bio" value={data.bio} />}
         <br />
         {data.address && <ShowEntry label="Address" value={data.address} />}
-        {data.authorityName && (
-          <ShowEntry label="Authority Name" value={data.authorityName} />
-        )}
+        {data.authorityName && <ShowEntry label="Authority Name" value={data.authorityName} />}
         {data.availability?.length > 0 &&
           data.availability.map((av) => (
-            <div key={av.id} style={{ marginBottom: "10px" }}>
-              <strong style={{ marginBottom: 0 }}>
-                {backToRealDays[av.day]}
-              </strong>
+            <div key={av.id} style={{ marginBottom: '10px' }}>
+              <strong style={{ marginBottom: 0 }}>{backToRealDays[av.day]}</strong>
               {av.range &&
                 av.range.map((r) => {
                   if (!r.from || !r.to) return null;
@@ -111,25 +105,21 @@ const UserDetailsModal = ({ data }) => {
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
             >
-              <Form.Item
-                key="permissions"
-                name="permissions"
-                label="Permissions"
-              >
+              <Form.Item key="permissions" name="permissions" label="Permissions">
                 <Select
                   getPopupContainer={(trigger) => trigger.parentNode}
                   placeholder="Select permissions"
                   mode="multiple"
                   allowClear
-                  style={{ width: "100%" }}
+                  style={{ width: '100%' }}
                   defaultValue={data.permissions}
                 >
                   {Object.entries(allPermissions).map(([key, value], i) => (
                     <Select.Option key={`${key}-${i}`} value={value.name}>
                       {value.name
-                        .split("_")
+                        .split('_')
                         .map((s) => toSentenceCase(s))
-                        .join(" ")}
+                        .join(' ')}
                     </Select.Option>
                   ))}
                 </Select>
@@ -137,16 +127,13 @@ const UserDetailsModal = ({ data }) => {
 
               <div
                 style={{
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  margin: "0px -24px -10px -24px",
-                  padding: "0px 24px 0 24px",
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  margin: '0px -24px -10px -24px',
+                  padding: '0px 24px 0 24px',
                 }}
               >
-                <Button
-                  style={{ marginRight: "10px" }}
-                  onClick={() => setEditPermissions(false)}
-                >
+                <Button style={{ marginRight: '10px' }} onClick={() => setEditPermissions(false)}>
                   Cancel
                 </Button>
                 <Button type="primary" htmlType="submit">
@@ -155,10 +142,7 @@ const UserDetailsModal = ({ data }) => {
               </div>
             </Form>
           ) : (
-            <Button
-              style={{ width: "100%" }}
-              onClick={() => setEditPermissions(true)}
-            >
+            <Button style={{ width: '100%' }} onClick={() => setEditPermissions(true)}>
               Edit User Permissions
             </Button>
           )}

@@ -1,7 +1,7 @@
-import { Carousel, Typography } from "antd";
-import { configState } from "atoms/config";
-import { Fragment } from "react";
-import { useRecoilValue } from "recoil";
+import { Carousel, Typography } from 'antd';
+import { configState } from 'atoms/config';
+import { Fragment } from 'react';
+import { useRecoilValue } from 'recoil';
 
 const Home = () => {
   const config = useRecoilValue(configState);
@@ -12,10 +12,10 @@ const Home = () => {
         autoplay
         autoplaySpeed={2000}
         style={{
-          maxHeight: "350px",
+          maxHeight: '350px',
           margin: -20,
-          width: "calc(100% + 40px)",
-          overflow: "hidden",
+          width: 'calc(100% + 40px)',
+          overflow: 'hidden',
         }}
       >
         {config.homepage_contents.carousel.map((image, index) => {
@@ -24,7 +24,7 @@ const Home = () => {
               key={`${image}-${index}`}
               src={image}
               alt="hospital"
-              style={{ width: "100%", height: "100%" }}
+              style={{ width: '100%', height: '100%' }}
             />
           );
         })}
@@ -32,20 +32,20 @@ const Home = () => {
 
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "row",
-          flexWrap: "wrap",
-          gap: "15px",
-          margin: "50px 0",
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          gap: '15px',
+          margin: '50px 0',
         }}
       >
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "20px",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '20px',
           }}
         >
           {config.homepage_contents.people.map((person, index) => {
@@ -54,22 +54,20 @@ const Home = () => {
                 <div
                   style={{
                     flex: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
                   <img
-                    style={{ width: "100%", maxWidth: "200px" }}
+                    style={{ width: '100%', maxWidth: '200px' }}
                     src={person.image}
                     alt="Mukhtar ahmad ansari"
                   />
                 </div>
 
-                <div style={{ flex: 1, width: "100%", maxWidth: "500px" }}>
-                  <Typography.Title style={{ textAlign: "center" }}>
-                    {person.name}
-                  </Typography.Title>
+                <div style={{ flex: 1, width: '100%', maxWidth: '500px' }}>
+                  <Typography.Title style={{ textAlign: 'center' }}>{person.name}</Typography.Title>
                   <p>{person.description}</p>
                 </div>
               </Fragment>

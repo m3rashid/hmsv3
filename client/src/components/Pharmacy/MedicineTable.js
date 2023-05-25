@@ -1,13 +1,9 @@
-import { Table, Input } from "antd";
-import { useEffect, useState } from "react";
+import { Table, Input } from 'antd';
+import { useEffect, useState } from 'react';
 
-import { getEstimatedMedRequirement } from "./getEstimatedMedRequirement";
+import { getEstimatedMedRequirement } from './getEstimatedMedRequirement';
 
-const MedicineTable = ({
-  medicines = [],
-  selectedMedicines,
-  setSelectedMedicines,
-}) => {
+const MedicineTable = ({ medicines = [], selectedMedicines, setSelectedMedicines }) => {
   const [dispensingMedicines, setDispensingMedicines] = useState([]);
 
   useEffect(() => {
@@ -40,21 +36,21 @@ const MedicineTable = ({
   };
   const columns = [
     {
-      title: "Medicine",
-      dataIndex: "name",
+      title: 'Medicine',
+      dataIndex: 'name',
       render: (text) => <span>{text}</span>,
     },
     {
-      title: "Quantity",
-      dataIndex: "requiredQuantity",
+      title: 'Quantity',
+      dataIndex: 'requiredQuantity',
     },
     {
-      title: "Available Stock",
-      dataIndex: "stock",
+      title: 'Available Stock',
+      dataIndex: 'stock',
     },
     {
-      title: "Amount Dispensed",
-      dataIndex: "amountDispensed",
+      title: 'Amount Dispensed',
+      dataIndex: 'amountDispensed',
       render: (text, record) => {
         return (
           <Input
@@ -99,10 +95,10 @@ const MedicineTable = ({
       rowKey={(record) => record.id}
       size="small"
       rowSelection={{
-        type: "checkbox",
+        type: 'checkbox',
         ...rowSelection,
       }}
-      rowClassName={(record, index) => (record ? "available" : "unavailable")}
+      rowClassName={(record, index) => (record ? 'available' : 'unavailable')}
       columns={columns}
       dataSource={dispensingMedicines}
     />

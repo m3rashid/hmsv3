@@ -1,16 +1,16 @@
-import dayjs from "dayjs";
-import { useRecoilValue } from "recoil";
-import { Fragment, useCallback, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { message, Button, Space, Table, Tabs, Drawer } from "antd";
+import dayjs from 'dayjs';
+import { useRecoilValue } from 'recoil';
+import { Fragment, useCallback, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { message, Button, Space, Table, Tabs, Drawer } from 'antd';
 
-import { instance } from "api/instance";
-import { pharmacyState } from "atoms/pharmacy";
-import ShowReceipt from "pages/pharmacy/ShowReciept";
-import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
-import { authState } from "atoms/auth";
-import { allPermissions } from "utils/constants";
-import useTableStyles from "components/common/tableDefaults";
+import { instance } from 'api/instance';
+import { pharmacyState } from 'atoms/pharmacy';
+import ShowReceipt from 'pages/pharmacy/ShowReciept';
+import PrescriptionDisplay from 'components/Prescription/PrescriptionDisplay';
+import { authState } from 'atoms/auth';
+import { allPermissions } from 'utils/constants';
+import useTableStyles from 'components/common/tableDefaults';
 
 const Prescriptions = () => {
   const { tableStyles } = useTableStyles();
@@ -33,9 +33,7 @@ const Prescriptions = () => {
 
   const ShowPrescriptionHandler = useCallback(async (record, type) => {
     try {
-      const { data } = await instance.get(
-        `/pharmacy/prescriptions/${record.id}`
-      );
+      const { data } = await instance.get(`/pharmacy/prescriptions/${record.id}`);
 
       setModalVisible({
         visible: true,
@@ -44,48 +42,44 @@ const Prescriptions = () => {
         data: data.prescription,
       });
     } catch (err) {
-      message.error("Error Occurred While Fetching");
+      message.error('Error Occurred While Fetching');
     }
   }, []);
 
   const pendingColumns = [
     {
-      title: "PatientName",
-      dataIndex: "appointment.patient.name",
-      key: "appointment.patient.name",
+      title: 'PatientName',
+      dataIndex: 'appointment.patient.name',
+      key: 'appointment.patient.name',
       render: (text, record) => {
         return <span>{record.appointment.patient.name}</span>;
       },
     },
     {
-      title: "DoctorName",
-      dataIndex: "appointment.doctor.name",
-      key: "appointment.doctor.name",
+      title: 'DoctorName',
+      dataIndex: 'appointment.doctor.name',
+      key: 'appointment.doctor.name',
       render: (text, record) => {
         return <span>{record.appointment.doctor?.Auth[0].name}</span>;
       },
     },
     {
-      title: "Date/Time",
-      dataIndex: "datePrescribed",
-      key: "datePrescribed",
+      title: 'Date/Time',
+      dataIndex: 'datePrescribed',
+      key: 'datePrescribed',
       render: (text, record) => {
-        return (
-          <span>
-            {dayjs(record.datePrescribed).format("DD/MM/YYYY hh:mm a")}
-          </span>
-        );
+        return <span>{dayjs(record.datePrescribed).format('DD/MM/YYYY hh:mm a')}</span>;
       },
     },
     {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
       render: (text, record) => (
         <Space>
           <Button
             onClick={() => {
-              ShowPrescriptionHandler(record, "prescription");
+              ShowPrescriptionHandler(record, 'prescription');
             }}
           >
             View Prescriptions
@@ -106,49 +100,45 @@ const Prescriptions = () => {
 
   const processedColumns = [
     {
-      title: "PatientName",
-      dataIndex: "appointment.patient.name",
-      key: "appointment.patient.name",
+      title: 'PatientName',
+      dataIndex: 'appointment.patient.name',
+      key: 'appointment.patient.name',
       render: (text, record) => {
         return <span>{record.appointment.patient.name}</span>;
       },
     },
     {
-      title: "DoctorName",
-      dataIndex: "appointment.doctor.name",
-      key: "appointment.doctor.name",
+      title: 'DoctorName',
+      dataIndex: 'appointment.doctor.name',
+      key: 'appointment.doctor.name',
       render: (text, record) => {
         return <span>{record.appointment.doctor?.Auth[0].name}</span>;
       },
     },
     {
-      title: "Date/Time",
-      dataIndex: "datePrescribed",
-      key: "datePrescribed",
+      title: 'Date/Time',
+      dataIndex: 'datePrescribed',
+      key: 'datePrescribed',
       render: (text, record) => {
-        return (
-          <span>
-            {dayjs(record.datePrescribed).format("DD/MM/YYYY hh:mm a")}
-          </span>
-        );
+        return <span>{dayjs(record.datePrescribed).format('DD/MM/YYYY hh:mm a')}</span>;
       },
     },
     {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
       render: (text, record) => (
         <Space>
           <Button
             onClick={() => {
-              ShowPrescriptionHandler(record, "prescription");
+              ShowPrescriptionHandler(record, 'prescription');
             }}
           >
             View Prescription
           </Button>
           <Button
             onClick={() => {
-              ShowPrescriptionHandler(record, "receipt");
+              ShowPrescriptionHandler(record, 'receipt');
             }}
           >
             Show Receipt
@@ -165,31 +155,27 @@ const Prescriptions = () => {
         centered
         items={[
           {
-            key: "1",
-            label: "Active",
+            key: '1',
+            label: 'Active',
             children: (
               <Table
                 rowKey={(record) => record.id}
                 style={{ ...tableStyles }}
                 size="small"
-                dataSource={pharmacyData.prescriptions.filter(
-                  (prsp) => prsp.pending
-                )}
+                dataSource={pharmacyData.prescriptions.filter((prsp) => prsp.pending)}
                 columns={pendingColumns}
               />
             ),
           },
           {
-            key: "2",
-            label: "Completed",
+            key: '2',
+            label: 'Completed',
             children: (
               <Table
                 rowKey={(record) => record.id}
                 style={{ ...tableStyles }}
                 size="small"
-                dataSource={pharmacyData.prescriptions.filter(
-                  (prsp) => !prsp.pending
-                )}
+                dataSource={pharmacyData.prescriptions.filter((prsp) => !prsp.pending)}
                 columns={processedColumns}
               />
             ),
@@ -207,7 +193,7 @@ const Prescriptions = () => {
         ]}
         width={1000}
       >
-        {ModalVisible?.type === "prescription" ? (
+        {ModalVisible?.type === 'prescription' ? (
           <PrescriptionDisplay
             id={ModalVisible?.data?.appointmentId}
             ExtraMedicines={ModalVisible?.data?.CustomMedicines}
@@ -221,9 +207,7 @@ const Prescriptions = () => {
             data={[
               {
                 ...ModalVisible?.data,
-                date: dayjs(ModalVisible?.data?.datePrescribed).format(
-                  "MMMM DD YYYY HH:mm A"
-                ),
+                date: dayjs(ModalVisible?.data?.datePrescribed).format('MMMM DD YYYY HH:mm A'),
               },
             ]}
           />

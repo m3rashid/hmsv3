@@ -1,15 +1,15 @@
-import { Fragment } from "react";
-import PropTypes from "prop-types";
-import { useQuery } from "react-query";
-import { Select, Typography } from "antd";
+import { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { useQuery } from 'react-query';
+import { Select, Typography } from 'antd';
 
-import { instance } from "api/instance";
+import { instance } from 'api/instance';
 
 function DoctorSelector({ onChange, style }) {
   const { data: DoctorData } = useQuery("Doctor's List", async () => {
-    const { data } = await instance.get("/doctor/search", {
+    const { data } = await instance.get('/doctor/search', {
       params: {
-        name: "",
+        name: '',
       },
     });
 

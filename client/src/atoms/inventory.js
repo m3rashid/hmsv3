@@ -1,5 +1,5 @@
-import { atom } from "recoil";
-import { InventoryTypes } from "../utils/constants";
+import { atom } from 'recoil';
+import { InventoryTypes } from '../utils/constants';
 
 const inventoryDefaultState = {
   [InventoryTypes.Medicine]: [],
@@ -8,6 +8,6 @@ const inventoryDefaultState = {
 };
 
 export const inventoryState = atom({
-  key: "inventory",
+  key: 'inventory',
   default: inventoryDefaultState,
 });

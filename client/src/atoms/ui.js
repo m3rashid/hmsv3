@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 const defaultUiState = {
   sidebarCollapsed: false,
@@ -6,6 +6,6 @@ const defaultUiState = {
 };
 
 export const uiState = atom({
-  key: "uiState",
+  key: 'uiState',
   default: defaultUiState,
 });

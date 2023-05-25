@@ -1,4 +1,4 @@
-const { makeLeaveRequest } = require("../routes/sockets/doctor.socket");
+const { makeLeaveRequest } = require('../routes/sockets/doctor.socket');
 const {
   getDoctorAppointmentsService,
   getDoctorPatientsService,
@@ -8,13 +8,13 @@ const {
   checkMedAvailabilityService,
   getAppointmentByIdService,
   getPrescriptionByAppointmentService,
-} = require("../services");
-const { permissions } = require("../utils/constants");
+} = require('../services');
+const { permissions } = require('../utils/constants');
 
 const getDoctorAppointments = async (req, res) => {
-  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.isAuthenticated) throw new Error('Unauthorized');
   if (!req.permissions.includes(permissions.DOCTOR_APPOINTMENTS)) {
-    throw new Error("Unauthorized for this resource");
+    throw new Error('Unauthorized for this resource');
   }
 
   const { appointments } = await getDoctorAppointmentsService(req.user.id);
@@ -25,9 +25,9 @@ const getDoctorAppointments = async (req, res) => {
 };
 
 const getAppointmentById = async (req, res) => {
-  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.isAuthenticated) throw new Error('Unauthorized');
   if (!req.permissions.includes(permissions.DOCTOR_APPOINTMENTS)) {
-    throw new Error("Unauthorized for this resource");
+    throw new Error('Unauthorized for this resource');
   }
 
   const data = await getAppointmentByIdService(req.query.id);
@@ -35,7 +35,7 @@ const getAppointmentById = async (req, res) => {
 };
 
 const getDoctorPatients = async (req, res) => {
-  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.isAuthenticated) throw new Error('Unauthorized');
 
   const { patients } = await getDoctorPatientsService(req.user.id);
   return res.status(200).json({
@@ -53,19 +53,12 @@ const searchDoctors = async (req, res) => {
 };
 
 const createPrescriptionByDoctor = async (req, res) => {
-  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.isAuthenticated) throw new Error('Unauthorized');
   if (!req.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE)) {
-    throw new Error("Unauthorized for this resource");
+    throw new Error('Unauthorized for this resource');
   }
 
-  const {
-    appointment,
-    symptoms,
-    diagnosis,
-    customMedicines,
-    datetime,
-    medicines,
-  } = req.body;
+  const { appointment, symptoms, diagnosis, customMedicines, datetime, medicines } = req.body;
 
   const { prescription: newPrescription } = await createPrescriptionService({
     appointment,
@@ -83,9 +76,9 @@ const createPrescriptionByDoctor = async (req, res) => {
 };
 
 const referAnotherDoctor = async (req, res) => {
-  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.isAuthenticated) throw new Error('Unauthorized');
   if (!req.permissions.includes(permissions.DOCTOR_PRESCRIBE_MEDICINE)) {
-    throw new Error("Unauthorized for this resource");
+    throw new Error('Unauthorized for this resource');
   }
 
   const appointment = await referAnotherDoctorAppointmentService({
@@ -127,7 +120,7 @@ const GetPrescriptionByAppointmentID = async (req, res) => {
 };
 
 const makeDoctorLeave = async (req, res) => {
-  if (!req.isAuthenticated) throw new Error("Unauthorized");
+  if (!req.isAuthenticated) throw new Error('Unauthorized');
 
   const date = new Date();
   const { doctorId, reason } = req.body;

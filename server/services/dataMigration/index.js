@@ -3,17 +3,17 @@ const {
   handleGender,
   handleMaritalStatus,
   handleDependentStatus,
-} = require("./helpers");
-const { patientTypes } = require("./types");
-const { prisma } = require("../../utils/prisma");
-const { correctMapper, genericTypes } = require("./mappers");
+} = require('./helpers');
+const { patientTypes } = require('./types');
+const { prisma } = require('../../utils/prisma');
+const { correctMapper, genericTypes } = require('./mappers');
 
 const handleMigrationService = async (type, dataSheet, uniqueLabel) => {
-  const uniqueFieldInDb = "userId";
+  const uniqueFieldInDb = 'userId';
   const mapper = correctMapper[type];
 
   if (!Object.values(patientTypes).includes(type)) {
-    throw new Error("Invalid patient type");
+    throw new Error('Invalid patient type');
   }
 
   const empIdMap = new Map();
@@ -26,9 +26,7 @@ const handleMigrationService = async (type, dataSheet, uniqueLabel) => {
         empIdMap.set(item[uniqueLabel], 1);
       }
 
-      item[uniqueLabel] = item[uniqueLabel].concat(
-        "/" + empIdMap.get(item[uniqueLabel])
-      );
+      item[uniqueLabel] = item[uniqueLabel].concat('/' + empIdMap.get(item[uniqueLabel]));
     });
   }
 
@@ -51,33 +49,25 @@ const handleMigrationService = async (type, dataSheet, uniqueLabel) => {
   }
 
   // remove the null values from sheetData
-  const filteredData = Object.entries(excelSheetData).reduce(
-    (acc, [key, value]) => {
-      return value ? { ...acc, [key]: value } : acc;
-    },
-    {}
-  );
+  const filteredData = Object.entries(excelSheetData).reduce((acc, [key, value]) => {
+    return value ? { ...acc, [key]: value } : acc;
+  }, {});
 
   const promises = [];
 
   // convert the data to the format required by the database
   Object.values(filteredData).forEach((dataItem) => {
-    const convertedData = Object.entries(dataItem).reduce(
-      (acc, [key, value]) => {
-        return {
-          ...acc,
-          ...(mapper[key] !== "slNo" && {
-            [mapper[key]]: value,
-          }),
-        };
-      },
-      {}
-    );
+    const convertedData = Object.entries(dataItem).reduce((acc, [key, value]) => {
+      return {
+        ...acc,
+        ...(mapper[key] !== 'slNo' && {
+          [mapper[key]]: value,
+        }),
+      };
+    }, {});
 
     if (convertedData[genericTypes.gender]) {
-      convertedData[genericTypes.gender] = handleGender(
-        convertedData[genericTypes.gender]
-      );
+      convertedData[genericTypes.gender] = handleGender(convertedData[genericTypes.gender]);
     }
 
     if (convertedData[genericTypes.bloodGroup]) {

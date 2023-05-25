@@ -10,26 +10,22 @@ import {
   Divider,
   Drawer,
   Empty,
-} from "antd";
-import dayjs from "dayjs";
-import {
-  CheckCircleOutlined,
-  PlusCircleOutlined,
-  UserSwitchOutlined,
-} from "@ant-design/icons";
-import ReactQuill from "react-quill";
-import { Fragment, useEffect } from "react";
+} from 'antd';
+import dayjs from 'dayjs';
+import { CheckCircleOutlined, PlusCircleOutlined, UserSwitchOutlined } from '@ant-design/icons';
+import ReactQuill from 'react-quill';
+import { Fragment, useEffect } from 'react';
 
-import { socket } from "api/instance";
-import PatientInfo from "pages/patient";
-import quillDefaults from "components/common/quillDefaults";
-import MedicineInput from "components/Medicine/MedicineInput";
-import ReferPatientModal from "components/Prescription/ReferPatientModal";
-import MedicineInputTable from "components/Medicine/MedicineInputTabular";
-import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
-import usePrescribeMedicines from "components/Doctor/hooks/prescribeMeds.hook";
-import styles from "pages/doctor/PrescribeMedicine.module.css";
-import useTableStyles from "components/common/tableDefaults";
+import { socket } from 'api/instance';
+import PatientInfo from 'pages/patient';
+import quillDefaults from 'components/common/quillDefaults';
+import MedicineInput from 'components/Medicine/MedicineInput';
+import ReferPatientModal from 'components/Prescription/ReferPatientModal';
+import MedicineInputTable from 'components/Medicine/MedicineInputTabular';
+import PrescriptionDisplay from 'components/Prescription/PrescriptionDisplay';
+import usePrescribeMedicines from 'components/Doctor/hooks/prescribeMeds.hook';
+import styles from 'pages/doctor/PrescribeMedicine.module.css';
+import useTableStyles from 'components/common/tableDefaults';
 
 const PrescriptionForm = () => {
   const { tableStyles } = useTableStyles();
@@ -79,14 +75,14 @@ const PrescriptionForm = () => {
         <Form.Item
           label="Choose Appointment"
           name="appointment"
-          rules={[{ required: true, message: "Please Enter Appointment!" }]}
+          rules={[{ required: true, message: 'Please Enter Appointment!' }]}
         >
           <Fragment>
             <Select
               allowClear
               onClear={(value) => handleAppointmentSelect(value)}
               placeholder="Select an appointment"
-              style={{ maxWidth: 500, display: "block" }}
+              style={{ maxWidth: 500, display: 'block' }}
               onChange={(value) => handleAppointmentSelect(value)}
               getPopupContainer={(trigger) => trigger.parentNode}
               optionLabelProp="Appointment"
@@ -101,9 +97,7 @@ const PrescriptionForm = () => {
                       label: (
                         <span key={appointment.id}>
                           {appointment.patient?.name} - &nbsp;
-                          {dayjs(appointment.date).format(
-                            "MMMM DD YYYY HH:mm A"
-                          )}
+                          {dayjs(appointment.date).format('MMMM DD YYYY HH:mm A')}
                         </span>
                       ),
                     },
@@ -132,8 +126,8 @@ const PrescriptionForm = () => {
         <Form.Item
           label="Symptoms"
           name="symptoms"
-          rules={[{ required: true, message: "Please Enter Symptoms!" }]}
-          style={{ height: "100%" }}
+          rules={[{ required: true, message: 'Please Enter Symptoms!' }]}
+          style={{ height: '100%' }}
         >
           <ReactQuill
             {...quillDefaults}
@@ -177,9 +171,7 @@ const PrescriptionForm = () => {
           ) : (
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={
-                <Typography.Text disabled>No Custom Medicines</Typography.Text>
-              }
+              description={<Typography.Text disabled>No Custom Medicines</Typography.Text>}
             />
           )}
 
@@ -195,21 +187,19 @@ const PrescriptionForm = () => {
               UpdateMedicine={UpdateMedicine}
             />
           ))}
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <Button
               type="dashed"
-              onClick={() => addEmptyMedicine("extraMedicines")}
+              onClick={() => addEmptyMedicine('extraMedicines')}
               icon={<PlusCircleOutlined />}
-              style={{ margin: "auto" }}
+              style={{ margin: 'auto' }}
             >
               Add Custom Medicines
             </Button>
           </div>
         </Space>
 
-        <Form.Item
-          style={{ display: "flex", justifyContent: "center", marginTop: 20 }}
-        >
+        <Form.Item style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
           <Space>
             {!!formData.appointmentInfo && (
               <Button
@@ -254,14 +244,12 @@ const PrescriptionForm = () => {
 
       <Drawer
         open={PatientData.open}
-        width={"60%"}
+        width={'60%'}
         onClose={() => {
           setPatientData({ open: false, data: null });
         }}
       >
-        {PatientData.data && (
-          <PatientInfo id={PatientData?.data?.patient?.id} />
-        )}
+        {PatientData.data && <PatientInfo id={PatientData?.data?.patient?.id} />}
       </Drawer>
 
       <Modal

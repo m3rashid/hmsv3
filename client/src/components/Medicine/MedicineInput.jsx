@@ -1,16 +1,16 @@
-import PropTypes from "prop-types";
-import ReactQuill from "react-quill";
-import { useRecoilValue } from "recoil";
-import { DeleteOutlined } from "@ant-design/icons";
-import { useDebounce } from "use-debounce";
-import { useCallback, useEffect, useState } from "react";
-import { Button, Col, Input, Row, Select, Space, Typography } from "antd";
+import PropTypes from 'prop-types';
+import ReactQuill from 'react-quill';
+import { useRecoilValue } from 'recoil';
+import { DeleteOutlined } from '@ant-design/icons';
+import { useDebounce } from 'use-debounce';
+import { useCallback, useEffect, useState } from 'react';
+import { Button, Col, Input, Row, Select, Space, Typography } from 'antd';
 
-import { instance } from "api/instance";
-import { dosages } from "utils/constants";
-import { inventoryState } from "atoms/inventory";
-import styles from "components/Medicine/medicineinput.module.css";
-import quillDefaults from "components/common/quillDefaults";
+import { instance } from 'api/instance';
+import { dosages } from 'utils/constants';
+import { inventoryState } from 'atoms/inventory';
+import styles from 'components/Medicine/medicineinput.module.css';
+import quillDefaults from 'components/common/quillDefaults';
 
 const MedicineInput = ({
   index,
@@ -51,11 +51,10 @@ const MedicineInput = ({
         duration: parseInt(value.duration),
       };
 
-      if (data.dosage === "" || data.duration === 0 || !data?.medicineId)
-        return;
+      if (data.dosage === '' || data.duration === 0 || !data?.medicineId) return;
 
       const { data: availabilityInfoData } = await instance.post(
-        "/doctor/med/check-availability",
+        '/doctor/med/check-availability',
         data
       );
       setAvailabilityInfo({
@@ -74,38 +73,34 @@ const MedicineInput = ({
   }, [value, availabilityInfo, UpdateMedicine, medicineType, index]);
 
   const inputStyles = {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    padding: "0 10px",
-    margin: "auto",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: '0 10px',
+    margin: 'auto',
   };
 
   return (
-    <Row style={{ borderBottom: "1px solid #ddd", padding: "10px 0" }}>
+    <Row style={{ borderBottom: '1px solid #ddd', padding: '10px 0' }}>
       <Col span={5} style={inputStyles}>
         <Select
           getPopupContainer={(trigger) => trigger.parentNode}
-          style={{ width: "100%" }}
+          style={{ width: '100%' }}
           showSearch
           optionFilterProp="children"
           filterOption={(input, option) => option.children?.includes(input)}
           filterSort={(optionA, optionB) =>
-            optionA.children
-              ?.toLowerCase()
-              .localeCompare(optionB.children.toLowerCase())
+            optionA.children?.toLowerCase().localeCompare(optionB.children.toLowerCase())
           }
           placeholder="Select medicine"
           onChange={(value) => {
-            const Item = medicineDB?.Medicine?.inventory.find(
-              (item) => item.id === value
-            );
-            handleChange(Item, "Medicine");
+            const Item = medicineDB?.Medicine?.inventory.find((item) => item.id === value);
+            handleChange(Item, 'Medicine');
           }}
         >
           <Select.OptGroup label="Tablets">
             {medicineDB.Medicine?.inventory
-              ?.filter((m) => m.medType === "TABLET")
+              ?.filter((m) => m.medType === 'TABLET')
               .map((medicine) => {
                 return (
                   <Select.Option key={medicine.id} value={medicine.id}>
@@ -117,7 +112,7 @@ const MedicineInput = ({
 
           <Select.OptGroup label="Syrups">
             {medicineDB.Medicine?.inventory
-              ?.filter((m) => m.medType === "SYRUP")
+              ?.filter((m) => m.medType === 'SYRUP')
               .map((medicine) => {
                 return (
                   <Select.Option key={medicine.id} value={medicine.id}>
@@ -129,17 +124,15 @@ const MedicineInput = ({
         </Select>
 
         {!isExtra && medicine?.medicine?.quantity && (
-          <Typography.Text type="danger">
-            {medicine?.medicine?.quantity} left!
-          </Typography.Text>
+          <Typography.Text type="danger">{medicine?.medicine?.quantity} left!</Typography.Text>
         )}
       </Col>
       <Col span={4} style={inputStyles}>
         <Select
-          style={{ width: "100%" }}
+          style={{ width: '100%' }}
           placeholder="Select Dosage"
           className={styles.select}
-          onChange={(value) => handleChange(value, "dosage")}
+          onChange={(value) => handleChange(value, 'dosage')}
         >
           {dosages.map((dosage) => (
             <Select.Option key={dosage.value} value={dosage.value}>
@@ -148,41 +141,38 @@ const MedicineInput = ({
           ))}
         </Select>
 
-        {medicine?.medicine?.medType === "SYRUP" && (
+        {medicine?.medicine?.medType === 'SYRUP' && (
           <Space>
             <Input
               placeholder="Dosage Amount"
               type="number"
               min={0}
-              onChange={(e) => handleChange(e.target.value, "dosageAmount")}
+              onChange={(e) => handleChange(e.target.value, 'dosageAmount')}
               value={medicine.dosageAmount}
-              addonAfter={"ml"}
+              addonAfter={'ml'}
             />
           </Space>
         )}
       </Col>
       <Col span={4} style={inputStyles}>
         <Input
-          type={"number"}
+          type={'number'}
           placeholder="Enter duration"
           defaultValue={medicine.duration}
           className={styles.input}
-          onChange={(e) => handleChange(e.target.value, "duration")}
-          addonAfter={"days"}
+          onChange={(e) => handleChange(e.target.value, 'duration')}
+          addonAfter={'days'}
         />
       </Col>
-      <Col span={9} style={{ padding: "0 10px" }}>
+      <Col span={9} style={{ padding: '0 10px' }}>
         <ReactQuill
           value={medicine.description}
-          onChange={(value) => handleChange(value, "description")}
+          onChange={(value) => handleChange(value, 'description')}
           {...quillDefaults}
         />
       </Col>
       <Col span={2} style={inputStyles}>
-        <Space
-          direction="vertical"
-          style={{ width: "100%", justifyContent: "center" }}
-        >
+        <Space direction="vertical" style={{ width: '100%', justifyContent: 'center' }}>
           <Button
             type="dashed"
             danger

@@ -1,46 +1,33 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
 
-const { prisma } = require("../utils/prisma");
-const { issueJWT, revalidateJWT } = require("../utils/jwt");
-const {
-  supportedUserRoles,
-  permissions,
-  serverActions,
-} = require("../utils/constants");
-const { addEventLog } = require("../utils/logs");
+const { prisma } = require('../utils/prisma');
+const { issueJWT, revalidateJWT } = require('../utils/jwt');
+const { supportedUserRoles, permissions, serverActions } = require('../utils/constants');
+const { addEventLog } = require('../utils/logs');
 
 const addActions = (role) => {
   let allowedActions = [];
   switch (role) {
-    case "DOCTOR":
+    case 'DOCTOR':
       allowedActions = [
         permissions.DOCTOR_APPOINTMENTS,
         permissions.DOCTOR_PRESCRIBE_MEDICINE,
         permissions.PHARMACY_PRESCRIPTIONS,
       ];
       break;
-    case "ADMIN":
+    case 'ADMIN':
       allowedActions = [permissions.ADMIN];
       break;
-    case "RECEPTIONIST":
-      allowedActions = [
-        permissions.RECEPTION_ADD_APPOINTMENT,
-        permissions.DOCTOR_APPOINTMENTS,
-      ];
+    case 'RECEPTIONIST':
+      allowedActions = [permissions.RECEPTION_ADD_APPOINTMENT, permissions.DOCTOR_APPOINTMENTS];
       break;
-    case "PHARMACIST":
-      allowedActions = [
-        permissions.PHARMACY_PRESCRIPTIONS,
-        permissions.PHARMACY_RECEIPT,
-      ];
+    case 'PHARMACIST':
+      allowedActions = [permissions.PHARMACY_PRESCRIPTIONS, permissions.PHARMACY_RECEIPT];
       break;
-    case "INVENTORY_MANAGER":
-      allowedActions = [
-        permissions.INVENTORY_ADD_MEDICINE,
-        permissions.INVENTORY_VIEW,
-      ];
+    case 'INVENTORY_MANAGER':
+      allowedActions = [permissions.INVENTORY_ADD_MEDICINE, permissions.INVENTORY_VIEW];
       break;
-    case "CO_ADMIN":
+    case 'CO_ADMIN':
       allowedActions = [
         permissions.DOCTOR_APPOINTMENTS,
         permissions.INVENTORY_VIEW,
@@ -48,7 +35,7 @@ const addActions = (role) => {
         permissions.RECEPTION_CREATE_PATIENT,
       ];
       break;
-    case "OTHER":
+    case 'OTHER':
       allowedActions = [];
       break;
     default:
@@ -60,14 +47,14 @@ const addActions = (role) => {
 };
 
 const loginService = async (email, password) => {
-  if (!email || !password) throw new Error("No credentials");
+  if (!email || !password) throw new Error('No credentials');
 
   const user = await prisma.auth.findUnique({
     where: { email: email.trim() },
   });
-  if (!user) throw new Error("User not found");
+  if (!user) throw new Error('User not found');
   const matched = await bcrypt.compare(password, user.password.trim());
-  if (!matched) throw new Error("Wrong Credentials");
+  if (!matched) throw new Error('Wrong Credentials');
 
   const userDetails = await prisma.profile.findUnique({
     where: { id: user.id },
@@ -120,10 +107,10 @@ const signupService = async ({
   };
 
   if (!email || !password || !name || !role || !sex || !roomNumber) {
-    throw new Error("Insufficient credentials");
+    throw new Error('Insufficient credentials');
   }
 
-  if (!supportedUserRoles.includes(role)) throw new Error("Invalid role");
+  if (!supportedUserRoles.includes(role)) throw new Error('Invalid role');
   const allowedActions = addActions(role);
 
   const hashedPassword = await bcrypt.hash(password.trim(), 10);
@@ -144,10 +131,10 @@ const signupService = async ({
     action: serverActions.SIGNUP,
     fromId: doneBy?.id ?? -1,
     actionId: profile?.id,
-    actionTable: "profile",
-    message: `${doneBy?.name || "DEV"} <(${
-      doneBy?.email || "dev@jmi"
-    })> created user ${user?.name} <(${user?.email})> as ${role}`,
+    actionTable: 'profile',
+    message: `${doneBy?.name || 'DEV'} <(${doneBy?.email || 'dev@jmi'})> created user ${
+      user?.name
+    } <(${user?.email})> as ${role}`,
   });
 
   return user;
@@ -156,15 +143,15 @@ const signupService = async ({
 const logoutService = async () => {};
 
 const revalidateService = async (refreshToken) => {
-  if (!refreshToken) throw new Error("Unauthorized");
+  if (!refreshToken) throw new Error('Unauthorized');
 
   const { valid, expired, payload } = revalidateJWT(refreshToken);
 
-  if (!valid || expired) throw new Error("Unauthorized");
+  if (!valid || expired) throw new Error('Unauthorized');
   const payloadid = payload.sub.id;
 
   const user = await prisma.auth.findUnique({ where: { id: payloadid } });
-  if (!user) throw new Error("Unauthorized");
+  if (!user) throw new Error('Unauthorized');
 
   const userDetails = await prisma.profile.findUnique({
     where: { id: user.id },

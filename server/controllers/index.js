@@ -5,9 +5,9 @@ const {
   generateHmsReports,
   reportDetails,
   getSinglePatientDetails,
-} = require("../controllers/admin");
+} = require('../controllers/admin');
 
-const { login, revalidate, signup } = require("../controllers/auth");
+const { login, revalidate, signup } = require('../controllers/auth');
 
 const {
   getDoctorAppointments,
@@ -18,7 +18,7 @@ const {
   referAnotherDoctor,
   searchDoctors,
   makeDoctorLeave,
-} = require("../controllers/doctor");
+} = require('../controllers/doctor');
 
 const {
   CreateDummyInventory,
@@ -26,24 +26,24 @@ const {
   EditInventory,
   SearchMedicines,
   addMedicine,
-} = require("../controllers/inventory");
+} = require('../controllers/inventory');
 
 const {
   createPatient,
   deletePatient,
   getPatientById,
   searchPatients,
-} = require("../controllers/patient");
+} = require('../controllers/patient');
 
 const {
   dispensePrescription,
   getAllPrescriptions,
   getPrescriptionById,
-} = require("../controllers/pharmacist");
+} = require('../controllers/pharmacist');
 
-const { createAppointment } = require("../controllers/reception");
+const { createAppointment } = require('../controllers/reception');
 
-const { handleDataMigration } = require("./dataMigration");
+const { handleDataMigration } = require('./dataMigration');
 
 module.exports = {
   editPermissions,

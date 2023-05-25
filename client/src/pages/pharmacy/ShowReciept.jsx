@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
-import GeneratePdf from "components/PDF/generatePdf";
+import GeneratePdf from 'components/PDF/generatePdf';
 
 const ShowReceipt = ({ printContainerRef, data }) => {
   return (

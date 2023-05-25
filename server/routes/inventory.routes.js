@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 
 const {
   CreateDummyInventory,
@@ -6,21 +6,21 @@ const {
   SearchMedicines,
   EditInventory,
   DeleteInventory,
-} = require("../controllers");
-const { useRoute } = require("../utils/errors");
-const { checkAuth } = require("../middlewares/auth");
+} = require('../controllers');
+const { useRoute } = require('../utils/errors');
+const { checkAuth } = require('../middlewares/auth');
 
 const router = express.Router();
 
-router.post("/dummy", useRoute(CreateDummyInventory));
+router.post('/dummy', useRoute(CreateDummyInventory));
 
-router.get("/search", checkAuth, useRoute(SearchMedicines));
+router.get('/search', checkAuth, useRoute(SearchMedicines));
 
-router.post("/add", checkAuth, useRoute(addMedicine));
+router.post('/add', checkAuth, useRoute(addMedicine));
 
-router.post("/edit", checkAuth, useRoute(EditInventory));
+router.post('/edit', checkAuth, useRoute(EditInventory));
 
-router.post("/delete", checkAuth, useRoute(DeleteInventory));
+router.post('/delete', checkAuth, useRoute(DeleteInventory));
 
 module.exports = {
   router,

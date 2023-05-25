@@ -9,24 +9,24 @@ import {
   Tooltip,
   Typography,
   Popconfirm,
-} from "antd";
-import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { Fragment, useCallback, useEffect, useState } from "react";
+} from 'antd';
+import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 
-import { socket } from "api/instance";
-import { authState } from "atoms/auth";
-import { instance } from "api/instance";
-import { doctorState } from "atoms/doctor";
-import { LoadingAtom } from "atoms/loading";
-import { toSentenceCase } from "utils/strings";
-import { functionState } from "atoms/functions";
-import { allPermissions } from "utils/constants";
-import { receptionState } from "atoms/reception";
-import ShowEntry from "components/common/showEntry";
-import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
-import useTableStyles from "components/common/tableDefaults";
+import { socket } from 'api/instance';
+import { authState } from 'atoms/auth';
+import { instance } from 'api/instance';
+import { doctorState } from 'atoms/doctor';
+import { LoadingAtom } from 'atoms/loading';
+import { toSentenceCase } from 'utils/strings';
+import { functionState } from 'atoms/functions';
+import { allPermissions } from 'utils/constants';
+import { receptionState } from 'atoms/reception';
+import ShowEntry from 'components/common/showEntry';
+import PrescriptionDisplay from 'components/Prescription/PrescriptionDisplay';
+import useTableStyles from 'components/common/tableDefaults';
 
 const DoctorAppointments = () => {
   const { tableStyles } = useTableStyles();
@@ -35,9 +35,7 @@ const DoctorAppointments = () => {
   const doctorData = useRecoilValue(doctorState);
   const functionData = useRecoilValue(functionState);
   const receptionistState = useRecoilValue(receptionState);
-  const isReception = user.permissions.includes(
-    allPermissions.RECEPTION_ADD_APPOINTMENT.name
-  );
+  const isReception = user.permissions.includes(allPermissions.RECEPTION_ADD_APPOINTMENT.name);
 
   const [ModalVisible, setModalVisible] = useState({
     visible: false,
@@ -49,7 +47,7 @@ const DoctorAppointments = () => {
     visible: false,
     id: null,
     data: {},
-    type: "",
+    type: '',
   });
 
   const [loadingData, setLoadingData] = useRecoilState(LoadingAtom);
@@ -62,9 +60,7 @@ const DoctorAppointments = () => {
   };
 
   const GetPrescriptionByAppointmentID = useCallback(async (record) => {
-    const { data } = await instance.get(
-      `/doctor/appointment-prescription/${record.id}`
-    );
+    const { data } = await instance.get(`/doctor/appointment-prescription/${record.id}`);
 
     setPrescriptionDrawer({
       visible: true,
@@ -74,83 +70,69 @@ const DoctorAppointments = () => {
   }, []);
 
   useEffect(() => {
-    socket.emit("get-doctor-appointments", { doctorId: user.id });
+    socket.emit('get-doctor-appointments', { doctorId: user.id });
   }, [user.id]);
 
   const columnsPending = [
     {
-      title: "Patient Name",
-      dataIndex: "patient",
-      key: "patient",
+      title: 'Patient Name',
+      dataIndex: 'patient',
+      key: 'patient',
       sorter: (a, b) => a?.patient?.name?.localeCompare(b.patientname),
       render: (item) => <Typography.Text>{item?.name}</Typography.Text>,
     },
     ...(isReception
       ? [
           {
-            title: "Doctor Name",
-            dataIndex: "doctor",
-            key: "doctor",
-            sorter: (a, b) =>
-              a?.doctor?.Auth[0].name?.localeCompare(b?.doctor?.Auth[0].name),
-            render: (item) => (
-              <Typography.Text>{item?.Auth[0].name}</Typography.Text>
-            ),
+            title: 'Doctor Name',
+            dataIndex: 'doctor',
+            key: 'doctor',
+            sorter: (a, b) => a?.doctor?.Auth[0].name?.localeCompare(b?.doctor?.Auth[0].name),
+            render: (item) => <Typography.Text>{item?.Auth[0].name}</Typography.Text>,
           },
           {
-            title: "Doctor Email",
-            dataIndex: "doctor",
-            key: "doctor",
-            sorter: (a, b) =>
-              a?.doctor?.Auth[0].email?.localeCompare(b?.doctor?.Auth[0].email),
-            render: (item) => (
-              <Typography.Text>{item?.Auth[0].email}</Typography.Text>
-            ),
+            title: 'Doctor Email',
+            dataIndex: 'doctor',
+            key: 'doctor',
+            sorter: (a, b) => a?.doctor?.Auth[0].email?.localeCompare(b?.doctor?.Auth[0].email),
+            render: (item) => <Typography.Text>{item?.Auth[0].email}</Typography.Text>,
           },
         ]
       : []),
     {
-      title: "Date/Time",
-      dataIndex: "date",
-      key: "date",
+      title: 'Date/Time',
+      dataIndex: 'date',
+      key: 'date',
       sorter: (a, b) => dayjs(a.date).isBefore(dayjs(b.date)),
-      render: (item) => dayjs(item).format("MMMM DD YYYY, h:mm:ss a"),
-      defaultSortOrder: "ascend",
+      render: (item) => dayjs(item).format('MMMM DD YYYY, h:mm:ss a'),
+      defaultSortOrder: 'ascend',
       filters: [
         {
-          text: "Today",
+          text: 'Today',
           value: 1,
         },
       ],
-      onFilter: (value, record) => dayjs(record.date).isSame(dayjs(), "day"),
+      onFilter: (value, record) => dayjs(record.date).isSame(dayjs(), 'day'),
     },
     {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
       render: (text, record) => {
-        const disabled = !dayjs(record.date).isBefore(dayjs().add(6, "hours"));
+        const disabled = !dayjs(record.date).isBefore(dayjs().add(6, 'hours'));
         return (
           <Space>
             {!isReception && (
               <Popconfirm
                 disabled={disabled}
                 title="Create a prescription for this appointment?"
-                onConfirm={() =>
-                  navigate(
-                    `/doctor/prescribe-medicine?appointmentId=${record.id}`
-                  )
-                }
+                onConfirm={() => navigate(`/doctor/prescribe-medicine?appointmentId=${record.id}`)}
                 okText="Yes"
                 cancelText="Cancel"
               >
                 <Tooltip
                   placement="left"
-                  title={
-                    disabled
-                      ? "Cant prescribe at current time"
-                      : "Create a prescription"
-                  }
+                  title={disabled ? 'Cant prescribe at current time' : 'Create a prescription'}
                 >
                   <Button disabled={disabled} type="primary">
                     Precribe
@@ -158,11 +140,7 @@ const DoctorAppointments = () => {
                 </Tooltip>
               </Popconfirm>
             )}
-            <Button
-              onClick={() =>
-                setModalVisible({ visible: true, id: record.id, data: record })
-              }
-            >
+            <Button onClick={() => setModalVisible({ visible: true, id: record.id, data: record })}>
               View
             </Button>
             <Button onClick={() => navigate(`/patient/${record.patient.id}`)}>
@@ -176,49 +154,39 @@ const DoctorAppointments = () => {
 
   const columnsPrevious = [
     {
-      title: "PatientName",
-      dataIndex: "patient",
-      key: "patient",
+      title: 'PatientName',
+      dataIndex: 'patient',
+      key: 'patient',
       sorter: (a, b) => a?.patient?.name?.localeCompare(b?.patient?.name),
       render: (item) => <Typography.Text>{item?.name}</Typography.Text>,
     },
     {
-      title: "Date/Time",
-      dataIndex: "date",
-      key: "date",
+      title: 'Date/Time',
+      dataIndex: 'date',
+      key: 'date',
       sorter: (a, b) => dayjs(a.date).isBefore(dayjs(b.date)),
-      render: (item) => dayjs(item).format("DD MMM, h:mm:ss a"),
-      defaultSortOrder: "ascend",
-      filters: [{ text: "Today", value: 1 }],
-      onFilter: (value, record) => dayjs(record.date).isSame(dayjs(), "day"),
+      render: (item) => dayjs(item).format('DD MMM, h:mm:ss a'),
+      defaultSortOrder: 'ascend',
+      filters: [{ text: 'Today', value: 1 }],
+      onFilter: (value, record) => dayjs(record.date).isSame(dayjs(), 'day'),
     },
     {
-      title: "Remarks",
-      dataIndex: "remarks",
-      key: "remarks",
-      render: (item) => (
-        <Typography.Text ellipsis={true}>{item}</Typography.Text>
-      ),
+      title: 'Remarks',
+      dataIndex: 'remarks',
+      key: 'remarks',
+      render: (item) => <Typography.Text ellipsis={true}>{item}</Typography.Text>,
     },
     {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
       render: (text, record) => (
         <Space>
-          <Button
-            onClick={() =>
-              setModalVisible({ visible: true, id: record.id, data: record })
-            }
-          >
+          <Button onClick={() => setModalVisible({ visible: true, id: record.id, data: record })}>
             View Form
           </Button>
-          <Button onClick={() => GetPrescriptionByAppointmentID(record)}>
-            View Prescription
-          </Button>
-          <Button onClick={() => navigate(`/patient/${record.patient.id}`)}>
-            View Patient
-          </Button>
+          <Button onClick={() => GetPrescriptionByAppointmentID(record)}>View Prescription</Button>
+          <Button onClick={() => navigate(`/patient/${record.patient.id}`)}>View Patient</Button>
         </Space>
       ),
     },
@@ -250,10 +218,7 @@ const DoctorAppointments = () => {
 
   return (
     <Fragment>
-      <Typography.Title
-        level={4}
-        style={{ width: "100%", textAlign: "center" }}
-      >
+      <Typography.Title level={4} style={{ width: '100%', textAlign: 'center' }}>
         Doctor Appointments
       </Typography.Title>
       <Button
@@ -262,9 +227,7 @@ const DoctorAppointments = () => {
         loading={loadingData.refetchAppointments}
       >
         <Typography.Text>
-          {loadingData.refetchAppointments
-            ? "Getting Latest Appointments"
-            : "Refresh Appointments"}
+          {loadingData.refetchAppointments ? 'Getting Latest Appointments' : 'Refresh Appointments'}
         </Typography.Text>
       </Button>
 
@@ -274,8 +237,8 @@ const DoctorAppointments = () => {
         style={{ marginTop: -5 }}
         items={[
           {
-            key: "1",
-            label: "Active",
+            key: '1',
+            label: 'Active',
             children: (
               <Table
                 rowKey={(record) => record.id}
@@ -284,9 +247,7 @@ const DoctorAppointments = () => {
                 loading={!isReception ? doctorData.loading : false}
                 dataSource={
                   !isReception
-                    ? (doctorData.appointments || []).filter(
-                        (apt) => apt.pending
-                      )
+                    ? (doctorData.appointments || []).filter((apt) => apt.pending)
                     : receptionistState.activeAppointments
                 }
                 columns={columnsPending}
@@ -308,8 +269,8 @@ const DoctorAppointments = () => {
             ),
           },
           {
-            key: "2",
-            label: "Completed",
+            key: '2',
+            label: 'Completed',
             children: (
               <Table
                 rowKey={(record) => record.id}
@@ -317,9 +278,7 @@ const DoctorAppointments = () => {
                 size="small"
                 dataSource={
                   !isReception
-                    ? (doctorData.appointments || []).filter(
-                        (apt) => !apt.pending
-                      )
+                    ? (doctorData.appointments || []).filter((apt) => !apt.pending)
                     : receptionistState.completedAppointments
                 }
                 columns={columnsPrevious}
@@ -370,35 +329,21 @@ const DoctorAppointments = () => {
       >
         <ShowEntry
           label="Date and Time"
-          value={dayjs(ModalVisible.data?.date).format(
-            "MMMM DD YYYY, h:mm:ss a"
-          )}
+          value={dayjs(ModalVisible.data?.date).format('MMMM DD YYYY, h:mm:ss a')}
         />
         <Divider>
           <Typography.Title level={5}>Patient Info</Typography.Title>
         </Divider>
-        <Space direction="vertical" size={3} style={{ padding: "10px" }}>
-          {[
-            "name",
-            "department",
-            "age",
-            "email",
-            "fathersName",
-            "bloodGroup",
-            "designation",
-          ].map((item) => {
-            const data = ModalVisible.data?.patient?.[item];
-            if (!!data) {
-              return (
-                <ShowEntry
-                  key={item}
-                  label={toSentenceCase(item)}
-                  value={data}
-                />
-              );
+        <Space direction="vertical" size={3} style={{ padding: '10px' }}>
+          {['name', 'department', 'age', 'email', 'fathersName', 'bloodGroup', 'designation'].map(
+            (item) => {
+              const data = ModalVisible.data?.patient?.[item];
+              if (!!data) {
+                return <ShowEntry key={item} label={toSentenceCase(item)} value={data} />;
+              }
+              return null;
             }
-            return null;
-          })}
+          )}
         </Space>
       </Modal>
     </Fragment>

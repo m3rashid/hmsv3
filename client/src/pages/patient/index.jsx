@@ -1,31 +1,26 @@
-import dayjs from "dayjs";
-import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
-import { useCallback, useMemo, useState, Fragment } from "react";
-import { Row, Col, Typography, Divider, Button, Table, Drawer } from "antd";
+import dayjs from 'dayjs';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
+import { useCallback, useMemo, useState, Fragment } from 'react';
+import { Row, Col, Typography, Divider, Button, Table, Drawer } from 'antd';
 
-import { instance } from "api/instance";
-import Loading from "components/Loading/Loading";
-import styles from "pages/patient/styles.module.css";
-import DoctorDisplay from "components/Doctor/DoctorDisplay";
-import PrescriptionDisplay from "components/Prescription/PrescriptionDisplay";
-import useTableStyles from "components/common/tableDefaults";
+import { instance } from 'api/instance';
+import Loading from 'components/Loading/Loading';
+import styles from 'pages/patient/styles.module.css';
+import DoctorDisplay from 'components/Doctor/DoctorDisplay';
+import PrescriptionDisplay from 'components/Prescription/PrescriptionDisplay';
+import useTableStyles from 'components/common/tableDefaults';
 
 const PatientInfo = (props) => {
   const { tableStyles } = useTableStyles();
   const { id } = useParams();
-  const { data, isLoading, isError } = useQuery(
-    ["patient", id, props],
-    async () => {
-      const { data } = await instance.get(`/patient/${id || props.id}`);
-      const patient = data.patient;
+  const { data, isLoading, isError } = useQuery(['patient', id, props], async () => {
+    const { data } = await instance.get(`/patient/${id || props.id}`);
+    const patient = data.patient;
 
-      patient.Appointment = patient.Appointment.sort((a, b) =>
-        dayjs(b.date).diff(a.date)
-      );
-      return patient;
-    }
-  );
+    patient.Appointment = patient.Appointment.sort((a, b) => dayjs(b.date).diff(a.date));
+    return patient;
+  });
 
   const [PrescriptionModal, setPrescriptionModal] = useState({
     visible: false,
@@ -39,13 +34,13 @@ const PatientInfo = (props) => {
 
   const InfoSchema = useMemo(
     () => [
-      { title: "ID No.", dataIndex: "id" },
-      { title: "Name", dataIndex: "name" },
-      { title: "Age", dataIndex: "age" },
-      { title: "Address", dataIndex: "address" },
-      { title: "Contact", dataIndex: "contact" },
-      { title: "Email", dataIndex: "email" },
-      { title: "Sex", dataIndex: "sex" },
+      { title: 'ID No.', dataIndex: 'id' },
+      { title: 'Name', dataIndex: 'name' },
+      { title: 'Age', dataIndex: 'age' },
+      { title: 'Address', dataIndex: 'address' },
+      { title: 'Contact', dataIndex: 'contact' },
+      { title: 'Email', dataIndex: 'email' },
+      { title: 'Sex', dataIndex: 'sex' },
     ],
     []
   );
@@ -73,26 +68,26 @@ const PatientInfo = (props) => {
   const AppointmentSchema = useMemo(
     () => [
       {
-        title: "Appointment ID.",
-        dataIndex: "id",
-        key: "id",
+        title: 'Appointment ID.',
+        dataIndex: 'id',
+        key: 'id',
       },
       {
-        title: "Appointment Date",
-        dataIndex: "datePrescribed",
-        key: "datePrescribed",
-        render: (date) => dayjs(date).format("MMMM DD YYYY"), // Format date to "MMMM Do YYYY"
+        title: 'Appointment Date',
+        dataIndex: 'datePrescribed',
+        key: 'datePrescribed',
+        render: (date) => dayjs(date).format('MMMM DD YYYY'), // Format date to "MMMM Do YYYY"
       },
       {
-        title: "Remarks",
-        dataIndex: "remarks",
-        key: "remarks",
-        render: (remarks) => remarks || "No Remarks", // If no remarks, display "No Remarks"
+        title: 'Remarks',
+        dataIndex: 'remarks',
+        key: 'remarks',
+        render: (remarks) => remarks || 'No Remarks', // If no remarks, display "No Remarks"
       },
       {
         title: "Doctor's Name",
-        dataIndex: "doctor",
-        key: "doctor",
+        dataIndex: 'doctor',
+        key: 'doctor',
         render: (doctor) => (
           <Button
             type="link"
@@ -108,16 +103,16 @@ const PatientInfo = (props) => {
         ),
       },
       {
-        title: "Actions",
-        dataIndex: "actions",
-        key: "actions",
+        title: 'Actions',
+        dataIndex: 'actions',
+        key: 'actions',
         render: (_, record) => (
           <Fragment>
             <Button
               onClick={PrescriptionModalHandler(record.Prescription[0])}
               disabled={!record.Prescription[0]}
             >
-              {record.Prescription[0] ? "View Prescription" : "No Prescription"}
+              {record.Prescription[0] ? 'View Prescription' : 'No Prescription'}
             </Button>
           </Fragment>
         ),
@@ -131,7 +126,7 @@ const PatientInfo = (props) => {
   }
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div style={{ padding: '20px' }}>
       <Divider>
         <Typography.Title level={3}>Patient's Info</Typography.Title>
       </Divider>
@@ -140,11 +135,7 @@ const PatientInfo = (props) => {
           InfoSchema.map((item, index) => {
             if (!data[item.dataIndex]) return null;
             return (
-              <Row
-                span={12}
-                key={index}
-                className={styles.info__schema__container}
-              >
+              <Row span={12} key={index} className={styles.info__schema__container}>
                 <Col span={5} className={styles.patient__info__header}>
                   <Typography.Text>{item.title}</Typography.Text>
                 </Col>
@@ -165,7 +156,7 @@ const PatientInfo = (props) => {
       />
       <Drawer
         open={PrescriptionModal.visible}
-        width={"40%"}
+        width={'40%'}
         onClose={() => setPrescriptionModal({ visible: false })}
       >
         <PrescriptionDisplay
@@ -180,7 +171,7 @@ const PatientInfo = (props) => {
       <Drawer
         open={DoctorModal.visible}
         okButtonProps={{
-          style: { display: "none" },
+          style: { display: 'none' },
         }}
         onClose={() => setDoctorModal({ visible: false, data: {} })}
         title="Doctor's Info"

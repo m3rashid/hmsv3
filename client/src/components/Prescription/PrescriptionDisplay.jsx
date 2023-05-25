@@ -1,11 +1,11 @@
-import { Fragment } from "react";
-import dayjs from "dayjs";
-import PropTypes from "prop-types";
-import DOMPurify from "dompurify";
-import { Space, Typography, Card, Table, Tooltip, Divider } from "antd";
-import { CheckCircleOutlined, WarningOutlined } from "@ant-design/icons";
-import ShowEntry from "components/common/showEntry";
-import useTableStyles from "components/common/tableDefaults";
+import { Fragment } from 'react';
+import dayjs from 'dayjs';
+import PropTypes from 'prop-types';
+import DOMPurify from 'dompurify';
+import { Space, Typography, Card, Table, Tooltip, Divider } from 'antd';
+import { CheckCircleOutlined, WarningOutlined } from '@ant-design/icons';
+import ShowEntry from 'components/common/showEntry';
+import useTableStyles from 'components/common/tableDefaults';
 
 function PrescriptionDisplay({
   patient,
@@ -19,27 +19,18 @@ function PrescriptionDisplay({
   const { tableStyles } = useTableStyles();
   return (
     <Fragment>
-      <Space direction="vertical" style={{ width: "100%" }}>
+      <Space direction="vertical" style={{ width: '100%' }}>
         <Typography.Title level={4}>Prescription Preview</Typography.Title>
         <Card size="small" title="Appointment Details">
           <Space direction="vertical">
             {id && <ShowEntry label="Appointment ID" value={id} />}
-            {patient?.name && (
-              <ShowEntry label="Patient Name" value={patient?.name} />
-            )}
-            <ShowEntry
-              label="Date"
-              value={dayjs(date).format("MMMM DD YYYY HH:mm A")}
-            />
+            {patient?.name && <ShowEntry label="Patient Name" value={patient?.name} />}
+            <ShowEntry label="Date" value={dayjs(date).format('MMMM DD YYYY HH:mm A')} />
           </Space>
         </Card>
 
         <Card size="small" title="Symptoms">
-          {symptoms && (
-            <div
-              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(symptoms) }}
-            />
-          )}
+          {symptoms && <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(symptoms) }} />}
         </Card>
 
         <Divider />
@@ -49,10 +40,7 @@ function PrescriptionDisplay({
             Medicines
           </Typography.Title>
           <br />
-          <ViewPrescriptionTable
-            prescriptionData={Medicines}
-            showAvailability={showAvailability}
-          />
+          <ViewPrescriptionTable prescriptionData={Medicines} showAvailability={showAvailability} />
         </div>
 
         <Divider />
@@ -62,10 +50,7 @@ function PrescriptionDisplay({
             Custom Medicines
           </Typography.Title>
           <br />
-          <ViewPrescriptionTable
-            prescriptionData={ExtraMedicines}
-            showAvailability={false}
-          />
+          <ViewPrescriptionTable prescriptionData={ExtraMedicines} showAvailability={false} />
         </div>
       </Space>
     </Fragment>
@@ -87,59 +72,54 @@ export default PrescriptionDisplay;
 const ViewPrescriptionTable = ({ prescriptionData, showAvailability }) => {
   const medicineTableColumns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      fixed: "left",
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      fixed: 'left',
       width: 100,
 
       render: (text, record) => <span>{record?.Medicine?.name}</span>,
     },
     {
-      title: "Dosage",
-      dataIndex: "dosage",
-      key: "dosage",
+      title: 'Dosage',
+      dataIndex: 'dosage',
+      key: 'dosage',
       width: 100,
       render: (text) => <span>{text}</span>,
     },
     {
-      title: "Duration",
-      dataIndex: "duration",
-      key: "duration",
+      title: 'Duration',
+      dataIndex: 'duration',
+      key: 'duration',
       width: 100,
 
       render: (text) => <span>{text} days</span>,
     },
     {
-      title: "Requirement",
-      dataIndex: "required",
+      title: 'Requirement',
+      dataIndex: 'required',
       width: 100,
-      key: "required",
+      key: 'required',
       render: (text, record) => <span>{record.quantityRequired} Tablets</span>,
     },
     ...(showAvailability
       ? [
           {
-            title: "Availability",
-            dataIndex: "availability",
+            title: 'Availability',
+            dataIndex: 'availability',
             width: 100,
-            key: "availability",
+            key: 'availability',
             render: (text, record) => {
-              const availability =
-                record?.Medicine?.quantity >= record.quantityRequired;
+              const availability = record?.Medicine?.quantity >= record.quantityRequired;
               return (
-                <Typography style={{ textAlign: "center" }}>
+                <Typography style={{ textAlign: 'center' }}>
                   {availability ? (
                     <Tooltip title="Available" color="green" placement="right">
-                      <CheckCircleOutlined style={{ color: "green" }} />
+                      <CheckCircleOutlined style={{ color: 'green' }} />
                     </Tooltip>
                   ) : (
-                    <Tooltip
-                      title="Not Available"
-                      color="orange"
-                      placement="right"
-                    >
-                      <WarningOutlined style={{ color: "orange" }} />
+                    <Tooltip title="Not Available" color="orange" placement="right">
+                      <WarningOutlined style={{ color: 'orange' }} />
                     </Tooltip>
                   )}
                 </Typography>

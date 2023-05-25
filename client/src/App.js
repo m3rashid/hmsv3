@@ -1,27 +1,27 @@
-import "@ant-design/flowchart/dist/index.css";
-import "antd/dist/reset.css";
-import "./index.css";
-import enUs from "antd/locale/en_US";
-import { ConfigProvider } from "antd";
-import { useRecoilState } from "recoil";
-import { Routes, Route } from "react-router-dom";
-import { createContext, useCallback, useEffect, useState } from "react";
+import '@ant-design/flowchart/dist/index.css';
+import 'antd/dist/reset.css';
+import './index.css';
+import enUs from 'antd/locale/en_US';
+import { ConfigProvider } from 'antd';
+import { useRecoilState } from 'recoil';
+import { Routes, Route } from 'react-router-dom';
+import { createContext, useCallback, useEffect, useState } from 'react';
 
-import Home from "pages/home";
-import About from "pages/about";
-import UnAuthPage from "pages/unAuthenticated";
+import Home from 'pages/home';
+import About from 'pages/about';
+import UnAuthPage from 'pages/unAuthenticated';
 
-import { socket } from "api/instance";
-import { authState } from "atoms/auth";
-import { instance } from "api/instance";
-import routes, { checkAccess } from "routes";
-import Loading from "components/Loading/Loading";
-import AppLayout from "components/Layout/AppLayout";
-import { revalidateJWT } from "api/auth/revalidateJWT";
-import useFetchSockets from "components/Sockets/useFetchSockets";
-import Learn from "pages/documentation";
-import { getConfig } from "api/getConfig";
-import { configState } from "atoms/config";
+import { socket } from 'api/instance';
+import { authState } from 'atoms/auth';
+import { instance } from 'api/instance';
+import routes, { checkAccess } from 'routes';
+import Loading from 'components/Loading/Loading';
+import AppLayout from 'components/Layout/AppLayout';
+import { revalidateJWT } from 'api/auth/revalidateJWT';
+import useFetchSockets from 'components/Sockets/useFetchSockets';
+import Learn from 'pages/documentation';
+import { getConfig } from 'api/getConfig';
+import { configState } from 'atoms/config';
 
 export const SocketContext = createContext();
 
@@ -54,9 +54,7 @@ function App() {
 
   useEffect(() => {
     if (Auth.isLoggedIn) {
-      instance.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${Auth.token}`;
+      instance.defaults.headers.common['Authorization'] = `Bearer ${Auth.token}`;
     }
   }, [Auth]);
 
@@ -65,7 +63,7 @@ function App() {
     <ConfigProvider
       theme={{
         token: {
-          fontFamily: "Poppins, sans-serif",
+          fontFamily: 'Poppins, sans-serif',
           colorPrimary: config.app_theme_color,
           colorBgTextHover: config.app_theme_color,
           colorFill: config.app_theme_color,
@@ -74,7 +72,7 @@ function App() {
       locale={enUs}
     >
       <AppLayout>
-        <div style={{ minHeight: "calc(100vh - 115px)", padding: 20 }}>
+        <div style={{ minHeight: 'calc(100vh - 115px)', padding: 20 }}>
           <Routes>
             {routes.map((route, index) => {
               const validated = checkAccess(Auth, route);

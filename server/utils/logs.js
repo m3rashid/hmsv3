@@ -1,12 +1,6 @@
-const { prisma } = require("./prisma");
+const { prisma } = require('./prisma');
 
-const addEventLog = async ({
-  action,
-  fromId,
-  actionId,
-  actionTable,
-  message,
-}) => {
+const addEventLog = async ({ action, fromId, actionId, actionTable, message }) => {
   const log = await prisma.log.create({
     data: {
       action,

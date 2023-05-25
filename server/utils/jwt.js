@@ -1,10 +1,10 @@
-const fs = require("fs");
-const JWT = require("jsonwebtoken");
+const fs = require('fs');
+const JWT = require('jsonwebtoken');
 
-const keys = JSON.parse(fs.readFileSync(__dirname + "/keys/keys.json"));
+const keys = JSON.parse(fs.readFileSync(__dirname + '/keys/keys.json'));
 
 const issueJWT = (user) => {
-  const expiresIn = "1d";
+  const expiresIn = '1d';
   const payload = {
     sub: {
       id: user.id,
@@ -29,7 +29,7 @@ const issueJWT = (user) => {
 
 const verifyJWT = (token) => {
   try {
-    const extractedToken = token.split(" ")[1];
+    const extractedToken = token.split(' ')[1];
     const decoded = JWT.verify(extractedToken, keys.ACCESS_SECRET);
     return {
       valid: true,
@@ -40,7 +40,7 @@ const verifyJWT = (token) => {
     console.log(err);
     return {
       valid: false,
-      expired: err.message === "jwt expired",
+      expired: err.message === 'jwt expired',
       payload: null,
     };
   }
@@ -48,7 +48,7 @@ const verifyJWT = (token) => {
 
 const revalidateJWT = (token) => {
   try {
-    const extractedToken = token.split(" ")[1];
+    const extractedToken = token.split(' ')[1];
     const decoded = JWT.verify(extractedToken, keys.RESET_SECRET, {});
 
     return {
@@ -60,7 +60,7 @@ const revalidateJWT = (token) => {
     console.log(err);
     return {
       valid: false,
-      expired: err.message === "jwt expired",
+      expired: err.message === 'jwt expired',
       payload: null,
     };
   }

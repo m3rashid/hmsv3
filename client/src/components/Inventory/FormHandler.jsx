@@ -1,20 +1,12 @@
-import {
-  Form,
-  Button,
-  AutoComplete,
-  message,
-  Input,
-  Select,
-  DatePicker,
-} from "antd";
-import dayjs from "dayjs";
-import PropTypes from "prop-types";
-import { useRecoilValue } from "recoil";
-import { Fragment, useState } from "react";
+import { Form, Button, AutoComplete, message, Input, Select, DatePicker } from 'antd';
+import dayjs from 'dayjs';
+import PropTypes from 'prop-types';
+import { useRecoilValue } from 'recoil';
+import { Fragment, useState } from 'react';
 
-import { inventoryState } from "atoms/inventory";
-import { Category, InventoryTypes, MedType } from "utils/constants";
-import StatefullFormRenderer from "components/common/StatefullFormRenderer";
+import { inventoryState } from 'atoms/inventory';
+import { Category, InventoryTypes, MedType } from 'utils/constants';
+import StatefullFormRenderer from 'components/common/StatefullFormRenderer';
 
 function InventoryFormHandler(props) {
   const inventory = useRecoilValue(inventoryState);
@@ -32,7 +24,7 @@ function InventoryFormHandler(props) {
       props.formSubmit({ values, FormSelected, form });
     } catch (err) {
       console.error(err);
-      message.error("Error");
+      message.error('Error');
     }
   };
 
@@ -61,14 +53,14 @@ function InventoryFormHandler(props) {
         initialValues={{
           ...props?.defaultValues,
           expiryDate: props?.defaultValues?.expiryDate
-            ? dayjs(props?.defaultValues?.expiryDate, "YYYY-MM-DD")
+            ? dayjs(props?.defaultValues?.expiryDate, 'YYYY-MM-DD')
             : undefined,
         }}
       >
         <Form.Item
           label="Inventory Type"
           name="type"
-          style={{ display: props?.type ? "none" : "block" }}
+          style={{ display: props?.type ? 'none' : 'block' }}
         >
           <Select
             placeholder="Select Inventory Type"
@@ -91,15 +83,11 @@ function InventoryFormHandler(props) {
             rules={[
               {
                 required: true,
-                message: "Please input the name of the medicine!",
+                message: 'Please input the name of the medicine!',
               },
             ]}
           >
-            <AutoComplete
-              onSearch={onSearchMedicineName}
-              allowClear
-              options={Search.name}
-            />
+            <AutoComplete onSearch={onSearchMedicineName} allowClear options={Search.name} />
           </Form.Item>
           <Form.Item
             label="Quantity"
@@ -107,19 +95,16 @@ function InventoryFormHandler(props) {
             rules={[
               {
                 required: true,
-                message: "Please input the name of the medicine!",
+                message: 'Please input the name of the medicine!',
               },
             ]}
           >
-            <Input placeholder="Enter Quantity" type={"number"} />
+            <Input placeholder="Enter Quantity" type={'number'} />
           </Form.Item>
         </StatefullFormRenderer>
 
         <StatefullFormRenderer
-          render={[
-            InventoryTypes.Medicine,
-            InventoryTypes.NonMedicine,
-          ].includes(FormSelected.type)}
+          render={[InventoryTypes.Medicine, InventoryTypes.NonMedicine].includes(FormSelected.type)}
         >
           <Fragment>
             <Form.Item
@@ -128,7 +113,7 @@ function InventoryFormHandler(props) {
               rules={[
                 {
                   required: true,
-                  message: "Please input the batch number!",
+                  message: 'Please input the batch number!',
                 },
               ]}
             >
@@ -140,31 +125,27 @@ function InventoryFormHandler(props) {
               rules={[
                 {
                   required: true,
-                  message: "Please input the expiry date!",
+                  message: 'Please input the expiry date!',
                 },
               ]}
             >
               <DatePicker
                 placeholder="Enter Expiry Date"
                 type="date"
-                disabledDate={(current) =>
-                  current && current < dayjs().endOf("day")
-                }
+                disabledDate={(current) => current && current < dayjs().endOf('day')}
               />
             </Form.Item>
           </Fragment>
         </StatefullFormRenderer>
 
-        <StatefullFormRenderer
-          render={FormSelected.type === InventoryTypes.Medicine}
-        >
+        <StatefullFormRenderer render={FormSelected.type === InventoryTypes.Medicine}>
           <Form.Item
             label="Category"
             name="category"
             rules={[
               {
                 required: true,
-                message: "Please input the category!",
+                message: 'Please input the category!',
               },
             ]}
           >
@@ -188,7 +169,7 @@ function InventoryFormHandler(props) {
             rules={[
               {
                 required: true,
-                message: "Please input the medicine type!",
+                message: 'Please input the medicine type!',
               },
             ]}
           >
@@ -206,11 +187,7 @@ function InventoryFormHandler(props) {
         </StatefullFormRenderer>
 
         <Form.Item wrapperCol={{ offset: 2 }}>
-          <Button
-            type="primary"
-            htmlType="submit"
-            disabled={!FormSelected.type}
-          >
+          <Button type="primary" htmlType="submit" disabled={!FormSelected.type}>
             Submit
           </Button>
         </Form.Item>

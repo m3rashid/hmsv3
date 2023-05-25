@@ -1,15 +1,13 @@
-const {
-  loginService,
-  revalidateService,
-  signupService,
-} = require("../services");
+const { loginService, revalidateService, signupService } = require('../services');
 
 const login = async (req, res) => {
-  const { user, token, refreshToken, expires, userDetails } =
-    await loginService(req.body.email, req.body.password);
+  const { user, token, refreshToken, expires, userDetails } = await loginService(
+    req.body.email,
+    req.body.password
+  );
 
   return res.status(200).json({
-    message: "Login Successful",
+    message: 'Login Successful',
     token,
     refreshToken,
     expires,
@@ -43,18 +41,16 @@ const signup = async (req, res) => {
   });
 
   return res.status(200).json({
-    message: "Signup Successful",
+    message: 'Signup Successful',
     user,
   });
 };
 
 const revalidate = async (req, res) => {
-  const refreshToken = req.headers["authorization"];
-  const { user, userDetails, token, expires } = await revalidateService(
-    refreshToken
-  );
+  const refreshToken = req.headers['authorization'];
+  const { user, userDetails, token, expires } = await revalidateService(refreshToken);
   return res.status(200).json({
-    message: "Token revalidated",
+    message: 'Token revalidated',
     token,
     expires,
     user: { ...user.dataValues, profile: userDetails },

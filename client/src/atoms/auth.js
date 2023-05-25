@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const authDefaultState = {
   isLoggedIn: false,
@@ -9,6 +9,6 @@ export const authDefaultState = {
 };
 
 export const authState = atom({
-  key: "auth",
+  key: 'auth',
   default: authDefaultState,
 });

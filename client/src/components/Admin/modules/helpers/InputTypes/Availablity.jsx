@@ -1,10 +1,10 @@
-import dayjs from "dayjs";
-import { useRecoilState } from "recoil";
-import { DeleteFilled, PlusOutlined } from "@ant-design/icons";
-import { useCallback, useEffect } from "react";
-import { Button, Divider, Select, Space, TimePicker } from "antd";
+import dayjs from 'dayjs';
+import { useRecoilState } from 'recoil';
+import { DeleteFilled, PlusOutlined } from '@ant-design/icons';
+import { useCallback, useEffect } from 'react';
+import { Button, Divider, Select, Space, TimePicker } from 'antd';
 
-import { UserSlotManagerAtom } from "atoms/UserSlotManager";
+import { UserSlotManagerAtom } from 'atoms/UserSlotManager';
 
 function Availability({ isEdit, defaultValue, form }) {
   const [Data, setData] = useRecoilState(UserSlotManagerAtom);
@@ -88,43 +88,35 @@ function Availability({ isEdit, defaultValue, form }) {
             <Select
               defaultValue={item.day}
               options={[
-                { label: "Monday", value: "MON" },
-                { label: "Tuesday", value: "TUE" },
-                { label: "Wednesday", value: "WED" },
-                { label: "Thursday", value: "THU" },
-                { label: "Friday", value: "FRI" },
-                { label: "Saturday", value: "SAT" },
-                { label: "Sunday", value: "SUN" },
+                { label: 'Monday', value: 'MON' },
+                { label: 'Tuesday', value: 'TUE' },
+                { label: 'Wednesday', value: 'WED' },
+                { label: 'Thursday', value: 'THU' },
+                { label: 'Friday', value: 'FRI' },
+                { label: 'Saturday', value: 'SAT' },
+                { label: 'Sunday', value: 'SUN' },
               ]}
               onChange={(value) => {
                 DATA_UPDATE({ ...item, day: value });
               }}
               placeholder="Select Day"
-              style={{ marginBottom: "10px" }}
+              style={{ marginBottom: '10px' }}
               getPopupContainer={(trigger) => trigger.parentNode}
             />
             {item.range.map((rangeItem) => (
               <div key={rangeItem.id} style={{ marginTop: 4, marginBottom: 4 }}>
                 <Space>
                   <TimePicker.RangePicker
-                    format={"HH:mm"}
+                    format={'HH:mm'}
                     value={[
                       rangeItem?.from
-                        ? dayjs(
-                            `${rangeItem?.from?.hour}:${rangeItem?.from?.minute}`,
-                            "HH:mm"
-                          )
+                        ? dayjs(`${rangeItem?.from?.hour}:${rangeItem?.from?.minute}`, 'HH:mm')
                         : null,
                       rangeItem?.to
-                        ? dayjs(
-                            `${rangeItem?.to?.hour}:${rangeItem?.to?.minute}`,
-                            "HH:mm"
-                          )
+                        ? dayjs(`${rangeItem?.to?.hour}:${rangeItem?.to?.minute}`, 'HH:mm')
                         : null,
                     ]}
-                    onChange={(value) =>
-                      UpdateSlotTimingHandler(value, rangeItem, item)
-                    }
+                    onChange={(value) => UpdateSlotTimingHandler(value, rangeItem, item)}
                   />
                   <Button
                     htmlType="button"
@@ -132,19 +124,17 @@ function Availability({ isEdit, defaultValue, form }) {
                     onClick={() => {
                       DATA_UPDATE({
                         ...item,
-                        range: item.range.filter(
-                          (_range) => rangeItem.id !== _range.id
-                        ),
+                        range: item.range.filter((_range) => rangeItem.id !== _range.id),
                       });
                     }}
-                    icon={<DeleteFilled style={{ color: "#ff0000" }} />}
+                    icon={<DeleteFilled style={{ color: '#ff0000' }} />}
                   />
                 </Space>
               </div>
             ))}
             <Button
               htmlType="button"
-              style={{ marginTop: "10px" }}
+              style={{ marginTop: '10px' }}
               onClick={() => {
                 DATA_UPDATE({
                   ...item,

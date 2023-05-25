@@ -1,21 +1,17 @@
-import PropTypes from "prop-types";
-import ReactQuill from "react-quill";
-import { useRecoilValue } from "recoil";
-import { useDebounce } from "use-debounce";
-import { Fragment, useCallback, useEffect, useState } from "react";
-import { Button, Input, Select, Spin, Table, Typography } from "antd";
-import {
-  LoadingOutlined,
-  DeleteOutlined,
-  DashOutlined,
-} from "@ant-design/icons";
+import PropTypes from 'prop-types';
+import ReactQuill from 'react-quill';
+import { useRecoilValue } from 'recoil';
+import { useDebounce } from 'use-debounce';
+import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Button, Input, Select, Spin, Table, Typography } from 'antd';
+import { LoadingOutlined, DeleteOutlined, DashOutlined } from '@ant-design/icons';
 
-import { instance } from "api/instance";
-import { dosages } from "utils/constants";
-import { inventoryState } from "atoms/inventory";
-import styles from "components/Medicine/medicineinput.module.css";
-import quillDefaults from "components/common/quillDefaults";
-import useTableStyles from "components/common/tableDefaults";
+import { instance } from 'api/instance';
+import { dosages } from 'utils/constants';
+import { inventoryState } from 'atoms/inventory';
+import styles from 'components/Medicine/medicineinput.module.css';
+import quillDefaults from 'components/common/quillDefaults';
+import useTableStyles from 'components/common/tableDefaults';
 
 const MedicineInputTable = ({ medicines, setMedicines, showDepth = true }) => {
   const { tableStyles } = useTableStyles();
@@ -28,7 +24,7 @@ const MedicineInputTable = ({ medicines, setMedicines, showDepth = true }) => {
           ...prev.medicines,
           {
             Medicine: {},
-            dosage: "",
+            dosage: '',
             duration: 0,
             key: prev.medicines.length || 0,
           },
@@ -110,9 +106,9 @@ const MedicineInputTable = ({ medicines, setMedicines, showDepth = true }) => {
 
   const medicineInputTableColumns = [
     {
-      title: "Medicine",
-      dataIndex: "medicine",
-      key: "medicine",
+      title: 'Medicine',
+      dataIndex: 'medicine',
+      key: 'medicine',
       render: (text, record) => (
         <MedicineNameCol
           medicine={record}
@@ -122,21 +118,17 @@ const MedicineInputTable = ({ medicines, setMedicines, showDepth = true }) => {
       ),
     },
     {
-      title: "Dosage",
-      dataIndex: "dosage",
-      key: "dosage",
+      title: 'Dosage',
+      dataIndex: 'dosage',
+      key: 'dosage',
       render: (text, record) => (
-        <DosageCol
-          dosage={text}
-          dosageChangeHandler={dosageChangeHandler}
-          index={record.key}
-        />
+        <DosageCol dosage={text} dosageChangeHandler={dosageChangeHandler} index={record.key} />
       ),
     },
     {
-      title: "Duration",
-      dataIndex: "duration",
-      key: "duration",
+      title: 'Duration',
+      dataIndex: 'duration',
+      key: 'duration',
       render: (text, record) => (
         <DurationCol
           durationChangeHandler={durationChangeHandler}
@@ -146,9 +138,9 @@ const MedicineInputTable = ({ medicines, setMedicines, showDepth = true }) => {
       ),
     },
     {
-      title: "Availability",
-      dataIndex: "availability",
-      key: "availability",
+      title: 'Availability',
+      dataIndex: 'availability',
+      key: 'availability',
       render: (text, record) => (
         <AvailabilityCol
           medicine={record}
@@ -158,17 +150,15 @@ const MedicineInputTable = ({ medicines, setMedicines, showDepth = true }) => {
       ),
     },
     {
-      title: "Remarks",
-      dataIndex: "remarks",
-      key: "remarks",
-      render: (text, medicine) => (
-        <RemarksCol remarks={text} medicine={medicine} />
-      ),
+      title: 'Remarks',
+      dataIndex: 'remarks',
+      key: 'remarks',
+      render: (text, medicine) => <RemarksCol remarks={text} medicine={medicine} />,
     },
     {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
+      title: 'Action',
+      dataIndex: 'action',
+      key: 'action',
       render: (text, record) => (
         <Button
           icon={<DeleteOutlined />}
@@ -191,7 +181,7 @@ const MedicineInputTable = ({ medicines, setMedicines, showDepth = true }) => {
       <Button
         type="dashed"
         onClick={addEmptyMedicine}
-        style={{ margin: "auto", display: "flex", marginTop: "1rem" }}
+        style={{ margin: 'auto', display: 'flex', marginTop: '1rem' }}
       >
         + Add Medicine
       </Button>
@@ -217,21 +207,17 @@ const MedicineNameCol = ({ medicine, medicineChangeHandler, index }) => {
       optionFilterProp="children"
       filterOption={(input, option) => option.children?.includes(input)}
       filterSort={(optionA, optionB) =>
-        optionA.children
-          ?.toLowerCase()
-          .localeCompare(optionB.children.toLowerCase())
+        optionA.children?.toLowerCase().localeCompare(optionB.children.toLowerCase())
       }
       placeholder="Select medicine"
       onChange={(value) => {
-        const Item = medicineDB?.Medicine?.inventory.find(
-          (item) => item.id === value
-        );
+        const Item = medicineDB?.Medicine?.inventory.find((item) => item.id === value);
         medicineChangeHandler(index, Item);
       }}
     >
       <Select.OptGroup label="Tablets">
         {medicineDB.Medicine?.inventory
-          ?.filter((m) => m.medType === "TABLET")
+          ?.filter((m) => m.medType === 'TABLET')
           .map((medicine) => {
             return (
               <Select.Option key={medicine.id} value={medicine.id}>
@@ -243,7 +229,7 @@ const MedicineNameCol = ({ medicine, medicineChangeHandler, index }) => {
 
       <Select.OptGroup label="Syrups">
         {medicineDB.Medicine?.inventory
-          ?.filter((m) => m.medType === "SYRUP")
+          ?.filter((m) => m.medType === 'SYRUP')
           .map((medicine) => {
             return (
               <Select.Option key={medicine.id} value={medicine.id}>
@@ -279,12 +265,12 @@ const DosageCol = ({ dosage, dosageChangeHandler, index }) => {
 const DurationCol = ({ durationChangeHandler, index, duration }) => {
   return (
     <Input
-      type={"number"}
+      type={'number'}
       placeholder="Enter duration"
       value={duration}
       className={styles.input}
       onChange={(e) => durationChangeHandler(index, e.target.value)}
-      addonAfter={"days"}
+      addonAfter={'days'}
     />
   );
 };
@@ -308,11 +294,10 @@ const AvailabilityCol = ({ medicine, index, quantityRequiredHandler }) => {
         duration: parseInt(value.duration),
       };
 
-      if (data.dosage === "" || data.duration === 0 || !data?.medicineId)
-        return;
+      if (data.dosage === '' || data.duration === 0 || !data?.medicineId) return;
 
       const { data: availabilityInfoData } = await instance.post(
-        "/doctor/med/check-availability",
+        '/doctor/med/check-availability',
         data
       );
       setAvailabilityInfo({
@@ -332,14 +317,9 @@ const AvailabilityCol = ({ medicine, index, quantityRequiredHandler }) => {
   return (
     <>
       {value?.Medicine?.id && value.dosage && value.duration ? (
-        <Spin
-          spinning={availabilityInfo.loading}
-          indicator={<LoadingOutlined />}
-        >
-          <Typography.Text
-            type={availabilityInfo.available ? "success" : "warning"}
-          >
-            {availabilityInfo.available ? "Available" : "Unavailable"}
+        <Spin spinning={availabilityInfo.loading} indicator={<LoadingOutlined />}>
+          <Typography.Text type={availabilityInfo.available ? 'success' : 'warning'}>
+            {availabilityInfo.available ? 'Available' : 'Unavailable'}
             &nbsp;
             {availabilityInfo.medicine &&
               `(${availabilityInfo.quantityRequired}/${availabilityInfo.medicine.quantity})`}
@@ -348,7 +328,7 @@ const AvailabilityCol = ({ medicine, index, quantityRequiredHandler }) => {
       ) : value?.medicine?.quantity ? (
         <Typography>{value?.medicine?.quantity} in stock</Typography>
       ) : (
-        <Typography style={{ textAlign: "center" }}>
+        <Typography style={{ textAlign: 'center' }}>
           <DashOutlined />
         </Typography>
       )}
@@ -362,7 +342,7 @@ const RemarksCol = ({ remarks, medicine, index }) => {
   return (
     <ReactQuill
       value={medicine.description}
-      onChange={(value) => handleChange(value, "description")}
+      onChange={(value) => handleChange(value, 'description')}
       {...quillDefaults}
     />
   );

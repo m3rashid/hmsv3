@@ -1,6 +1,6 @@
-import { Fragment } from "react";
-import PropTypes from "prop-types";
-import { List, Space, Tag, Typography } from "antd";
+import { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { List, Space, Tag, Typography } from 'antd';
 
 function ShowAvailability({ availability }) {
   return (
@@ -19,7 +19,7 @@ function ShowAvailability({ availability }) {
                         <Tag>
                           {range?.from?.hour} : {range?.from?.minute}
                         </Tag>
-                        <Typography.Text>{"-->"}</Typography.Text>
+                        <Typography.Text>{'-->'}</Typography.Text>
                         <Tag>
                           {range?.to?.hour} : {range?.to?.minute}
                         </Tag>

@@ -1,16 +1,16 @@
-import { message } from "antd";
-import PropTypes from "prop-types";
-import { useSetRecoilState } from "recoil";
+import { message } from 'antd';
+import PropTypes from 'prop-types';
+import { useSetRecoilState } from 'recoil';
 
-import { instance } from "api/instance";
-import { inventoryState } from "atoms/inventory";
-import InventoryFormHandler from "components/Inventory/FormHandler";
+import { instance } from 'api/instance';
+import { inventoryState } from 'atoms/inventory';
+import InventoryFormHandler from 'components/Inventory/FormHandler';
 
 function EditMedicine(props) {
   const setInventoryData = useSetRecoilState(inventoryState);
 
   const UpdateMedicine = async (data) => {
-    const { data: MedicineData } = await instance.post("/inventory/edit/", {
+    const { data: MedicineData } = await instance.post('/inventory/edit/', {
       type: props.type,
       data: data.values,
       id: props.data.id,
@@ -23,9 +23,7 @@ function EditMedicine(props) {
           ...prevState[props.type],
 
           inventory: [
-            ...prevState[props.type].inventory.filter(
-              (item) => item.id !== props.data.id
-            ),
+            ...prevState[props.type].inventory.filter((item) => item.id !== props.data.id),
             MedicineData.medicine,
           ],
         },
@@ -35,7 +33,7 @@ function EditMedicine(props) {
       open: false,
       data: props.data,
     });
-    message.success("Medicine updated successfully");
+    message.success('Medicine updated successfully');
   };
 
   return (

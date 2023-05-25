@@ -1,16 +1,16 @@
-import dayjs from "dayjs";
-import { useRecoilValue } from "recoil";
-import { Button, Form, Select, Spin } from "antd";
-import { useState, useEffect, useCallback } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import dayjs from 'dayjs';
+import { useRecoilValue } from 'recoil';
+import { Button, Form, Select, Spin } from 'antd';
+import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
-import { socket } from "api/instance";
-import { instance } from "api/instance";
-import { pharmacyState } from "atoms/pharmacy";
-import ShowReceipt from "pages/pharmacy/ShowReciept";
-import MedicineTable from "components/Pharmacy/MedicineTable";
-import usePrescribeMedicines from "components/Doctor/hooks/prescribeMeds.hook";
-import { LoadingOutlined } from "@ant-design/icons";
+import { socket } from 'api/instance';
+import { instance } from 'api/instance';
+import { pharmacyState } from 'atoms/pharmacy';
+import ShowReceipt from 'pages/pharmacy/ShowReciept';
+import MedicineTable from 'components/Pharmacy/MedicineTable';
+import usePrescribeMedicines from 'components/Doctor/hooks/prescribeMeds.hook';
+import { LoadingOutlined } from '@ant-design/icons';
 
 function CreateReceipts() {
   const {
@@ -35,7 +35,7 @@ function CreateReceipts() {
 
   const [searchParams] = useSearchParams();
 
-  const prescriptionId = searchParams.get("prescriptionId");
+  const prescriptionId = searchParams.get('prescriptionId');
 
   const handlePrescriptionSelect = useCallback(
     async (prescription_id) => {
@@ -47,14 +47,12 @@ function CreateReceipts() {
         setSelectedPrescriptionData((prev) => ({ ...prev, loading: true }));
         setSelectedPrescription(prescription);
         form.setFieldValue(
-          "prescription",
-          `${prescription.appointment.patient.name}, ${dayjs(
-            prescription.datePrescribed
-          ).format("DD MMM, hh:mm A")}`
+          'prescription',
+          `${prescription.appointment.patient.name}, ${dayjs(prescription.datePrescribed).format(
+            'DD MMM, hh:mm A'
+          )}`
         );
-        const { data } = await instance.get(
-          `/pharmacy/prescriptions/${prescription.id}`
-        );
+        const { data } = await instance.get(`/pharmacy/prescriptions/${prescription.id}`);
         setSelectedPrescriptionData((prev) => ({
           ...prev,
           loading: false,
@@ -69,17 +67,13 @@ function CreateReceipts() {
     if (prescriptionId !== null && pharmacyData.prescriptions.length > 0) {
       handlePrescriptionSelect(prescriptionId);
     }
-  }, [
-    handlePrescriptionSelect,
-    pharmacyData.prescriptions.length,
-    prescriptionId,
-  ]);
+  }, [handlePrescriptionSelect, pharmacyData.prescriptions.length, prescriptionId]);
 
   // const [total, setTotal] = useState({});
   const formSubmitHandler = async (values) => {
     if (loading) return;
 
-    socket.emit("dispense-prescription", {
+    socket.emit('dispense-prescription', {
       prescriptionId: selectedPrescription.id,
       medicines: selectedMedicines,
     });
@@ -88,7 +82,7 @@ function CreateReceipts() {
     setSelectedPrescription(null);
     setSelectedPrescriptionData({ data: [] });
     form.resetFields();
-    navigate("/pharmacy/prescriptions");
+    navigate('/pharmacy/prescriptions');
   };
 
   return (
@@ -103,10 +97,10 @@ function CreateReceipts() {
         <Form.Item
           label="Choose Prescription"
           name="prescription"
-          rules={[{ required: true, message: "Please Enter patient name!" }]}
+          rules={[{ required: true, message: 'Please Enter patient name!' }]}
         >
           <Select
-            style={{ width: "100%" }}
+            style={{ width: '100%' }}
             placeholder="select an Prescription"
             onSelect={(id) => {
               handlePrescriptionSelect(id);
@@ -120,17 +114,14 @@ function CreateReceipts() {
                 <Select.Option key={presp.id} value={presp.id}>
                   <span>
                     {presp.appointment.patient.name} - &nbsp;
-                    {dayjs(presp.datePrescribed).format("DD MMM YY,  HH:mm A")}
+                    {dayjs(presp.datePrescribed).format('DD MMM YY,  HH:mm A')}
                   </span>
                 </Select.Option>
               ))}
           </Select>
         </Form.Item>
 
-        <Spin
-          spinning={selectedPrescriptionData.loading}
-          indicator={<LoadingOutlined />}
-        >
+        <Spin spinning={selectedPrescriptionData.loading} indicator={<LoadingOutlined />}>
           {selectedPrescription && (
             <MedicineTable
               medicines={selectedPrescriptionData.data?.medicines || []}
@@ -140,13 +131,13 @@ function CreateReceipts() {
           )}
 
           <Form.Item wrapperCol={{ offset: 10 }}>
-            <div style={{ display: "flex" }}>
+            <div style={{ display: 'flex' }}>
               {selectedPrescription && selectedPrescriptionData.data && (
                 <>
                   <div>
                     <Button
                       disabled={selectedPrescriptionData.loading}
-                      style={{ marginTop: "20px", marginRight: "10px" }}
+                      style={{ marginTop: '20px', marginRight: '10px' }}
                       type="primary"
                       className="print__button"
                       onClick={printPdf}
@@ -156,7 +147,7 @@ function CreateReceipts() {
                   </div>
                   <div>
                     <Button
-                      style={{ marginTop: "20px", marginLeft: "10px" }}
+                      style={{ marginTop: '20px', marginLeft: '10px' }}
                       loading={loading}
                       type="primary"
                       htmlType="submit"
@@ -176,7 +167,7 @@ function CreateReceipts() {
           data={[
             {
               ...selectedPrescriptionData?.data,
-              date: dayjs().format("MMMM DD YYYY HH:mm A"),
+              date: dayjs().format('MMMM DD YYYY HH:mm A'),
             },
           ]}
         />

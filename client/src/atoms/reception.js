@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const receptionDefaultState = {
   activeAppointments: [],
@@ -6,6 +6,6 @@ export const receptionDefaultState = {
 };
 
 export const receptionState = atom({
-  key: "reception",
+  key: 'reception',
   default: receptionDefaultState,
 });

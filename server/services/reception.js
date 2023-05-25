@@ -1,14 +1,8 @@
-const { prisma } = require("../utils/prisma");
-const { addEventLog } = require("../utils/logs");
-const { serverActions } = require("../utils/constants");
+const { prisma } = require('../utils/prisma');
+const { addEventLog } = require('../utils/logs');
+const { serverActions } = require('../utils/constants');
 
-const createAppointmentService = async ({
-  patientId,
-  doctorId,
-  date,
-  remarks,
-  doneBy,
-}) => {
+const createAppointmentService = async ({ patientId, doctorId, date, remarks, doneBy }) => {
   const newAppointment = await prisma.appointment.create({
     data: {
       date,
@@ -27,7 +21,7 @@ const createAppointmentService = async ({
     action: serverActions.CREATE_APPOINTMENT,
     fromId: doneBy.id,
     actionId: newAppointment.id,
-    actionTable: "appointment",
+    actionTable: 'appointment',
     message: `${doneBy.name} <(${doneBy.email})> created appointment for ${newAppointment.patient.name} with doctor ${getDoctor.name}`,
   });
 

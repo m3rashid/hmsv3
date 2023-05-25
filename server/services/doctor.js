@@ -1,20 +1,17 @@
-const dayjs = require("dayjs");
-const { prisma } = require("../utils/prisma");
-const { addEventLog } = require("../utils/logs");
-const { quantityCalculator } = require("../utils/medecine.helpers");
-const { permissions, serverActions } = require("../utils/constants");
+const dayjs = require('dayjs');
+const { prisma } = require('../utils/prisma');
+const { addEventLog } = require('../utils/logs');
+const { quantityCalculator } = require('../utils/medecine.helpers');
+const { permissions, serverActions } = require('../utils/constants');
 
-const getDoctorAppointmentsService = async (
-  userId,
-  { limit, offset, pending } = {}
-) => {
+const getDoctorAppointmentsService = async (userId, { limit, offset, pending } = {}) => {
   const appointments = await prisma.appointment.findMany({
     where: {
       doctor: { id: userId },
       ...(pending ? { pending: true } : {}),
     },
     include: { patient: true },
-    orderBy: { date: "desc" },
+    orderBy: { date: 'desc' },
     skip: offset ?? 0,
     take: limit ?? 500,
   });
@@ -98,10 +95,10 @@ const createPrescriptionService = async ({
 
               duration: parseInt(medicine.duration),
               dosage: medicine.dosage,
-              ...(medicine.type === "SYRUP"
+              ...(medicine.type === 'SYRUP'
                 ? { quantityPerDose: parseInt(medicine.quantityPerDose) }
                 : {}),
-              description: medicine.description || "",
+              description: medicine.description || '',
             };
           }),
         },
@@ -137,7 +134,7 @@ const createPrescriptionService = async ({
     action: serverActions.CREATE_PRESCRIPTION,
     fromId: doneBy.id,
     actionId: newPrescription.id,
-    actionTable: "prescription",
+    actionTable: 'prescription',
     message: `${doneBy.name} <(${doneBy.email})> created prescription for ${prescription.patient.name} as doctor ${prescription.doctor.name}`,
   });
 
@@ -186,7 +183,7 @@ const updateAppointmentService = async ({
     action: serverActions.UPDATE_APPOINTMENT,
     fromId: doneBy.id,
     actionId: appointmentId,
-    actionTable: "appointment",
+    actionTable: 'appointment',
     message: `${doneBy.name} <(${doneBy.email})> updated prescription for ${prescription.patient.name} with doctor ${prescription.doctor.name}`,
   });
 
@@ -224,18 +221,14 @@ const referAnotherDoctorAppointmentService = async ({
     action: serverActions.REFER_TO_ANOTHER_DOCTOR,
     fromId: prevDoctorId,
     actionId: appointment.id,
-    actionTable: "appointment",
+    actionTable: 'appointment',
     message: `${doneBy.name} <(${doneBy.email})> referred ${appointment.patient.name} to ${appointment.doctor.name}`,
   });
 
   return appointment;
 };
 
-const checkMedAvailabilityService = async ({
-  medicineId,
-  dosage,
-  duration,
-}) => {
+const checkMedAvailabilityService = async ({ medicineId, dosage, duration }) => {
   const medicine = await prisma.medicine.findFirst({
     where: { id: medicineId },
   });
@@ -279,13 +272,7 @@ const getPrescriptionByAppointmentService = async ({ id }) => {
   return data;
 };
 
-const createDoctorLeaveService = async ({
-  doctorId,
-  start,
-  end,
-  reason,
-  doneBy,
-}) => {
+const createDoctorLeaveService = async ({ doctorId, start, end, reason, doneBy }) => {
   const leave = await prisma.profile.create({
     where: {
       id: doctorId,
@@ -305,7 +292,7 @@ const createDoctorLeaveService = async ({
     action: serverActions.CREATE_DOCTOR_LEAVE,
     fromId: doneBy.id,
     actionId: leave.id,
-    actionTable: "doctorLeave",
+    actionTable: 'doctorLeave',
     message: `${doneBy.name} <(${doneBy.email})> created leave for doctor ${leave.doctor.name}`,
   });
 

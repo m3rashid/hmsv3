@@ -1,7 +1,7 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 export const functionState = atom({
-  key: "function",
+  key: 'function',
   default: {
     addAppointment: async () => {},
     addNotification: async () => {},

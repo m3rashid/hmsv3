@@ -1,8 +1,8 @@
-import { Form, Input, Select } from "antd";
-import { Fragment } from "react";
-import PropTypes from "prop-types";
-import ReactQuill from "react-quill";
-import quillDefaults from "components/common/quillDefaults";
+import { Form, Input, Select } from 'antd';
+import { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import ReactQuill from 'react-quill';
+import quillDefaults from 'components/common/quillDefaults';
 
 const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
   return (
@@ -18,21 +18,19 @@ const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
                 rules: [
                   {
                     required: true,
-                    message: `Please ${
-                      f.inputType === "select" ? "Select" : "Enter"
-                    } a ${f.label}`,
+                    message: `Please ${f.inputType === 'select' ? 'Select' : 'Enter'} a ${f.label}`,
                   },
                   ...f.otherRules,
                 ],
               })}
             >
-              {f.inputType === "select" ? (
+              {f.inputType === 'select' ? (
                 <Select
                   getPopupContainer={(trigger) => trigger.parentNode}
                   {...(f?.defaultValue !== undefined &&
                     !isEdit && { defaultValue: f.defaultValue })}
                   {...(isEdit && { defaultValue: data[f.key] })}
-                  {...(f?.multiple && { mode: "multiple" })}
+                  {...(f?.multiple && { mode: 'multiple' })}
                   placeholder={`Select ${f.label}`}
                 >
                   {f.options.map((o) => (
@@ -41,7 +39,7 @@ const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
                     </Select.Option>
                   ))}
                 </Select>
-              ) : f.inputType === "textarea" ? (
+              ) : f.inputType === 'textarea' ? (
                 <ReactQuill
                   {...(f?.defaultValue !== undefined &&
                     !isEdit && {
@@ -52,7 +50,7 @@ const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
                   placeholder={f.label}
                   {...quillDefaults}
                 />
-              ) : f.inputType === "custom" ? (
+              ) : f.inputType === 'custom' ? (
                 <Fragment>
                   <f.component
                     {...(f?.defaultValue !== undefined &&
@@ -67,7 +65,7 @@ const RenderFormFields = ({ formFields, isEdit, required, data, form }) => {
                     !isEdit && { defaultValue: f.defaultValue })}
                   {...(isEdit && { defaultValue: data[f.key] })}
                   placeholder={f.label}
-                  type={f.inputType ?? "text"}
+                  type={f.inputType ?? 'text'}
                 />
               )}
             </Form.Item>

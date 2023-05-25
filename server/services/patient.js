@@ -1,11 +1,11 @@
-const { prisma } = require("../utils/prisma");
-const { addEventLog } = require("../utils/logs");
-const { checkAccess } = require("../utils/auth.helpers");
-const { permissions, serverActions } = require("../utils/constants");
+const { prisma } = require('../utils/prisma');
+const { addEventLog } = require('../utils/logs');
+const { checkAccess } = require('../utils/auth.helpers');
+const { permissions, serverActions } = require('../utils/constants');
 
 const createPatientService = async (data, UserPermissions, doneBy) => {
   if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions)) {
-    throw new Error("Forbidden");
+    throw new Error('Forbidden');
   }
 
   const newPatient = await prisma.patient.create({ data });
@@ -14,7 +14,7 @@ const createPatientService = async (data, UserPermissions, doneBy) => {
     action: serverActions.CREATE_PATIENT,
     fromId: doneBy.id,
     actionId: newPatient.id,
-    actionTable: "patient",
+    actionTable: 'patient',
     message: `${doneBy?.name} <(${doneBy?.email})> created patient  ${data?.name}`,
   });
 
@@ -30,13 +30,13 @@ const deletePatientService = async ({ patientId, doneBy }) => {
     where: { id: patientId },
   });
 
-  if (!patient) throw new Error("Patient not found");
+  if (!patient) throw new Error('Patient not found');
 
   await addEventLog({
     action: serverActions.DELETE_PATIENT,
     fromId: doneBy.id,
     actionId: patientId,
-    actionTable: "patient",
+    actionTable: 'patient',
     message: `${doneBy.name} <(${doneBy.email})> deleted patient  ${pastPatient.name}  <(${pastPatient.email})>`,
   });
 
@@ -66,7 +66,7 @@ const getPatientByIdService = async (patientId) => {
       },
     },
   });
-  if (!patient) throw new Error("Patient not found");
+  if (!patient) throw new Error('Patient not found');
 
   return { patient };
 };
@@ -75,12 +75,12 @@ const searchPatientsService = async ({ query }) => {
   const patients = await prisma.Patient.findMany({
     where: {
       OR: [
-        { name: { contains: query, mode: "insensitive" } },
-        { userId: { contains: query, mode: "insensitive" } },
-        { contact: { contains: query, mode: "insensitive" } },
+        { name: { contains: query, mode: 'insensitive' } },
+        { userId: { contains: query, mode: 'insensitive' } },
+        { contact: { contains: query, mode: 'insensitive' } },
       ],
     },
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: 'desc' },
   });
 
   return { count: patients.length, patients };

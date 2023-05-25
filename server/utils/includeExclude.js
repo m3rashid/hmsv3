@@ -16,7 +16,7 @@ const singleExcludeInclude = (obj, keysArray, exclude) => {
 
 const exclude = (data, keysToExclude) => {
   if (!Array.isArray(keysToExclude)) {
-    throw new Error("keysToExclude must be an array");
+    throw new Error('keysToExclude must be an array');
   }
 
   if (Array.isArray(data)) {
@@ -27,7 +27,7 @@ const exclude = (data, keysToExclude) => {
 
 const include = (data, keysToInclude) => {
   if (!Array.isArray(keysToInclude)) {
-    throw new Error("keysToInclude must be an array");
+    throw new Error('keysToInclude must be an array');
   }
 
   if (Array.isArray(data)) {

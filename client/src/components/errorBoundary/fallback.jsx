@@ -1,11 +1,11 @@
-import { Result, Button } from "antd";
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Result, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ErrorHandlerFallback = ({ removeError }) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [currentPath, setCurrentpath] = useState("");
+  const [currentPath, setCurrentpath] = useState('');
 
   useEffect(() => {
     setCurrentpath(pathname);
@@ -25,9 +25,9 @@ const ErrorHandlerFallback = ({ removeError }) => {
       status="500"
       title="Sorry, something went wrong."
       subTitle="Report to the Admin or contact Developers"
-      style={{ height: "calc(100vh - 94px)", paddingTop: 150 }}
+      style={{ height: 'calc(100vh - 94px)', paddingTop: 150 }}
       extra={
-        <Button type="primary" onClick={() => navigate("/")}>
+        <Button type="primary" onClick={() => navigate('/')}>
           Back Home
         </Button>
       }

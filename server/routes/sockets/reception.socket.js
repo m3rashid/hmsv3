@@ -1,7 +1,4 @@
-const {
-  searchPatientsService,
-  createAppointmentService,
-} = require("../../services");
+const { searchPatientsService, createAppointmentService } = require('../../services');
 
 const searchPatients =
   (io, socket) =>
@@ -29,7 +26,7 @@ const searchPatients =
       lastVisitedBefore,
       lastVisitedAfter
     );
-    io.emit("patients-found", {
+    io.emit('patients-found', {
       count,
       patients,
     });
@@ -38,7 +35,7 @@ const searchPatients =
 const receptionistLeft =
   (io, socket) =>
   ({ receptionistId }) => {
-    io.emit("receptionist-left", { receptionistId });
+    io.emit('receptionist-left', { receptionistId });
   };
 
 const createAppointment =
@@ -52,7 +49,7 @@ const createAppointment =
       doneBy: socket.user,
     });
 
-    io.emit("new-appointment-created", data);
+    io.emit('new-appointment-created', data);
   };
 
 module.exports = {

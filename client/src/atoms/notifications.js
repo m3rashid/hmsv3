@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 const getNotificationHistory = () => {
   // if (localStorage.getItem("notifications")) {
@@ -9,6 +9,6 @@ const getNotificationHistory = () => {
 };
 
 export const notificationsState = atom({
-  key: "notifications",
+  key: 'notifications',
   default: getNotificationHistory(),
 });

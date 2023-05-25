@@ -1,32 +1,32 @@
-import { Button, Space, Table } from "antd";
-import useTableStyles from "components/common/tableDefaults";
-import { Fragment } from "react";
+import { Button, Space, Table } from 'antd';
+import useTableStyles from 'components/common/tableDefaults';
+import { Fragment } from 'react';
 
 const Completed = () => {
   const { tableStyles } = useTableStyles();
   const columns = [
     {
-      title: "Patient Name",
-      dataIndex: "patient",
-      key: "patient",
+      title: 'Patient Name',
+      dataIndex: 'patient',
+      key: 'patient',
       sorter: (a, b) => a.title.localeCompare(b.title),
     },
     {
-      title: "Doctor Name",
-      dataIndex: "doctor",
-      key: "doctor",
+      title: 'Doctor Name',
+      dataIndex: 'doctor',
+      key: 'doctor',
       sorter: (a, b) => a.title.localeCompare(b.title),
     },
     {
-      title: "Date/Time",
-      dataIndex: "date",
-      key: "date",
+      title: 'Date/Time',
+      dataIndex: 'date',
+      key: 'date',
       sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
     },
     {
-      title: "Actions",
-      dataIndex: "actions",
-      key: "actions",
+      title: 'Actions',
+      dataIndex: 'actions',
+      key: 'actions',
       render: (text, record) => (
         <Space>
           <Button> Details </Button>

@@ -1,9 +1,9 @@
-import { message } from "antd";
-import { useSetRecoilState } from "recoil";
+import { message } from 'antd';
+import { useSetRecoilState } from 'recoil';
 
-import { instance } from "api/instance";
-import { inventoryState } from "atoms/inventory";
-import InventoryFormHandler from "components/Inventory/FormHandler";
+import { instance } from 'api/instance';
+import { inventoryState } from 'atoms/inventory';
+import InventoryFormHandler from 'components/Inventory/FormHandler';
 
 const AddNewInventory = () => {
   const setInventoryData = useSetRecoilState(inventoryState);
@@ -11,7 +11,7 @@ const AddNewInventory = () => {
   const formSubmitHandler = async (data) => {
     try {
       const { values, form } = data;
-      const res = await instance.post("/inventory/add", {
+      const res = await instance.post('/inventory/add', {
         type: values.type,
         data: {
           ...values,
@@ -20,7 +20,7 @@ const AddNewInventory = () => {
         },
       });
 
-      message.success("New Inventory Added");
+      message.success('New Inventory Added');
 
       setInventoryData((prevState) => {
         return {
@@ -33,8 +33,8 @@ const AddNewInventory = () => {
       });
       form?.resetFields();
     } catch (err) {
-      message.error("Error");
-      throw new Error(err || "Error");
+      message.error('Error');
+      throw new Error(err || 'Error');
     }
   };
 

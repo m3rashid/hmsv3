@@ -1,6 +1,6 @@
-import { showGender, toSentenceCase } from "utils/strings";
-import CreateUserModal from "components/Admin/modules/helpers/createUserModal";
-import UserDetailsModal from "components/Admin/modules/helpers/userDetailsModal";
+import { showGender, toSentenceCase } from 'utils/strings';
+import CreateUserModal from 'components/Admin/modules/helpers/createUserModal';
+import UserDetailsModal from 'components/Admin/modules/helpers/userDetailsModal';
 
 export const formatForTable = (users) => {
   const data = users.reduce((acc, user) => {
@@ -37,38 +37,38 @@ export const formatForTable = (users) => {
 
 export const columns = [
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
     sorter: (a, b) => a.title.localeCompare(b.title),
   },
   {
-    title: "Email",
-    dataIndex: "email",
-    key: "email",
+    title: 'Email',
+    dataIndex: 'email',
+    key: 'email',
     sorter: (a, b) => a.title.localeCompare(b.title),
   },
   {
-    title: "Joined",
-    dataIndex: "joined",
-    key: "joined",
+    title: 'Joined',
+    dataIndex: 'joined',
+    key: 'joined',
     sorter: (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
   },
   {
-    title: "Room Number",
-    dataIndex: "roomNumber",
-    key: "roomNumber",
+    title: 'Room Number',
+    dataIndex: 'roomNumber',
+    key: 'roomNumber',
   },
   {
-    title: "Actions",
-    dataIndex: "",
-    key: "details",
+    title: 'Actions',
+    dataIndex: '',
+    key: 'details',
     render: (text, record) => (
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           gap: 10,
         }}
       >

@@ -1,10 +1,10 @@
-import { toSentenceCase } from "utils/strings";
+import { toSentenceCase } from 'utils/strings';
 
 const ShowEntry = ({ label, value }) => (
   <div
     style={{
-      display: "grid",
-      gridTemplateColumns: label && value ? "1fr 3fr" : "1fr",
+      display: 'grid',
+      gridTemplateColumns: label && value ? '1fr 3fr' : '1fr',
       gridGap: 3,
     }}
   >

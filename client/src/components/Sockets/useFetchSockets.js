@@ -1,19 +1,19 @@
-import { message } from "antd";
-import { useCallback, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { message } from 'antd';
+import { useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { socket } from "api/instance";
-import { authState } from "atoms/auth";
-import { instance } from "api/instance";
-import { doctorState } from "atoms/doctor";
-import { LoadingAtom } from "atoms/loading";
-import { pharmacyState } from "atoms/pharmacy";
-import { functionState } from "atoms/functions";
-import { inventoryState } from "atoms/inventory";
-import useNotifications from "Hooks/useNotifications";
-import { InventoryTypes, allPermissions } from "utils/constants";
-import { receptionState } from "atoms/reception";
+import { socket } from 'api/instance';
+import { authState } from 'atoms/auth';
+import { instance } from 'api/instance';
+import { doctorState } from 'atoms/doctor';
+import { LoadingAtom } from 'atoms/loading';
+import { pharmacyState } from 'atoms/pharmacy';
+import { functionState } from 'atoms/functions';
+import { inventoryState } from 'atoms/inventory';
+import useNotifications from 'Hooks/useNotifications';
+import { InventoryTypes, allPermissions } from 'utils/constants';
+import { receptionState } from 'atoms/reception';
 
 export default function useFetchSockets() {
   const auth = useRecoilValue(authState);
@@ -27,36 +27,36 @@ export default function useFetchSockets() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    socket.on("error", (data) => {
+    socket.on('error', (data) => {
       message.error(data.message);
       setLoadingData({});
     });
 
     return () => {
-      socket.off("error");
+      socket.off('error');
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadInventoryItems = useCallback(async () => {
     try {
-      const MedicineInventory = await instance.get("/inventory/search", {
+      const MedicineInventory = await instance.get('/inventory/search', {
         params: {
           type: InventoryTypes.Medicine,
-          name: "",
+          name: '',
         },
       });
-      const NonMedicineInventory = await instance.get("/inventory/search", {
+      const NonMedicineInventory = await instance.get('/inventory/search', {
         params: {
           type: InventoryTypes.NonMedicine,
-          name: "",
+          name: '',
         },
       });
 
-      const otherAssetsInventory = await instance.get("/inventory/search", {
+      const otherAssetsInventory = await instance.get('/inventory/search', {
         params: {
           type: InventoryTypes.OtherAssets,
-          name: "",
+          name: '',
         },
       });
 
@@ -72,12 +72,8 @@ export default function useFetchSockets() {
     if (
       auth.isLoggedIn &&
       (auth.user.permissions.includes(allPermissions.INVENTORY_VIEW.name) ||
-        auth.user.permissions.includes(
-          allPermissions.DOCTOR_PRESCRIBE_MEDICINE.name
-        ) ||
-        auth.user.permissions.includes(
-          allPermissions.INVENTORY_ADD_MEDICINE.name
-        ))
+        auth.user.permissions.includes(allPermissions.DOCTOR_PRESCRIBE_MEDICINE.name) ||
+        auth.user.permissions.includes(allPermissions.INVENTORY_ADD_MEDICINE.name))
     ) {
       loadInventoryItems();
     }
@@ -95,50 +91,38 @@ export default function useFetchSockets() {
   useEffect(() => {
     if (
       !auth.isLoggedIn ||
-      !auth.user.permissions.includes(
-        allPermissions.PHARMACY_PRESCRIPTIONS.name
-      )
+      !auth.user.permissions.includes(allPermissions.PHARMACY_PRESCRIPTIONS.name)
     ) {
       return;
     }
     loadPharmacyPrescriptions();
-    socket.on("new-prescription-by-doctor-created", ({ data }) => {
+    socket.on('new-prescription-by-doctor-created', ({ data }) => {
       setPharmacyData((prevData) => ({
         ...prevData,
         prescriptions: [...prevData.prescriptions, data.prescription],
       }));
       message.info(`New Prescription for ${data.prescription.id}!`);
     });
-    socket.on("prescription-dispensed", ({ data }) => {
+    socket.on('prescription-dispensed', ({ data }) => {
       loadPharmacyPrescriptions();
-      message.success(
-        `Prescription ${data.prescription.id} has been dispensed!`
-      );
+      message.success(`Prescription ${data.prescription.id} has been dispensed!`);
     });
 
     return () => {
-      socket.off("new-prescription-by-doctor-created");
-      socket.off("prescription-dispensed");
+      socket.off('new-prescription-by-doctor-created');
+      socket.off('prescription-dispensed');
     };
-  }, [
-    auth,
-    loadPharmacyPrescriptions,
-    navigate,
-    setLoadingData,
-    setPharmacyData,
-  ]);
+  }, [auth, loadPharmacyPrescriptions, navigate, setLoadingData, setPharmacyData]);
 
   const getAllAppointmentsReceptionist = useCallback(async () => {
     if (
       !auth.isLoggedIn ||
-      !auth.user.permissions.includes(
-        allPermissions.RECEPTION_ADD_APPOINTMENT.name
-      )
+      !auth.user.permissions.includes(allPermissions.RECEPTION_ADD_APPOINTMENT.name)
     ) {
       return;
     }
 
-    const { data } = await instance.get("/reception/appointment/all");
+    const { data } = await instance.get('/reception/appointment/all');
     const pending = [];
     const completed = [];
     data.appointments.forEach((appoint) => {
@@ -154,9 +138,7 @@ export default function useFetchSockets() {
   useEffect(() => {
     if (
       !auth.isLoggedIn ||
-      !auth.user.permissions.includes(
-        allPermissions.RECEPTION_ADD_APPOINTMENT.name
-      )
+      !auth.user.permissions.includes(allPermissions.RECEPTION_ADD_APPOINTMENT.name)
     ) {
       return;
     }
@@ -167,7 +149,7 @@ export default function useFetchSockets() {
 
   const loadDoctorAppointment = useCallback(async () => {
     setDoctorData((prev) => ({ ...prev, loading: true }));
-    const res = await instance.get("/doctor/get-appointments");
+    const res = await instance.get('/doctor/get-appointments');
     setDoctorData({
       ...DoctorData,
       appointments: res.data.appointments,
@@ -204,9 +186,7 @@ export default function useFetchSockets() {
     async (id, pending) => {
       setDoctorData((prev) => ({
         ...prev,
-        appointments: prev.appointments.map((apt) =>
-          apt.id === id ? { ...apt, pending } : apt
-        ),
+        appointments: prev.appointments.map((apt) => (apt.id === id ? { ...apt, pending } : apt)),
       }));
     },
     [setDoctorData]
@@ -215,17 +195,15 @@ export default function useFetchSockets() {
   useEffect(() => {
     if (
       !auth.isLoggedIn ||
-      !auth.user.permissions.includes(
-        allPermissions.DOCTOR_PRESCRIBE_MEDICINE.name
-      )
+      !auth.user.permissions.includes(allPermissions.DOCTOR_PRESCRIBE_MEDICINE.name)
     ) {
       return;
     }
 
-    socket.on("new-prescription-by-doctor-created", ({ data }) => {
+    socket.on('new-prescription-by-doctor-created', ({ data }) => {
       loadDoctorAppointment();
       setLoadingData({});
-      navigate("/doctor/appointments");
+      navigate('/doctor/appointments');
 
       message.success(
         `New Prescription for ${data.prescription.appointment.patient.name} created successfully!`
@@ -233,15 +211,9 @@ export default function useFetchSockets() {
     });
 
     return () => {
-      socket.off("new-prescription-by-doctor-created");
+      socket.off('new-prescription-by-doctor-created');
     };
-  }, [
-    auth,
-    loadDoctorAppointment,
-    navigate,
-    setAppointmentPendingStatus,
-    setLoadingData,
-  ]);
+  }, [auth, loadDoctorAppointment, navigate, setAppointmentPendingStatus, setLoadingData]);
 
   useEffect(() => {
     if (
@@ -251,14 +223,14 @@ export default function useFetchSockets() {
       return;
     }
 
-    socket.on("new-appointment-created", (data) => {
+    socket.on('new-appointment-created', (data) => {
       message.info(`New appointment created`);
       addNotification({
-        type: "success",
-        title: "New Appointment",
+        type: 'success',
+        title: 'New Appointment',
         message: `${data.patient.name} has a new appointment`,
         action: {
-          label: "View",
+          label: 'View',
           callback: () => {},
         },
       });
@@ -266,7 +238,7 @@ export default function useFetchSockets() {
     });
 
     return () => {
-      socket.off("new-appointment-created");
+      socket.off('new-appointment-created');
     };
   }, [addAppointment, addNotification, auth]);
 
