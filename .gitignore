@@ -1,0 +1,16 @@
+node_modules
+.idea
+.templates
+*.pem
+yarn.lock
+package-lock.json
+.DS_Store
+server/config/
+server/migrations
+.env
+hmsv3.code-workspace
+
+# Local Netlify folder
+.netlify
+server/uploads/*.*
+!server/uploads/.gitkeep

@@ -1,0 +1,267 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  DOCTOR
+  ADMIN
+  RECEPTIONIST
+  PHARMACIST
+  INVENTORY_MANAGER
+  CO_ADMIN
+  OTHER
+}
+
+enum MedType {
+  TABLET
+  SYRUP
+}
+
+enum Sex {
+  m
+  f
+  o
+}
+
+enum Days {
+  SUN
+  MON
+  TUE
+  WED
+  THU
+  FRI
+  SAT
+}
+
+enum Category {
+  GENERAL_MEDICINE
+  CARDIOLOGY
+  DERMATOLOGY
+  INTERNAL_MEDICINE
+  OPHTHALMOLOGY
+  ENT
+  GYNAECOLOGY
+}
+
+enum Dosage {
+  OD
+  BD
+  TD
+  QD
+  OW
+  BW
+  TW
+  QW
+}
+
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  UNKNOWN
+}
+
+enum TestType {
+  BLOOD_SUGAR
+  BLOOD_PRESSURE
+  URINE_ALBUMIN
+  URINE_GLUCOSE
+  URINE_POTASSIUM
+  // add more test types here
+}
+
+enum PatientType {
+  EMPLOYEE
+  STUDENT
+  PENSIONER
+  FAMILY_PENSIONER
+  DEPENDENT
+  OTHER
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+}
+
+model Auth {
+  id          Int      @id @default(autoincrement())
+  name        String
+  email       String   @unique
+  password    String
+  permissions String[] // make this enum later
+  profileId   Int
+  profile     Profile  @relation(fields: [profileId], references: [id])
+}
+
+model Profile {
+  id                   Int           @id @default(autoincrement())
+  designation          String?
+  contact              String?
+  address              String?
+  bio                  String?
+  roomNumber           String
+  sex                  Sex
+  availability         Json? // time range
+  availableDays        Days[]
+  authorityName        String?
+  category             Category?
+  role                 Role
+  leave                Leave[]
+  origin               String?       @default("JMI")
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @default(now())
+  Auth                 Auth[]
+  Appointment          Appointment[] @relation("doctor")
+  ReferredAppointments Appointment[] @relation("referredDoc")
+}
+
+model Patient {
+  id                    Int           @id @default(autoincrement())
+  userId                String?       @unique // jamia ID for student and empId for employees
+  name                  String?
+  fathersName           String?
+  type                  PatientType
+  otherUser             String?
+  relationWithOtherUser String        @default("SELF")
+  sex                   Sex?
+  bloodGroup            BloodGroup    @default(UNKNOWN)
+  dob                   String?
+  dor                   String?
+  isDeleted             Boolean       @default(false)
+  designation           String?
+  department            String?
+  contact               String?
+  fdr                   String?
+  maritalStatus         MaritalStatus @default(SINGLE)
+  userData              Json?
+  lastVisit             String?
+  address               String?
+  dependentStatus       Boolean       @default(false)
+  Appointment           Appointment[]
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @default(now())
+}
+
+model Appointment {
+  id           Int            @id @default(autoincrement())
+  date         DateTime       @default(now())
+  referedBy    Int?
+  referredDoc  Profile?       @relation("referredDoc", fields: [referedBy], references: [id])
+  Prescription Prescription[]
+  patientId    Int
+  patient      Patient        @relation(fields: [patientId], references: [id])
+  doctorId     Int
+  doctor       Profile        @relation("doctor", fields: [doctorId], references: [id])
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @default(now())
+  pending      Boolean        @default(true)
+  remarks      String?
+}
+
+model Prescription {
+  id              Int                  @id @default(autoincrement())
+  symptoms        String
+  diagnosis       String? // prescription
+  CustomMedicines Json?
+  datePrescribed  DateTime             @default(now())
+  appointmentId   Int
+  appointment     Appointment          @relation(fields: [appointmentId], references: [id])
+  medicines       PrescribedMedicine[]
+  pending         Boolean              @default(true)
+  Test            Test[]
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @default(now())
+}
+
+model PrescribedMedicine {
+  id              Int           @id @default(autoincrement())
+  duration        Int
+  dosage          Dosage?
+  quantityPerDose String? // only for  syrups
+  description     String
+  MedicineId      Int
+  Medicine        Medicine      @relation(fields: [MedicineId], references: [id])
+  Prescription    Prescription? @relation(fields: [prescriptionId], references: [id])
+  prescriptionId  Int?
+}
+
+model Medicine {
+  id                 Int                  @id @default(autoincrement())
+  name               String
+  quantity           Int
+  batchNumber        String
+  TabletsPerStrips   Int?
+  expiryDate         String
+  category           Category
+  medType            MedType
+  manufacturer       String?
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @default(now())
+  PrescribedMedicine PrescribedMedicine[]
+}
+
+model NonMedicine {
+  id          Int      @id @default(autoincrement())
+  name        String
+  quantity    Int
+  batchNumber String
+  expiryDate  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
+
+model OtherAssets {
+  id        Int      @id @default(autoincrement())
+  name      String
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Test {
+  id             Int          @id @default(autoincrement())
+  name           String
+  description    String?
+  prescriptionId Int
+  prescription   Prescription @relation(fields: [prescriptionId], references: [id])
+  testType       TestType
+  testResult     String? // this is the link of the pdf/text file generated by the lab
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now())
+}
+
+model Log {
+  id          Int      @id @default(autoincrement())
+  action      String
+  fromId      Int
+  actionId    Int
+  actionTable String
+  message     String
+  createdAt   DateTime @default(now())
+}
+
+
+model Leave {
+  id          Int      @id @default(autoincrement())
+  doctorId    Int
+  doctor      Profile  @relation(fields: [doctorId], references: [id])
+  reason      String
+  startDate   DateTime
+  endDate     DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+}
