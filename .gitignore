@@ -2,8 +2,6 @@ node_modules
 .idea
 .templates
 *.pem
-yarn.lock
-package-lock.json
 .DS_Store
 server/config/
 server/migrations
