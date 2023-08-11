@@ -72,17 +72,17 @@ app.use('/api/pharmacy', PharmacyRoutes);
 app.use('/api/data-migration', dataMigrationRoutes);
 
 app.get('/health', (req, res) => {
-  const healthcheck = {
+  const healthCheck = {
     uptime: process.uptime(),
     responseTime: process.hrtime(),
     message: 'OK',
     timestamp: Date.now(),
   };
   try {
-    return res.status(200).send(healthcheck);
+    return res.status(200).send(healthCheck);
   } catch (error) {
-    healthcheck.message = error;
-    return res.status(503).send(healthcheck);
+    healthCheck.message = error;
+    return res.status(503).send(healthCheck);
   }
 });
 

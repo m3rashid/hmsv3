@@ -6,8 +6,11 @@
 	},
 	"cSpell.words": [
 		"Ansari",
+		"antd",
+		"datasource",
 		"dompurify",
 		"hmsv",
+		"middlewares",
 		"precommit",
 		"recoilize"
 	]

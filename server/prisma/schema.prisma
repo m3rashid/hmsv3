@@ -46,7 +46,7 @@ enum Category {
   INTERNAL_MEDICINE
   OPHTHALMOLOGY
   ENT
-  GYNAECOLOGY
+  GYNECOLOGY
 }
 
 enum Dosage {
