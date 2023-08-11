@@ -155,7 +155,7 @@ export const updateUserProfileService = async (
 	};
 };
 
-export const generateReportsService = async ({ startDay, endDay, action }) => {
+export const generateReportsService = async ({ startDay, endDay, action }:) => {
 	if (action && !Object.values(serverActions).includes(action)) {
 		throw new Error('Unknown action');
 	}
