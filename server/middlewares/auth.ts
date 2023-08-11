@@ -1,25 +1,23 @@
-const { verifyJWT } = require('../utils/jwt.js');
+import { NextFunction, Request, Response } from 'express';
 
-const checkAuth = (req, res, next) => {
+import { verifyJWT } from '../utils/jwt';
+import { PartialUser } from '../utils/types';
+
+export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.headers['authorization'];
-
     if (!token) throw new Error('No token');
 
     const { valid, expired, payload } = verifyJWT(token);
     if (!valid || expired) throw new Error('Valid or expired');
 
-    req.user = payload.sub;
+    req.user = payload?.sub as any;
     req.isAuthenticated = true;
-    req.permissions = payload.sub.permissions;
+    req.permissions = (payload?.sub as any)?.permissions;
     next();
   } catch (err) {
     return res.status(401).json({
       message: 'Unauthorized',
     });
   }
-};
-
-module.exports = {
-  checkAuth,
 };

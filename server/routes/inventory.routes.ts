@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 
 const {
   CreateDummyInventory,
@@ -7,8 +7,8 @@ const {
   EditInventory,
   DeleteInventory,
 } = require('../controllers');
-const { useRoute } = require('../utils/errors');
-const { checkAuth } = require('../middlewares/auth');
+import { useRoute } from '../utils/errors';
+import { checkAuth } from '../middlewares/auth';
 
 const router = express.Router();
 
@@ -22,6 +22,4 @@ router.post('/edit', checkAuth, useRoute(EditInventory));
 
 router.post('/delete', checkAuth, useRoute(DeleteInventory));
 
-module.exports = {
-  router,
-};
+export default router

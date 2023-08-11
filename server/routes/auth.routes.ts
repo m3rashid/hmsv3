@@ -1,7 +1,7 @@
-const express = require('express');
+import express from 'express';
 
-const { useRoute } = require('../utils/errors');
-const { checkAuth } = require('../middlewares/auth');
+import { useRoute } from '../utils/errors';
+import { checkAuth } from '../middlewares/auth';
 const { login, revalidate, signup } = require('../controllers');
 
 const router = express.Router();
@@ -12,6 +12,4 @@ router.post('/signup', checkAuth, useRoute(signup));
 
 router.post('/revalidate', useRoute(revalidate));
 
-module.exports = {
-  router,
-};
+export default router

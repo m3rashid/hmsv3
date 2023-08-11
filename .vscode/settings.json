@@ -7,11 +7,17 @@
 	"cSpell.words": [
 		"Ansari",
 		"antd",
+		"codepaths",
 		"datasource",
 		"dompurify",
+		"fieldname",
 		"hmsv",
+		"includepaths",
+		"jamia",
 		"middlewares",
+		"nodenext",
 		"precommit",
-		"recoilize"
+		"recoilize",
+		"tsbuildinfo"
 	]
 }

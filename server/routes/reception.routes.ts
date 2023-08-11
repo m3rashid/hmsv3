@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
 
 const { createAppointment, getAppointmentById, createPatient } = require('../controllers');
-const { useRoute } = require('../utils/errors');
-const { checkAuth } = require('../middlewares/auth');
-const { getAllAppointments } = require('../controllers/reception');
+import { useRoute } from '../utils/errors';
+import { checkAuth } from '../middlewares/auth';
+import { getAllAppointments } from '../controllers/reception';
 
 const router = express.Router();
 
@@ -15,6 +15,4 @@ router.get('/appointment', checkAuth, useRoute(getAppointmentById));
 
 router.get('/appointment/all', checkAuth, useRoute(getAllAppointments));
 
-module.exports = {
-  router,
-};
+export default router

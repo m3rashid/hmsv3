@@ -1,5 +1,4 @@
-const express = require('express');
-
+import express from "express"
 const {
   searchDoctors,
   getDoctorPatients,
@@ -33,6 +32,4 @@ router.get('/appointment-prescription/:id', GetPrescriptionByAppointmentID);
 
 router.post('/leave', checkAuth, makeDoctorLeave);
 
-module.exports = {
-  router,
-};
+export default router

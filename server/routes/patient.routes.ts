@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 
 const { createPatient, deletePatient, getPatientById, searchPatients } = require('../controllers');
-const { useRoute } = require('../utils/errors');
-const { checkAuth } = require('../middlewares/auth');
+import { useRoute } from '../utils/errors';
+import { checkAuth } from '../middlewares/auth';
 
 const router = express.Router();
 
@@ -14,6 +14,4 @@ router.get('/:id', checkAuth, useRoute(getPatientById));
 
 router.delete('/:id', checkAuth, useRoute(deletePatient));
 
-module.exports = {
-  router,
-};
+export default router

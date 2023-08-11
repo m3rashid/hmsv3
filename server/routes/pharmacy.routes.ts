@@ -1,12 +1,12 @@
-const express = require('express');
+import express from 'express';
 
 const {
   dispensePrescription,
   getAllPrescriptions,
   getPrescriptionById,
 } = require('../controllers');
-const { useRoute } = require('../utils/errors');
-const { checkAuth } = require('../middlewares/auth');
+import { useRoute } from '../utils/errors';
+import { checkAuth } from '../middlewares/auth';
 
 const router = express.Router();
 
@@ -16,6 +16,4 @@ router.post('/dispense', checkAuth, useRoute(dispensePrescription));
 
 router.get('/prescriptions/:id', checkAuth, useRoute(getPrescriptionById));
 
-module.exports = {
-  router,
-};
+export default router

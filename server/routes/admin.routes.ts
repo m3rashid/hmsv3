@@ -1,7 +1,7 @@
-const express = require('express');
+import express from "express"
 
-const { useRoute } = require('../utils/errors');
-const { checkAuth } = require('../middlewares/auth');
+import  { useRoute } from '../utils/errors';
+import { checkAuth } from '../middlewares/auth';
 const {
   getAllUsers,
   editPermissions,
@@ -40,6 +40,4 @@ router.post('/config', checkAuth, useRoute(setAppConfig));
 
 router.post('/config/reset', checkAuth, useRoute(resetAppConfig));
 
-module.exports = {
-  router,
-};
+export default router;
