@@ -1,4 +1,4 @@
-const defaultConfig = {
+export const defaultConfig = {
   app_logo: '/images/logo.jpg',
   app_light_color: '#F9F9FB',
   app_dark_color: '#484C56',
@@ -100,8 +100,4 @@ const defaultConfig = {
       portfolio: '',
     },
   ],
-};
-
-module.exports = {
-  defaultConfig,
 };
