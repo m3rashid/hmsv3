@@ -5,11 +5,11 @@ import cors from 'cors';
 import http from 'http';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import express from 'express';
 import { Server } from 'socket.io';
 import compression from 'compression';
 import { setupWorker } from '@socket.io/sticky';
 import { instrument } from '@socket.io/admin-ui';
+import express, { Request, Response } from 'express';
 import { createAdapter } from '@socket.io/cluster-adapter';
 
 import { IO } from './utils/types';
