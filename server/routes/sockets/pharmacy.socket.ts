@@ -1,23 +1,20 @@
-const { dispensePrescriptionService } = require('../../services');
+import { IO, Socket } from '../../utils/types';
+import { socketConstants } from '../../utils/constants';
+import { dispensePrescriptionService } from '../../services';
 
-const pharmacistLeft =
-  (io, socket) =>
-  ({ pharmacistId }) => {
-    io.emit('pharmacist-left', { pharmacistId });
-  };
+export const pharmacistLeft =
+	(io: IO, socket: Socket) =>
+	({ pharmacistId }: { pharmacistId: string }) => {
+		io.emit('pharmacist-left', { pharmacistId });
+	};
 
-const dispensePrescription =
-  (io, socket) =>
-  async ({ prescriptionId, medicines }) => {
-    const data = await dispensePrescriptionService({
-      prescriptionId,
-      medicines,
-      doneBy: socket.user,
-    });
-    io.emit('prescription-dispensed', { data });
-  };
-
-module.exports = {
-  pharmacistLeft,
-  dispensePrescription,
-};
+export const dispensePrescription =
+	(io: IO, socket: Socket) =>
+	async ({ prescriptionId, medicines }: { prescriptionId: string; medicines: any }) => {
+		const data = await dispensePrescriptionService({
+			prescriptionId,
+			medicines,
+			doneBy: socket.data.user,
+		});
+		io.emit(socketConstants.dispensePrescription, { data });
+	};

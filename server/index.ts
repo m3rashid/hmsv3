@@ -1,4 +1,5 @@
 /// <reference path="index.d.ts" />
+
 import 'dotenv/config';
 import cors from 'cors';
 import http from 'http';
@@ -11,6 +12,7 @@ import { setupWorker } from '@socket.io/sticky';
 import { instrument } from '@socket.io/admin-ui';
 import { createAdapter } from '@socket.io/cluster-adapter';
 
+import { IO } from './utils/types';
 import { prisma } from './utils/prisma';
 import { checkSocketAuth } from './middlewares/socket';
 import { isProduction, corsOrigin, PORT } from './utils/config';
@@ -32,7 +34,7 @@ app.use(compression());
 app.disable('x-powered-by');
 const server = http.createServer(app);
 
-const io = new Server(server, {
+const io: IO = new Server(server, {
 	cors: {
 		origin: corsOrigin,
 		methods: ['GET', 'POST'],
@@ -50,7 +52,7 @@ io.on('connection', (socket: any) => {
 	const data = {
 		socket_status: 'connected',
 		socketId: socket.id,
-		userId: socket.user.id,
+		userId: socket.data.user.id,
 	};
 
 	socket.on('connect', () => console.log(data));

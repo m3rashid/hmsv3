@@ -1,7 +1,9 @@
-const { searchPatientsService, createAppointmentService } = require('../../services');
+import { IO, Socket } from '../../utils/types';
+import { socketConstants } from '../../utils/constants';
+import { searchPatientsService, createAppointmentService } from '../../services';
 
-const searchPatients =
-  (io, socket) =>
+export const searchPatients =
+  (io: IO, socket: Socket) =>
   async ({
     name,
     minAge,
@@ -13,7 +15,7 @@ const searchPatients =
     jamiaId,
     lastVisitedBefore,
     lastVisitedAfter,
-  }) => {
+  }: any) => {
     const { count, patients } = await searchPatientsService(
       name,
       minAge,
@@ -26,34 +28,28 @@ const searchPatients =
       lastVisitedBefore,
       lastVisitedAfter
     );
-    io.emit('patients-found', {
+    io.emit(socketConstants.patientsFound, {
       count,
       patients,
     });
   };
 
-const receptionistLeft =
-  (io, socket) =>
-  ({ receptionistId }) => {
-    io.emit('receptionist-left', { receptionistId });
-  };
+export const receptionistLeft =
+	(io: IO, socket: Socket) =>
+	({ receptionistId }: { receptionistId: string }) => {
+		io.emit('receptionist-left', { receptionistId });
+	};
 
-const createAppointment =
-  (io, socket) =>
-  async ({ patientId, doctorId, date, remarks }) => {
-    const data = await createAppointmentService({
-      patientId,
-      doctorId,
-      date,
-      remarks,
-      doneBy: socket.user,
-    });
+export const createAppointment =
+	(io: IO, socket: Socket) =>
+	async ({ patientId, doctorId, date, remarks }: any) => {
+		const data = await createAppointmentService({
+			patientId,
+			doctorId,
+			date,
+			remarks,
+			doneBy: socket.data.user,
+		});
 
-    io.emit('new-appointment-created', data);
-  };
-
-module.exports = {
-  receptionistLeft,
-  searchPatients,
-  createAppointment,
-};
+		io.emit(socketConstants.newAppointmentCreated, data);
+	};

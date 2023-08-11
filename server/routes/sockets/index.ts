@@ -1,21 +1,22 @@
-const {
+import {
   receptionistLeft,
   createAppointment,
   searchPatients,
-} = require('../../routes/sockets/reception.socket');
-const {
+} from '../../routes/sockets/reception.socket';
+import {
   doctorLeft,
   createPrescriptionByDoctor,
   getDoctorAppointments,
   getDoctorPatients,
   getPatientById,
-} = require('../../routes/sockets/doctor.socket');
-const { safeSocket } = require('../../middlewares/socket');
-const { socketConstants } = require('../../utils/constants.js');
-const { createPatient, deletePatient } = require('../../routes/sockets/coadmin.socket');
-const { pharmacistLeft, dispensePrescription } = require('../../routes/sockets/pharmacy.socket');
+} from '../../routes/sockets/doctor.socket';
+import { IO, Socket } from '../../utils/types';
+import { safeSocket } from '../../middlewares/socket';
+import { socketConstants } from '../../utils/constants';
+import { createPatient, deletePatient } from '../../routes/sockets/coAdmin.socket';
+import { pharmacistLeft, dispensePrescription } from '../../routes/sockets/pharmacy.socket';
 
-const router = (io, socket) => {
+const router = (io:IO, socket: Socket) => {
   socket.on(socketConstants.receptionistLeft, safeSocket(receptionistLeft)(io, socket));
   socket.on(socketConstants.doctorLeft, safeSocket(doctorLeft)(io, socket));
   socket.on(socketConstants.pharmacistLeft, safeSocket(pharmacistLeft)(io, socket));
@@ -34,6 +35,4 @@ const router = (io, socket) => {
   socket.on(socketConstants.doctorLeft, safeSocket(doctorLeft)(io, socket));
 };
 
-module.exports = {
-  router,
-};
+export default router

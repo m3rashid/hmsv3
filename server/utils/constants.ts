@@ -6,7 +6,7 @@ export const supportedUserRoles = [
 	'INVENTORY_MANAGER',
 	'CO_ADMIN',
 	'OTHER',
-];
+] as const;
 
 export const permissions = {
 	ADMIN: 'ADMIN',
@@ -21,13 +21,13 @@ export const permissions = {
 	EDIT_USER_PROFILE: 'EDIT_USER_PROFILE',
 	EDIT_USER_PERMISSIONS: 'EDIT_USER_PERMISSIONS',
 	GET_ALL_USERS: 'GET_ALL_USERS',
-};
+} as const;
 
 export const InventoryTypes = {
 	Medicine: 'Medicine',
 	NonMedicine: 'NonMedicine',
 	OtherAssets: 'OtherAssets',
-};
+} as const;
 
 export const dosages = {
 	OD: 1,
@@ -43,25 +43,28 @@ export const socketConstants = {
 	receptionistLeft: 'receptionist-left',
 	doctorLeft: 'doctor-left',
 	pharmacistLeft: 'pharmacist-left',
-	createUser: 'create-user',
 	getDoctorAppointments: 'get-doctor-appointments',
 	getDoctorPatients: 'get-doctor-patients',
 	createPatient: 'create-patient',
 	deletePatient: 'delete-patient',
 	getPatientById: 'get-patient-by-id',
 	searchPatients: 'search-patients',
-	createReceptionist: 'create-receptionist',
 	createAppointment: 'create-appointment',
-	createPrescriptionByDoctor: 'create-prescription-by-doctor',
 	dispensePrescription: 'dispense-prescription',
-
+	createPrescriptionByDoctor: 'create-prescription-by-doctor',
+	createUser: 'create-user',
+	createReceptionist: 'create-receptionist',
+	referAnotherDoctor: "refer-another-doctor",
+	error: 'error',
 	// not handled
 	foundDoctorAppointments: 'found-doctor-appointments',
 	foundDoctorPatients: 'found-doctor-patients',
 	newPatientCreated: 'new-patient-created',
 	patientDeleteSuccess: 'patient-delete-success',
 	patientFound: 'patient-found',
-};
+	patientsFound: 'patients-found',
+	newAppointmentCreated: 'new-appointment-created'
+} as const;
 
 export const serverActions = {
 	SIGNUP: 'SIGNUP',
@@ -91,4 +94,4 @@ export const serverActions = {
 	UPDATE_PERMISSIONS: 'UPDATE_PERMISSIONS',
 
 	UPDATE_CONFIG: 'UPDATE_CONFIG',
-};
+} as const;
