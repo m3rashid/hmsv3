@@ -49,10 +49,10 @@ export interface Log extends Base {
 export const MedType = ['TABLET', 'SYRUP'] as const;
 export interface Medicine extends Base {
 	name: string;
-	quantity: string;
+	quantity: number;
+	expiryDate: Date;
 	batchNumber?: string;
 	tabletsPerStrip?: number;
-	expiryDate: string;
 	category?: typeof Category;
 	medType?: typeof MedType;
 	manufacturer?: string;
