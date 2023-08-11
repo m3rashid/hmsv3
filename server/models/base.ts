@@ -47,14 +47,16 @@ export interface Log extends Base {
 }
 
 export const MedType = ['TABLET', 'SYRUP'] as const;
+export type MedType = (typeof MedType)[number]
+
 export interface Medicine extends Base {
 	name: string;
 	quantity: number;
 	expiryDate: Date;
 	batchNumber?: string;
 	tabletsPerStrip?: number;
-	category?: typeof Category;
-	medType?: typeof MedType;
+	category?: Category;
+	medType?: MedType;
 	manufacturer?: string;
 }
 
@@ -98,12 +100,16 @@ export const PatientType = [
 	'DEPENDENT',
 	'OTHER',
 ] as const;
+export type PatientType = (typeof PatientType)[number]
+
 export const BloodGroup = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'UNKNOWN'] as const;
+export type BloodGroup = (typeof BloodGroup)[number];
+
 export interface Patient extends Base {
 	user?: string;
 	name?: string;
 	fathersName?: string;
-	type: typeof PatientType;
+	type: PatientType;
 	otherUser?: string;
 	sex: Sex;
 	dob?: string;
@@ -112,7 +118,7 @@ export interface Patient extends Base {
 	dor?: string;
 	department?: string;
 	fdr?: string;
-	bloodGroup: (typeof BloodGroup)[number];
+	bloodGroup: BloodGroup
 	lastVisit?: string;
 	address?: string;
 	dependentStatus: boolean;
@@ -132,6 +138,7 @@ export interface Prescription extends Base {
 
 export const Sex = ['M', 'F', 'O'] as const;
 export type Sex = (typeof Sex)[number]
+
 export const Category = [
 	'GENERAL_MEDICINE',
 	'CARDIOLOGY',
@@ -141,6 +148,8 @@ export const Category = [
 	'ENT',
 	'GYNECOLOGY',
 ] as const;
+export type Category = (typeof Category)[number]
+
 export const PatientTypes = [
 	'EMPLOYEE',
 	'STUDENT',
@@ -148,7 +157,11 @@ export const PatientTypes = [
 	'FAMILY_PENSIONER',
 	'DEPENDENT',
 ] as const;
+export type PatientTypes = (typeof PatientTypes)[number];
+
 export const MaritalStatus = ['SINGLE', 'SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED'] as const;
+export type MaritalStatus = (typeof MaritalStatus)[number];
+
 export const Role = [
 	'DOCTOR',
 	'ADMIN',
@@ -158,7 +171,10 @@ export const Role = [
 	'CO_ADMIN',
 	'OTHER',
 ] as const;
+export type Role = (typeof Role)[number];
+
 export const Days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'] as const;
+export type Days = (typeof Days)[number];
 export interface Profile extends Base {
 	designation?: string;
 	contact?: string;
@@ -167,11 +183,11 @@ export interface Profile extends Base {
 	roomNumber?: string;
 	sex: Sex;
 	authorityName?: string;
-	category: (typeof Category)[number];
-	role: (typeof Role)[number];
+	category: Category
+	role: Role;
 	origin?: string;
 	auth: Auth;
-	availableDays: Array<(typeof Days)[number]>;
+	availableDays: Array<Days>;
 	// availability         Json? // time range
 	// leave                Leave[]
 	// Appointment          Appointment[] @relation("doctor")
