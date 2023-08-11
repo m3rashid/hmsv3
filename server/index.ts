@@ -64,7 +64,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb', parameterLimit: 100000 }));
 app.use(morgan('dev'));
 
-app.get('/', (req, res) => res.send('Hello World'));
+app.get('/', (req: Request, res: Response) => res.send('Hello World'));
 app.use('/api/auth', AuthRoutes);
 app.use('/api/admin', AdminRoutes);
 app.use('/api/doctor', DoctorRoutes);
@@ -74,7 +74,7 @@ app.use('/api/inventory', InventoryRoutes);
 app.use('/api/pharmacy', PharmacyRoutes);
 app.use('/api/data-migration', dataMigrationRoutes);
 
-app.get('/health', (req, res) => {
+app.get('/health', (req: Request, res: Response) => {
 	const healthCheck = {
 		uptime: process.uptime(),
 		responseTime: process.hrtime(),
@@ -89,7 +89,7 @@ app.get('/health', (req, res) => {
 	}
 });
 
-app.use((req, res, next) => res.status(404).send('Not Found'));
+app.use((req: Request, res: Response, next) => res.status(404).send('Not Found'));
 app.use(globalErrorHandlerMiddleware);
 
 const startServer = async () => {
