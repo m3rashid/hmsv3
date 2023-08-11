@@ -1,4 +1,4 @@
-const genericTypes = {
+export const genericTypes = {
   bloodGroup: 'bloodGroup',
   gender: 'sex',
   maritalStatus: 'maritalStatus',
@@ -60,23 +60,6 @@ const familyPensionerMapper = {
   'CONTACT NUMBER': 'contact',
 };
 
-/*
-S.No	
-EMP ID	
-EMP NAME	
-EMPLOYEE DESIGNATION	
-FAMILY MEMBER NAME	
-RELATIONSHIP	
-FAMILY MEMBER MARITAL STATUS	
-FAMILY MEMBER GENDER	
-FAMILY MEMBER DOB	
-DEPENDENT STATUS	
-FDR	
-EMP D.O.R	
-ADDESS	
-CONTACT NUMBER
-*/
-
 const dependentMapper = {
   'S.No': 'slNo',
   'EMP ID': 'userId',
@@ -97,15 +80,10 @@ const dependentMapper = {
 // TODO: complete this (waiting for data from CIT)
 const studentMapper = {};
 
-const correctMapper = {
+export const correctMapper = {
   EMPLOYEE: employeesMapper,
   PENSIONER: pensionerMapper,
   FAMILY_PENSIONER: familyPensionerMapper,
   DEPENDENT: dependentMapper,
   STUDENT: studentMapper,
-};
-
-module.exports = {
-  correctMapper,
-  genericTypes,
-};
+} as const;

@@ -1,13 +1,3 @@
-export const supportedUserRoles = [
-	'DOCTOR',
-	'ADMIN',
-	'RECEPTIONIST',
-	'PHARMACIST',
-	'INVENTORY_MANAGER',
-	'CO_ADMIN',
-	'OTHER',
-] as const;
-
 export const permissions = {
 	ADMIN: 'ADMIN',
 	DOCTOR_APPOINTMENTS: 'DOCTOR_APPOINTMENTS',
@@ -27,16 +17,6 @@ export const InventoryTypes = {
 	Medicine: 'Medicine',
 	NonMedicine: 'NonMedicine',
 	OtherAssets: 'OtherAssets',
-} as const;
-
-export const dosages = {
-	OD: 1,
-	BD: 2,
-	TD: 3,
-	QD: 4,
-	OW: 1 / 7,
-	BW: 2 / 7,
-	TW: 3 / 7,
 } as const;
 
 export const socketConstants = {

@@ -70,7 +70,17 @@ export interface OtherAssets extends Base {
 	quantity: number;
 }
 
-export const Dosage = ['OD', 'BD', 'TD', 'QD', 'OW', 'BW', 'TW', 'QW'] as const;
+export const dosages = {
+	OD: 1,
+	BD: 2,
+	TD: 3,
+	QD: 4,
+	OW: 1 / 7,
+	BW: 2 / 7,
+	TW: 3 / 7,
+} as const;
+export const Dosage = Object.keys(dosages);
+export type Dosage = keyof typeof dosages
 export interface PrescribedMedicine extends Base {
 	duration: number;
 	description?: string;
@@ -95,7 +105,7 @@ export interface Patient extends Base {
 	fathersName?: string;
 	type: typeof PatientType;
 	otherUser?: string;
-	sex: (typeof Sex)[number];
+	sex: Sex;
 	dob?: string;
 	designation?: string;
 	contact?: string;
@@ -121,6 +131,7 @@ export interface Prescription extends Base {
 }
 
 export const Sex = ['M', 'F', 'O'] as const;
+export type Sex = (typeof Sex)[number]
 export const Category = [
 	'GENERAL_MEDICINE',
 	'CARDIOLOGY',
@@ -130,6 +141,14 @@ export const Category = [
 	'ENT',
 	'GYNECOLOGY',
 ] as const;
+export const PatientTypes = [
+	'EMPLOYEE',
+	'STUDENT',
+	'PENSIONER',
+	'FAMILY_PENSIONER',
+	'DEPENDENT',
+] as const;
+export const MaritalStatus = ['SINGLE', 'SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED'] as const;
 export const Role = [
 	'DOCTOR',
 	'ADMIN',
@@ -146,7 +165,7 @@ export interface Profile extends Base {
 	address?: string;
 	bio?: string;
 	roomNumber?: string;
-	sex: (typeof Sex)[number];
+	sex: Sex;
 	authorityName?: string;
 	category: (typeof Category)[number];
 	role: (typeof Role)[number];

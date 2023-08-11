@@ -1,9 +1,10 @@
 import { Server, Socket as _Socket } from 'socket.io';
 
 import { socketConstants } from './constants';
+import mongoose from 'mongoose';
 
 export interface PartialUser {
-	id: string;
+	_id: string;
 	permissions: string[];
 	name: string;
 	email: string;
@@ -24,3 +25,5 @@ export type SocketData = {
 export type IO = Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 
 export type Socket = _Socket<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
+
+export type ObjectId = string | mongoose.ObjectId;
