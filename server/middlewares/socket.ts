@@ -8,7 +8,7 @@ import { isProduction } from '../utils/config';
 
 const keys = JSON.parse(fs.readFileSync(path.join(__dirname, '../utils/keys/keys.json')).toString());
 
-export const checkSocketAuth = (socket: Socket, next: NextFunction) => {
+export const checkSocketAuth = (socket: Socket, next: ((err?: any) => void | any)) => {
   try {
     const token = socket.handshake.auth.token;
     if (!token) throw new Error('Auth error');
