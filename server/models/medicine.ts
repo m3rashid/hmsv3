@@ -1,16 +1,12 @@
-import { Base } from "./base";
-import { Category } from "./profile";
+import mongoose from 'mongoose';
 
-export const MedType = ["TABLET", "SYRUP"] as const;
+import { Medicine, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
 
-export interface Medicine extends Base {
-	name: string
-	quantity: string
-	batchNumber?: string
-	tabletsPerStrip?: number
-	expiryDate: string
-	category?: typeof Category
-	medType?: typeof MedType
-	manufacturer?: string
-}
+const medicineSchema = new mongoose.Schema<Medicine>(
+	{
+		...baseModelSchema,
+	},
+	{ timestamps: true }
+);
 
+export const MedicineModel = paginatedCompiledModel<Medicine>(modelNames.medicine, medicineSchema);

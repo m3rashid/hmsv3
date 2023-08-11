@@ -1,10 +1,17 @@
-import { Base } from "./base"
-import { Profile } from "./profile"
+import mongoose from 'mongoose';
 
-export interface Auth extends Base {
-	name: string
-	email: string
-	password: string
-	permissions: string[]
-	profileId: Profile
-}
+import { Auth, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
+
+const authSchema = new mongoose.Schema<Auth>(
+	{
+		...baseModelSchema,
+		email: { type: String, required: true, unique: true },
+		name: { type: String, required: true },
+		password: { type: String, required: true },
+		permissions: [{ type: String, required: true }],
+		profile: { type: String, required: true },
+	},
+	{ timestamps: true }
+);
+
+export const AuthModel = paginatedCompiledModel<Auth>(modelNames.auth, authSchema);

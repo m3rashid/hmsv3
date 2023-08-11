@@ -1,14 +1,15 @@
-import { Base } from "./base";
-import { Medicine } from "./medicine";
-import { Prescription } from "./prescription";
+import mongoose from 'mongoose';
 
-export const Dosage = [	"OD",  "BD",  "TD",  "QD",  "OW",  "BW",  "TW",  "QW"] as const;
+import { PrescribedMedicine, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
 
-export interface PrescribedMedicine extends Base {
-	duration: number
-	description?: string
-	medicine?: Medicine
-	dosage: typeof Dosage
-	quantityPerDose?: string
-	prescription?: Prescription
-}
+const prescribedMedicineSchema = new mongoose.Schema<PrescribedMedicine>(
+	{
+		...baseModelSchema,
+	},
+	{ timestamps: true }
+);
+
+export const PrescribedMedicineModel = paginatedCompiledModel<PrescribedMedicine>(
+	modelNames.prescribedMedicine,
+	prescribedMedicineSchema
+);

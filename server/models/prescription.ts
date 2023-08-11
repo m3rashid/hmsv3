@@ -1,12 +1,15 @@
-import { Appointment } from "./appointment";
-import { Base } from "./base";
-import { PrescribedMedicine } from "./prescribedMedicine";
-import { Test } from "./test"
+import mongoose from 'mongoose';
 
-export interface Prescription extends Base {
-	symptoms: string
-	appointment?: Appointment
-	pending: boolean
-	tests: Test[]
-	medicines: PrescribedMedicine[]
-}
+import { Prescription, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
+
+const prescriptionSchema = new mongoose.Schema<Prescription>(
+	{
+		...baseModelSchema,
+	},
+	{ timestamps: true }
+);
+
+export const PrescriptionModel = paginatedCompiledModel<Prescription>(
+	modelNames.prescription,
+	prescriptionSchema
+);

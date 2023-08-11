@@ -1,10 +1,12 @@
-import { Base } from "./base";
-import { Prescription } from "./prescription";
+import mongoose from 'mongoose';
 
-export interface Test extends Base {
-	name: string
-	description?: string
-	prescription?: Prescription
-	testType?: string
-	testResultDocs?: string[] // link of the documents
-}
+import { Test, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
+
+const testSchema = new mongoose.Schema<Test>(
+	{
+		...baseModelSchema,
+	},
+	{ timestamps: true }
+);
+
+export const TestModel = paginatedCompiledModel<Test>(modelNames.test, testSchema);

@@ -1,8 +1,15 @@
-import { Base } from "./base";
+import mongoose from 'mongoose';
 
-export interface NonMedicine extends Base {
-	name: string
-	quantity: number
-	batchNumber?: string
-	expiryDate: string
-}
+import { NonMedicine, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
+
+const nonMedicineSchema = new mongoose.Schema<NonMedicine>(
+	{
+		...baseModelSchema,
+	},
+	{ timestamps: true }
+);
+
+export const NonMedicineModel = paginatedCompiledModel<NonMedicine>(
+	modelNames.nonMedicine,
+	nonMedicineSchema
+);

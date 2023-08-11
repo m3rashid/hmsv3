@@ -1,9 +1,16 @@
-import { Base } from "./base";
-import { Profile } from "./profile";
+import mongoose from 'mongoose';
 
-export interface Leave extends Base {
-	doctor: Profile
-	reason: string
-	startDate: string;
-	endDate: string
-}
+import { Leave, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
+
+const leaveSchema = new mongoose.Schema<Leave>(
+	{
+		...baseModelSchema,
+		doctor: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.auth },
+		endDate: { type: Date, required: true },
+		reason: { type: String },
+		startDate: { type: Date, required: true },
+	},
+	{ timestamps: true }
+);
+
+export const LeaveModel = paginatedCompiledModel<Leave>(modelNames.leave, leaveSchema);

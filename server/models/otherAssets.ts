@@ -1,6 +1,15 @@
-import { Base } from "./base";
+import mongoose from 'mongoose';
 
-export interface OtherAssets extends Base {
-	name: string;
-	quantity: number
-}
+import { OtherAssets, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
+
+const otherAssetsSchema = new mongoose.Schema<OtherAssets>(
+	{
+		...baseModelSchema,
+	},
+	{ timestamps: true }
+);
+
+export const OtherAssetsModel = paginatedCompiledModel<OtherAssets>(
+	modelNames.otherAsset,
+	otherAssetsSchema
+);
