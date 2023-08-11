@@ -60,9 +60,9 @@ export interface Medicine extends Base {
 
 export interface NonMedicine extends Base {
 	name: string;
+	expiryDate: Date;
 	quantity: number;
 	batchNumber?: string;
-	expiryDate: string;
 }
 
 export interface OtherAssets extends Base {

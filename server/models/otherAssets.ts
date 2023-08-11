@@ -5,6 +5,8 @@ import { OtherAssets, baseModelSchema, modelNames, paginatedCompiledModel } from
 const otherAssetsSchema = new mongoose.Schema<OtherAssets>(
 	{
 		...baseModelSchema,
+		name: { type: String, required: true },
+		quantity: { type: Number, required: true },
 	},
 	{ timestamps: true }
 );

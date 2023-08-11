@@ -5,6 +5,10 @@ import { NonMedicine, baseModelSchema, modelNames, paginatedCompiledModel } from
 const nonMedicineSchema = new mongoose.Schema<NonMedicine>(
 	{
 		...baseModelSchema,
+		name: { type: String, required: true },
+		batchNumber: { type: String },
+		expiryDate: { type: Date, required: true },
+		quantity: { type: Number, required: true },
 	},
 	{ timestamps: true }
 );
