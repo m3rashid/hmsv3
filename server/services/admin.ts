@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-import { Sex } from '../models/base';
+import { Sex, Category, Role } from '../models/base';
 import { ObjectId, PartialUser } from '../utils/types';
 
 const { prisma } = require('../utils/prisma');
@@ -17,7 +17,7 @@ export const getSinglePatientDetailsService = async (id: ObjectId) => {
 	return exclude(patientDetail, ['isDeleted']);
 };
 
-export const getAllUsersService = async (userRole) => {
+export const getAllUsersService = async (userRole: Role | 'PATIENT') => {
 	if (!userRole) return [];
 	if (userRole === 'PATIENT') {
 		const users = await prisma.patient.findMany({
@@ -91,16 +91,16 @@ export const updateUserProfileService = async (
 		email?: string;
 		password?: string;
 		sex?: Sex;
-		designation;
-		contact;
-		address;
-		bio;
-		availability;
-		availableDays;
-		roomNumber;
-		authorityName;
-		category;
-		origin;
+		designation?: string;
+		contact?: string;
+		address?: string;
+		bio?: string;
+		availability?: any;
+		availableDays?: any;
+		roomNumber?: number;
+		authorityName?: string;
+		category?: Category[];
+		origin?: string;
 	},
 
 	// TODO unhandled in sockets
@@ -122,7 +122,7 @@ export const updateUserProfileService = async (
 		},
 	});
 
-	if (category.length === 0) throw new Error('Category cannot be empty');
+	if (category?.length === 0) throw new Error('Category cannot be empty');
 
 	const updatedProfile = await prisma.Profile.update({
 		where: { id: profileId },
@@ -134,7 +134,7 @@ export const updateUserProfileService = async (
 			...(bio && bio.trim() && { bio }),
 			...(availability && { availability }),
 			...(availableDays && availableDays.trim() && { availableDays }),
-			...(roomNumber && roomNumber.trim() && { roomNumber }),
+			...(roomNumber && { roomNumber }),
 			...(authorityName && authorityName.trim() && { authorityName }),
 			...(category && { category }),
 			...(origin && origin.trim() && { origin }),
@@ -143,7 +143,7 @@ export const updateUserProfileService = async (
 
 	await addEventLog({
 		action: serverActions.UPDATE_PROFILE,
-		fromId: doneBy.id,
+		fromId: doneBy._id,
 		actionId: profileId,
 		actionTable: 'profile',
 		message: `${doneBy.name} <(${doneBy.email})> updated profile of ${updatedAuth.name}`,
