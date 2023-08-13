@@ -13,11 +13,7 @@ export const permissions = {
 	GET_ALL_USERS: 'GET_ALL_USERS',
 } as const;
 
-export const InventoryTypes = {
-	Medicine: 'Medicine',
-	NonMedicine: 'NonMedicine',
-	OtherAssets: 'OtherAssets',
-} as const;
+export type Permission = typeof permissions[keyof typeof permissions];
 
 export const socketConstants = {
 	receptionistLeft: 'receptionist-left',
@@ -34,7 +30,7 @@ export const socketConstants = {
 	createPrescriptionByDoctor: 'create-prescription-by-doctor',
 	createUser: 'create-user',
 	createReceptionist: 'create-receptionist',
-	referAnotherDoctor: "refer-another-doctor",
+	referAnotherDoctor: 'refer-another-doctor',
 	error: 'error',
 	// not handled
 	foundDoctorAppointments: 'found-doctor-appointments',
@@ -43,8 +39,9 @@ export const socketConstants = {
 	patientDeleteSuccess: 'patient-delete-success',
 	patientFound: 'patient-found',
 	patientsFound: 'patients-found',
-	newAppointmentCreated: 'new-appointment-created'
+	newAppointmentCreated: 'new-appointment-created',
 } as const;
+export type SocketConstant = typeof socketConstants[keyof typeof socketConstants];
 
 export const serverActions = {
 	SIGNUP: 'SIGNUP',
@@ -75,3 +72,4 @@ export const serverActions = {
 
 	UPDATE_CONFIG: 'UPDATE_CONFIG',
 } as const;
+export type ServerAction = typeof serverActions[keyof typeof serverActions];

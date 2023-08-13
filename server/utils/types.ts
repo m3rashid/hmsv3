@@ -1,7 +1,7 @@
+import mongoose from 'mongoose';
 import { Server, Socket as _Socket } from 'socket.io';
 
-import { socketConstants } from './constants';
-import mongoose from 'mongoose';
+import { SocketConstant } from 'gatekeeper';
 
 export interface PartialUser {
 	_id: string;
@@ -10,11 +10,9 @@ export interface PartialUser {
 	email: string;
 }
 
-type Events = typeof socketConstants[keyof typeof socketConstants];
+export type ServerToClientEvents = Record<SocketConstant, any>;
 
-export type ServerToClientEvents = Record<Events, any>;
-
-export type ClientToServerEvents = Record<Events, any>;
+export type ClientToServerEvents = Record<SocketConstant, any>;
 
 export type InterServerEvents = Record<string, any>;
 

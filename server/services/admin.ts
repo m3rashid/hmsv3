@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-import { CONSTANTS } from 'gatekeeper';
+import { MODEL_CONSTANTS } from 'gatekeeper';
 import { ObjectId, PartialUser } from '../utils/types';
 import { PatientModel } from '../models/patient';
 import { ProfileModel } from '../models/profile';
@@ -14,14 +14,14 @@ export const getSinglePatientDetailsService = async (id: ObjectId) => {
 	return exclude(patientDetail, ['isDeleted']);
 };
 
-export const getAllUsersService = async (userRole: CONSTANTS.Role | 'PATIENT') => {
+export const getAllUsersService = async (userRole: MODEL_CONSTANTS.Role | 'PATIENT') => {
 	if (!userRole) return [];
 	if (userRole === 'PATIENT') {
 		const users = await PatientModel.find({ isDeleted: false });
 		return include(users, ['id', 'name', 'contact', 'address', 'lastVisit']);
 	}
 
-	if (!CONSTANTS.Roles.includes(userRole)) throw new Error('Invalid user role');
+	if (!MODEL_CONSTANTS.Roles.includes(userRole)) throw new Error('Invalid user role');
 
 	const users = await ProfileModel.find({ role: userRole }).populate('auth');
 	return users;
@@ -75,7 +75,7 @@ export const updateUserProfileService = async (
 		name?: string;
 		email?: string;
 		password?: string;
-		sex?: CONSTANTS.Sex;
+		sex?: MODEL_CONSTANTS.Sex;
 		designation?: string;
 		contact?: string;
 		address?: string;
@@ -84,7 +84,7 @@ export const updateUserProfileService = async (
 		availableDays?: any;
 		roomNumber?: number;
 		authorityName?: string;
-		category?: CONSTANTS.Category[];
+		category?: MODEL_CONSTANTS.Category[];
 		origin?: string;
 	},
 

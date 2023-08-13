@@ -1,4 +1,4 @@
-import { CONSTANTS } from 'gatekeeper';
+import { MODEL_CONSTANTS } from 'gatekeeper';
 import { prisma } from '../../utils/prisma';
 import { correctMapper, genericTypes } from './mappers';
 
@@ -10,7 +10,7 @@ export const handleMigrationService = async (
 	const uniqueFieldInDb = 'userId';
 	const mapper = correctMapper[type];
 
-	if (!CONSTANTS.PatientTypes.includes(type)) {
+	if (!MODEL_CONSTANTS.PatientTypes.includes(type)) {
 		throw new Error('Invalid patient type');
 	}
 

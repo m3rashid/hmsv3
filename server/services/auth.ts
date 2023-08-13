@@ -1,11 +1,11 @@
 import bcrypt from "bcrypt";
 
-import { CONSTANTS } from "gatekeeper";
+import { MODEL_CONSTANTS } from "gatekeeper";
 import { AuthModel } from "../models/auth";
 import { ProfileModel } from "../models/profile";
 import { issueJWT, revalidateJWT } from "../utils/jwt";
 
-export const addActions = (role: CONSTANTS.Role) => {
+export const addActions = (role: MODEL_CONSTANTS.Role) => {
   let allowedActions: string[] = [];
   switch (role) {
     case 'DOCTOR':
@@ -110,7 +110,7 @@ export const signupService = async ({
     throw new Error('Insufficient credentials');
   }
 
-  if (!CONSTANTS.Roles.includes(role)) throw new Error('Invalid role');
+  if (!MODEL_CONSTANTS.Roles.includes(role)) throw new Error('Invalid role');
   const allowedActions = addActions(role);
 
   const hashedPassword = await bcrypt.hash(password.trim(), 10);
