@@ -1,5 +1,5 @@
-import paginate from 'mongoose-paginate-v2';
 import mongoose, { ObjectId } from 'mongoose';
+import { BloodGroup, Category, Day, Dosage, MedType, PatientType, Role, Sex } from './constants';
 
 export interface Base {
 	_id: ObjectId | string;
@@ -46,9 +46,6 @@ export interface Log extends Base {
 	to: string;
 }
 
-export const MedType = ['TABLET', 'SYRUP'] as const;
-export type MedType = (typeof MedType)[number]
-
 export interface Medicine extends Base {
 	name: string;
 	quantity: number;
@@ -72,38 +69,14 @@ export interface OtherAssets extends Base {
 	quantity: number;
 }
 
-export const dosages = {
-	OD: 1,
-	BD: 2,
-	TD: 3,
-	QD: 4,
-	OW: 1 / 7,
-	BW: 2 / 7,
-	TW: 3 / 7,
-} as const;
-export const Dosage = Object.keys(dosages);
-export type Dosage = keyof typeof dosages
 export interface PrescribedMedicine extends Base {
 	duration: number;
 	description?: string;
 	medicine?: Medicine;
-	dosage: typeof Dosage;
+	dosage: Dosage;
 	quantityPerDose?: string;
 	prescription?: Prescription;
 }
-
-export const PatientType = [
-	'EMPLOYEE',
-	'STUDENT',
-	'PENSIONER',
-	'FAMILY_PENSIONER',
-	'DEPENDENT',
-	'OTHER',
-] as const;
-export type PatientType = (typeof PatientType)[number]
-
-export const BloodGroup = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-', 'UNKNOWN'] as const;
-export type BloodGroup = (typeof BloodGroup)[number];
 
 export interface Patient extends Base {
 	user?: string;
@@ -118,7 +91,7 @@ export interface Patient extends Base {
 	dor?: string;
 	department?: string;
 	fdr?: string;
-	bloodGroup: BloodGroup
+	bloodGroup: BloodGroup;
 	lastVisit?: string;
 	address?: string;
 	dependentStatus: boolean;
@@ -136,45 +109,6 @@ export interface Prescription extends Base {
 	medicines: PrescribedMedicine[];
 }
 
-export const Sex = ['M', 'F', 'O'] as const;
-export type Sex = (typeof Sex)[number]
-
-export const Category = [
-	'GENERAL_MEDICINE',
-	'CARDIOLOGY',
-	'DERMATOLOGY',
-	'INTERNAL_MEDICINE',
-	'OPHTHALMOLOGY',
-	'ENT',
-	'GYNECOLOGY',
-] as const;
-export type Category = (typeof Category)[number]
-
-export const PatientTypes = [
-	'EMPLOYEE',
-	'STUDENT',
-	'PENSIONER',
-	'FAMILY_PENSIONER',
-	'DEPENDENT',
-] as const;
-export type PatientTypes = (typeof PatientTypes)[number];
-
-export const MaritalStatus = ['SINGLE', 'SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED'] as const;
-export type MaritalStatus = (typeof MaritalStatus)[number];
-
-export const Role = [
-	'DOCTOR',
-	'ADMIN',
-	'RECEPTIONIST',
-	'PHARMACIST',
-	'INVENTORY_MANAGER',
-	'CO_ADMIN',
-	'OTHER',
-] as const;
-export type Role = (typeof Role)[number];
-
-export const Days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'] as const;
-export type Days = (typeof Days)[number];
 export interface Profile extends Base {
 	designation?: string;
 	contact?: string;
@@ -183,11 +117,11 @@ export interface Profile extends Base {
 	roomNumber?: string;
 	sex: Sex;
 	authorityName?: string;
-	category: Category
+	category: Category;
 	role: Role;
 	origin?: string;
 	auth: Auth;
-	availableDays: Array<Days>;
+	availableDays: Array<Day>;
 	// availability         Json? // time range
 	// leave                Leave[]
 	// Appointment          Appointment[] @relation("doctor")
@@ -201,21 +135,6 @@ export interface Test extends Base {
 	testType?: string;
 	testResultDocs?: string[]; // link of the documents
 }
-
-export const modelNames = {
-	appointment: 'Appointment',
-	auth: 'Auth',
-	leave: 'Leave',
-	log: 'Log',
-	medicine: 'Medicine',
-	nonMedicine: 'NonMedicine',
-	otherAsset: 'OtherAsset',
-	patient: 'Patient',
-	prescribedMedicine: 'PrescribedMedicine',
-	prescription: 'Prescription',
-	profile: 'Profile',
-	test: 'Test',
-};
 
 export type ModelSchemasTypes = {
 	appointment: Appointment;
@@ -232,28 +151,4 @@ export type ModelSchemasTypes = {
 	test: Test;
 };
 
-export type Document<T> = Omit<mongoose.Document, '_id'> & T;
-export type PaginateModel<T> = mongoose.PaginateModel<Document<T>>;
-
 export type IDbSchemaKey = keyof ModelSchemasTypes;
-
-export interface PaginatedListIResponse<T> {
-	docs: T[];
-	totalDocs: number;
-	limit: number;
-	totalPages: number;
-	page: number;
-	pagingCounter: number;
-	hasPrevPage: boolean;
-	hasNextPage: boolean;
-	prevPage: number | null;
-	nextPage: number | null;
-}
-
-export const paginatedCompiledModel = <T>(
-	name: (typeof modelNames)[keyof typeof modelNames],
-	schema: mongoose.Schema<T>
-) => {
-	schema.plugin(paginate);
-	return mongoose.model<Document<T>, PaginateModel<T>>(name, schema as any);
-};

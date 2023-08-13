@@ -1,0 +1,24 @@
+{
+	"name": "gatekeeper",
+	"version": "1.0.0",
+	"description": "",
+	"keywords": [],
+	"license": "MIT",
+	"author": "MD Rashid Hussain",
+	"type": "module",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "pnpm rollup -c",
+		"dev": "pnpm rollup -c -w"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@rollup/plugin-typescript": "^11.1.1",
+		"mongoose-paginate-v2": "^1.7.1",
+		"rollup": "^3.21.7",
+		"tslib": "^2.5.0"
+	},
+	"peerDependencies": {
+		"mongoose": "^7.1.1"
+	}
+}

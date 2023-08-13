@@ -12,3 +12,4 @@ hmsv3.code-workspace
 .netlify
 server/uploads/*.*
 !server/uploads/.gitkeep
+client-old
