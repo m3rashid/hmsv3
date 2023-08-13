@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
+import { MODEL, MODEL_NAMES, MODEL_UTILS } from 'gatekeeper';
 
 const nonMedicineSchema = new mongoose.Schema<MODEL.NonMedicine>(
 	{
@@ -12,7 +12,7 @@ const nonMedicineSchema = new mongoose.Schema<MODEL.NonMedicine>(
 	{ timestamps: true }
 );
 
-export const NonMedicineModel = UTILS.paginatedCompiledModel<MODEL.NonMedicine>(
+export const NonMedicineModel = MODEL_UTILS.paginatedCompiledModel<MODEL.NonMedicine>(
 	MODEL_NAMES.nonMedicine,
 	nonMedicineSchema
 );

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
+import { MODEL, MODEL_NAMES, MODEL_UTILS } from 'gatekeeper';
 
 const patientSchema = new mongoose.Schema<MODEL.Patient>(
 	{
@@ -8,7 +8,7 @@ const patientSchema = new mongoose.Schema<MODEL.Patient>(
 	{ timestamps: true }
 );
 
-export const PatientModel = UTILS.paginatedCompiledModel<MODEL.Patient>(
+export const PatientModel = MODEL_UTILS.paginatedCompiledModel<MODEL.Patient>(
 	MODEL_NAMES.patient,
 	patientSchema
 );

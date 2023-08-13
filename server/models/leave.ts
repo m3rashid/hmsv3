@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
+import { MODEL, MODEL_NAMES, MODEL_UTILS } from 'gatekeeper';
 
 const leaveSchema = new mongoose.Schema<MODEL.Leave>(
 	{
@@ -12,4 +12,4 @@ const leaveSchema = new mongoose.Schema<MODEL.Leave>(
 	{ timestamps: true }
 );
 
-export const LeaveModel = UTILS.paginatedCompiledModel<MODEL.Leave>(MODEL_NAMES.leave, leaveSchema);
+export const LeaveModel = MODEL_UTILS.paginatedCompiledModel<MODEL.Leave>(MODEL_NAMES.leave, leaveSchema);

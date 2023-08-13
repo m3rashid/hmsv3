@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
+import { MODEL, MODEL_NAMES, MODEL_UTILS } from 'gatekeeper';
 
 const authSchema = new mongoose.Schema<MODEL.Auth>(
 	{
@@ -13,4 +13,4 @@ const authSchema = new mongoose.Schema<MODEL.Auth>(
 	{ timestamps: true }
 );
 
-export const AuthModel = UTILS.paginatedCompiledModel<MODEL.Auth>(MODEL_NAMES.auth, authSchema);
+export const AuthModel = MODEL_UTILS.paginatedCompiledModel<MODEL.Auth>(MODEL_NAMES.auth, authSchema);
