@@ -31,7 +31,6 @@
 		"mongoose-paginate-v2": "^1.7.31",
 		"morgan": "^1.10.0",
 		"multer": "^1.4.5-lts.1",
-		"nodemon": "^3.0.1",
 		"socket.io": "^4.7.2",
 		"xlsx": "^0.18.5"
 	},
@@ -48,6 +47,7 @@
 		"@types/jsonwebtoken": "^9.0.2",
 		"@types/morgan": "^1.9.4",
 		"@types/multer": "^1.4.7",
+		"nodemon": "^3.0.1",
 		"prisma": "5.1.1",
 		"rollup": "^3.28.0",
 		"rollup-plugin-includepaths": "^0.2.4",
