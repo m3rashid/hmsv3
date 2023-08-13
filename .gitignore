@@ -13,3 +13,4 @@ hmsv3.code-workspace
 server/uploads/*.*
 !server/uploads/.gitkeep
 client-old
+dist
