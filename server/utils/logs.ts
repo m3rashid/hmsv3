@@ -1,4 +1,4 @@
-import { prisma } from './prisma';
+import { LogModel } from '../models/log';
 
 interface AddEventLog {
 	action: string;
@@ -14,15 +14,7 @@ export const addEventLog = async ({
 	actionTable,
 	message,
 }: AddEventLog) => {
-	const log = await prisma.log.create({
-		data: {
-			action,
-			fromId,
-			actionId,
-			actionTable,
-			message,
-		},
-	});
-
+	const log = new LogModel({	action,	fromId,	actionId,	actionTable,	message,});
+	await log.save();
 	return log;
 };

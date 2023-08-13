@@ -1,3 +1,5 @@
+import { medicine, nonMedicine, otherAsset } from './names';
+
 export const MedType = ['TABLET', 'SYRUP'] as const;
 export type MedType = (typeof MedType)[number];
 
@@ -55,3 +57,6 @@ export type Role = (typeof Roles)[number];
 
 export const Days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'] as const;
 export type Day = (typeof Days)[number];
+
+export const InventoryTypes = { medicine, nonMedicine, otherAsset } as const;
+export type InventoryType = (typeof InventoryTypes)[keyof typeof InventoryTypes];

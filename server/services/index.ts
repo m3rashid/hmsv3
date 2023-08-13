@@ -1,20 +1,20 @@
-const {
-  editPermissionsService,
-  getAllUsersService,
-  generateReportsService,
-  updateUserProfileService,
-  getReportDetailsService,
-  getSinglePatientDetailsService,
-} = require('../services/admin');
+export {
+	editPermissionsService,
+	getAllUsersService,
+	generateReportsService,
+	updateUserProfileService,
+	getReportDetailsService,
+	getSinglePatientDetailsService,
+} from './admin';
 
-const {
+export {
   loginService,
   logoutService,
   revalidateService,
   signupService,
-} = require('../services/auth');
+} from '../services/auth';
 
-const {
+export {
   getDoctorAppointmentsService,
   getDoctorPatientsService,
   createPrescriptionService,
@@ -23,86 +23,37 @@ const {
   referAnotherDoctorAppointmentService,
   updateAppointmentService,
   getPrescriptionByAppointmentService,
-} = require('../services/doctor');
+} from './doctor';
 
-const {
+export {
   DeleteInventoryService,
   addDummy,
   addMedicineService,
   editMedicineService,
   getMedicine,
   searchInventoryService,
-} = require('../services/inventory');
+} from './inventory';
 
-const {
+export {
   addTest,
   deleteTest,
   editTest,
   getAllTests,
   getTest,
   getTestsByType,
-} = require('../services/lab');
+} from './lab';
 
-const {
+export {
   createPatientService,
   deletePatientService,
   getPatientByIdService,
   searchPatientsService,
-} = require('../services/patient');
+} from './patient';
 
-const {
+export {
   dispensePrescriptionService,
   getAllPrescriptionsService,
   getPrescriptionByIdService,
-} = require('../services/pharmacist');
+} from './pharmacist';
 
-const { createAppointmentService, getAppointmentByIdService } = require('../services/reception');
-
-module.exports = {
-  editPermissionsService,
-  getAllUsersService,
-  generateReportsService,
-  updateUserProfileService,
-  getReportDetailsService,
-  getSinglePatientDetailsService,
-
-  loginService,
-  logoutService,
-  revalidateService,
-  signupService,
-
-  getDoctorAppointmentsService,
-  getDoctorPatientsService,
-  createPrescriptionService,
-  searchDoctorsService,
-
-  DeleteInventoryService,
-  addDummy,
-  addMedicineService,
-  editMedicineService,
-  getMedicine,
-  searchInventoryService,
-
-  addTest,
-  deleteTest,
-  editTest,
-  getAllTests,
-  getTest,
-  getTestsByType,
-
-  createPatientService,
-  deletePatientService,
-  getPatientByIdService,
-  searchPatientsService,
-
-  dispensePrescriptionService,
-  getAllPrescriptionsService,
-  getPrescriptionByIdService,
-
-  createAppointmentService,
-  getAppointmentByIdService,
-  checkMedAvailabilityService,
-  referAnotherDoctorAppointmentService,
-  getPrescriptionByAppointmentService,
-  updateAppointmentService,
-};
+export { createAppointmentService, getAppointmentByIdService } from './reception';

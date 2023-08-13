@@ -1,5 +1,5 @@
+import { CONSTANTS } from 'gatekeeper';
 import { prisma } from '../../utils/prisma';
-import { PatientTypes } from '../../models/base';
 import { correctMapper, genericTypes } from './mappers';
 
 export const handleMigrationService = async (
@@ -10,7 +10,7 @@ export const handleMigrationService = async (
 	const uniqueFieldInDb = 'userId';
 	const mapper = correctMapper[type];
 
-	if (!PatientTypes.includes(type)) {
+	if (!CONSTANTS.PatientTypes.includes(type)) {
 		throw new Error('Invalid patient type');
 	}
 
@@ -55,7 +55,7 @@ export const handleMigrationService = async (
 
 	// convert the data to the format required by the database
 	Object.values(filteredData).forEach((dataItem) => {
-		const convertedData = Object.entries(dataItem: any).reduce((acc, [key, value]) => {
+		const convertedData = Object.entries(dataItem).reduce((acc, [key, value]) => {
 			return {
 				...acc,
 				...(mapper[key] !== 'slNo' && {

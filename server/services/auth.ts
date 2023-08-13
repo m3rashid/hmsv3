@@ -1,12 +1,12 @@
-const bcrypt = require('bcrypt');
+import bcrypt from "bcrypt";
 
-const { prisma } = require('../utils/prisma');
-const { issueJWT, revalidateJWT } = require('../utils/jwt');
-const { supportedUserRoles, permissions, serverActions } = require('../utils/constants');
-const { addEventLog } = require('../utils/logs');
+import { CONSTANTS } from "gatekeeper";
+import { AuthModel } from "../models/auth";
+import { ProfileModel } from "../models/profile";
+import { issueJWT, revalidateJWT } from "../utils/jwt";
 
-const addActions = (role) => {
-  let allowedActions = [];
+export const addActions = (role: CONSTANTS.Role) => {
+  let allowedActions: string[] = [];
   switch (role) {
     case 'DOCTOR':
       allowedActions = [
@@ -46,19 +46,19 @@ const addActions = (role) => {
   return allowedActions;
 };
 
-const loginService = async (email, password) => {
+export const loginService = async (email: string, password: string) => {
   if (!email || !password) throw new Error('No credentials');
 
-  const user = await prisma.auth.findUnique({
-    where: { email: email.trim() },
-  });
+	const user = await AuthModel.findOne({ email: email.trim() });
   if (!user) throw new Error('User not found');
-  const matched = await bcrypt.compare(password, user.password.trim());
+
+	const matched = await bcrypt.compare(password, user.password.trim());
   if (!matched) throw new Error('Wrong Credentials');
 
-  const userDetails = await prisma.profile.findUnique({
-    where: { id: user.id },
-  });
+  // const userDetails = await prisma.profile.findUnique({
+  //   where: { id: user.id },
+  // });
+	const userDetails = await ProfileModel.findOne({ auth: user._id });
   const { token, refreshToken, expires } = issueJWT(user);
 
   return {
@@ -73,7 +73,7 @@ const loginService = async (email, password) => {
   };
 };
 
-const signupService = async ({
+export const signupService = async ({
   email,
   password,
   name,
@@ -90,7 +90,7 @@ const signupService = async ({
   category,
   origin,
   doneBy,
-}) => {
+}: any) => {
   const profileData = {
     designation,
     contact,
@@ -110,7 +110,7 @@ const signupService = async ({
     throw new Error('Insufficient credentials');
   }
 
-  if (!supportedUserRoles.includes(role)) throw new Error('Invalid role');
+  if (!CONSTANTS.Roles.includes(role)) throw new Error('Invalid role');
   const allowedActions = addActions(role);
 
   const hashedPassword = await bcrypt.hash(password.trim(), 10);
@@ -140,17 +140,17 @@ const signupService = async ({
   return user;
 };
 
-const logoutService = async () => {};
+export const logoutService = async () => {};
 
-const revalidateService = async (refreshToken) => {
+export const revalidateService = async (refreshToken: string) => {
   if (!refreshToken) throw new Error('Unauthorized');
 
   const { valid, expired, payload } = revalidateJWT(refreshToken);
 
   if (!valid || expired) throw new Error('Unauthorized');
-  const payloadid = payload.sub.id;
+  const payloadId = (payload?.sub as any)?._id;
 
-  const user = await prisma.auth.findUnique({ where: { id: payloadid } });
+	const user = await AuthModel.findById(payloadId)
   if (!user) throw new Error('Unauthorized');
 
   const userDetails = await prisma.profile.findUnique({
@@ -167,11 +167,4 @@ const revalidateService = async (refreshToken) => {
     token,
     expires,
   };
-};
-
-module.exports = {
-  loginService,
-  logoutService,
-  signupService,
-  revalidateService,
 };

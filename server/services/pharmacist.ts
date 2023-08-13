@@ -1,11 +1,8 @@
-const dayjs = require('dayjs');
+import dayjs from "dayjs"
 
-const { addEventLog } = require('../utils/logs');
-const { serverActions } = require('../utils/constants');
+import { addEventLog } from "../utils/logs";
 
-const { prisma } = require('../utils/prisma');
-
-const getAllPrescriptionsService = async ({ limit, from, to, offset }) => {
+export const getAllPrescriptionsService = async ({ limit, from, to, offset }: any) => {
   const prescriptions = await prisma.prescription.findMany({
     where: {
       datePrescribed: {
@@ -33,7 +30,7 @@ const getAllPrescriptionsService = async ({ limit, from, to, offset }) => {
   return { prescriptions };
 };
 
-const getPrescriptionByIdService = async (prescriptionId) => {
+export const getPrescriptionByIdService = async (prescriptionId: string) => {
   const prescription = await prisma.prescription.findFirst({
     where: {
       id: prescriptionId,
@@ -59,13 +56,13 @@ const getPrescriptionByIdService = async (prescriptionId) => {
   return { prescription };
 };
 
-const dispensePrescriptionService = async ({ prescriptionId, medicines, doneBy }) => {
+export const dispensePrescriptionService = async ({ prescriptionId, medicines, doneBy }: any) => {
   const updatePrescription = await prisma.prescription.update({
     where: { id: prescriptionId },
     data: { pending: false },
   });
 
-  const getFullprescription = await prisma.prescription.findFirst({
+  const fullPrescription = await prisma.prescription.findFirst({
     where: { id: prescriptionId },
     include: {
       appointment: {
@@ -78,18 +75,12 @@ const dispensePrescriptionService = async ({ prescriptionId, medicines, doneBy }
   });
 
   await addEventLog({
-    action: serverActions.UPDATE_PRESCRIPTION,
-    fromId: doneBy.id,
-    actionId: updatePrescription.id,
-    actionTable: 'prescription',
-    message: `${doneBy.name} <(${doneBy.email})> updated prescription ${getFullprescription.id} for patient ${getFullprescription.appointment.patient.name} with doctor ${getFullprescription.appointment.doctor.name}`,
-  });
+		action: serverActions.UPDATE_PRESCRIPTION,
+		fromId: doneBy.id,
+		actionId: updatePrescription.id,
+		actionTable: 'prescription',
+		message: `${doneBy.name} <(${doneBy.email})> updated prescription ${fullPrescription.id} for patient ${fullPrescription.appointment.patient.name} with doctor ${fullPrescription.appointment.doctor.name}`,
+	});
 
   return { prescription: updatePrescription, receipt: {} };
-};
-
-module.exports = {
-  dispensePrescriptionService,
-  getAllPrescriptionsService,
-  getPrescriptionByIdService,
 };

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import paginate from "mongoose-paginate-v2"
 
-import {modelNames} from "./names"
+import * as modelNames from "./names"
 
 export type Document<T> = Omit<mongoose.Document, '_id'> & T;
 export type PaginateModel<T> = mongoose.PaginateModel<Document<T>>;

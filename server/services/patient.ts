@@ -1,9 +1,7 @@
-const { prisma } = require('../utils/prisma');
-const { addEventLog } = require('../utils/logs');
-const { checkAccess } = require('../utils/auth.helpers');
-const { permissions, serverActions } = require('../utils/constants');
+import { checkAccess } from "../utils/auth.helpers";
+import { permissions } from "../utils/constants";
 
-const createPatientService = async (data, UserPermissions, doneBy) => {
+export const createPatientService = async (data: any, UserPermissions: string[], doneBy: any) => {
   if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions)) {
     throw new Error('Forbidden');
   }
@@ -21,29 +19,29 @@ const createPatientService = async (data, UserPermissions, doneBy) => {
   return { patient: newPatient };
 };
 
-const deletePatientService = async ({ patientId, doneBy }) => {
-  const pastPatient = await prisma.patient.findFirst({
-    where: { id: patientId },
-  });
+export const deletePatientService = async ({ patientId, doneBy }:any) => {
+	const pastPatient = await prisma.patient.findFirst({
+		where: { id: patientId },
+	});
 
-  const patient = await prisma.patient.delete({
-    where: { id: patientId },
-  });
+	const patient = await prisma.patient.delete({
+		where: { id: patientId },
+	});
 
-  if (!patient) throw new Error('Patient not found');
+	if (!patient) throw new Error('Patient not found');
 
-  await addEventLog({
-    action: serverActions.DELETE_PATIENT,
-    fromId: doneBy.id,
-    actionId: patientId,
-    actionTable: 'patient',
-    message: `${doneBy.name} <(${doneBy.email})> deleted patient  ${pastPatient.name}  <(${pastPatient.email})>`,
-  });
+	await addEventLog({
+		action: serverActions.DELETE_PATIENT,
+		fromId: doneBy.id,
+		actionId: patientId,
+		actionTable: 'patient',
+		message: `${doneBy.name} <(${doneBy.email})> deleted patient  ${pastPatient.name}  <(${pastPatient.email})>`,
+	});
 
-  return patient;
+	return patient;
 };
 
-const getPatientByIdService = async (patientId) => {
+export const getPatientByIdService = async (patientId: string) => {
   const patient = await prisma.patient.findUnique({
     where: {
       id: parseInt(patientId),
@@ -71,7 +69,7 @@ const getPatientByIdService = async (patientId) => {
   return { patient };
 };
 
-const searchPatientsService = async ({ query }) => {
+export const searchPatientsService = async ({ query }: any) => {
   const patients = await prisma.Patient.findMany({
     where: {
       OR: [
@@ -84,11 +82,4 @@ const searchPatientsService = async ({ query }) => {
   });
 
   return { count: patients.length, patients };
-};
-
-module.exports = {
-  createPatientService,
-  deletePatientService,
-  getPatientByIdService,
-  searchPatientsService,
 };

@@ -1,8 +1,6 @@
-const { prisma } = require('../utils/prisma');
-const { addEventLog } = require('../utils/logs');
-const { serverActions } = require('../utils/constants');
+import { addEventLog } from "../utils/logs";
 
-const addTest = async ({ name, description, prescriptionId, testType, doneBy }) => {
+export const addTest = async ({ name, description, prescriptionId, testType, doneBy }: any) => {
   if (!name || !prescriptionId || !testType) {
     throw new Error('Insufficient data');
   }
@@ -42,7 +40,7 @@ const addTest = async ({ name, description, prescriptionId, testType, doneBy }) 
   return newTest;
 };
 
-const editTest = async ({ testId, doneBy, ...values }) => {
+export const editTest = async ({ testId, doneBy, ...values }: any) => {
   if (!testId) throw new Error('Insufficient data');
 
   const test = await prisma.test.update({
@@ -76,7 +74,7 @@ const editTest = async ({ testId, doneBy, ...values }) => {
   return test;
 };
 
-const deleteTest = async ({ testId, doneBy }) => {
+export const deleteTest = async ({ testId, doneBy }: any) => {
   if (!testId) throw new Error('Insufficient data');
 
   const getNewTest = await prisma.test.findFirst({
@@ -107,7 +105,7 @@ const deleteTest = async ({ testId, doneBy }) => {
   return test;
 };
 
-const getTest = async ({ testId, prescriptionId }) => {
+export const getTest = async ({ testId, prescriptionId }: any) => {
   if (!testId && !prescriptionId) throw new Error('Insufficient data');
 
   const test = await prisma.test.findUnique({
@@ -119,7 +117,7 @@ const getTest = async ({ testId, prescriptionId }) => {
   return test;
 };
 
-const getTestsByType = async ({ testType }) => {
+export const getTestsByType = async ({ testType }: any) => {
   if (!testType) throw new Error('Insufficient data');
 
   const tests = await prisma.test.findMany({
@@ -129,18 +127,9 @@ const getTestsByType = async ({ testType }) => {
   return tests;
 };
 
-const getAllTests = async ({}) => {
+export const getAllTests = async ({}) => {
   const tests = await prisma.test.findMany({
     include: { prescription: true },
   });
   return tests;
-};
-
-module.exports = {
-  addTest,
-  editTest,
-  deleteTest,
-  getTest,
-  getTestsByType,
-  getAllTests,
 };

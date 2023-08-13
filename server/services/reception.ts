@@ -1,8 +1,5 @@
-const { prisma } = require('../utils/prisma');
-const { addEventLog } = require('../utils/logs');
-const { serverActions } = require('../utils/constants');
 
-const createAppointmentService = async ({ patientId, doctorId, date, remarks, doneBy }) => {
+export const createAppointmentService = async ({ patientId, doctorId, date, remarks, doneBy }: any) => {
   const newAppointment = await prisma.appointment.create({
     data: {
       date,
@@ -28,7 +25,7 @@ const createAppointmentService = async ({ patientId, doctorId, date, remarks, do
   return newAppointment;
 };
 
-const getAppointmentByIdService = async (appointmentId) => {
+export const getAppointmentByIdService = async (appointmentId: string) => {
   const appointment = await prisma.appointment.findUnique({
     where: { id: appointmentId },
     include: { patient: true, doctor: true },
@@ -40,7 +37,7 @@ const getAppointmentByIdService = async (appointmentId) => {
   };
 };
 
-const getAllAppointmentsService = async () => {
+export const getAllAppointmentsService = async () => {
   const appointments = await prisma.appointment.findMany({
     include: {
       patient: true,
@@ -55,10 +52,4 @@ const getAllAppointmentsService = async () => {
   });
 
   return appointments;
-};
-
-module.exports = {
-  createAppointmentService,
-  getAppointmentByIdService,
-  getAllAppointmentsService,
 };
