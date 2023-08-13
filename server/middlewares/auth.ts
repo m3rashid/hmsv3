@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { verifyJWT } from '../utils/jwt';
-import { PartialUser } from '../utils/types';
 
 export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
   try {

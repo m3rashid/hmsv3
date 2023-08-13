@@ -1,6 +1,13 @@
 import mongoose, { ObjectId } from 'mongoose';
 import { BloodGroup, Category, Day, Dosage, MedType, PatientType, Role, Sex } from './constants';
 
+export interface PartialUser {
+	_id: string;
+	permissions: string[];
+	name: string;
+	email: string;
+}
+
 export interface Base {
 	_id: ObjectId | string;
 	createdAt: string;
