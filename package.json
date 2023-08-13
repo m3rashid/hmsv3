@@ -1,0 +1,13 @@
+{
+  "name": "hmsv3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+	"author": "MD Rashid Hussain (m3rashid) <m3rashid.hussain@gmail.com>",
+  "scripts": {
+  },
+  "license": "MIT",
+	"dependencies": {},
+	"devDependencies": {},
+	"packageManager": "pnpm@8.6.12"
+}
