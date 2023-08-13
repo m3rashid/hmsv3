@@ -1,15 +1,14 @@
 import mongoose from 'mongoose';
+import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
 
-import { PrescribedMedicine, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
-
-const prescribedMedicineSchema = new mongoose.Schema<PrescribedMedicine>(
+const prescribedMedicineSchema = new mongoose.Schema<MODEL.PrescribedMedicine>(
 	{
-		...baseModelSchema,
+		...MODEL.baseModelSchema,
 	},
 	{ timestamps: true }
 );
 
-export const PrescribedMedicineModel = paginatedCompiledModel<PrescribedMedicine>(
-	modelNames.prescribedMedicine,
+export const PrescribedMedicineModel = UTILS.paginatedCompiledModel<MODEL.PrescribedMedicine>(
+	MODEL_NAMES.prescribedMedicine,
 	prescribedMedicineSchema
 );

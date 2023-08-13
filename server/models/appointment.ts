@@ -1,21 +1,21 @@
 import mongoose from 'mongoose';
+import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
 
-import { Appointment, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
 
-const appointmentSchema = new mongoose.Schema<Appointment>(
+const appointmentSchema = new mongoose.Schema<MODEL.Appointment>(
 	{
-		...baseModelSchema,
-		doctor: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.auth },
-		patient: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.auth },
+		...MODEL.baseModelSchema,
+		doctor: { type: mongoose.Schema.Types.ObjectId, ref: MODEL_NAMES.auth },
+		patient: { type: mongoose.Schema.Types.ObjectId, ref: MODEL_NAMES.auth },
 		pending: { type: Boolean, default: true },
-		prescription: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.prescription },
+		prescription: { type: mongoose.Schema.Types.ObjectId, ref: MODEL_NAMES.prescription },
 		remarks: { type: String },
-		referredBy: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.auth },
+		referredBy: { type: mongoose.Schema.Types.ObjectId, ref: MODEL_NAMES.auth },
 	},
 	{ timestamps: true }
 );
 
-export const AppointmentModel = paginatedCompiledModel<Appointment>(
-	modelNames.appointment,
+export const AppointmentModel = UTILS.paginatedCompiledModel<MODEL.Appointment>(
+	MODEL_NAMES.appointment,
 	appointmentSchema
 );

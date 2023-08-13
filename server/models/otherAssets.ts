@@ -1,17 +1,16 @@
 import mongoose from 'mongoose';
+import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
 
-import { OtherAssets, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
-
-const otherAssetsSchema = new mongoose.Schema<OtherAssets>(
+const otherAssetsSchema = new mongoose.Schema<MODEL.OtherAssets>(
 	{
-		...baseModelSchema,
+		...MODEL.baseModelSchema,
 		name: { type: String, required: true },
 		quantity: { type: Number, required: true },
 	},
 	{ timestamps: true }
 );
 
-export const OtherAssetsModel = paginatedCompiledModel<OtherAssets>(
-	modelNames.otherAsset,
+export const OtherAssetsModel = UTILS.paginatedCompiledModel<MODEL.OtherAssets>(
+	MODEL_NAMES.otherAsset,
 	otherAssetsSchema
 );

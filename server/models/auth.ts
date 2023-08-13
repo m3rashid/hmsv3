@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
+import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
 
-import { Auth, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
-
-const authSchema = new mongoose.Schema<Auth>(
+const authSchema = new mongoose.Schema<MODEL.Auth>(
 	{
-		...baseModelSchema,
+		...MODEL.baseModelSchema,
 		email: { type: String, required: true, unique: true },
 		name: { type: String, required: true },
 		password: { type: String, required: true },
@@ -14,4 +13,4 @@ const authSchema = new mongoose.Schema<Auth>(
 	{ timestamps: true }
 );
 
-export const AuthModel = paginatedCompiledModel<Auth>(modelNames.auth, authSchema);
+export const AuthModel = UTILS.paginatedCompiledModel<MODEL.Auth>(MODEL_NAMES.auth, authSchema);

@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
+import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
 
-import { NonMedicine, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
-
-const nonMedicineSchema = new mongoose.Schema<NonMedicine>(
+const nonMedicineSchema = new mongoose.Schema<MODEL.NonMedicine>(
 	{
-		...baseModelSchema,
+		...MODEL.baseModelSchema,
 		name: { type: String, required: true },
 		batchNumber: { type: String },
 		expiryDate: { type: Date, required: true },
@@ -13,7 +12,7 @@ const nonMedicineSchema = new mongoose.Schema<NonMedicine>(
 	{ timestamps: true }
 );
 
-export const NonMedicineModel = paginatedCompiledModel<NonMedicine>(
-	modelNames.nonMedicine,
+export const NonMedicineModel = UTILS.paginatedCompiledModel<MODEL.NonMedicine>(
+	MODEL_NAMES.nonMedicine,
 	nonMedicineSchema
 );

@@ -1,12 +1,11 @@
 import mongoose from 'mongoose';
+import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
 
-import { Test, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
-
-const testSchema = new mongoose.Schema<Test>(
+const testSchema = new mongoose.Schema<MODEL.Test>(
 	{
-		...baseModelSchema,
+		...MODEL.baseModelSchema,
 	},
 	{ timestamps: true }
 );
 
-export const TestModel = paginatedCompiledModel<Test>(modelNames.test, testSchema);
+export const TestModel = UTILS.paginatedCompiledModel<MODEL.Test>(MODEL_NAMES.test, testSchema);

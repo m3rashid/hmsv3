@@ -1,12 +1,14 @@
 import mongoose from 'mongoose';
+import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
 
-import { Patient, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
-
-const patientSchema = new mongoose.Schema<Patient>(
+const patientSchema = new mongoose.Schema<MODEL.Patient>(
 	{
-		...baseModelSchema,
+		...MODEL.baseModelSchema,
 	},
 	{ timestamps: true }
 );
 
-export const PatientModel = paginatedCompiledModel<Patient>(modelNames.patient, patientSchema);
+export const PatientModel = UTILS.paginatedCompiledModel<MODEL.Patient>(
+	MODEL_NAMES.patient,
+	patientSchema
+);

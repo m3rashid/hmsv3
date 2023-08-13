@@ -1,14 +1,12 @@
-export const modelNames = {
-	appointment: 'Appointment',
-	auth: 'Auth',
-	leave: 'Leave',
-	log: 'Log',
-	medicine: 'Medicine',
-	nonMedicine: 'NonMedicine',
-	otherAsset: 'OtherAsset',
-	patient: 'Patient',
-	prescribedMedicine: 'PrescribedMedicine',
-	prescription: 'Prescription',
-	profile: 'Profile',
-	test: 'Test',
-};
+export const appointment = 'Appointment';
+export const auth = 'Auth';
+export const leave = 'Leave';
+export const log = 'Log';
+export const medicine = 'Medicine';
+export const nonMedicine = 'NonMedicine';
+export const otherAsset = 'OtherAsset';
+export const patient = 'Patient';
+export const prescribedMedicine = 'PrescribedMedicine';
+export const prescription = 'Prescription';
+export const profile = 'Profile';
+export const test = 'Test';

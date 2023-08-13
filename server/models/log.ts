@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
+import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
 
-import { Log, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
-
-const logSchema = new mongoose.Schema<Log>(
+const logSchema = new mongoose.Schema<MODEL.Log>(
 	{
-		...baseModelSchema,
+		...MODEL.baseModelSchema,
 		from: { type: String, required: true },
 		action: { type: String, required: true },
 		to: { type: String, required: true },
@@ -12,4 +11,4 @@ const logSchema = new mongoose.Schema<Log>(
 	{ timestamps: true }
 );
 
-export const LogModel = paginatedCompiledModel<Log>(modelNames.log, logSchema);
+export const LogModel = UTILS.paginatedCompiledModel<MODEL.Log>(MODEL_NAMES.log, logSchema);

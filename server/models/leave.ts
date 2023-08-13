@@ -1,11 +1,10 @@
 import mongoose from 'mongoose';
+import { MODEL, MODEL_NAMES, UTILS } from 'gatekeeper';
 
-import { Leave, baseModelSchema, modelNames, paginatedCompiledModel } from './base';
-
-const leaveSchema = new mongoose.Schema<Leave>(
+const leaveSchema = new mongoose.Schema<MODEL.Leave>(
 	{
-		...baseModelSchema,
-		doctor: { type: mongoose.Schema.Types.ObjectId, ref: modelNames.auth },
+		...MODEL.baseModelSchema,
+		doctor: { type: mongoose.Schema.Types.ObjectId, ref: MODEL_NAMES.auth },
 		endDate: { type: Date, required: true },
 		reason: { type: String },
 		startDate: { type: Date, required: true },
@@ -13,4 +12,4 @@ const leaveSchema = new mongoose.Schema<Leave>(
 	{ timestamps: true }
 );
 
-export const LeaveModel = paginatedCompiledModel<Leave>(modelNames.leave, leaveSchema);
+export const LeaveModel = UTILS.paginatedCompiledModel<MODEL.Leave>(MODEL_NAMES.leave, leaveSchema);
