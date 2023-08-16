@@ -92,7 +92,7 @@ export interface Patient extends Base {
 	type: PatientType;
 	otherUser?: string;
 	sex: Sex;
-	dob?: string;
+	dob?: Date;
 	designation?: string;
 	contact?: string;
 	dor?: string;

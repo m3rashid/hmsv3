@@ -1,6 +1,12 @@
+import { MODEL } from 'gatekeeper';
 import { AppointmentModel } from '../models/appointment';
 import { AuthModel } from '../models/auth';
-import { quantityCalculator } from '../utils/medecine.helpers';
+import { PatientModel } from '../models/patient';
+import { PrescriptionModel } from '../models/prescription';
+import { quantityCalculator } from '../utils/medicine.helpers';
+import { ObjectId } from '../utils/types';
+import dayjs from 'dayjs';
+import { MedicineModel } from '../models/medicine';
 
 export const getDoctorAppointmentsService = async (
 	userId: string,
@@ -19,9 +25,10 @@ export const getDoctorAppointmentsService = async (
 };
 
 export const getDoctorPatientsService = async (doctorId: string) => {
-	const patients = await prisma.Patient.findMany({
-		where: { Appointment: { some: { doctorId: doctorId } } },
-	});
+	// const patients = await prisma.Patient.findMany({
+	// 	where: { Appointment: { some: { doctorId: doctorId } } },
+	// });
+	const patients = await PatientModel.find({});
 	return { patients };
 };
 
@@ -66,6 +73,15 @@ export const searchDoctorsService = async ({
 	return { count: doctors.length, doctors: doctors };
 };
 
+interface ICreatePrescriptionService {
+	appointment: ObjectId;
+	symptoms: any;
+	diagnosis: any;
+	CustomMedicines: any;
+	datetime: Date;
+	medicines: any;
+	doneBy: MODEL.PartialUser;
+}
 export const createPrescriptionService = async ({
 	appointment,
 	symptoms,
@@ -74,61 +90,30 @@ export const createPrescriptionService = async ({
 	datetime,
 	medicines,
 	doneBy,
-}: any) => {
-	const newPrescription = await prisma.prescription.create({
-		data: {
-			appointment: {
-				connect: { id: appointment },
-			},
-			symptoms,
-			CustomMedicines,
-			datePrescribed: dayjs(datetime).toDate(),
-			medicines: {
-				createMany: {
-					data: medicines.map((medicine: any) => {
-						return {
-							MedicineId: parseInt(medicine.Medicine.id),
+}: ICreatePrescriptionService) => {
+	const newPrescription = new PrescriptionModel({
+		appointment: appointment,
+		symptoms,
+		CustomMedicines,
+		datetime: dayjs(datetime).toDate(),
+		medicines: medicines.map((m: any) => ({
+			MedicineId: parseInt(m.Medicine.id),
 
-							duration: parseInt(medicine.duration),
-							dosage: medicine.dosage,
-							...(medicine.type === 'SYRUP'
-								? { quantityPerDose: parseInt(medicine.quantityPerDose) }
-								: {}),
-							description: medicine.description || '',
-						};
-					}),
-				},
-			},
-		},
-		include: {
-			appointment: {
-				select: {
-					patient: { select: { name: true, contact: true } },
-					doctor: {
-						select: {
-							Auth: { select: { name: true } },
-							designation: true,
-						},
-					},
-					// appointment,
-				},
-			},
-		},
+			duration: parseInt(m.duration),
+			dosage: m.dosage,
+			...(m.type === 'SYRUP' ? { quantityPerDose: parseInt(m.quantityPerDose) } : {}),
+			description: m.description || '',
+		})),
 	});
 
-	await prisma.appointment.update({
-		where: { id: appointment },
-		data: { pending: false },
-	});
-
-	const prescription = await prisma.appointment.findFirst({
-		where: { id: newPrescription.id },
-		include: { doctor: true, patient: true },
-	});
+	await AppointmentModel.findByIdAndUpdate(appointment, { pending: false });
+	const prescription = await AppointmentModel.findById(newPrescription._id)
+		.populate('doctor')
+		.populate('patient');
 
 	await addEventLog({
 		action: serverActions.CREATE_PRESCRIPTION,
-		fromId: doneBy.id,
+		fromId: doneBy._id,
 		actionId: newPrescription.id,
 		actionTable: 'prescription',
 		message: `${doneBy.name} <(${doneBy.email})> created prescription for ${prescription.patient.name} as doctor ${prescription.doctor.name}`,
@@ -148,32 +133,14 @@ export const updateAppointmentService = async ({
 	// TODO unhandled in sockets
 	doneBy,
 }: any) => {
-	const updatedAppointment = await prisma.appointment.update({
-		where: { id: appointmentId },
-		data: {
-			...(date ? { date } : {}),
-			...(remarks ? { remarks } : {}),
-			...(pending ? { pending } : {}),
-		},
-		include: {
-			appointment: {
-				select: {
-					patient: { select: { name: true, contact: true } },
-					doctor: {
-						select: {
-							Auth: { select: { name: true } },
-							designation: true,
-						},
-					},
-				},
-			},
-		},
+	const updatedAppointment = await AppointmentModel.findByIdAndUpdate(appointmentId, {
+		...(date ? { date } : {}),
+		...(remarks ? { remarks } : {}),
+		...(pending ? { pending } : {}),
 	});
-
-	const prescription = await prisma.appointment.findFirst({
-		where: { id: updatedAppointment.id },
-		include: { doctor: true, patient: true },
-	});
+	const prescription = await AppointmentModel.findById(updatedAppointment._id)
+		.populate('doctor')
+		.populate('patient');
 
 	await addEventLog({
 		action: serverActions.UPDATE_APPOINTMENT,
@@ -196,21 +163,12 @@ export const referAnotherDoctorAppointmentService = async ({
 	remarks,
 	doneBy,
 }: any) => {
-	const appointment = await prisma.appointment.create({
-		data: {
-			date,
-			remarks,
-			patient: {
-				connect: { id: patientId },
-			},
-			doctor: {
-				connect: { id: nextDoctorId },
-			},
-			referredDoc: {
-				connect: { id: prevDoctorId },
-			},
-		},
-		include: { patient: true, doctor: true },
+	const appointment = new AppointmentModel({
+		date,
+		remarks,
+		patient:  patientId,
+		doctor:  nextDoctorId,
+		referredDoc: prevDoctorId
 	});
 
 	await addEventLog({
@@ -225,9 +183,7 @@ export const referAnotherDoctorAppointmentService = async ({
 };
 
 export const checkMedAvailabilityService = async ({ medicineId, dosage, duration }: any) => {
-	const medicine = await prisma.medicine.findFirst({
-		where: { id: medicineId },
-	});
+	const medicine = await MedicineModel.findById(medicineId)
 	const quantityRequired = quantityCalculator(duration, dosage);
 
 	if (medicine.quantity >= quantityRequired) {
@@ -245,52 +201,42 @@ export const checkMedAvailabilityService = async ({ medicineId, dosage, duration
 	}
 };
 
-export const getPrescriptionByAppointmentService = async ({ id }: {id: string}) => {
-	const data = await prisma.prescription.findFirst({
-		where: {
-			appointmentId: id,
-		},
-		include: {
-			medicines: {
-				include: {
-					Medicine: true,
-				},
-			},
-			appointment: {
-				include: {
-					doctor: true,
-					patient: true,
-				},
-			},
-		},
-	});
+export const getPrescriptionByAppointmentService = async ({ id }: { id: string }) => {
+	const data = await PrescriptionModel.findOne({ appointmentId: id })
+		.populate('medicines')
+		.populate('medicines.medicine')
+		.populate('appointment')
+		.populate('appointment.doctor')
+		.populate('appointment.patient')
 
 	return data;
 };
 
 export const createDoctorLeaveService = async ({ doctorId, start, end, reason, doneBy }: any) => {
-	const leave = await prisma.profile.create({
-		where: {
-			id: doctorId,
-		},
-		data: {
-			leave: {
-				create: {
-					start,
-					end,
-					reason,
-				},
-			},
-		},
-	});
+	// const leave = await prisma.profile.create({
+	// 	where: {
+	// 		id: doctorId,
+	// 	},
+	// 	data: {
+	// 		leave: {
+	// 			create: {
+	// 				start,
+	// 				end,
+	// 				reason,
+	// 			},
+	// 		},
+	// 	},
+	// });
 
-	await addEventLog({
-		action: serverActions.CREATE_DOCTOR_LEAVE,
-		fromId: doneBy.id,
-		actionId: leave.id,
-		actionTable: 'doctorLeave',
-		message: `${doneBy.name} <(${doneBy.email})> created leave for doctor ${leave.doctor.name}`,
-	});
 
-	return leave;
+	// await addEventLog({
+	// 	action: serverActions.CREATE_DOCTOR_LEAVE,
+	// 	fromId: doneBy.id,
+	// 	actionId: leave.id,
+	// 	actionTable: 'doctorLeave',
+	// 	message: `${doneBy.name} <(${doneBy.email})> created leave for doctor ${leave.doctor.name}`,
+	// });
+
+	// return leave;
+	return
 };

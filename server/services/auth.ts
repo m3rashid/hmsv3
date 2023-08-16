@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 
-import { MODEL_CONSTANTS } from "gatekeeper";
+import { MODEL_CONSTANTS, permissions } from "gatekeeper";
 import { AuthModel } from "../models/auth";
 import { ProfileModel } from "../models/profile";
 import { issueJWT, revalidateJWT } from "../utils/jwt";
@@ -114,18 +114,18 @@ export const signupService = async ({
   const allowedActions = addActions(role);
 
   const hashedPassword = await bcrypt.hash(password.trim(), 10);
-  const profile = await prisma.profile.create({ data: { ...profileData } });
+	const profile = new ProfileModel(profileData)
+	await profile.save()
 
-  const user = await prisma.auth.create({
-    data: {
-      email: email.trim(),
-      name: name.trim(),
-      profileId: profile.id,
-      password: hashedPassword,
-      permissions: allowedActions,
-    },
-    include: { profile: true },
-  });
+	const user = new AuthModel({
+		email: email.trim(),
+		name: name.trim(),
+		profileId: profile.id,
+		password: hashedPassword,
+		permissions: allowedActions,
+	})
+
+	await user.save()
 
   await addEventLog({
     action: serverActions.SIGNUP,
@@ -153,9 +153,7 @@ export const revalidateService = async (refreshToken: string) => {
 	const user = await AuthModel.findById(payloadId)
   if (!user) throw new Error('Unauthorized');
 
-  const userDetails = await prisma.profile.findUnique({
-    where: { id: user.id },
-  });
+	const userDetails = await ProfileModel.findById(user._id)
 
   const { token, expires } = issueJWT(user);
   return {

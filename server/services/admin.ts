@@ -90,7 +90,7 @@ export const updateUserProfileService = async (
 	},
 
 	// TODO unhandled in sockets
-	doneBy: PartialUser
+	doneBy: MODEL.PartialUser
 ) => {
 	if (!userId || !profileId) throw new Error('Insufficient data');
 
