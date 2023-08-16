@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
 
-import { MODEL_CONSTANTS } from 'gatekeeper';
-import { ObjectId, PartialUser } from '../utils/types';
+import { MODEL_CONSTANTS, MODEL } from 'gatekeeper';
+
+import { ObjectId } from '../utils/types';
 import { PatientModel } from '../models/patient';
 import { ProfileModel } from '../models/profile';
 import { AuthModel } from '../models/auth';
@@ -36,7 +37,7 @@ export const editPermissionsService = async ({
 }: {
 	userId: string;
 	permissions: string[];
-	doneBy: PartialUser;
+	doneBy: MODEL.PartialUser;
 }) => {
 	if (!userId || !permissions) throw new Error('Invalid data');
 	const user = await AuthModel.findByIdAndUpdate(userId, { permissions });

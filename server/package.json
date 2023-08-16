@@ -14,7 +14,6 @@
 	},
 	"dependencies": {
 		"@faker-js/faker": "^8.0.2",
-		"@prisma/client": "5.1.1",
 		"@socket.io/admin-ui": "^0.5.1",
 		"@socket.io/cluster-adapter": "^0.2.2",
 		"@socket.io/sticky": "^1.0.3",
@@ -48,7 +47,6 @@
 		"@types/morgan": "^1.9.4",
 		"@types/multer": "^1.4.7",
 		"nodemon": "^3.0.1",
-		"prisma": "5.1.1",
 		"rollup": "^3.28.0",
 		"rollup-plugin-includepaths": "^0.2.4",
 		"tslib": "^2.6.1",
