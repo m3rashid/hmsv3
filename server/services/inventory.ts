@@ -1,39 +1,44 @@
-import faker from "@faker-js/faker"
-import { MODEL_CONSTANTS } from "gatekeeper";
-import { dummyMedicines, dummyNonMedicines, dummyOtherAssets } from "./dummy";
+import { faker } from '@faker-js/faker';
+import { MODEL_CONSTANTS } from 'gatekeeper';
+import { dummyMedicines, dummyNonMedicines, dummyOtherAssets } from './dummy';
+import { MedicineModel } from '../models/medicine';
+import { NonMedicineModel } from '../models/nonMedicine';
+import { OtherAssetsModel } from '../models/otherAssets';
 
 export const addMedicineService = async ({
-  type,
-  data,
+	type,
+	data,
 
-  // TODO unhandled in sockets
-  doneBy,
+	// TODO unhandled in sockets
+	doneBy,
 }: any) => {
-  let asset;
-  let assetType;
+	let asset;
+	let assetType;
 
-  if (type == MODEL_CONSTANTS.InventoryTypes.medicine) {
-    asset = await prisma.medicine.create({ data });
-    assetType = 'medicine';
-  } else if (type == MODEL_CONSTANTS.InventoryTypes.nonMedicine) {
-		asset = await prisma.nonMedicine.create({ data });
+	if (type == MODEL_CONSTANTS.InventoryTypes.medicine) {
+		asset = new MedicineModel({ data });
+		assetType = 'medicine';
+	} else if (type == MODEL_CONSTANTS.InventoryTypes.nonMedicine) {
+		asset = new NonMedicineModel({ data });
 		assetType = 'nonMedicine';
 	} else if (type == MODEL_CONSTANTS.InventoryTypes.otherAsset) {
-		asset = await prisma.otherAssets.create({ data });
+		asset = new OtherAssetsModel({ data });
 		assetType = 'otherAssets';
 	} else {
 		throw new Error('Invalid type');
 	}
 
-  await addEventLog({
-    action: serverActions.ADD_INVENTORY,
-    fromId: doneBy.id,
-    actionId: asset.id,
-    actionTable: assetType,
-    message: `${doneBy.name} <(${doneBy.email})> added item ${asset.name} (${asset.quantity}) to the inventory`,
-  });
+	await asset.save();
 
-  return asset;
+	await addEventLog({
+		action: serverActions.ADD_INVENTORY,
+		fromId: doneBy.id,
+		actionId: asset.id,
+		actionTable: assetType,
+		message: `${doneBy.name} <(${doneBy.email})> added item ${asset.name} (${asset.quantity}) to the inventory`,
+	});
+
+	return asset;
 };
 
 export const DeleteInventoryService = async ({
@@ -48,19 +53,13 @@ export const DeleteInventoryService = async ({
 	let assetType;
 
 	if (type == MODEL_CONSTANTS.InventoryTypes.medicine) {
-		asset = await prisma.medicine.delete({
-			where: { id: medicineId },
-		});
+		asset = await MedicineModel.findByIdAndDelete(medicineId);
 		assetType = 'medicine';
 	} else if (type == MODEL_CONSTANTS.InventoryTypes.nonMedicine) {
-		asset = await prisma.nonMedicine.delete({
-			where: { id: medicineId },
-		});
+		asset = await NonMedicineModel.findByIdAndDelete(medicineId);
 		assetType = 'nonMedicine';
 	} else if (type == MODEL_CONSTANTS.InventoryTypes.otherAsset) {
-		asset = await prisma.otherAssets.delete({
-			where: { id: medicineId },
-		});
+		asset = await OtherAssetsModel.findByIdAndDelete(medicineId);
 		assetType = 'otherAssets';
 	} else {
 		throw new Error('Invalid type');
@@ -89,22 +88,13 @@ export const editMedicineService = async ({
 	let assetType;
 
 	if (type == MODEL_CONSTANTS.InventoryTypes.medicine) {
-		asset = await prisma.medicine.update({
-			where: { id: id },
-			data: data,
-		});
+		asset = await MedicineModel.findByIdAndUpdate(id, data);
 		assetType = 'medicine';
 	} else if (type === MODEL_CONSTANTS.InventoryTypes.nonMedicine) {
-		asset = await prisma.nonMedicine.update({
-			where: { id: id },
-			data: data,
-		});
+		asset = await NonMedicineModel.findByIdAndUpdate(id, data);
 		assetType = 'nonMedicine';
 	} else if (type === MODEL_CONSTANTS.InventoryTypes.otherAsset) {
-		asset = await prisma.otherAssets.update({
-			where: { id: id },
-			data: data,
-		});
+		asset = await OtherAssetsModel.findByIdAndUpdate(id, data);
 		assetType = 'otherAssets';
 	} else {
 		throw new Error('Invalid type');
@@ -121,29 +111,30 @@ export const editMedicineService = async ({
 	return asset;
 };
 
-export const getMedicine = async (medicineId: string) => {
-  const gotMedicine = await prisma.inventory.findUnique({
-    where: { id: medicineId },
-  });
-  return gotMedicine;
-};
+// export const getMedicine = async (medicineId: string) => {
+// 	const gotMedicine = await prisma.inventory.findUnique({
+// 		where: { id: medicineId },
+// 	});
+// 	return gotMedicine;
+// };
 
 export const addDummy = async () => {
-  const type = faker.helpers.arrayElement(Object.values(MODEL_CONSTANTS.InventoryTypes));
-  if (type === MODEL_CONSTANTS.InventoryTypes.medicine) {
-		await prisma.medicine.create({
+	const type = faker.helpers.arrayElement(Object.values(MODEL_CONSTANTS.InventoryTypes));
+	if (type === MODEL_CONSTANTS.InventoryTypes.medicine) {
+		const medicines = new MedicineModel({
 			data: {
 				name: faker.helpers.arrayElement(dummyMedicines),
 				batchNumber: faker.datatype.uuid(),
 				category: faker.helpers.arrayElement(MODEL_CONSTANTS.Categories),
 				expiryDate: faker.date.future(),
 				medType: faker.helpers.arrayElement(MODEL_CONSTANTS.MedType),
-				quantity: faker.datatype.number({ min: 1, max: 100 }),
-				manufacturer: faker.company.companyName(),
+				quantity: faker.number.int({ min: 1, max: 100 }),
+				manufacturer: faker.company.name(),
 			},
 		});
+		await medicines.save();
 	} else if (type === MODEL_CONSTANTS.InventoryTypes.nonMedicine) {
-		await prisma.nonMedicine.create({
+		const nonMedicines = new NonMedicineModel({
 			data: {
 				name: faker.helpers.arrayElement(dummyNonMedicines),
 				batchNumber: faker.datatype.uuid(),
@@ -151,31 +142,30 @@ export const addDummy = async () => {
 				quantity: faker.datatype.number({ min: 1, max: 100 }),
 			},
 		});
+		await nonMedicines.save();
 	} else {
-		await prisma.otherAssets.create({
+		const otherAssets = new OtherAssetsModel({
 			data: {
 				quantity: faker.datatype.number({ min: 1, max: 100 }),
 				name: faker.helpers.arrayElement(dummyOtherAssets),
 			},
 		});
+		await otherAssets.save();
 	}
 };
 
-export const searchInventoryService = async (type: MODEL_CONSTANTS.InventoryType, { quantity, price, name }: any) => {
-  let inventory = [];
-  const queries = [{ quantity: { gte: quantity } }, { name: { contains: name } }];
-  if (type == MODEL_CONSTANTS.InventoryTypes.medicine) {
-		inventory = await prisma.medicine.findMany({
-			where: { OR: queries },
-		});
+export const searchInventoryService = async (
+	type: MODEL_CONSTANTS.InventoryType,
+	{ quantity, price, name }: any
+) => {
+	let inventory = [];
+	const queries = [{ quantity: { gte: quantity } }, { name: { contains: name } }];
+	if (type == MODEL_CONSTANTS.InventoryTypes.medicine) {
+		inventory = await MedicineModel.find(queries);
 	} else if (type == MODEL_CONSTANTS.InventoryTypes.nonMedicine) {
-		inventory = await prisma.nonMedicine.findMany({
-			where: { OR: queries },
-		});
+		inventory = await NonMedicineModel.find(queries);
 	} else if (type == MODEL_CONSTANTS.InventoryTypes.otherAsset) {
-		inventory = await prisma.otherAssets.findMany({
-			where: { OR: queries },
-		});
+		inventory = await OtherAssetsModel.find(queries);
 	}
-  return inventory;
+	return inventory;
 };

@@ -1,12 +1,14 @@
+import { permissions } from "gatekeeper";
 import { checkAccess } from "../utils/auth.helpers";
-import { permissions } from "../utils/constants";
+import { PatientModel } from "../models/patient";
 
 export const createPatientService = async (data: any, UserPermissions: string[], doneBy: any) => {
   if (!checkAccess([permissions.RECEPTION_CREATE_PATIENT], UserPermissions)) {
     throw new Error('Forbidden');
   }
 
-  const newPatient = await prisma.patient.create({ data });
+  const newPatient = new PatientModel({ data });
+	await newPatient.save()
 
   await addEventLog({
     action: serverActions.CREATE_PATIENT,
@@ -20,9 +22,9 @@ export const createPatientService = async (data: any, UserPermissions: string[],
 };
 
 export const deletePatientService = async ({ patientId, doneBy }:any) => {
-	const pastPatient = await prisma.patient.findFirst({
-		where: { id: patientId },
-	});
+	const pastPatient = await PatientModel.findById(
+		patientId
+	);
 
 	const patient = await prisma.patient.delete({
 		where: { id: patientId },
